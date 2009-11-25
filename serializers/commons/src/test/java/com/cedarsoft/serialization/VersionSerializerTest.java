@@ -1,13 +1,12 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class VersionSerializerTest extends AbstractStaxMateSerializerTest<Version> {
+public class VersionSerializerTest extends AbstractXmlSerializerTest<Version> {
   @Override
   @NotNull
   protected VersionSerializer getSerializer() {

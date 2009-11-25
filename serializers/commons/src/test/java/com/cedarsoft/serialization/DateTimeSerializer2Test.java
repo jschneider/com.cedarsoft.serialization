@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -11,7 +10,7 @@ import org.testng.annotations.*;
 /**
  *
  */
-public class DateTimeSerializer2Test extends AbstractStaxMateSerializerTest<DateTime> {
+public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime> {
   @NotNull
   protected final DateTimeZone zone = DateTimeZone.forID( "America/New_York" );
 

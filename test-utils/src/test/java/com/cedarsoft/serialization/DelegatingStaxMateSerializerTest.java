@@ -5,7 +5,6 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractDelegatingStaxMateSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import com.cedarsoft.serialization.stax.StaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -24,7 +23,7 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class DelegatingStaxMateSerializerTest extends AbstractStaxMateSerializerTest<Number> {
+public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<Number> {
   private MySerializer serializer;
 
   @BeforeMethod

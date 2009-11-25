@@ -4,7 +4,6 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,7 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class StaxMateSerializerTest extends AbstractStaxMateSerializerTest<String> {
+public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {

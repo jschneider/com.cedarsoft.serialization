@@ -3,7 +3,6 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +15,7 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class ComplexStaxMateSerializerTest extends AbstractStaxMateSerializerTest<String> {
+public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {

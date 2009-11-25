@@ -3,6 +3,7 @@ package com.cedarsoft.serialization.jdom;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.jdom.Element;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class DelegatingJDomSerializerTest extends AbstractJDomSerializerTest<Number, Object> {
+public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Number> {
   private MySerializer serializer;
 
   @BeforeMethod

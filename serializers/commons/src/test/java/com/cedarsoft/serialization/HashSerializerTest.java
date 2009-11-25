@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class HashSerializerTest extends AbstractStaxMateSerializerTest<Hash> {
+public class HashSerializerTest extends AbstractXmlSerializerTest<Hash> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<Hash> getSerializer() {

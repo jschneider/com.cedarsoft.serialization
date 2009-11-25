@@ -2,14 +2,13 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import org.jetbrains.annotations.NotNull;
 import org.testng.*;
 
 /**
  *
  */
-public class ExtensionSerializerTest extends AbstractStaxMateSerializerTest<Extension> {
+public class ExtensionSerializerTest extends AbstractXmlSerializerTest<Extension> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<Extension> getSerializer() {

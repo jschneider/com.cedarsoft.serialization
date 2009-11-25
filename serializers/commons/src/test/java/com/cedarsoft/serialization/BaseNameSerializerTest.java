@@ -3,13 +3,12 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.BaseNameSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializerTest;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class BaseNameSerializerTest extends AbstractStaxMateSerializerTest<BaseName> {
+public class BaseNameSerializerTest extends AbstractXmlSerializerTest<BaseName> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<BaseName> getSerializer() {
