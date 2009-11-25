@@ -6,11 +6,13 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
-import com.cedarsoft.serialization.jdom.AbstractJDomSerializer;
-import org.jdom.Element;
+import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -28,19 +30,20 @@ public class RegistrySerializerTest {
   @BeforeMethod
   public void setup() {
     access = new InMemorySerializedObjectsAccess();
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractJDomSerializer<String>( "text", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
-      @Override
+    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @NotNull
-      public Element serialize( @NotNull Element serializeTo, @NotNull String object ) {
-        serializeTo.setText( object );
+      @Override
+      public XMLStreamWriter serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
+        serializeTo.writeCharacters( object );
         return serializeTo;
       }
 
-      @Override
       @NotNull
-      public String deserialize( @NotNull Element deserializeFrom ) {
-        return deserializeFrom.getTextNormalize();
+      @Override
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+        return getText( deserializeFrom );
       }
+
     }, new RegistrySerializer.IdResolver<String>() {
       @Override
       @NotNull

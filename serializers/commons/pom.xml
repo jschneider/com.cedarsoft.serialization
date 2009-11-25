@@ -9,8 +9,8 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization</groupId>
-  <artifactId>serializers</artifactId>
-  <name>Serializers</name>
+  <artifactId>commons-serializers</artifactId>
+  <name>Serializers for cedarsoft Commons</name>
 
   <dependencies>
     <dependency>
@@ -19,18 +19,22 @@
     </dependency>
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>test-utils</artifactId>
-      <scope>test</scope>
+      <artifactId>stax</artifactId>
     </dependency>
 
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>xml-commons</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>test-utils</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>

@@ -8,7 +8,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cedarsoft</groupId>
+  <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>serializers</artifactId>
   <name>Serializers</name>
   <packaging>pom</packaging>
