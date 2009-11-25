@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -9,18 +8,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Serializes objects
+ * Default interface for all types of serializers.
+ * Each serializer is able to serialize an object.
+ * <p/>
+ * A format version is supported for each serializer.
  *
  * @param <T> the type of the objects
  */
 public interface Serializer<T> {
-  /**
-   * The target of the processing instruction containing the version information
-   */
-  @NotNull
-  @NonNls
-  String PI_TARGET_FORMAT = "format";
-
   /**
    * Serializes the object to the given output stream
    *

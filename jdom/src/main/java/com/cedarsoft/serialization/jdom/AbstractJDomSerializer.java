@@ -3,7 +3,7 @@ package com.cedarsoft.serialization.jdom;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @param <T> the type
  */
-public abstract class AbstractJDomSerializer<T> extends AbstractSerializer<T, Element, Element, IOException> {
+public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T, Element, Element, IOException> {
   @NotNull
   @NonNls
   protected static final String LINE_SEPARATOR = "\n";

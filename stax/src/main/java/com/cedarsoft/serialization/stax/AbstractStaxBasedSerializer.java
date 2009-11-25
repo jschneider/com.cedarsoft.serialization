@@ -3,7 +3,7 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,7 @@ import java.io.InputStream;
  * @param <T> the type
  * @param <S> the object to serialize to
  */
-public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractSerializer<T, S, XMLStreamReader, XMLStreamException> {
+public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> {
   protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, formatVersionRange );
   }

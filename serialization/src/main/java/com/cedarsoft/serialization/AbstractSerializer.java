@@ -2,13 +2,14 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
+ * Abstract base class for all kinds of serializers.
+ *
  * @param <T> the type
  * @param <S> the object to serialize to
  * @param <D> the object to deserialize from
@@ -16,20 +17,14 @@ import java.io.IOException;
  */
 public abstract class AbstractSerializer<T, S, D, E extends Throwable> implements PluggableSerializer<T, S, D, E> {
   @NotNull
-  @NonNls
-  private final String defaultElementName;
-
-  @NotNull
   private final VersionRange formatVersionRange;
 
   /**
    * Creates a new version range
    *
-   * @param defaultElementName the default element name
    * @param formatVersionRange the version range. The max value is used when written.
    */
-  protected AbstractSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    this.defaultElementName = defaultElementName;
+  protected AbstractSerializer( @NotNull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
   }
 
@@ -63,20 +58,9 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   }
 
   /**
-   * Returns the default element name
-   *
-   * @return the default element name
-   */
-  @NotNull
-  @NonNls
-  protected String getDefaultElementName() {
-    return defaultElementName;
-  }
-
-  /**
    * Helper method that serializes to a byte array
    *
-   * @param object  the object
+   * @param object the object
    * @return the serialized object
    *
    * @throws IOException
