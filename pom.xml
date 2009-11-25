@@ -17,6 +17,7 @@
   <modules>
     <module>serialization</module>
     <module>serializers</module>
+    <module>test-utils</module>
     <module>test</module>
   </modules>
 
@@ -25,8 +26,8 @@
 
       <!--Internal-->
       <dependency>
-        <groupId>com.cedarsoft.serialization.test</groupId>
-        <artifactId>xml</artifactId>
+        <groupId>com.cedarsoft.serialization</groupId>
+        <artifactId>test-utils</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

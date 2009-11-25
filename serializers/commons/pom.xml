@@ -18,8 +18,8 @@
       <artifactId>serialization</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.cedarsoft.serialization.test</groupId>
-      <artifactId>xml</artifactId>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>test-utils</artifactId>
       <scope>test</scope>
     </dependency>
 

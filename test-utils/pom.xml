@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>com.cedarsoft.serialization</groupId>
-    <artifactId>test</artifactId>
+    <groupId>com.cedarsoft</groupId>
+    <artifactId>serialization-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cedarsoft.serialization.test</groupId>
-  <artifactId>xml</artifactId>
-  <name>XML Serialization Tests</name>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>test-utils</artifactId>
+  <name>Serialization Test Utils</name>
 
   <dependencies>
     <dependency>
