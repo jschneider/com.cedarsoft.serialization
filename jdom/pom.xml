@@ -17,12 +17,10 @@
       <groupId>com.cedarsoft</groupId>
       <artifactId>serialization</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
     </dependency>
-
 
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>

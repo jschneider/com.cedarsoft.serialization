@@ -28,21 +28,7 @@
       <optional>true</optional>
     </dependency>
 
-
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>xml-commons</artifactId>
-    </dependency>
-
+    
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>test-utils</artifactId>

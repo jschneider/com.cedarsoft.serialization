@@ -17,7 +17,17 @@
       <groupId>com.cedarsoft</groupId>
       <artifactId>serialization</artifactId>
     </dependency>
-    
+
+    <dependency>
+      <groupId>org.codehaus.staxmate</groupId>
+      <artifactId>staxmate</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>woodstox-core-asl</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>test-utils</artifactId>
