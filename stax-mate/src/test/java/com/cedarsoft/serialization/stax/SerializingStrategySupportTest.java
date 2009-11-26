@@ -30,7 +30,10 @@ public class SerializingStrategySupportTest {
     SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support5 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( strategies1 );
 
     Collection<? extends StaxMateSerializingStrategy<? extends String>> strategies = new ArrayList<StaxMateSerializingStrategy<? extends String>>();
-    SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support3 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( strategies );
+    try {
+      SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support3 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( strategies );
+    } catch ( Exception ignore ) {
+    }
   }
 
   private static class MyStrategy implements StaxMateSerializingStrategy<String> {
