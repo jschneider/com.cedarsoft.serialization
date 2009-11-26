@@ -5,14 +5,15 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A pluggable serializer that can be used to stack several serializers together
+ * This is a special serializer that is able to serialize an object to a given element.
+ * The pluggable serializers can be used to delegate the serialization for child objects.
  *
- * @param <T> the type
- * @param <S> the object to serialize to
- * @param <D> the object to deserialize from
+ * @param <T> the type of object this serializer is able to (de)serialize
+ * @param <S> the object to serialize to (e.g. a dom element or stream)
+ * @param <D> the object to deserialize from ((e.g. a dom element or stream)
  * @param <E> the exception that might be thrown
  */
-public interface PluggableSerializer<T, S, D, E extends Throwable> extends Serializer<T>{
+public interface PluggableSerializer<T, S, D, E extends Throwable> extends Serializer<T> {
   /**
    * Serializes the object to the given element
    *

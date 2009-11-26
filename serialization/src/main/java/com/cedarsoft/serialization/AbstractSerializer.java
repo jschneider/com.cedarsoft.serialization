@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Abstract base class for all kinds of serializers.
  *
- * @param <T> the type
+ * @param <T> the type of object this serializer is able to (de)serialize
  * @param <S> the object to serialize to
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
@@ -20,25 +20,12 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   private final VersionRange formatVersionRange;
 
   /**
-   * Creates a new version range
+   * Creates a serializer.
    *
-   * @param formatVersionRange the version range. The max value is used when written.
+   * @param formatVersionRange the version range. The max value is used as format version when written.
    */
   protected AbstractSerializer( @NotNull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
-  }
-
-  /**
-   * Helper method that can be used to ensure the right format version for each delegate
-   *
-   * @param delegate              the delegate
-   * @param expectedFormatVersion the expected format version
-   */
-  protected void verifyDelegatingSerializerVersion( @NotNull Serializer<?> delegate, @NotNull Version expectedFormatVersion ) {
-    Version actualVersion = delegate.getFormatVersion();
-    if ( !actualVersion.equals( expectedFormatVersion ) ) {
-      throw new IllegalArgumentException( "Invalid versions. Expected <" + expectedFormatVersion + "> but was <" + actualVersion + ">" );
-    }
   }
 
   @Override
@@ -48,7 +35,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   }
 
   /**
-   * Returns the format version range that is supported for read
+   * Returns the format version range this serializer supports when reading.
    *
    * @return the format version range that is supported
    */
@@ -70,5 +57,18 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serialize( object, out );
     return out.toByteArray();
+  }
+
+  /**
+   * Helper method that can be used to ensure the right format version for each delegate.
+   *
+   * @param delegate              the delegate
+   * @param expectedFormatVersion the expected format version
+   */
+  protected static void verifyDelegatingSerializerVersion( @NotNull Serializer<?> delegate, @NotNull Version expectedFormatVersion ) {
+    Version actualVersion = delegate.getFormatVersion();
+    if ( !actualVersion.equals( expectedFormatVersion ) ) {
+      throw new IllegalArgumentException( "Invalid versions. Expected <" + expectedFormatVersion + "> but was <" + actualVersion + ">" );
+    }
   }
 }

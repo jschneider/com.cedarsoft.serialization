@@ -8,18 +8,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Default interface for all types of serializers.
- * Each serializer is able to serialize an object.
+ * Interface for all types of serializers.<br/>
+ * <p/>
+ * Each serializer is able to serialize an object to a given output stream.
  * <p/>
  * A format version is supported for each serializer.
  *
- * @param <T> the type of the objects
+ * @param <T> the type of the objects this serializer is able to (de)serialize
  */
 public interface Serializer<T> {
   /**
    * Serializes the object to the given output stream
    *
-   * @param object the object
+   * @param object the object to serialize
    * @param out    the out stream
    */
   void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException;
@@ -34,7 +35,7 @@ public interface Serializer<T> {
   T deserialize( @NotNull InputStream in ) throws IOException;
 
   /**
-   * Returns the format version that is written
+   * Returns the format version that is written.
    *
    * @return the format version that is written
    */
