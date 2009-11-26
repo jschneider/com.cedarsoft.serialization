@@ -53,7 +53,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected String getProcessingInstructionData( @NotNull XMLStreamReader reader, @NotNull @NonNls String piTarget ) throws XMLStreamException {
     int result = reader.next();
     if ( result != XMLStreamReader.PROCESSING_INSTRUCTION ) {
-      throw new IllegalArgumentException( "No processing instruction found. Was <" + result + ">" );
+      throw new IllegalArgumentException( "No processing instruction found. Was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
     String foundTarget = reader.getPITarget();
@@ -104,14 +104,14 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected void closeTag( @NotNull XMLStreamReader reader ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.END_ELEMENT ) {
-      throw new IllegalStateException( "Invalid result: " + result );
+      throw new IllegalStateException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
   }
 
   protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
-      throw new IllegalStateException( "Invalid result: " + result );
+      throw new IllegalStateException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
     ensureTag( reader, tagName );
   }
