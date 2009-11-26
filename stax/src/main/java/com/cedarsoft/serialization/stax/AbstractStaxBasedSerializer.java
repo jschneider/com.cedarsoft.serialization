@@ -13,10 +13,22 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * Abstract base class for stax based serializers.
+ * <p/>
+ * ATTENTION:
+ * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br/>
+ * This is especially true for {@link com.cedarsoft.serialization.PluggableSerializer}s.
+ *
  * @param <T> the type
  * @param <S> the object to serialize to
  */
 public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> {
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName the default element name
+   * @param formatVersionRange the supported format version range
+   */
   protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, formatVersionRange );
   }
@@ -48,6 +60,15 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
   }
 
+  /**
+   * Returns the processing instruction data for the given reader and target
+   *
+   * @param reader   the reader
+   * @param piTarget the target
+   * @return the data
+   *
+   * @throws XMLStreamException
+   */
   @NotNull
   @NonNls
   protected String getProcessingInstructionData( @NotNull XMLStreamReader reader, @NotNull @NonNls String piTarget ) throws XMLStreamException {
@@ -64,8 +85,14 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     return reader.getPIData();
   }
 
-  protected void ensureTag( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) {
-    String current = deserializeFrom.getName().getLocalPart();
+  /**
+   * Ensures that the current tag equals the given tag name
+   *
+   * @param streamReader the stream reader
+   * @param tagName      the tag name
+   */
+  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName ) {
+    String current = streamReader.getName().getLocalPart();
     if ( !current.equals( tagName ) ) {
       throw new IllegalStateException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
     }
@@ -94,6 +121,15 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     return content.toString();
   }
 
+  /**
+   * Returns the child text
+   *
+   * @param reader  the reader
+   * @param tagName the tag name
+   * @return the text of the child with the given tag name
+   *
+   * @throws XMLStreamException
+   */
   @NotNull
   protected String getChildText( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName ) throws XMLStreamException {
     reader.nextTag();
@@ -101,6 +137,12 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     return getText( reader );
   }
 
+  /**
+   * Closes the current tag
+   *
+   * @param reader the reader
+   * @throws XMLStreamException
+   */
   protected void closeTag( @NotNull XMLStreamReader reader ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.END_ELEMENT ) {
@@ -108,6 +150,13 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
   }
 
+  /**
+   * Opens the next tag
+   *
+   * @param reader  the reader
+   * @param tagName the tag name
+   * @throws XMLStreamException
+   */
   protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
@@ -131,6 +180,9 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
   }
 
+  /**
+   * Callback interface used when visiting the children ({@link com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer#visitChildren(XMLStreamReader, com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer.CB)})
+   */
   public interface CB {
     /**
      * Is called for each child.

@@ -11,9 +11,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * Abstract base class for serializer using stax.
+ *
  * @param <T> the type
  */
 public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSerializer<T, XMLStreamWriter> {
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName the default element name
+   * @param formatVersionRange the format version range
+   */
   protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, formatVersionRange );
   }

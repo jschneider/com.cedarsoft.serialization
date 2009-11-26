@@ -5,8 +5,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Attention:
- * On deserialization every subclass has to *consume* everything including the end event for their tag.
+ * Abstract base class for serializing strategies using stax mate
  *
  * @param <T> the type
  */

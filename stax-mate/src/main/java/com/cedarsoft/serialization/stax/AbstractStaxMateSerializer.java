@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * Abstract base class for stax mate based serializers
+ *
  * @param <T> the type
  */
 public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSerializer<T, SMOutputElement> {

@@ -5,8 +5,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Attention:
- * On deserialization every subclass has to *consume* everything including the end event for their tag.
+ * Base class for stax based serializing strategies
  *
  * @param <T> the type
  */
@@ -18,6 +17,13 @@ public abstract class AbstractStaxSerializingStrategy<T> extends AbstractStaxSer
   @NotNull
   private final Class<? extends T> supportedType;
 
+  /**
+   * Creates a new strategy
+   *
+   * @param id                 the id
+   * @param supportedType      the supported type
+   * @param formatVersionRange the format version range
+   */
   protected AbstractStaxSerializingStrategy( @NotNull String id, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
     super( id, formatVersionRange );
     this.id = id;

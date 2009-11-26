@@ -20,11 +20,21 @@ public class StaxSupport {
   @NotNull
   static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
 
+  /**
+   * Returns a cached xml output factory
+   *
+   * @return the xml output factory
+   */
   @NotNull
   public static XMLOutputFactory getXmlOutputFactory() {
     return XML_OUTPUT_FACTORY;
   }
 
+  /**
+   * Returns a cached xml input factory
+   *
+   * @return the xml input factory
+   */
   @NotNull
   public static XMLInputFactory getXmlInputFactory() {
     return XML_INPUT_FACTORY;

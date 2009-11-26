@@ -13,19 +13,35 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
+ * Abstract base class for a serializers that uses strategies to serialize objects.
+ *
  * @param <T> the type
  */
 public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSerializer<T> {
   @NotNull
   @NonNls
   private static final String ATTRIBUTE_TYPE = "type";
-
+  @NotNull
   private final SerializingStrategySupport<T, StaxMateSerializingStrategy<T>> serializingStrategySupport;
 
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName the default element name
+   * @param formatVersionRange the format version range
+   * @param strategies         the strategies
+   */
   public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull StaxMateSerializingStrategy<? extends T>... strategies ) {
     this( defaultElementName, formatVersionRange, Arrays.asList( strategies ) );
   }
 
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName the default element name
+   * @param formatVersionRange the format version name
+   * @param strategies         the strategies
+   */
   public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends StaxMateSerializingStrategy<? extends T>> strategies ) {
     super( defaultElementName, formatVersionRange );
     serializingStrategySupport = new SerializingStrategySupport<T, StaxMateSerializingStrategy<T>>( strategies );
@@ -54,6 +70,11 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
     return strategy.deserialize( deserializeFrom );
   }
 
+  /**
+   * Returns the strategies
+   *
+   * @return the strategies
+   */
   @NotNull
   public Collection<? extends StaxMateSerializingStrategy<T>> getStrategies() {
     return serializingStrategySupport.getStrategies();

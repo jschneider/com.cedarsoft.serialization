@@ -7,6 +7,8 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Serializing strategy for stax based serializers
+ *
  * @param <T> the type this strategy serializes
  */
 public interface StaxSerializingStrategy<T> extends SerializingStrategy<T, XMLStreamWriter, XMLStreamReader, XMLStreamException> {
