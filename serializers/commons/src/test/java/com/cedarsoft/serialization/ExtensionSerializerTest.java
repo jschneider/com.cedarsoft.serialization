@@ -3,12 +3,14 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
-import org.testng.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
  */
-public class ExtensionSerializerTest extends AbstractXmlSerializerTest<Extension> {
+public class ExtensionSerializerTest extends AbstractXmlSerializerMultiTest<Extension> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<Extension> getSerializer() {
@@ -17,19 +19,23 @@ public class ExtensionSerializerTest extends AbstractXmlSerializerTest<Extension
 
   @NotNull
   @Override
-  protected Extension createObjectToSerialize() {
-    return new Extension( ",", "jpg" );
+  protected Iterable<? extends Extension> createObjectsToSerialize() {
+    return Arrays.asList(
+      new Extension( ",", "jpg" ),
+      new Extension( ".", "jpg" ),
+      new Extension( "-", "jpg" ),
+      new Extension( ",", "cr2" )
+    );
   }
 
   @NotNull
   @Override
-  protected String getExpectedSerialized() {
-    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<extension delimiter=\",\">jpg</extension>";
-  }
-
-  @Override
-  protected void verifyDeserialized( @NotNull Extension extension ) {
-    Assert.assertEquals( new Extension( ",", "jpg" ), extension );
+  protected List<? extends String> getExpectedSerialized() {
+    return Arrays.asList(
+      "<extension delimiter=\",\">jpg</extension>",
+      "<extension delimiter=\".\">jpg</extension>",
+      "<extension delimiter=\"-\">jpg</extension>",
+      "<extension delimiter=\",\">cr2</extension>"
+    );
   }
 }
