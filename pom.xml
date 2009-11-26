@@ -23,6 +23,8 @@
     <module>serializers</module>
     <module>test-utils</module>
     <module>test</module>
+
+    <module>samples</module>
   </modules>
 
   <dependencyManagement>
