@@ -18,6 +18,7 @@
     <module>serialization</module>
     <module>jdom</module>
     <module>stax</module>
+    <module>stax-mate</module>
 
     <module>serializers</module>
     <module>test-utils</module>
@@ -46,6 +47,11 @@
       <dependency>
         <groupId>com.cedarsoft.serialization</groupId>
         <artifactId>stax</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.serialization</groupId>
+        <artifactId>stax-mate</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

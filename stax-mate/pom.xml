@@ -9,13 +9,27 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization</groupId>
-  <artifactId>stax</artifactId>
-  <name>Stax based serialization</name>
+  <artifactId>stax-mate</artifactId>
+  <name>Stax Mate based serialization</name>
 
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>
       <artifactId>serialization</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>stax</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.staxmate</groupId>
+      <artifactId>staxmate</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>woodstox-core-asl</artifactId>
     </dependency>
 
     <dependency>

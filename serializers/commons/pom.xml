@@ -19,7 +19,7 @@
     </dependency>
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>stax</artifactId>
+      <artifactId>stax-mate</artifactId>
     </dependency>
 
     <dependency>

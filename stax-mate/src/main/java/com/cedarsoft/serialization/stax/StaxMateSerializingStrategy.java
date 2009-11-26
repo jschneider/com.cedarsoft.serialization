@@ -7,6 +7,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
+ * Serializing strategy based on stax mate
+ *
  * @param <T> the type this strategy serializes
  */
 public interface StaxMateSerializingStrategy<T> extends SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException> {

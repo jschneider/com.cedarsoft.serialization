@@ -6,6 +6,7 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.testng.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -47,7 +48,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
           @Override
           public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
             if ( tagName.equals( "description" ) ) {
-              assertEquals( getText( deserializeFrom ), "descr" );
+              Assert.assertEquals( getText( deserializeFrom ), "descr" );
               called[0] = true;
             } else {
               strings.add( getText( deserializeFrom ) );

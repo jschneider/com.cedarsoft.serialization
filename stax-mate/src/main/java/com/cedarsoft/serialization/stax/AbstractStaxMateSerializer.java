@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.codehaus.staxmate.out.SMOutputContainer;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -42,6 +43,6 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @throws XMLStreamException
    */
   protected void serializeFormatVersion( @NotNull SMOutputContainer element, @NotNull Version formatVersion ) throws XMLStreamException {
-    element.addProcessingInstruction( PI_TARGET_FORMAT, formatVersion.toString() );
+    element.addProcessingInstruction( AbstractXmlSerializer.PI_TARGET_FORMAT, formatVersion.toString() );
   }
 }

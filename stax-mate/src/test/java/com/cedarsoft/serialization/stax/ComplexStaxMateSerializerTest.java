@@ -5,6 +5,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
+import org.testng.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -53,7 +54,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
         nextTag( deserializeFrom, "sub" );
         String string = stringSerializer.deserialize( deserializeFrom );
 
-        assertEquals( getChildText( deserializeFrom, "emptyChild" ), "" );
+        Assert.assertEquals( getChildText( deserializeFrom, "emptyChild" ), "" );
         closeTag( deserializeFrom );
 
         return string;

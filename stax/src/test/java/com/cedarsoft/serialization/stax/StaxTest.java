@@ -1,11 +1,6 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
-
-import org.codehaus.staxmate.SMInputFactory;
-import org.codehaus.staxmate.SMOutputFactory;
-import org.codehaus.staxmate.out.SMOutputDocument;
-import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
@@ -22,7 +17,6 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.NoSuchElementException;
 
 import static org.testng.Assert.*;
 
@@ -37,114 +31,6 @@ public class StaxTest {
     "  <id>Canon Raw</id>\n" +
     "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
     "</fileType>";
-
-  @Test
-  public void testProcssingInstructions() throws Exception {
-    XMLOutputFactory factory = XMLOutputFactory.newInstance();
-
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-    SMOutputFactory smOutputFactory = new SMOutputFactory( factory );
-
-    SMOutputDocument doc = smOutputFactory.createOutputDocument( out );
-    doc.setIndentation( "\n  ", 1, 2 );
-    doc.addProcessingInstruction( "format", "version=\"1.0\"" );
-
-    SMOutputElement fileTypeElement = doc.addElement( "fileType" );
-    fileTypeElement.addAttribute( "dependent", "false" );
-
-    SMOutputElement idElement = fileTypeElement.addElement( "id" );
-    idElement.addCharacters( "Canon Raw" );
-
-    SMOutputElement extensionElement = fileTypeElement.addElement( "extension" );
-    extensionElement.addAttribute( "default", "true" );
-    extensionElement.addAttribute( "delimiter", "." );
-    extensionElement.addCharacters( "cr2" );
-
-    doc.closeRoot();
-
-    AssertUtils.assertXMLEqual( out.toString(), CONTENT_SAMPLE, false );
-    assertTrue( out.toString().contains( "<?format version=\"1.0\"?>" ), out.toString() );
-
-
-    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    inputFactory.setProperty( XMLInputFactory.IS_COALESCING, true );
-    XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( out.toString() ) );
-
-    assertEquals( parser.next(), XMLStreamReader.PROCESSING_INSTRUCTION );
-    assertEquals( parser.getPITarget(), "format" );
-    assertEquals( parser.getPIData(), "version=\"1.0\"" );
-
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
-  }
-
-  @Test
-  public void testStaxMate() throws XMLStreamException, IOException, SAXException {
-    XMLOutputFactory factory = XMLOutputFactory.newInstance();
-
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-    SMOutputFactory smOutputFactory = new SMOutputFactory( factory );
-
-    SMOutputDocument doc = smOutputFactory.createOutputDocument( out );
-    doc.setIndentation( "\n  ", 1, 2 );
-
-    SMOutputElement fileTypeElement = doc.addElement( "fileType" );
-    fileTypeElement.addAttribute( "dependent", "false" );
-
-    SMOutputElement idElement = fileTypeElement.addElement( "id" );
-    idElement.addCharacters( "Canon Raw" );
-
-    SMOutputElement extensionElement = fileTypeElement.addElement( "extension" );
-    extensionElement.addAttribute( "default", "true" );
-    extensionElement.addAttribute( "delimiter", "." );
-    extensionElement.addCharacters( "cr2" );
-
-    doc.closeRoot();
-
-    AssertUtils.assertXMLEqual( out.toString(), CONTENT_SAMPLE, false );
-  }
-
-  @Test
-  public void testStaxMateRead() throws XMLStreamException {
-    SMInputFactory smInputFactory = new SMInputFactory( XMLInputFactory.newInstance() );
-//    XMLStreamReader reader = smInputFactory.createStax2Reader( new StringReader( CONTENT_SAMPLE ) );
-    XMLStreamReader reader = smInputFactory.getStaxFactory().createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
-
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getLocalName(), "fileType" );
-    assertEquals( reader.getName().getLocalPart(), "fileType" );
-    assertEquals( reader.getAttributeValue( null, "dependent" ), "false" );
-
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "id" );
-    assertEquals( reader.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( reader.getText(), "Canon Raw" );
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "id" );
-
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "extension" );
-    assertEquals( reader.getAttributeValue( null, "default" ), "true" );
-    assertEquals( reader.getAttributeValue( null, "delimiter" ), "." );
-    assertEquals( reader.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( reader.getText(), "cr2" );
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "extension" );
-
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "fileType" );
-    assertEquals( reader.next(), XMLStreamReader.END_DOCUMENT );
-
-    try {
-      reader.next();
-      fail( "Where is the Exception" );
-    } catch ( NoSuchElementException ignore ) {
-    }
-  }
 
   @Test
   public void testBug() throws XMLStreamException {
