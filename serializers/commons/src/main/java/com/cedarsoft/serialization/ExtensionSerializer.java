@@ -36,6 +36,9 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   @Override
   public Extension deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
     String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );
+    if ( delimiter == null ) {
+      delimiter = Extension.DEFAULT_DELIMITER;
+    }
 
     deserializeFrom.next();
     String extension = deserializeFrom.getText();
