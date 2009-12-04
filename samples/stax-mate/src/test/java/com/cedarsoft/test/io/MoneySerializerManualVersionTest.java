@@ -14,7 +14,7 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class MoneySerializerVersionTest {
+public class MoneySerializerManualVersionTest {
   @Test
   public void testCurrent() throws IOException, SAXException {
     MoneySerializer serializer = new MoneySerializer();
