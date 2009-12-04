@@ -11,7 +11,7 @@
   <groupId>com.cedarsoft</groupId>
   <artifactId>serialization-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>Serialization Parent</name>
+  <name>Serialization</name>
   <packaging>pom</packaging>
 
   <modules>
