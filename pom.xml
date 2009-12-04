@@ -127,7 +127,7 @@
   </dependencyManagement>
 
   <properties>
-    <commons.version>1.7.0-SNAPSHOT</commons.version>
+    <commons.version>2.0.1-SNAPSHOT</commons.version>
   </properties>
 
 </project>
