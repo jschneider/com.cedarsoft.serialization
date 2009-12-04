@@ -1,0 +1,107 @@
+              ------
+              Introduction
+              -----
+              Johannes Schneider - cedarsoft GmbH
+              -----
+              2009-12-04
+              -----
+
+
+cedarsoft Serialization
+
+  cedarsoft Serialization offers version aware serialization of java object trees with maximum control.
+  Its goal is to provide some simple classes (very small framework) that enables rapid development
+  of versioned serialization.
+
+* Introduction
+
+  cedarsoft Serialization contains a plain interface that is implemented in several ways. The most commonly
+  used backend implementation is based on Stax.
+  This offers high performance serialization to XML. While offering maximum control to the developer the base
+  classes contain most of the boiler plate code and offer a nice way to reuse the serializers.
+
+** Backends
+
+  There exist several backends that can be used. The most commonly used backend is {{{./stax}Stax}}/{{{./stax-mate}Stax-Mate}}.
+
+* Winding up with the wrong "everything can be done automatically" promise
+
+  Most of the serialization frameworks promise that the serialization can be done automatically. There are several approaches.
+  One framework prefers annotations, other work using the Reflection API.
+
+  All those approaches may look good at first. But they don't last. Even if the performance decrease using reflection
+  isn't a problem, you will run into problems sooner or later.
+
+  As soon as you rename/add a field or (even worse) change the type, you will run into big problems.
+  Working around those problems require a ugly workarounds or - even worse - can't be done at all. So finally you
+  will end up writing the critical code by hand.
+
+  cedarsoft Serialization makes the best of it. If offers first class support for format changes, hides the boiler plate code
+  and offers a simple and fast way to (de)serialize your objects using hand optimized code.
+
+* Features
+
+  cedarsoft Serialization contains several important features. The most important features of a serialization framework
+  are stability and performance. And this is what cedarsoft Serialization is build for.
+
+  There is no fancy magic - just simple and coherent classes that make the life easier for developers.
+
+** Versioning
+
+  Serializating objects is easy. There are many frameworks out there that solve that problem well. But only very few support
+  versioning support.
+
+  Unfortunately nobody misses versioning until it is too late. Did you every create files and had to struggle with format changes
+  in later versions?
+
+  Different format versions are a base feature of cedarsoft Serialization. As long as the version doesn't change, it won't get
+  in your way. But when you need it, it is there and ready to be used.
+
+** Simplicity
+
+  Serialization is complex. cedarsoft Serialization consists of just one main interface with three simple methods. There
+  exist several abstract base classes that contain all that boiler plate code (e.g. version comparison).
+  Everything that has to be done is extending one of the AbstractSerializers (depending on your choice of technology (Stax/StaxMate/JDom/...)
+  and implementing two very basic serialization/deserialization methods.
+
+** No magic
+
+  Several other serialization frameworks contain a lot of magic based on reflection and/or annotation and/or configuration files.
+  While this is a very comfortable way for the first shoot, the complexity when supporting newer versions increases dramatically.
+
+  Therefore cedarsoft Serialization does not use any magic (until you really want it) but offers a fast and easy way to do the
+  necessary work.
+  This offers the necessary flexibility for further development.
+
+** Performance
+
+  cedarsoft Serialization offers several backends. The Stax backend offers the best performance available.
+  Because of the missing magic and avoidance of reflection the performance is outstanding.
+
+  Performance improvements can easily be made, because there is very few framework code that still has been profiled and optimized.
+  So performance problems should only occur in custom code and therefore can be fixed easily.
+
+  Serializers do not contain any state. Therefore it is possible to share instances.
+
+** Reusability
+
+  The design of the interfaces (especially PluggableSerializer) has been optimized for reusability.
+  It is recommended to create one serializer for each object. Different object trees containing the same types may
+  share the serializers.
+
+** Flexibility
+
+  Everything can be serialized. cedarsoft Serializersion only has very few requirements that have to be fulfilled.
+  All the critical/custom code is hand written and therefore flexible.
+
+* License
+
+  All files are released under the GPLv3 with Classpath Exception.
+
+** Usage in commercial products
+
+  So cedarsoft Serialization may be used in commercial projects. The license contains the same Classpath Exception as Sun uses for
+  the JDK.
+
+  Commercial licenses are available. Send your request to {{{mailto:info@cedarsoft.de}info@cedarsoft.de}}.
+
