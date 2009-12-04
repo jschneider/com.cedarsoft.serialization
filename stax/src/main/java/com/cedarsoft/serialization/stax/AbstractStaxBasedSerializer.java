@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
@@ -35,7 +36,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
   @Override
   @NotNull
-  public T deserialize( @NotNull InputStream in ) throws IOException, VersionMismatchException {
+  public T deserialize( @NotNull InputStream in ) throws IOException, VersionException {
     try {
       XMLStreamReader reader = StaxSupport.getXmlInputFactory().createXMLStreamReader( in );
       Version version = Version.parse( getProcessingInstructionData( reader, PI_TARGET_FORMAT ) );

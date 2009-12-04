@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTimeZone;
@@ -20,7 +21,7 @@ public class ZoneInfoSerializer implements Serializer<DateTimeZone> {
 
   @NotNull
   @Override
-  public DateTimeZone deserialize( @NotNull InputStream in ) throws IOException {
+  public DateTimeZone deserialize( @NotNull InputStream in ) throws IOException, VersionException {
     return DateTimeZone.forID( IOUtils.toString( in ) );
   }
 
