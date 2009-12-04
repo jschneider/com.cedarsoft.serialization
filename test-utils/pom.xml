@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>test-utils</artifactId>
-  <name>Serialization Test Utils</name>
+  <name>Test Utils</name>
 
   <dependencies>
     <dependency>

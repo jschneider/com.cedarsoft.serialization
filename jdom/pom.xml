@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>jdom</artifactId>
-  <name>JDom based serialization</name>
+  <name>JDom based</name>
 
   <dependencies>
     <dependency>

@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization.samples</groupId>
   <artifactId>stax-mate</artifactId>
-  <name>Serialization Sample using Stax Mate</name>
+  <name>Stax Mate</name>
 
   <dependencies>
     <dependency>

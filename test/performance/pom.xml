@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization.test</groupId>
   <artifactId>performance</artifactId>
-  <name>Serialization Performance Tests</name>
+  <name>Performance Tests</name>
 
   <dependencies>
     <dependency>

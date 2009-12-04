@@ -11,18 +11,27 @@
   </bannerLeft>
 
   <body>
-    <menu ref="parent" inherit="top" />
-
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
-      <!--<item name="Usage" href="usage.html" />-->
-      <!--<item name="Downloads" href="downloads.html" />-->
-      <!--<item name="Integration" href="integration.html" />-->
-      <!--<item name="FAQs" href="faqs.html" />-->
+      <item name="Usage" href="usage.html" />
+      <item name="FAQs" href="faqs.html" />
+      <item name="Downloads" href="downloads.html" />
     </menu>
 
-    <menu ref="modules" inherit="bottom" />
+    <menu name="Backends">
+      <item name="Stax based" href="stax" />
+      <item name="Stax Mate based" href="stax-mate" />
+      <item name="JDom" href="jdom" />
+    </menu>
+
+    <menu name="Modules">
+      <item name="Core" href="serialization" />
+      <item name="Samples" href="samples" />
+      <item name="Test Utils" href="test-utils" />
+    </menu>
+
     <menu ref="reports" inherit="bottom" />
+    <menu ref="parent" inherit="bottom" />
   </body>
 </project>
 

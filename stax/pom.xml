@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax</artifactId>
-  <name>Stax based serialization</name>
+  <name>Stax based</name>
 
   <dependencies>
     <dependency>
