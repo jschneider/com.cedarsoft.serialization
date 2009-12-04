@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.stax;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -63,11 +64,11 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
 
   @Override
   @NotNull
-  public T deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
     StaxMateSerializingStrategy<? extends T> strategy = serializingStrategySupport.findStrategy( type );
-    return strategy.deserialize( deserializeFrom );
+    return strategy.deserialize( deserializeFrom, formatVersion );
   }
 
   /**

@@ -34,7 +34,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom ) throws XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException {
         deserializeFrom.next();
         String text = deserializeFrom.getText();
         closeTag( deserializeFrom );

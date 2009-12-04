@@ -73,7 +73,7 @@ public class SerializingStrategySupportTest {
 
     @Override
     @NotNull
-    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom ) throws IOException {
+    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException {
       throw new UnsupportedOperationException();
     }
   }

@@ -35,7 +35,7 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
 
   @NotNull
   @Override
-  public Hash deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Hash deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String algorithm = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ALGORITHM );
     String valueAsHex = getText( deserializeFrom );
 

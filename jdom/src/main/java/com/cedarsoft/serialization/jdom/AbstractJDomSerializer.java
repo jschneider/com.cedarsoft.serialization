@@ -68,7 +68,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
 
       Version.verifyMatch( getFormatVersion(), formatVersion );
 
-      return deserialize( document.getRootElement() );
+      return deserialize( document.getRootElement(), formatVersion );
     } catch ( JDOMException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
     }

@@ -22,15 +22,25 @@ import java.util.List;
  *
  */
 public class CarSerializer extends AbstractStaxMateSerializer<Car> {
+  //We create constants for the expected versions for the delegates
+  private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
+  private static final Version VERSION_MODEL_SERIALIZER = new Version( 1, 0, 0 );
+  private static final Version VERSION_EXTRA_SERIALIZER = new Version( 1, 5, 0 );
+
   private final MoneySerializer moneySerializer;
   private final ExtraSerializer extraSerializer;
   private final ModelSerializer modelSerializer;
 
   public CarSerializer( MoneySerializer moneySerializer, ExtraSerializer extraSerializer, ModelSerializer modelSerializer ) {
-    super( "car", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "car", new VersionRange( VERSION_MONEY_SERIALIZER, VERSION_MONEY_SERIALIZER ) );
     this.moneySerializer = moneySerializer;
     this.extraSerializer = extraSerializer;
     this.modelSerializer = modelSerializer;
+
+    //Verify the versions for the other serializers
+    verifyDelegatingSerializerVersion( moneySerializer, VERSION_MONEY_SERIALIZER );
+    verifyDelegatingSerializerVersion( extraSerializer, VERSION_EXTRA_SERIALIZER );
+    verifyDelegatingSerializerVersion( modelSerializer, VERSION_MODEL_SERIALIZER );
   }
 
   @NotNull
@@ -54,7 +64,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
 
   @NotNull
   @Override
-  public Car deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Car deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     //We deserialize the color. This should be done in its own serializer in real world --> improved reusability and testability
     nextTag( deserializeFrom, "color" );
     int red = Integer.parseInt( deserializeFrom.getAttributeValue( null, "red" ) );
@@ -64,18 +74,17 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     closeTag( deserializeFrom );
 
     nextTag( deserializeFrom, "model" );
-    Model model = modelSerializer.deserialize( deserializeFrom );
+    Model model = modelSerializer.deserialize( deserializeFrom, VERSION_MODEL_SERIALIZER );
 
     nextTag( deserializeFrom, "basePrice" );
-    Money basePrice = moneySerializer.deserialize( deserializeFrom );
-
+    Money basePrice = moneySerializer.deserialize( deserializeFrom, VERSION_MONEY_SERIALIZER );
 
     //Now we visit all remaining children (should only be extras)
     final List<Extra> extras = new ArrayList<Extra>();
     visitChildren( deserializeFrom, new CB() {
       @Override
       public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-        extras.add( extraSerializer.deserialize( deserializeFrom ) );
+        extras.add( extraSerializer.deserialize( deserializeFrom, VERSION_EXTRA_SERIALIZER ) );
       }
     } );
 

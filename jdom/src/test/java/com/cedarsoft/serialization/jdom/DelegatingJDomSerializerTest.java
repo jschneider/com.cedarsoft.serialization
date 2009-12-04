@@ -32,7 +32,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull @NonNls Element element ) throws IOException {
+      public Integer deserialize( @NotNull @NonNls Element element, @NotNull Version formatVersion ) throws IOException {
         return 1;
       }
     };
@@ -46,7 +46,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull @NonNls Element element ) throws IOException {
+      public Double deserialize( @NotNull @NonNls Element element, @NotNull Version formatVersion ) throws IOException {
         return 2.0;
       }
     };

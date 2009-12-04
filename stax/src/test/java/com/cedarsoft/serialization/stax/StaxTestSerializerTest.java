@@ -58,7 +58,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       return Integer.parseInt( getText( deserializeFrom ) );
     }
   }

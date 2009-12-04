@@ -93,7 +93,7 @@ public class JdomSerializationTest {
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull Element deserializeFrom ) throws IOException, IOException {
+    public Integer deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion ) throws IOException, IOException {
       return Integer.parseInt( deserializeFrom.getText() );
     }
   }

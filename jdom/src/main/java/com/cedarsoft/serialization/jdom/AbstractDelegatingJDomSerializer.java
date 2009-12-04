@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.jdom;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.jdom.Element;
@@ -41,11 +42,11 @@ public class AbstractDelegatingJDomSerializer<T> extends AbstractJDomSerializer<
 
   @Override
   @NotNull
-  public T deserialize( @NotNull Element deserializeFrom ) throws IOException {
+  public T deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
     String type = deserializeFrom.getAttributeValue( ATTRIBUTE_TYPE );
 
     JDomSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( type );
-    return strategy.deserialize( deserializeFrom );
+    return strategy.deserialize( deserializeFrom, formatVersion );
   }
 
   @NotNull

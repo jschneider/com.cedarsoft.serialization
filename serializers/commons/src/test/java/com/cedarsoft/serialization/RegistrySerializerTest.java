@@ -40,7 +40,7 @@ public class RegistrySerializerTest {
 
       @NotNull
       @Override
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         return getText( deserializeFrom );
       }
 

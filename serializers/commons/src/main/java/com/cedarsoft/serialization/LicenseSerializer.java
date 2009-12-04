@@ -37,7 +37,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
 
   @NotNull
   @Override
-  public License deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public License deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String id = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ID );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 

@@ -20,12 +20,16 @@ import java.io.IOException;
  */
 public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
   @NotNull
+  private static final Version VERSION_EXTENSION_SERIALIZER = new Version( 1, 0, 0 );
+  @NotNull
+  private static final Version VERSION_BASE_NAME_SERIALIZER = new Version( 1, 0, 0 );
+  @NotNull
   @NonNls
   public static final String ELEMENT_EXTENSION = "extension";
+
   @NotNull
   @NonNls
   public static final String ELEMENT_BASE_NAME = "baseName";
-
   @NotNull
   private final ExtensionSerializer extensionSerializer;
   @NotNull
@@ -33,12 +37,12 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @Inject
   public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "fileName", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "fileName", new VersionRange( VERSION_EXTENSION_SERIALIZER, VERSION_EXTENSION_SERIALIZER ) );
     this.extensionSerializer = extensionSerializer;
     this.baseNameSerializer = baseNameSerializer;
 
-    verifyDelegatingSerializerVersion( extensionSerializer, new Version( 1, 0, 0 ) );
-    verifyDelegatingSerializerVersion( baseNameSerializer, new Version( 1, 0, 0 ) );
+    verifyDelegatingSerializerVersion( extensionSerializer, VERSION_EXTENSION_SERIALIZER );
+    verifyDelegatingSerializerVersion( baseNameSerializer, VERSION_BASE_NAME_SERIALIZER );
   }
 
   @NotNull
@@ -51,12 +55,12 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @NotNull
   @Override
-  public FileName deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
-    BaseName baseName = baseNameSerializer.deserialize( deserializeFrom );
+    BaseName baseName = baseNameSerializer.deserialize( deserializeFrom, VERSION_BASE_NAME_SERIALIZER );
 
     nextTag( deserializeFrom, ELEMENT_EXTENSION );
-    Extension extension = extensionSerializer.deserialize( deserializeFrom );
+    Extension extension = extensionSerializer.deserialize( deserializeFrom, VERSION_EXTENSION_SERIALIZER );
 
     closeTag( deserializeFrom );
 

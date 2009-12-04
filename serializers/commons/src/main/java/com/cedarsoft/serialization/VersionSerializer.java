@@ -27,7 +27,7 @@ public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
 
   @Override
   @NotNull
-  public Version deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Version deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String text = getText( deserializeFrom );
     return Version.parse( text );
   }

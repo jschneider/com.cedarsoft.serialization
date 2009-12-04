@@ -39,7 +39,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
 
       @Override
       @NotNull
-      public List<String> deserialize( @NotNull XMLStreamReader deserializeFrom ) throws XMLStreamException, IOException {
+      public List<String> deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
         final List<String> strings = new ArrayList<String>();
 
         final boolean[] called = {false};

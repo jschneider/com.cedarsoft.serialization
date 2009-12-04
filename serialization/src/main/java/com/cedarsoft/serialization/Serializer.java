@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionMismatchException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -30,9 +31,11 @@ public interface Serializer<T> {
    *
    * @param in the input stream
    * @return the deserialized object
+   *
+   * @throws VersionMismatchException if the version within the input stream is invalid
    */
   @NotNull
-  T deserialize( @NotNull InputStream in ) throws IOException;
+  T deserialize( @NotNull InputStream in ) throws IOException, VersionMismatchException;
 
   /**
    * Returns the format version that is written.

@@ -35,7 +35,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
   @Override
   @NotNull
-  public T deserialize( @NotNull InputStream in ) throws IOException {
+  public T deserialize( @NotNull InputStream in ) throws IOException, VersionMismatchException {
     try {
       XMLStreamReader reader = StaxSupport.getXmlInputFactory().createXMLStreamReader( in );
       Version version = Version.parse( getProcessingInstructionData( reader, PI_TARGET_FORMAT ) );
@@ -44,7 +44,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       }
 
       reader.nextTag();
-      T deserialized = deserialize( reader );
+      T deserialized = deserialize( reader, version );
 
       if ( !reader.isEndElement() ) {
         throw new IllegalStateException( "Not consumed everything in <" + getClass().getName() + ">" );

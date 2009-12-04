@@ -35,7 +35,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         getText( deserializeFrom );
         return 1;
       }
@@ -51,7 +51,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         getText( deserializeFrom );
         return 2.0;
       }

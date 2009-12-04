@@ -13,23 +13,25 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
 /**
- *
+ * This serializer delegates the serialization of an object to another serializer
  */
 public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
+  private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
+
   @NotNull
   private final MoneySerializer moneySerializer;
 
-  // This serializier delegates the serialization of an object to another serializer
-
   public ExtraSerializer( MoneySerializer moneySerializer ) {
-    super( "extra", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 0 ) ) );
+    //We choose another version number. Maybe this is an old serializer that has been created within another project.
+
     this.moneySerializer = moneySerializer;
 
     //We verify the version here. This is necessary, to ensure that the file format for the
     //complete extra keeps constant.
     //If someone changes the MoneySerializer we have to take some manual steps and ensure
     //the changes are backwards compatible or handle the differences somehow.
-    verifyDelegatingSerializerVersion( moneySerializer, new Version( 1, 0, 0 ) );
+    verifyDelegatingSerializerVersion( moneySerializer, VERSION_MONEY_SERIALIZER );
   }
 
   @NotNull
@@ -45,11 +47,11 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
   @NotNull
   @Override
-  public Extra deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Extra deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );
-    Money price = moneySerializer.deserialize( deserializeFrom );
+    Money price = moneySerializer.deserialize( deserializeFrom, VERSION_MONEY_SERIALIZER );
     //closes the price tag automatically
 
     //we have to close our tag now

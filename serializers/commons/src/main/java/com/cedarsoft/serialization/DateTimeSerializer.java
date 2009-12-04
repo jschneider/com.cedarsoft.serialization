@@ -29,7 +29,7 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
 
   @NotNull
   @Override
-  public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String text = getText( deserializeFrom );
 
     try {

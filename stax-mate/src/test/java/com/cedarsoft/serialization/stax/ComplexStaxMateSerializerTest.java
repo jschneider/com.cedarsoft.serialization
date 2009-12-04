@@ -11,8 +11,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
-
 /**
  *
  */
@@ -30,7 +28,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom ) throws XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException {
         deserializeFrom.next();
         String text = deserializeFrom.getText();
         closeTag( deserializeFrom );
@@ -50,9 +48,9 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         nextTag( deserializeFrom, "sub" );
-        String string = stringSerializer.deserialize( deserializeFrom );
+        String string = stringSerializer.deserialize( deserializeFrom, formatVersion );
 
         Assert.assertEquals( getChildText( deserializeFrom, "emptyChild" ), "" );
         closeTag( deserializeFrom );

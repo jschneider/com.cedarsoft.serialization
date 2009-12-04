@@ -29,7 +29,7 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
 
   @NotNull
   @Override
-  public Money deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Money deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     int cents = Integer.parseInt( deserializeFrom.getAttributeValue( null, "cents" ) );
 
     //We have to close the tag! Every stax based serializer has to close its tag

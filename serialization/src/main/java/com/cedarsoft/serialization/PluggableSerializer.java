@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.Version;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -28,8 +29,9 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * Deserializes the object from the given document
    *
    * @param deserializeFrom the deserializeFrom
+   * @param formatVersion   the format version
    * @return the deserialized object
    */
   @NotNull
-  T deserialize( @NotNull D deserializeFrom ) throws IOException, E;
+  T deserialize( @NotNull D deserializeFrom, @NotNull Version formatVersion ) throws IOException, E;
 }

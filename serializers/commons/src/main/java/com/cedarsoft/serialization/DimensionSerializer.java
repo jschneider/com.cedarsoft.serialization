@@ -33,7 +33,7 @@ public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
 
   @Override
   @NotNull
-  public Dimension deserialize( @NotNull XMLStreamReader deserializeFrom ) throws IOException, XMLStreamException {
+  public Dimension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String[] parts = getText( deserializeFrom ).split( SEPARATOR );
 
     return new Dimension( Integer.parseInt( parts[0] ), Integer.parseInt( parts[1] ) );
