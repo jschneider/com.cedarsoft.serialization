@@ -1,0 +1,81 @@
+Backends
+
+  cedarsoft Serialization provides several base classes that can be extended.
+  When you prefer to use your own serializing technology, you can create your own backend.
+
+* Recommendation
+
+  For XML based serialization, Stax or Stax Mate is recommended.
+
+* Stax
+
+  This backend is based on the new - and very fast and comfortable - XML api added
+  to JDK 1.6 (JSR-173).
+
+  No external libraries are necessary to use the Stax backend. But it is suggested to add {{{http://woodstox.codehaus.org}Woodstox}}
+  or another Stax aware XML processor to improve the performance.
+
+**  Maven dependency:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax</artifactId>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+  <version>${project.version}</version>
+</dependency>
+---
+
+* Stax Mate
+
+  Stax Mate is a small extension to Stax that offers an improved API to serialize XML. The code looks a bit cleaner and it
+  is saving you a few key strokes.
+
+  Since it is based on Stax you get the same performance.
+
+**  Maven dependency:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax-mate</artifactId>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+</dependency>
+---
+
+* JDom
+
+  If you prefer to work with a DOM based API, the JDom based backend can be used.
+  But be aware; JDom is  significantly slower than Stax (around factor 100).
+
+
+**  Maven dependency:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>jdom</artifactId>
+</dependency>
+---
+
+
+* Custom Backend
+
+  Custom backends can easily be created. It only takes a few lines of code. There exists an abstract base class
+  for XML based serialization.
