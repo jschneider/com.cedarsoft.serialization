@@ -1,0 +1,67 @@
+Versioning
+
+  When objects are serialized to persistent locations, it is necessary to handle changes to the classes correctly.
+  This fact is often ignored, because it is not very easy to handle it correctly while the consequences hit you late.
+
+* How versioning can be stored
+
+  Versioning of file formats is an easy task. Each file has exactly one format. That version should be stored in the beginning of
+  the file. So the parser gets a hint early.
+
+  There is no technical reason not to store the format version.
+
+* Format versions in XML files
+
+  The XML files should only contain that data. Informations about the file format are not part of the data. Therefore
+  cedarsoft Serialization suggests to use {{{http://www.w3.org/TR/REC-xml/#sec-pi}processing instructions}} to document the format version.
+
+  Those processing instructions are not part of the regular data and can easily be ignored when parsing the xml.
+
+  Therefore existing applications should not be harmed when processing instructions containing the format version are added.
+
+
+  A serialized xml containing the format version might look like that:
+  
+----------------------------------------
+<?xml version="1.0"?>
+<?format 1.0.1?>
+<car>
+...
+----------------------------------------
+
+* Alternative storage of format version in (XML) files
+
+  cedarsoft Serialization can easily be extended. Therefore the format version can be stored in every possible way.
+  It might be added as attribute or tag to an xml document. Binary files may store the version information
+  in the way it is preferred to.
+
+* The importance of versioning
+
+** Sometimes versioning is not (very) important
+
+  Serialization is used in the Web applications. Objects are stored within the session and that session may be serialized
+  and transferred to other hosts.
+  In that scenario versioning is not too important. If classes are refactored the sessions are simply deleted.
+
+  The same is true for applications build around messaging. When a new application version is released often both
+  sides are updated. So changes in the serialization don't matter.
+
+** Sometimes versioning is very! important
+
+  But when you can't delete all serialized data when classes are changed. When you want to be able to read old data with
+  newer versions of your application, versioning matters.
+
+** Versioning done wrong reveals (too) late
+
+  Many errors appear very early. And the earlier they appear the earlier they can be fixed. That's why we use compilers.
+  Versioning of file formats is one of that things that you don't miss until it is too late.
+
+  Problems will occur the first time when a refactored version of your application is used. But then it is too late
+  to solve the problem consequently. The old version of your application has been rolled out and used frequently.
+  The files containing the old serialized data still exist.
+
+** Versioning is a necessary aspect of serialization
+
+  Every serialization process has to thing about versioning in the first place!
+  cedarsoft Serialization helps to handle that issue well.
+
