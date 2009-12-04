@@ -20,8 +20,6 @@ cedarsoft Serialization
   This offers high performance serialization to XML. While offering maximum control to the developer the base
   classes contain most of the boiler plate code and offer a nice way to reuse the serializers.
 
-** Backends
-
   There exist several backends that can be used. The most commonly used backend is {{{./stax}Stax}}/{{{./stax-mate}Stax-Mate}}.
 
 * Winding up with the wrong "everything can be done automatically" promise

@@ -8,7 +8,7 @@ Versioning
   Versioning of file formats is an easy task. Each file has exactly one format. That version should be stored in the beginning of
   the file. So the parser gets a hint early.
 
-  There is no technical reason not to store the format version.
+  There is no technical reason not to store the format version. Just do it.
 
 * Format versions in XML files
 
@@ -29,11 +29,10 @@ Versioning
 ...
 ----------------------------------------
 
-* Alternative storage of format version in (XML) files
+* Alternative storage of format version in XML files
 
-  cedarsoft Serialization can easily be extended. Therefore the format version can be stored in every possible way.
-  It might be added as attribute or tag to an xml document. Binary files may store the version information
-  in the way it is preferred to.
+  cedarsoft Serialization can be extended easily. Therefore the format version can be stored in every thinkable way.
+  It might be added as attribute or tag to an xml document. 
 
 * The importance of versioning
 
