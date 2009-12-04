@@ -16,6 +16,12 @@ import static org.testng.Assert.*;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractSerializerTest<T> {
+  /**
+   * Default test method that checks the serialization and deserialization using the latest format
+   *
+   * @throws IOException
+   * @throws SAXException
+   */
   @Test
   public void testSerializer() throws IOException, SAXException {
     Serializer<T> serializer = getSerializer();

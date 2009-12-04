@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.testng.Assert.*;
 
 /**
- *
+ * Test class that tests the old versions manually
  */
 public class MoneySerializerManualVersionTest {
   @Test
