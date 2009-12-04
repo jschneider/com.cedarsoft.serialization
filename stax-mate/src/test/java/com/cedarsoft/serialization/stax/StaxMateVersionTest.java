@@ -1,9 +1,9 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
+import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionProblemExpection;
 import com.cedarsoft.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -86,7 +86,7 @@ public class StaxMateVersionTest {
       } else if ( formatVersion.equals( new Version( 2, 0, 0 ) ) ) {
         return Integer.parseInt( getText( deserializeFrom ) );
       } else {
-        throw new VersionProblemExpection( "Invalid version " + formatVersion );
+        throw new UnsupportedVersionException( formatVersion, getFormatVersionRange() );
       }
     }
   }

@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -50,7 +51,7 @@ public class SerializingStrategySupportTest {
 
     @NotNull
     @Override
-    public String deserialize( @NotNull InputStream in ) throws IOException {
+    public String deserialize( @NotNull InputStream in ) throws IOException, VersionException {
       throw new UnsupportedOperationException();
     }
 

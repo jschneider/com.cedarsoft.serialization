@@ -1,7 +1,7 @@
 package com.cedarsoft.serialization.jdom;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.VersionMismatchException;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jdom.Document;
@@ -58,7 +58,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
 
   @Override
   @NotNull
-  public T deserialize( @NotNull InputStream in ) throws IOException, VersionMismatchException {
+  public T deserialize( @NotNull InputStream in ) throws IOException, VersionException {
     try {
       Document document = new SAXBuilder().build( in );
 
