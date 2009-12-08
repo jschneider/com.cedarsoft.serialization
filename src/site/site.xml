@@ -16,14 +16,20 @@
       <item name="Versioning" href="versioning.html" />
       <item name="Backends" href="backends.html" />
       <item name="Usage" href="usage.html" />
-      <item name="FAQs" href="faqs.html" />
       <item name="Download" href="download.html" />
+    </menu>
+
+    <menu name="Tutorial">
+      <item name="5 Minute Tutorial" href="5mintut.html" />
+      <item name="Advanced" href="advancedTut.html" />
+
     </menu>
 
     <menu name="Backends">
       <item name="Stax based" href="stax" />
       <item name="Stax Mate based" href="stax-mate" />
       <item name="JDom" href="jdom" />
+      <item name="Custom" href="customBackend.html" />
     </menu>
 
     <menu name="Modules">

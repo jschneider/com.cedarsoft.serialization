@@ -1,0 +1,8 @@
+Custom Backend
+
+  cedarsoft Serialization offers the possibility to implement a own backend on your own. This is <<not>> necessary for the
+  serialization of your own business objects using XML.
+  But if your serializer shall not use XML but instead some other format (e.g. binary) it is necessary to implement your
+  own backend.
+
+  Just implement your own backend class that extends <com.cedarsoft.serialization.AbstractSerializer>.

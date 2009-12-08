@@ -1,0 +1,37 @@
+Usage
+
+  Serializers based on cedarsoft Serialization can be called using streams.
+
+
+* Serializing
+
+  A typical call to serialize the objects will look like this:
+
+---
+BusinessObject businessObject = ...;
+
+//The stream the serialized object is written to
+OutputStream out = ...
+
+//just instantiate a new serializer or let it be injected
+BusinessObjectSerializer serializer = new BusinessObjectSerializer(...);
+serializer.serialize( businessObject, out);
+
+out.close();
+
+---
+
+* Deserializing
+
+  A typical call to serialize the objects will look like this:
+
+---
+//The stream that provides the serialized object
+InputStream in = ...
+
+//just instantiate a new serializer or let it be injected
+BusinessObjectSerializer serializer = new BusinessObjectSerializer(...);
+BusinessObject businessObject = serializer.deserialize( in);
+in.close();
+
+---
