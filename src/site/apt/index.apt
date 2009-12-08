@@ -1,12 +1,3 @@
-              ------
-              Introduction
-              -----
-              Johannes Schneider - cedarsoft GmbH
-              -----
-              2009-12-04
-              -----
-
-
 cedarsoft Serialization
 
   cedarsoft Serialization offers version aware serialization of java object trees with maximum control.
