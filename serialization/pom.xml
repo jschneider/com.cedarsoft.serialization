@@ -14,11 +14,33 @@
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>commons</artifactId>
+      <artifactId>exceptions</artifactId>
     </dependency>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>version</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorId>jar-with-dependencies</descriptorId>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>

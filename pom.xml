@@ -65,7 +65,7 @@
       <!-- cedarsoft Commons -->
       <dependency>
         <groupId>com.cedarsoft.commons</groupId>
-        <artifactId>commons</artifactId>
+        <artifactId>exceptions</artifactId>
         <version>${commons.version}</version>
       </dependency>
       <dependency>
