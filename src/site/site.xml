@@ -17,7 +17,7 @@
       <item name="Backends" href="backends.html" />
       <item name="Usage" href="usage.html" />
       <item name="FAQs" href="faqs.html" />
-      <item name="Downloads" href="downloads.html" />
+      <item name="Download" href="download.html" />
     </menu>
 
     <menu name="Backends">
@@ -33,7 +33,6 @@
     </menu>
 
     <menu ref="reports" inherit="bottom" />
-    <menu ref="parent" inherit="bottom" />
   </body>
 </project>
 

@@ -89,8 +89,9 @@ cedarsoft Serialization
 
 ** Usage in commercial products
 
-  So cedarsoft Serialization may be used in commercial projects. The license contains the same Classpath Exception as Sun uses for
+  cedarsoft Serialization may be used in commercial projects as long as the classes itself are not modified.
+  The license contains the same Classpath Exception as Sun uses for
   the JDK.
 
-  Commercial licenses are available. Send your request to {{{mailto:info@cedarsoft.de}info@cedarsoft.de}}.
+  If necessary nontheless, commercial licenses are available. Send your request to {{{mailto:info@cedarsoft.de}info@cedarsoft.de}}.
 

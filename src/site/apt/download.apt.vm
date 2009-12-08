@@ -1,0 +1,119 @@
+Download
+
+  cedarsoft Serialization can be downloaded using {{Maven}} or downloaded {{{Manual}manually}}.
+
+  The current stable version is: ${currentStableVersion}
+
+  The current development version is: ${currentDevelopmentVersion}
+
+
+* {Manual} download
+
+  There exists jars containing all dependencies for each backend. Those can be downloaded here:
+
+** Current stable version
+
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Stax}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/serialization/${currentStableVersion}/serialization-${currentStableVersion}-jar-with-dependencies.jar}Custom}}
+
+
+** Current development version
+
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/stax-${currentDevelopmentVersion}-jar-with-dependencies.jar}Stax}}
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/serialization/${currentDevelopmentVersion}/serialization-${currentDevelopmentVersion}-jar-with-dependencies.jar}Custom}}
+
+
+* {Maven}
+
+  cedarsoft Serialization can be used by adding a Maven dependency to your project. The artifacts are hosted at Maven Central.
+
+
+  Depending on the preferred backend one of the following dependencies has to be added
+
+**  Stax:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+  <version>4.0.6</version>
+</dependency>
+---
+
+
+**  Stax Mate:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax-mate</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+  <version>4.0.6</version>
+</dependency>
+---
+
+
+**  JDom:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>jdom</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+
+**  Custom implementation:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>serialization</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+
+
+* Snapshots of latest development version
+
+  The current development version is: ${currentDevelopmentVersion}
+
+  The snapshots are stored at {{http://nexus.cedarsoft.com/content/repositories/snapshots/}}. Just add a repository
+  entry to your pom.xml:
+  
+---
+<repositories>
+  <repository>
+    <id>cedarsoftSnapshotRepository</id>
+    <name>cedarsoft Snapshot Repository</name>
+    <url>http://nexus.cedarsoft.com/content/repositories/snapshots/</url>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+</repositories>
+---
+

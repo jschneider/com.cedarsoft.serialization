@@ -123,6 +123,8 @@
 
   <properties>
     <commons.version>2.0.1-SNAPSHOT</commons.version>
+    <currentStableVersion>1.0.0</currentStableVersion>
+    <currentDevelopmentVersion>1.0.1-SNAPSHOT</currentDevelopmentVersion>
   </properties>
 
 </project>

@@ -21,6 +21,7 @@ Backends
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax</artifactId>
+  <version>${currentStableVersion}</version>
 </dependency>
 ---
 
@@ -30,7 +31,7 @@ Backends
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
-  <version>${project.version}</version>
+  <version>4.0.6</version>
 </dependency>
 ---
 
@@ -47,6 +48,7 @@ Backends
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax-mate</artifactId>
+  <version>${currentStableVersion}</version>
 </dependency>
 ---
 
@@ -56,6 +58,7 @@ Backends
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
+  <version>4.0.6</version>
 </dependency>
 ---
 
@@ -71,6 +74,7 @@ Backends
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>jdom</artifactId>
+  <version>${currentStableVersion}</version>
 </dependency>
 ---
 
@@ -79,3 +83,11 @@ Backends
 
   Custom backends can easily be created. It only takes a few lines of code. There exists an abstract base class
   for XML based serialization.
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>serialization</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
