@@ -65,11 +65,6 @@
       <!-- cedarsoft Commons -->
       <dependency>
         <groupId>com.cedarsoft.commons</groupId>
-        <artifactId>exceptions</artifactId>
-        <version>${commons.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoft.commons</groupId>
         <artifactId>version</artifactId>
         <version>${commons.version}</version>
       </dependency>

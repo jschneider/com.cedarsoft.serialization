@@ -14,10 +14,6 @@
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>exceptions</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
       <artifactId>version</artifactId>
     </dependency>
   </dependencies>

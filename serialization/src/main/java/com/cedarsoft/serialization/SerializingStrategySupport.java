@@ -1,6 +1,5 @@
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.NotFoundException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +50,7 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
   }
 
   /**
-   * Returns the first strategy that supports serialzation for the given object
+   * Returns the first strategy that supports serialization for the given object
    *
    * @param object the object
    * @return the strategy that
