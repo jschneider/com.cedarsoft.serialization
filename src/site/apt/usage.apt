@@ -10,7 +10,7 @@ Usage
 ---
 BusinessObject businessObject = ...;
 
-//The stream the serialized object is written to
+//The stream the serialized object is written to (e.g. a FileOutputStream)
 OutputStream out = ...
 
 //just instantiate a new serializer or let it be injected
@@ -23,13 +23,13 @@ out.close();
 
 * Deserializing
 
-  A typical call to serialize the objects will look like this:
+  Deserializing an object might look like that:
 
 ---
-//The stream that provides the serialized object
+//The stream that provides the serialized object (e.g. a FileInputStream)
 InputStream in = ...
 
-//just instantiate a new serializer or let it be injected
+//just instantiate a new serializer (or let it be injected)
 BusinessObjectSerializer serializer = new BusinessObjectSerializer(...);
 BusinessObject businessObject = serializer.deserialize( in);
 in.close();

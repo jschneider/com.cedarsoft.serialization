@@ -15,6 +15,8 @@ Backends
   No external libraries are necessary to use the Stax backend. But it is suggested to add {{{http://woodstox.codehaus.org}Woodstox}}
   or another Stax aware XML processor to improve the performance.
 
+  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxSerializer.html}<AbstractStaxSerializer>}}.
+
 **  Maven dependency:
 
 ---
@@ -42,6 +44,8 @@ Backends
 
   Since it is based on Stax you get the same performance.
 
+  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}<AbstractStaxMateSerializer>}}.
+
 **  Maven dependency:
 
 ---
@@ -67,6 +71,7 @@ Backends
   If you prefer to work with a DOM based API, the JDom based backend can be used.
   But be aware; JDom is  significantly slower than Stax (around factor 100).
 
+  Serializers should extend {{{./xref/com/cedarsoft/serialization/jdom/AbstractJDomSerializer.html}<AbstractJDomSerializer>}}.
 
 **  Maven dependency:
 
@@ -82,7 +87,9 @@ Backends
 * Custom Backend
 
   Custom backends can easily be created. It only takes a few lines of code. There exists an abstract base class
-  for XML based serialization.
+  for XML based serialization ({{{./xref/com/cedarsoft/serialization/AbstractXmlSerializer.html}<AbstractXmlSerializer>}}).
+
+  Custom backend implementations should extend {{{./xref/com/cedarsoft/serialization/AbstractSerializer.html}AbstractSerializer}}.
 
 ---
 <dependency>
