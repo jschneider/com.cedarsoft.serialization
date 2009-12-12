@@ -14,8 +14,6 @@ Test Utils
 
   But it is necessary to implement <AbstractSerializerTest.verifySerialized>
 
-
-
 *** {{{../xref/com/cedarsoft/serialization/AbstractSerializerTest.html}AbstractSerializerTest}}
 
   This is a basic test class that can be used to test a serializer. It serializes an object,
@@ -27,9 +25,37 @@ Test Utils
 *** {{{../xref/com/cedarsoft/serialization/AbstractSerializerMultiTest.html}AbstractSerializerMultiTest}}
 
   This base class supports multiple runs. It works on lists (instead of single objects as in AbstractSerializerTest).
+  This test class is useful if you want to test several object (de)serializations.
 
-  This test class is useful if you want to test several object (de)serializations.  
+  While this class offers more functionality than AbstractSerializerTest, it is also more complicated to use.
+  Therefore it seems to be a good practice to first create a test extending <AbstractSerializerTest>. And then
+  create another test (or convert the first one) to extend <AbstractSerializerMultiTest> later.
 
+*** {{{../xref/com/cedarsoft/serialization/AbstractVersionTest.html}AbstractVersionTest}}
+
+  Test cases extending <AbstractVersionTest> are used to ensure that the different format versions are deserialized successfully by
+  newer versions of your serializers.
+  Therefore serialized objects of the different supported formats are deserialized within this test case.
+
+  It is very important to created one version test for each serializer. Every time the format changes (and therefore the supported
+  version range of the serializer is changed) an additional entry should be added to this test case.
+
+  So it is possible to hold a complete history with samples for every format version and test them against the current serializer.
+
+
+** XML based tests.
+
+  For each common base class there exists a counter part supporting XML based serializers. Those base classes are based on
+  strings. So it is easier to write new tests because it is possible to simply return the expected XML as string.
+
+  Comparisons are done automatically using XMLAssert. So minor differences (like line breaks etc.) in the XML don't matter and
+  can be ignored safely.
+
+  The base classes used for XML based serializer tests are those:
+
+  * {{{../xref/com/cedarsoft/serialization/AbstractXmlSerializerTest.html}AbstractXmlSerializerTest}}
+  * {{{../xref/com/cedarsoft/serialization/AbstractXmlSerializerMultiTest.html}AbstractXmlSerializerMultiTest}}
+  * {{{../xref/com/cedarsoft/serialization/AbstractXmlVersionTest.html}AbstractXmlVersionTest}}
 
 
 *  Maven:
