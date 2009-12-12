@@ -3,7 +3,7 @@ JDom based Serializers
   If you prefer to work with a DOM based API, the JDom based backend can be used.
   But be aware; JDom is  significantly slower than Stax (around factor 100).
 
-  Serializers should extend {{{./xref/com/cedarsoft/serialization/jdom/AbstractJDomSerializer.html}<AbstractJDomSerializer>}}.
+  Serializers should extend {{{../xref/com/cedarsoft/serialization/jdom/AbstractJDomSerializer.html}<AbstractJDomSerializer>}}.
 
 *  Maven dependency:
 

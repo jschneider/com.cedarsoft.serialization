@@ -6,7 +6,7 @@ Stax based Serializers
   No external libraries are necessary to use the Stax backend. But it is suggested to add {{{http://woodstox.codehaus.org}Woodstox}}
   or another Stax aware XML processor to improve the performance.
 
-  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxSerializer.html}<AbstractStaxSerializer>}}.
+  Serializers should extend {{{../xref/com/cedarsoft/serialization/stax/AbstractStaxSerializer.html}<AbstractStaxSerializer>}}.
 
 *  Maven dependency:
 

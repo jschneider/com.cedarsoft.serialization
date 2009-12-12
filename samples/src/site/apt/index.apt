@@ -1,0 +1,9 @@
+Samples
+
+  This module contains sample applications that show how cedarsoft Serialization works.
+
+
+* Stax Mate
+
+  A small sample application based on {{{../stax-mate}Stax Mate}} can be found {{{./stax-mate}here}}
+

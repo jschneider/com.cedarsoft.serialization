@@ -5,7 +5,7 @@ Stax Mate based Serializers
 
   Since it is based on Stax you get the same performance.
 
-  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}<AbstractStaxMateSerializer>}}.
+  Serializers should extend {{{../xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}<AbstractStaxMateSerializer>}}.
 
 *  Maven dependency:
 

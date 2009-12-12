@@ -1,0 +1,47 @@
+Test Utils
+
+  This module contains several classes the improve the testing experience.
+  If you want to test your serializers it is suggested that you extend the base classes provided by this module.
+
+* Usage
+
+  There exist several base classes that can be extended for easier testing of your serializers.
+
+** Common base classes
+
+  That abstract test classes work with every serializer. They don't make any assumptions regarding the type of
+  serialization and therefore work with every type (binary or XML or another custom format).
+
+  But it is necessary to implement <AbstractSerializerTest.verifySerialized>
+
+
+
+*** {{{../xref/com/cedarsoft/serialization/AbstractSerializerTest.html}AbstractSerializerTest}}
+
+  This is a basic test class that can be used to test a serializer. It serializes an object,
+  verifies the result and tries to deserialize it.
+
+  The deserialized object is then compared to the initial object. The default implementation
+  uses <equals()> to compare them. If custom code is needed just override <AbstractSerializerTest#verifyDeserialized()>.
+
+*** {{{../xref/com/cedarsoft/serialization/AbstractSerializerMultiTest.html}AbstractSerializerMultiTest}}
+
+  This base class supports multiple runs. It works on lists (instead of single objects as in AbstractSerializerTest).
+
+  This test class is useful if you want to test several object (de)serializations.  
+
+
+
+*  Maven:
+
+  As maven user just add the following dependency.
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>test-utils</artifactId>
+  <version>${currentStableVersion}</version>
+  <scope>test</scope>
+</dependency>
+---
+

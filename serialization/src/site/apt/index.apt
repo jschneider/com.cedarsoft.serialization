@@ -1,0 +1,15 @@
+Serialization Core
+
+  This project contains the core classes and interfaces that are used in cedarsoft Serialization.
+  Those classes are independent from the underlying technology that is used to do the work (e.g. XML).
+
+
+  There exist several abstract base classes that can be used to serialize your objects. For XML based
+  serialization is is recommended to use implementations based on {{{../stax/}Stax}} or
+  {{{../stax-mate/}Stax Mate}} for best results.
+
+
+  If your serializer shall not use XML but instead some other format (e.g. binary) it is necessary to implement your own backend.
+
+  Just implement your own backend class that extends {{{../xref/com/cedarsoft/serialization/AbstractSerializer.html}<com.cedarsoft.serialization.AbstractSerializer>}}.
+
