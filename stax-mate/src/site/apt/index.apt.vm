@@ -1,0 +1,35 @@
+Stax Mate based Serializers
+      
+  Stax Mate is a small extension to Stax that offers an improved API to serialize XML. The code looks a bit cleaner and it
+  is saving you a few key strokes.
+
+  Since it is based on Stax you get the same performance.
+
+  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}<AbstractStaxMateSerializer>}}.
+
+*  Maven dependency:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax-mate</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+  <version>4.0.6</version>
+</dependency>
+---
+
+
+* Download
+
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Jar with dependencies}}
+
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar}Current development version}}

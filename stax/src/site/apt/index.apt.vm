@@ -1,0 +1,35 @@
+Stax based Serializers
+
+  This backend is based on the new - and very fast and comfortable - XML api added
+  to JDK 1.6 (JSR-173).
+
+  No external libraries are necessary to use the Stax backend. But it is suggested to add {{{http://woodstox.codehaus.org}Woodstox}}
+  or another Stax aware XML processor to improve the performance.
+
+  Serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxSerializer.html}<AbstractStaxSerializer>}}.
+
+*  Maven dependency:
+
+---
+<dependency>
+  <groupId>com.cedarsoft.serialization</groupId>
+  <artifactId>stax</artifactId>
+  <version>${currentStableVersion}</version>
+</dependency>
+---
+
+  Optional Woodstox dependency:
+
+---
+<dependency>
+  <groupId>org.codehaus.woodstox</groupId>
+  <artifactId>woodstox-core-asl</artifactId>
+  <version>4.0.6</version>
+</dependency>
+---
+
+* Download
+
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Jar with all dependencies}}
+
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/stax-${currentDevelopmentVersion}-jar-with-dependencies.jar}Current development version}}

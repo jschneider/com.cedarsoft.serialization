@@ -6,11 +6,12 @@
 
   <bannerLeft>
     <name>${project.name}</name>
-    <src>_logo_.jpg</src>
+    <src>../serialization.jpg</src>
     <href>index.html</href>
   </bannerLeft>
 
   <body>
+   
     <menu ref="parent" inherit="top" />
 
     <menu name="Overview">

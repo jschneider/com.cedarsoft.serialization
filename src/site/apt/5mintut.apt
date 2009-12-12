@@ -1,2 +1,8 @@
 5 Minute Tutorial
 
+ The source code for this short tutorial is stored within a sample project that be found {{{./samples/stax-mate/index.html}here}}.
+
+
+* Business Objects
+
+  This tutorial (de)serialzes some simple business objects.
