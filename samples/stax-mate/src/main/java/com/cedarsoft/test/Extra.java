@@ -3,6 +3,7 @@ package com.cedarsoft.test;
 /**
  *
  */
+//START SNIPPET: fieldsAndConstructors
 public class Extra {
   private final String description;
 
@@ -12,6 +13,8 @@ public class Extra {
     this.description = description;
     this.price = price;
   }
+
+  //END SNIPPET: fieldsAndConstructors
 
   public Money getPrice() {
     return price;

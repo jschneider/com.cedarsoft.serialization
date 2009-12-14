@@ -1,0 +1,61 @@
+Best Practices
+
+  This page contains some best practices.
+
+  %{toc|fromDepth=1}
+
+* Serializing strategy
+
+  At first it seems to be the simplest solution to just create a single serializer class that does all the work.
+  We could create methods for each type that is referenced to avoid code duplication.
+
+  But this approach has several disadvantages and is <<not>> the recommended solution.
+
+** Best practice for improved testability and reusability
+
+  For improved testability and reusability it is suggested to create a own serializer for each object. Those
+  serializers can be (re)used as delegates.
+
+  To allow delegation of serialization the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
+  has been introduced. All abstract base classes implement this interface - so no additional work has to be done.
+
+** Where to begin?
+
+  Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
+  the implementation beginning with the serializers for the "smaller" (value) objects.
+
+
+* Versions / Version ranges
+
+** What version (range) should I start with?
+
+  It is suggested to start with a version smaller than <1.0.0>. During development the format will probably be changed. And sometimes it is
+  helpful to 
+
+
+* Tests
+
+** Which base class should the tests extend from?
+
+  At first you should support the implementation of your serializer with a non-multi test (<AbstractXmlSerializerMultiTest> or <AbstractSerializerMultiTest>).
+  Those tests are easier to write but do not provide enough flexibility to cover all corner edges.
+  For (very) simple serializers this test might be enough.
+
+  If you find a special case that can't be handled within your simple test, create a new test extending the abstract "multi" test class (<AbstractXmlSerializerMultiTest>
+  or <AbstractSerializerMultiTest>). If you prefer, you might also convert your initial test class to extend from the "multi" test class.
+
+  If you have finished implementing your serializer you really should create a version test for that serializer. At that moment the version range
+  of your serializer does just cover one version.
+  But it is very easy to forget creating that test before refactoring a serializer. Therefore it is strongly recommended to create
+  a version test in time.
+
+** What is the <Abstract(Xml)VersionTest> for?
+
+  In an evolving world change happens. And sooner or later your business objects may change. And therefore the serializers have to be changed.
+  And some of those changes will require changes to the serialized format.
+
+  At that point your serializer will probably be able to deserialize different format versions. To ensure that the old format can still
+  be deserialized some tests are necessary.
+
+  A test extending <Abstract(Xml)VersionTest> should be created for each serializer. For each new format version one or more entries should
+  be added to that test. 

@@ -9,6 +9,7 @@ import java.util.List;
 /**
  *
  */
+//START SNIPPET: fieldsAndConstructors
 public class Car {
   private final Model model;
   private final Color color;
@@ -28,6 +29,7 @@ public class Car {
       this.extras.addAll( extras );
     }
   }
+  //End SNIPPET: fieldsAndConstructors
 
   public Money getBasePrice() {
     return basePrice;

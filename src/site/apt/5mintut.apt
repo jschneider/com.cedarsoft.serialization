@@ -2,7 +2,62 @@
 
  The source code for this short tutorial is stored within a sample project that be found {{{./samples/stax-mate/index.html}here}}.
 
+%{toc|fromDepth=1}
 
 * Business Objects
 
   This tutorial (de)serialzes some simple business objects.
+
+
+** Car
+
+  Each car has several fields that contain other objects (the base price, the model, color and a list of extras).
+  Those are stored within fields
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Car.java}
+
+** Money
+
+  The money class simply holds the value in cents.
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Money.java}
+
+  The money object is referenced at two places.
+  At first each <Car> has a field of type <Money> representing the base price. Additionally every <Extra>
+  has its own price.
+
+** Model
+
+ The model simply consists of a single string that describes the model.
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Model.java}
+
+** Extra
+
+ Each extra has a description (String) and a price (Money).
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Extra.java}
+
+
+
+* Serializing strategy
+
+  At first it seems to be the simplest solution to just create a <CarSerializers> that does all the work.
+  We could create methods for each type (<Money> is referenced from <Car> and <Extra>) to avoid code duplication.
+
+  This is <<not>> the recommended solution.
+
+** Best practice for improved testability and reusability
+
+  For improved testability and reusability it is suggested to create a own serializer for each object. Those
+  serializers can be (re)used as delegates.
+
+  To allow delegation of serialization the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
+  has been introduced. All abstract base classes implement this interface - so no additional work has to be done.
+
+** Where to begin?
+
+  Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
+  the implementation beginning with the serializers for the "smaller" (value) objects.
+
+  In our example 

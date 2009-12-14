@@ -3,12 +3,15 @@ package com.cedarsoft.test;
 /**
  *
  */
+//START SNIPPET: fieldsAndConstructors
 public class Model {
   private final String name;
 
   public Model( String name ) {
     this.name = name;
   }
+
+  //END SNIPPET: fieldsAndConstructors
 
   public String getName() {
     return name;

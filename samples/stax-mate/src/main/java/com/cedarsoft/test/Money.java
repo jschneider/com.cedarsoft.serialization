@@ -3,6 +3,7 @@ package com.cedarsoft.test;
 /**
  *
  */
+//START SNIPPET: fieldsAndConstructors
 public class Money {
   private int cents;
 
@@ -13,6 +14,7 @@ public class Money {
   public Money( int cents ) {
     this.cents = cents;
   }
+  //End SNIPPET: fieldsAndConstructors
 
   public int getCents() {
     return cents;
