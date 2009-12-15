@@ -15,8 +15,9 @@ import java.io.IOException;
  * This serializer delegates the serialization of an object to another serializer
  */
 public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
-  private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
+  //START SNIPPET: fieldsAndConstructors
 
+  private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
 
   private final MoneySerializer moneySerializer;
 
@@ -32,8 +33,9 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     //the changes are backwards compatible or handle the differences somehow.
     verifyDelegatingSerializerVersion( moneySerializer, VERSION_MONEY_SERIALIZER );
   }
+  //END SNIPPET: fieldsAndConstructors
 
-
+  //START SNIPPET: serialize
   @Override
   public void serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
     serializeTo.addElement( "description" ).addCharacters( object.getDescription() );
@@ -56,4 +58,5 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
     return new Extra( description, price );
   }
+  //END SNIPPET: serialize
 }

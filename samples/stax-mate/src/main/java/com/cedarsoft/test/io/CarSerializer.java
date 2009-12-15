@@ -21,6 +21,8 @@ import java.util.List;
  *
  */
 public class CarSerializer extends AbstractStaxMateSerializer<Car> {
+  //START SNIPPET: fieldsAndConstructors
+
   //We create constants for the expected versions for the delegates
   private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
   private static final Version VERSION_MODEL_SERIALIZER = new Version( 1, 0, 0 );
@@ -41,6 +43,10 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     verifyDelegatingSerializerVersion( extraSerializer, VERSION_EXTRA_SERIALIZER );
     verifyDelegatingSerializerVersion( modelSerializer, VERSION_MODEL_SERIALIZER );
   }
+  //END SNIPPET: fieldsAndConstructors
+
+
+  //START SNIPPET: serialize
 
   @Override
   public void serialize( SMOutputElement serializeTo, Car object ) throws IOException, XMLStreamException {
@@ -57,6 +63,9 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
       extraSerializer.serialize( serializeTo.addElement( "extra" ), extra );
     }
   }
+  //END SNIPPET: serialize
+
+  //START SNIPPET: deserialize
 
   @Override
   public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
@@ -85,4 +94,5 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
 
     return new Car( model, color, basePrice, extras );
   }
+  //END SNIPPET: deserialize
 }

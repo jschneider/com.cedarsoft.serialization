@@ -6,7 +6,6 @@ package com.cedarsoft.test;
 //START SNIPPET: fieldsAndConstructors
 public class Extra {
   private final String description;
-
   private final Money price;
 
   public Extra( String description, Money price ) {

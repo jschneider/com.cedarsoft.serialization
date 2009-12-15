@@ -123,5 +123,147 @@ Tutorial
 
 * <MoneySerializer>
 
-  The serializer for the <Money> objects is the next one.
+  The serializer for the <Money> objects is the next one. The <Money> object also contains just one field (<int cents>).
+  It basically works in the same way as the <ModelSerializer> does. The cents are added as text to the precreated tag.
 
+%{snippet|id=body|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/MoneySerializer.java}
+
+  This serializer is modified later to show how refactorings and/or format changes are supported. Those changes
+  are available in {{{./xref/com/cedarsoft/test/io/MoneySerializer2.html}<MoneySerializer2>}}.
+  Of course this name has only be chosen
+  to be able to add both versions of the <MoneySerialzer> to the project. In a real world project the <MoneySerializer> is changed.
+
+
+
+* <ExtraSerializer>
+
+  The <ExtraSerializer> is a serializer that uses another serializer as delegate.
+  The <Extra> contains two fields that shall be serialized:
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Extra.java}
+
+  We could either serialize the money objects on our own. But that added duplicate code!
+  Therefore we reuse the <MoneySerializer> and delegate the (de)serialization of the <Money> object.
+
+
+** Constructor
+
+  The constructor is a little bit more complex, since the delegate for the serialization of the money field is added.
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ExtraSerializer.java}
+
+  This serializers supports a different version range as the other serializers (1.5.0-1.5.0). This has been done to
+  show that the version numbers are completely independent for the serializers - even when they are used as delegates.
+
+  In the times of Dependency Injection we chose to add the money serializer as constructor parameter. That serializer
+  is stored within a field and can later be used as delegate.
+
+  The last line within the constructor verifies that version range of the <MoneySerializer> fits the expected one. This is
+  necessary to ensure that the format for this serializer stays constant.
+  If the format for <Money> is changed, the format for <Extra> is affected, too. Too ensure that the format version is
+  updated accordingly, it is strongly recommended to verify the version range of your delegating objects.
+
+  There helper method <verifyDelegatingSerializerVersion> does that job. 
+
+** (De)serialization
+
+  Serialization is quite easy. We add an element "description" containing the description of the <Extra> as text.
+  Then the price is written to its own tag using the <MoneySerializer>.
+
+%{snippet|id=serialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ExtraSerializer.java}
+
+  The deserialization is also very easy and should be self explaining.
+
+
+** Serialized XML
+
+  The serialized XML looks like that:
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<?format 1.5.0?>
+<extra>
+  <description>Metallic</description>
+  <price>40000</price>
+</extra>
+---
+
+
+* <CarSerializer>
+
+  Finally we have to create the <CarSerializer>. Each <Car> contains several other objects:
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Car.java}
+
+
+  Since we have created serializers for (nearly) all objects the car has references to, the <CarSerializer> is
+  also quite simple and straight forward to implement.
+
+
+** Constructor
+
+  The constructor contains three delegates and the other meta informations that are necessary.
+  The delegates may have different version ranges (the <ExtraSerializer> supports only <1.5.0>).
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
+
+  Each delegate is verified whether the version matches the expected version.
+
+** Serialization
+
+  The serialization method delegates the serialization. In most serializers nearly all the work is
+  done within serializers.
+
+  The <CarSerializer> serializes the color itself. This should be replaced with delegation to a <ColorSerializer>.
+
+%{snippet|id=serialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
+
+  Lists can be added easily. If you prefer you might add an additional tag like "extras".
+
+** Serialized XML
+
+  The serialized XML looks like that:
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<?format 1.0.0?>
+<car>
+  <color red="255" blue="0" green="200" />
+  <model>Ford</model>
+  <basePrice>1900000</basePrice>
+  <extra>
+    <description>Whoo effect</description>
+    <price>9998</price>
+  </extra>
+  <extra>
+    <description>Better Whoo effect</description>
+    <price>19900</price>
+  </extra>
+</car>
+---
+
+** Deserialization
+
+  Deserialization is always very easy. Just deserialize the stuff using the serializers as delegate.
+  Collections can easily be deserialized using the method <visitChildren> that is defined in <AbstractStaxBasedSerializer>.
+  This method iterates over all children left in the current tag and calls a callback for each child.
+
+%{snippet|id=deserialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
+
+
+* Finally
+
+  We have created serializers for a quite complex object. Those serializers all just contain very few lines and nearly no
+  boiler plate code.
+
+  They can easily be reused and contain enough format version information to be supported in an evolving application without
+  any hassle.
+
+
+* Evolution
+
+  If you are interested in how changes to the format can be handled. Take a look at {{{./xref/com/cedarsoft/test/io/MoneySerializer2.html}<com.cedarsoft.test.io.MoneySerializer2>}}.
+  That serializer supports two different formats.
+
+
+  
