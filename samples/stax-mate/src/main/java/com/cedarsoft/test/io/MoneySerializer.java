@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  *
  */
+//START SNIPPET: body
 public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
   public MoneySerializer() {
     super( "money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
@@ -23,7 +24,6 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
     serializeTo.addCharacters( String.valueOf( object.getCents() ) );
   }
 
-
   @Override
   public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     int cents = Integer.parseInt( getText( deserializeFrom ) );
@@ -32,3 +32,4 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
     return new Money( cents );
   }
 }
+//END SNIPPET: body
