@@ -13,10 +13,10 @@ Best Practices
 
 ** Best practice for improved testability and reusability
 
-  For improved testability and reusability it is suggested to create a own serializer for each object. Those
+  For improved testability and reusability it is suggested to create one serializer for each object. Those
   serializers can be (re)used as delegates.
 
-  To allow delegation of serialization the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
+  To allow delegation of serialization, the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
   has been introduced. All abstract base classes implement this interface - so no additional work has to be done.
 
 ** Where to begin?
@@ -24,14 +24,20 @@ Best Practices
   Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
   the implementation beginning with the serializers for the "smaller" (value) objects.
 
+  Therefore your project is always compilable and all tests run successfully during the complete development process.
 
 * Versions / Version ranges
 
 ** What version (range) should I start with?
 
-  It is suggested to start with a version smaller than <1.0.0>. During development the format will probably be changed. And sometimes it is
-  helpful to 
+  The version range for the <<released>> serializers should be <1.0.0-1.0.0>. So you could start implementing the serializers using that range.
+  But sometimes - especially for complex serializers, the format has to be changed during the development. Therefore it is useful to begin
+  development with a lower version range (e.g. <0.9.0-0.9.0>).
+  That allows you to convert your test data automatically - which may be a huge time saver sometimes.
+  Before releasing just remove the old (pre 1.0.0) code and change the version range to <1.0.0-1.0.0>.
 
+  So basically you have two choices. Start with <1.0.0-1.0.0> for simple serializers - saves you a little work before the release.
+  And start with <0.9.0-0.9.0> for complex serializers - this offers you the often needed flexibility during development.
 
 * Tests
 
