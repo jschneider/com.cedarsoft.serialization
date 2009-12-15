@@ -33,9 +33,9 @@ public class RegistrySerializerTest {
     serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @NotNull
       @Override
-      public XMLStreamWriter serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
         serializeTo.writeCharacters( object );
-        return serializeTo;
+
       }
 
       @NotNull

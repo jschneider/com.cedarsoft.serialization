@@ -25,12 +25,11 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
     super( "hash", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
-  @NotNull
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Hash object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Hash object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_ALGORITHM, object.getAlgorithm().name() );
     serializeTo.addCharacters( object.getValueAsHex() );
-    return serializeTo;
+
   }
 
   @NotNull

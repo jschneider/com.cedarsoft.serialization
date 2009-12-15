@@ -20,11 +20,10 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
     super( "dateTime", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
-  @NotNull
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( ISODateTimeFormat.basicDateTime().print( object ) );
-    return serializeTo;
+
   }
 
   @NotNull

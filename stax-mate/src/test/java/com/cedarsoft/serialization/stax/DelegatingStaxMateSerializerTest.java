@@ -28,9 +28,9 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
-        return serializeTo;
+
       }
 
       @Override
@@ -44,9 +44,9 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
-        return serializeTo;
+
       }
 
       @Override

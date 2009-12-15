@@ -19,10 +19,9 @@ public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
   }
 
   @Override
-  @NotNull
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Version object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Version object ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.toString() );
-    return serializeTo;
+
   }
 
   @Override

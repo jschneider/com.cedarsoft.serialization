@@ -68,7 +68,7 @@ public class SerializingStrategySupportTest {
 
     @Override
     @NotNull
-    public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException {
       throw new UnsupportedOperationException();
     }
 

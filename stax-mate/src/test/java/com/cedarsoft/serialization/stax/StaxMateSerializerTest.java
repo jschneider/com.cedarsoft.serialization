@@ -27,9 +27,9 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
     return new AbstractStaxMateSerializer<String>( "aString", new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
         serializeTo.addCharacters( object );
-        return serializeTo;
+
       }
 
       @Override

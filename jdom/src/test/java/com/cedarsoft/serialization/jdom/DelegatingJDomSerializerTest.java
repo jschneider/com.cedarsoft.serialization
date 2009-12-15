@@ -24,29 +24,25 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   protected void setUp() throws Exception {
     AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
       @Override
-      @NotNull
-      public Element serialize( @NotNull Element element, @NotNull Integer object ) throws IOException {
-        element.setText( object.toString() );
-        return element;
+      public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException {
+        serializeTo.setText( object.toString() );
       }
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull @NonNls Element element, @NotNull Version formatVersion ) throws IOException {
+      public Integer deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
         return 1;
       }
     };
     AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
       @Override
-      @NotNull
-      public Element serialize( @NotNull Element element, @NotNull Double object ) throws IOException {
-        element.setText( object.toString() );
-        return element;
+      public void serialize( @NotNull Element serializeTo, @NotNull Double object ) throws IOException {
+        serializeTo.setText( object.toString() );
       }
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull @NonNls Element element, @NotNull Version formatVersion ) throws IOException {
+      public Double deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
         return 2.0;
       }
     };

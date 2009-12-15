@@ -79,6 +79,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    *
    * @param object the object
    * @throws IOException
+   * @throws StillContainedException
    */
   public void serialize( @NotNull T object ) throws StillContainedException, IOException {
     OutputStream out = serializedObjectsAccess.openOut( getId( object ) );

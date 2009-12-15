@@ -24,12 +24,11 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
     super( "extension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
-  @NotNull
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
     serializeTo.addCharacters( object.getExtension() );
-    return serializeTo;
+
   }
 
   @NotNull

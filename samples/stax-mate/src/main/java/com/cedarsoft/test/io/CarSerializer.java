@@ -42,9 +42,8 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     verifyDelegatingSerializerVersion( modelSerializer, VERSION_MODEL_SERIALIZER );
   }
 
-
   @Override
-  public SMOutputElement serialize( SMOutputElement serializeTo, Car object ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Car object ) throws IOException, XMLStreamException {
     SMOutputElement colorElement = serializeTo.addElement( "color" );  //okay, should be a own serializer in real world...
     colorElement.addAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
@@ -57,10 +56,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     for ( Extra extra : object.getExtras() ) {
       extraSerializer.serialize( serializeTo.addElement( "extra" ), extra );
     }
-
-    return serializeTo;
   }
-
 
   @Override
   public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {

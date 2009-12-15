@@ -35,13 +35,13 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
 
   @Override
-  public SMOutputElement serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
     serializeTo.addElement( "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
     moneySerializer.serialize( serializeTo.addElement( "price" ), object.getPrice() );
 
-    return serializeTo;
+
   }
 
 

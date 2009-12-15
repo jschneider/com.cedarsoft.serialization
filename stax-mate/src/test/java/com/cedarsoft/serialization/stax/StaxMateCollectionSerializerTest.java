@@ -27,14 +27,14 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
     return new AbstractStaxMateSerializer<List<String>>( "aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object ) throws XMLStreamException {
         for ( String s : object ) {
           serializeTo.addElement( "string" ).addCharacters( s );
         }
 
         serializeTo.addElement( "description" ).addCharacters( "descr" );
 
-        return serializeTo;
+
       }
 
       @Override

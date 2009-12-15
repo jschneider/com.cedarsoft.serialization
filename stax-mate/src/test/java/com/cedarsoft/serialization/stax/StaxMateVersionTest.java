@@ -69,11 +69,9 @@ public class StaxMateVersionTest {
       super( "integer", new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
     }
 
-    @NotNull
     @Override
-    public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
-      return serializeTo;
     }
 
     @NotNull
@@ -99,9 +97,8 @@ public class StaxMateVersionTest {
 
     @NotNull
     @Override
-    public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
-      return serializeTo;
     }
 
     @NotNull
@@ -118,9 +115,8 @@ public class StaxMateVersionTest {
 
     @NotNull
     @Override
-    public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "value", object.toString() );
-      return serializeTo;
     }
 
     @NotNull

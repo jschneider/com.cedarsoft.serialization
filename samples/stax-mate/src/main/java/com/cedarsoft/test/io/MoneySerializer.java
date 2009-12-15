@@ -22,10 +22,10 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
 
 
   @Override
-  public SMOutputElement serialize( SMOutputElement serializeTo, Money object ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Money object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...
-    return serializeTo;
+
   }
 
 

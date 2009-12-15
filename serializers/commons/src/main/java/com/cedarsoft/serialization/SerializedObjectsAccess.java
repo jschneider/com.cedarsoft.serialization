@@ -29,6 +29,7 @@ public interface SerializedObjectsAccess {
    * Returns all stored ids
    *
    * @return the stored ids
+   * @throws FileNotFoundException
    */
   @NotNull
   @NonNls

@@ -38,14 +38,13 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
   }
 
   @Override
-  @NotNull
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object ) throws IOException, XMLStreamException {
     serializeTo.addElement( ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( ELEMENT_VERSION );
     versionSerializer.serialize( versionElement, object.getVersion() );
 
-    return serializeTo;
+
   }
 
   @Override

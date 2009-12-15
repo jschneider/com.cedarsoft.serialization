@@ -21,10 +21,10 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    *
    * @param serializeTo the serializeTo
    * @param object      the object
-   * @return the serializeTo (for fluent writing)
+   * @throws IOException
+   * @throws E
    */
-  @NotNull
-  S serialize( @NotNull S serializeTo, @NotNull T object ) throws IOException, E;
+  void serialize( @NotNull S serializeTo, @NotNull T object ) throws IOException, E;
 
   /**
    * Deserializes the object from the given document
@@ -32,6 +32,10 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * @param deserializeFrom the deserializeFrom
    * @param formatVersion   the format version
    * @return the deserialized object
+   *
+   * @throws VersionException
+   * @throws IOException
+   * @throws E
    */
   @NotNull
   T deserialize( @NotNull D deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, E;

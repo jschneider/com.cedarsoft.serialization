@@ -21,9 +21,8 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
     final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
         serializeTo.addCharacters( object );
-        return serializeTo;
       }
 
       @Override
@@ -39,11 +38,9 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
     return new AbstractStaxMateSerializer<String>( "aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
         stringSerializer.serialize( serializeTo.addElement( "sub" ), object );
         serializeTo.addElement( "emptyChild" ).addCharacters( "" );
-
-        return serializeTo;
       }
 
       @Override

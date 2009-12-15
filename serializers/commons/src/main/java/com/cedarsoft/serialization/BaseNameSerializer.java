@@ -19,11 +19,10 @@ public class BaseNameSerializer extends AbstractStaxMateSerializer<BaseName> {
     super( "baseName", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
-  @NotNull
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull BaseName object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull BaseName object ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.getName() );
-    return serializeTo;
+
   }
 
   @NotNull

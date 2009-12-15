@@ -31,13 +31,10 @@ public class AbstractDelegatingJDomSerializer<T> extends AbstractJDomSerializer<
   }
 
   @Override
-  @NotNull
-  public Element serialize( @NotNull Element serializeTo, @NotNull T object ) throws IOException {
+  public void serialize( @NotNull Element serializeTo, @NotNull T object ) throws IOException {
     JDomSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
     serializeTo.setAttribute( ATTRIBUTE_TYPE, strategy.getId() );
     strategy.serialize( serializeTo, object );
-
-    return serializeTo;
   }
 
   @Override

@@ -23,6 +23,7 @@ public interface Serializer<T> {
    *
    * @param object the object to serialize
    * @param out    the out stream
+   * @throws IOException
    */
   void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException;
 
@@ -33,6 +34,7 @@ public interface Serializer<T> {
    * @return the deserialized object
    *
    * @throws VersionException if any version related problem occurred
+   * @throws IOException
    */
   @NotNull
   T deserialize( @NotNull InputStream in ) throws IOException, VersionException;
