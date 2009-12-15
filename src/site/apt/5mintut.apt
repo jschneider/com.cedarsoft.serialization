@@ -8,7 +8,6 @@
 
   This tutorial (de)serialzes some simple business objects.
 
-
 ** Car
 
   Each car has several fields that contain other objects (the base price, the model, color and a list of extras).
@@ -49,8 +48,8 @@
 
 ** Best practice for improved testability and reusability
 
-  For improved testability and reusability it is suggested to create a own serializer for each object. Those
-  serializers can be (re)used as delegates.
+  For improved testability and reusability it is suggested to create one serializer for each object. Those
+  serializers can be (re)used as delegates. (see {{{./bestPractices.html}Best Practices}} for details).
 
   To allow delegation of serialization the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
   has been introduced. All abstract base classes implement this interface - so no additional work has to be done.
@@ -60,4 +59,55 @@
   Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
   the implementation beginning with the serializers for the "smaller" (value) objects.
 
-  In our example 
+  In our example it looks like a good idea to first implement the serializers for the <Model> objects (we could also have chosen <Money>).
+
+* <ModelSerializer>
+
+  The <Model> object can be serialized easily. There is just one field that must be serialized (<String name>).
+
+  We chose to serialize to XML using Stax Mate. Therefore our serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html/}AbstractStaxMateSerializer}}.
+
+
+** The Constructor
+
+  The constructor is used to add the necessary meta information. That information is stored within final fields of the abstract base class and used where necessary.
+
+  The parameters are:
+
+  * <String defaultElementName>: The name for the root element, if this serializers is not used as delegate. For delegating serializers that value is not used.
+
+  * <VersionRange formatVersionRange>: The supported format version range. The upper bound represents the format that is written.
+    All Versions within the range can be read.
+
+%{snippet|id=constructor|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
+
+
+** Serialization method
+
+  Serialization is delegated to the method <serialize>. This method is used either the serializer is used alone or as delegate.
+  Just implement the abstract method:
+
+  The parameters of this method are:
+
+  * <SMOutputElement serializeTo>: The output element the serialized content is written to. Because we use Stax Mate as backend, this parameter has the type <SMOutputElement>.
+
+  * <Model object> the object to serialize.
+
+%{snippet|id=serialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
+
+
+** Deserialization method
+
+  Deserialization is done accordingly within the <deserialize> method which has two parameters:
+
+ * <XMLStreamReader deserializeFrom>: The object the serialized object is read from. We use a stax based serializer, therefore this is of type <XMLStreamReader>
+
+ * <Version formatVersion> the format version. Serializers may support multiple versions, therefore that parameter can be used to distinguish between different strategies.
+
+%{snippet|id=deserialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
+
+
+
+
+
+

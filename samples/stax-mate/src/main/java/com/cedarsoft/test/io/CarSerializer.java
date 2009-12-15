@@ -9,7 +9,6 @@ import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -43,9 +42,9 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     verifyDelegatingSerializerVersion( modelSerializer, VERSION_MODEL_SERIALIZER );
   }
 
-  @NotNull
+
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Car object ) throws IOException, XMLStreamException {
+  public SMOutputElement serialize( SMOutputElement serializeTo, Car object ) throws IOException, XMLStreamException {
     SMOutputElement colorElement = serializeTo.addElement( "color" );  //okay, should be a own serializer in real world...
     colorElement.addAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
@@ -62,9 +61,9 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     return serializeTo;
   }
 
-  @NotNull
+
   @Override
-  public Car deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     //We deserialize the color. This should be done in its own serializer in real world --> improved reusability and testability
     nextTag( deserializeFrom, "color" );
     int red = Integer.parseInt( deserializeFrom.getAttributeValue( null, "red" ) );
@@ -83,7 +82,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     final List<Extra> extras = new ArrayList<Extra>();
     visitChildren( deserializeFrom, new CB() {
       @Override
-      public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
+      public void tagEntered( XMLStreamReader deserializeFrom, @NonNls String tagName ) throws XMLStreamException, IOException {
         extras.add( extraSerializer.deserialize( deserializeFrom, VERSION_EXTRA_SERIALIZER ) );
       }
     } );

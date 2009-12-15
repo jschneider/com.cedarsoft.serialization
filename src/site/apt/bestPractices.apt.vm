@@ -2,7 +2,7 @@ Best Practices
 
   This page contains some best practices.
 
-  %{toc|fromDepth=1}
+%{toc|fromDepth=1}
 
 * Serializing strategy
 

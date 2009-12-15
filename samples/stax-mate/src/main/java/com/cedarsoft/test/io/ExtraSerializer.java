@@ -6,7 +6,6 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -18,7 +17,7 @@ import java.io.IOException;
 public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
 
-  @NotNull
+
   private final MoneySerializer moneySerializer;
 
   public ExtraSerializer( MoneySerializer moneySerializer ) {
@@ -34,9 +33,9 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     verifyDelegatingSerializerVersion( moneySerializer, VERSION_MONEY_SERIALIZER );
   }
 
-  @NotNull
+
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Extra object ) throws IOException, XMLStreamException {
+  public SMOutputElement serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
     serializeTo.addElement( "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
@@ -45,9 +44,9 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     return serializeTo;
   }
 
-  @NotNull
+
   @Override
-  public Extra deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );

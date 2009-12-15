@@ -6,7 +6,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -21,17 +20,17 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
     super( "money", new VersionRange( new Version( 0, 9, 9 ), new Version( 1, 0, 0 ) ) );
   }
 
-  @NotNull
+
   @Override
-  public SMOutputElement serialize( @NotNull SMOutputElement serializeTo, @NotNull Money object ) throws IOException, XMLStreamException {
+  public SMOutputElement serialize( SMOutputElement serializeTo, Money object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...
     return serializeTo;
   }
 
-  @NotNull
+
   @Override
-  public Money deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     //This serializer supports reading of an old format. Therefore we have to switch based on the format version.
     //This might be solved using the strategy pattern. But in most of the cases the format changes only in small portions.
     //So it seems easier to add just one if/else.
