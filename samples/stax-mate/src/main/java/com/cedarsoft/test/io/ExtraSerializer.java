@@ -40,8 +40,6 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
     //We delegate the serialization of the price to the money serializer
     moneySerializer.serialize( serializeTo.addElement( "price" ), object.getPrice() );
-
-
   }
 
 

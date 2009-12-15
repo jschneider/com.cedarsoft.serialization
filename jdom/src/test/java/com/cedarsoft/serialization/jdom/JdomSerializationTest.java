@@ -84,7 +84,6 @@ public class JdomSerializationTest {
       super( "my", new VersionRange( new Version( 1, 2, 1 ), new Version( 1, 2, 3 ) ) );
     }
 
-    @NotNull
     @Override
     public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException, IOException {
       serializeTo.setText( String.valueOf( object ) );

@@ -27,7 +27,6 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
   @Override
   public void serialize( SMOutputElement serializeTo, Model object ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.getName() );
-
   }
   //END SNIPPET: serialize
 
