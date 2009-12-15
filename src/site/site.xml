@@ -21,13 +21,7 @@
     </menu>
 
     <menu name="Tutorial">
-      <item name="5 Minute Tutorial" href="5mintut.html" />
-      <item name="Advanced" href="advancedTut.html" />
-
-    </menu>
-
-    <menu name="Best Practices">
-      <item name="Structure" href="5mintut.html" />
+      <item name="Tutorial" href="tutorial.html" />
       <item name="Advanced" href="advancedTut.html" />
 
     </menu>
