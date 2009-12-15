@@ -35,11 +35,11 @@ public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
     return Arrays.asList(
       "<extra>\n" +
         "  <description>Metallic</description>\n" +
-        "  <price cents=\"40000\" />\n" +
+        "  <price>40000</price>\n" +
         "</extra>",
       "<extra>\n" +
         "  <description>Great Radio</description>\n" +
-        "  <price cents=\"70000\" />\n" +
+        "  <price>70000</price>\n" +
         "</extra>" );
   }
 }

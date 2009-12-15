@@ -14,10 +14,10 @@ import static org.testng.Assert.*;
 /**
  * Test class that tests the old versions manually
  */
-public class MoneySerializerManualVersionTest {
+public class MoneySerializer2ManualVersionTest {
   @Test
   public void testCurrent() throws IOException, SAXException {
-    MoneySerializer serializer = new MoneySerializer();
+    MoneySerializer2 serializer = new MoneySerializer2();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( new Money( 7, 99 ), out );
@@ -29,17 +29,17 @@ public class MoneySerializerManualVersionTest {
 
   @Test
   public void testOldFormat() throws IOException {
-    MoneySerializer serializer = new MoneySerializer();
+    MoneySerializer2 serializer = new MoneySerializer2();
     assertEquals( serializer.deserialize( new ByteArrayInputStream(
-      ( "<?format 0.9.9?>\n" +
+      ( "<?format 1.0.0?>\n" +
         "<money>799</money>" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 
   @Test
   public void testCurrentFormat() throws IOException {
-    MoneySerializer serializer = new MoneySerializer();
+    MoneySerializer2 serializer = new MoneySerializer2();
     assertEquals( serializer.deserialize( new ByteArrayInputStream(
-      ( "<?format 1.0.0?>\n" +
+      ( "<?format 1.0.1?>\n" +
         "<money cents=\"799\" />" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 }

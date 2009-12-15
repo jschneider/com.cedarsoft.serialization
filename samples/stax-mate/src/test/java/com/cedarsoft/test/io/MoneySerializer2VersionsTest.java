@@ -14,11 +14,11 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
+public class MoneySerializer2VersionsTest extends AbstractXmlVersionTest<Money> {
   @NotNull
   @Override
   protected Serializer<Money> getSerializer() {
-    return new MoneySerializer();
+    return new MoneySerializer2();
   }
 
   @NotNull
@@ -28,8 +28,8 @@ public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
 
     //We don't have to add the processing instruction containing the version. This is done
     //automatically
-    map.put( new Version( 1, 0, 0 ), "<money cents=\"799\" />" );
-    map.put( new Version( 0, 9, 9 ), "<money>799</money>" );
+    map.put( new Version( 1, 0, 1 ), "<money cents=\"799\" />" );
+    map.put( new Version( 1, 0, 0 ), "<money>799</money>" );
 
     return map;
   }

@@ -1,4 +1,4 @@
-5 Minute Tutorial
+Tutorial
 
  The source code for this short tutorial is stored within a sample project that be found {{{./samples/stax-mate/index.html}here}}.
 
@@ -95,6 +95,17 @@
 
 %{snippet|id=serialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
 
+  We just add the name of the model as text to the current xml tag (that has automatically been created).
+  Therefore the resulting XML looks like that:
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<?format 1.0.0?>
+<model>Toyota</model>
+---
+
+  The processing instruction (starting with "?format") contains the information about the format version. That information is parsed and used
+  to verify whether the serializer is able to deserialize the object.
 
 ** Deserialization method
 
@@ -106,8 +117,11 @@
 
 %{snippet|id=deserialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
 
+  There exist several helper methods to work with the <XMLStreamReader> object. The <getText> method is used to get the characters.
+  The <deserialize> method returns a newly created model object.
 
 
+* <MoneySerializer>
 
-
+  The serializer for the <Money> objects is the next one.
 

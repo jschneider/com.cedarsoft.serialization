@@ -42,19 +42,19 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
       "<car>\n" +
         "  <color red=\"0\" blue=\"0\" green=\"0\" />\n" +
         "  <model>Toyota</model>\n" +
-        "  <basePrice cents=\"4900000\" />\n" +
+        "  <basePrice>4900000</basePrice>\n" +
         "</car>",
       "<car>\n" +
         "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
         "  <model>Ford</model>\n" +
-        "  <basePrice cents=\"1900000\" />\n" +
+        "  <basePrice>1900000</basePrice>\n" +
         "  <extra>\n" +
         "    <description>Whoo effect</description>\n" +
-        "    <price cents=\"9998\" />\n" +
+        "    <price>9998</price>\n" +
         "  </extra>" +
         " <extra>\n" +
         "    <description>Better Whoo effect</description>\n" +
-        "    <price cents=\"19900\" />\n" +
+        "    <price>19900</price>\n" +
         "  </extra>" +
         "</car>" );
   }
