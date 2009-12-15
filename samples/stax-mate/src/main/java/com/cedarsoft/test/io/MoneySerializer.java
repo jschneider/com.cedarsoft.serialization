@@ -1,6 +1,5 @@
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
@@ -16,7 +15,6 @@ import java.io.IOException;
  */
 public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
   public MoneySerializer() {
-    //This serializer supports an old version, too
     super( "money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 

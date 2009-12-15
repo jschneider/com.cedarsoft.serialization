@@ -27,7 +27,6 @@ public class MoneySerializer2 extends AbstractStaxMateSerializer<Money> {
     super( "money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
   }
 
-
   @Override
   public void serialize( SMOutputElement serializeTo, Money object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( "cents", String.valueOf( object.getCents() ) );
