@@ -123,8 +123,8 @@
   </dependencyManagement>
 
   <properties>
-    <commons.version>2.0.1-SNAPSHOT</commons.version>
-    <currentStableVersion>1.0.0</currentStableVersion>
-    <currentDevelopmentVersion>1.0.1-SNAPSHOT</currentDevelopmentVersion>
+    <commons.version>2.0.1</commons.version>
+    <currentStableVersion>1.0.0-beta1</currentStableVersion>
+    <currentDevelopmentVersion>1.0.0-beta2-SNAPSHOT</currentDevelopmentVersion>
   </properties>
 </project>
