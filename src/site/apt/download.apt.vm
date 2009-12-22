@@ -20,13 +20,9 @@ Download
 
 ** Current development version
 
-  The artifacts can be found in those locations:
-
-  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/}Stax}} (download <stax-${currentDevelopmentVersion}-jar-with-dependencies.jar>)
-
-  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/}Stax Mate}} (download <stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar>)
-
-  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/${currentDevelopmentVersion}/}Custom}} (download <serialization-${currentDevelopmentVersion}-jar-with-dependencies.jar>).
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=public-snapshots&g=com.cedarsoft.serialization&a=stax&v=${currentDevelopmentVersion}}Stax}}.
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=public-snapshots&g=com.cedarsoft.serialization&a=stax-mate&v=${currentDevelopmentVersion}}Stax Mate}}.
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=public-snapshots&g=com.cedarsoft&a=serialization&v=${currentDevelopmentVersion}}Custom}}.
 
 * {Maven}
 
