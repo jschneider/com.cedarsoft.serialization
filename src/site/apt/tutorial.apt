@@ -1,21 +1,21 @@
-Tutorial
+{Tutorial}
 
  The source code for this short tutorial is stored within a sample project that be found {{{./samples/stax-mate/index.html}here}}.
 
 %{toc|fromDepth=1}
 
-* Business Objects
+* {Business Objects}
 
   This tutorial (de)serialzes some simple business objects.
 
-** Car
+** {Car}
 
   Each car has several fields that contain other objects (the base price, the model, color and a list of extras).
   Those are stored within fields
 
 %{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Car.java}
 
-** Money
+** {Money}
 
   The money class simply holds the value in cents.
 
@@ -25,13 +25,13 @@ Tutorial
   At first each <Car> has a field of type <Money> representing the base price. Additionally every <Extra>
   has its own price.
 
-** Model
+** {Model}
 
  The model simply consists of a single string that describes the model.
 
 %{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Model.java}
 
-** Extra
+** {Extra}
 
  Each extra has a description (String) and a price (Money).
 
@@ -39,14 +39,14 @@ Tutorial
 
 
 
-* Serializing strategy
+* {Serializing strategy}
 
   At first it seems to be the simplest solution to just create a <CarSerializers> that does all the work.
   We could create methods for each type (<Money> is referenced from <Car> and <Extra>) to avoid code duplication.
 
   This is <<not>> the recommended solution.
 
-** Best practice for improved testability and reusability
+** {Best practice for improved testability and reusability}
 
   For improved testability and reusability it is suggested to create one serializer for each object. Those
   serializers can be (re)used as delegates. (see {{{./bestPractices.html}Best Practices}} for details).
@@ -54,21 +54,21 @@ Tutorial
   To allow delegation of serialization the interface {{{./xref/com/cedarsoft/serialization/PluggableSerializer.html}<com.cedarsoft.serialization.PluggableSerializer>}}
   has been introduced. All abstract base classes implement this interface - so no additional work has to be done.
 
-** Where to begin?
+** {Where to begin?}
 
   Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
   the implementation beginning with the serializers for the "smaller" (value) objects.
 
   In our example it looks like a good idea to first implement the serializers for the <Model> objects (we could also have chosen <Money>).
 
-* <ModelSerializer>
+* <{ModelSerializer}>
 
   The <Model> object can be serialized easily. There is just one field that must be serialized (<String name>).
 
-  We chose to serialize to XML using Stax Mate. Therefore our serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html/}AbstractStaxMateSerializer}}.
+  We chose to serialize to XML using Stax Mate. Therefore our serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}AbstractStaxMateSerializer}}.
 
 
-** The Constructor
+** {The Constructor}
 
   The constructor is used to add the necessary meta information. That information is stored within final fields of the abstract base class and used where necessary.
 
@@ -82,7 +82,7 @@ Tutorial
 %{snippet|id=constructor|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ModelSerializer.java}
 
 
-** Serialization method
+** {Serialization method}
 
   Serialization is delegated to the method <serialize>. This method is used either the serializer is used alone or as delegate.
   Just implement the abstract method:
@@ -107,7 +107,7 @@ Tutorial
   The processing instruction (starting with "?format") contains the information about the format version. That information is parsed and used
   to verify whether the serializer is able to deserialize the object.
 
-** Deserialization method
+** {Deserialization method}
 
   Deserialization is done accordingly within the <deserialize> method which has two parameters:
 
@@ -121,7 +121,7 @@ Tutorial
   The <deserialize> method returns a newly created model object.
 
 
-* <MoneySerializer>
+* <{MoneySerializer}>
 
   The serializer for the <Money> objects is the next one. The <Money> object also contains just one field (<int cents>).
   It basically works in the same way as the <ModelSerializer> does. The cents are added as text to the precreated tag.
@@ -135,7 +135,7 @@ Tutorial
 
 
 
-* <ExtraSerializer>
+* <{ExtraSerializer}>
 
   The <ExtraSerializer> is a serializer that uses another serializer as delegate.
   The <Extra> contains two fields that shall be serialized:
@@ -146,7 +146,7 @@ Tutorial
   Therefore we reuse the <MoneySerializer> and delegate the (de)serialization of the <Money> object.
 
 
-** Constructor
+** {Constructor}
 
   The constructor is a little bit more complex, since the delegate for the serialization of the money field is added.
 
@@ -165,7 +165,7 @@ Tutorial
 
   There helper method <verifyDelegatingSerializerVersion> does that job. 
 
-** (De)serialization
+** {(De)serialization}
 
   Serialization is quite easy. We add an element "description" containing the description of the <Extra> as text.
   Then the price is written to its own tag using the <MoneySerializer>.
@@ -175,7 +175,7 @@ Tutorial
   The deserialization is also very easy and should be self explaining.
 
 
-** Serialized XML
+** {Serialized XML}
 
   The serialized XML looks like that:
 
@@ -189,7 +189,7 @@ Tutorial
 ---
 
 
-* <CarSerializer>
+* <{CarSerializer}>
 
   Finally we have to create the <CarSerializer>. Each <Car> contains several other objects:
 
@@ -200,7 +200,7 @@ Tutorial
   also quite simple and straight forward to implement.
 
 
-** Constructor
+** {Constructor for CarSerializer}
 
   The constructor contains three delegates and the other meta informations that are necessary.
   The delegates may have different version ranges (the <ExtraSerializer> supports only <1.5.0>).
@@ -209,7 +209,7 @@ Tutorial
 
   Each delegate is verified whether the version matches the expected version.
 
-** Serialization
+** {Serialization of a Car}
 
   The serialization method delegates the serialization. In most serializers nearly all the work is
   done within serializers.
@@ -220,7 +220,7 @@ Tutorial
 
   Lists can be added easily. If you prefer you might add an additional tag like "extras".
 
-** Serialized XML
+** {Serialized XML}
 
   The serialized XML looks like that:
 
@@ -242,7 +242,7 @@ Tutorial
 </car>
 ---
 
-** Deserialization
+** {Deserialization of a Car}
 
   Deserialization is always very easy. Just deserialize the stuff using the serializers as delegate.
   Collections can easily be deserialized using the method <visitChildren> that is defined in <AbstractStaxBasedSerializer>.
@@ -251,7 +251,7 @@ Tutorial
 %{snippet|id=deserialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
 
 
-* Finally
+* {Finally}
 
   We have created serializers for a quite complex object. Those serializers all just contain very few lines and nearly no
   boiler plate code.
@@ -260,7 +260,7 @@ Tutorial
   any hassle.
 
 
-* Evolution
+* {Evolution}
 
   If you are interested in how changes to the format can be handled. Take a look at {{{./xref/com/cedarsoft/test/io/MoneySerializer2.html}<com.cedarsoft.test.io.MoneySerializer2>}}.
   That serializer supports two different formats.
