@@ -31,16 +31,16 @@
 
 
     <menu name="Backends">
-      <item name="Stax based" href="stax" />
-      <item name="Stax Mate based" href="stax-mate" />
-      <item name="JDom" href="jdom" />
+      <item name="Stax based" href="stax/" />
+      <item name="Stax Mate based" href="stax-mate/" />
+      <item name="JDom" href="jdom/" />
       <item name="Custom" href="customBackend.html" />
     </menu>
 
     <menu name="Modules">
-      <item name="Core" href="serialization" />
-      <item name="Samples" href="samples" />
-      <item name="Test Utils" href="test-utils" />
+      <item name="Core" href="serialization/" />
+      <item name="Samples" href="samples/" />
+      <item name="Test Utils" href="test-utils/" />
     </menu>
 
     <menu ref="reports" inherit="bottom" />
