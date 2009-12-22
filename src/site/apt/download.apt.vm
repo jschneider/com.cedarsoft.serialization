@@ -15,15 +15,18 @@ Download
 
   {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Stax}}
   {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Stax Mate}}
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/serialization/${currentStableVersion}/serialization-${currentStableVersion}-jar-with-dependencies.jar}Custom}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/${currentStableVersion}/serialization-${currentStableVersion}-jar-with-dependencies.jar}Custom}}
 
 
 ** Current development version
 
-  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/stax-${currentDevelopmentVersion}-jar-with-dependencies.jar}Stax}}
-  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar}Stax Mate}}
-  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/serialization/${currentDevelopmentVersion}/serialization-${currentDevelopmentVersion}-jar-with-dependencies.jar}Custom}}
+  The artifacts can be found in those locations:
 
+  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/}Stax}} (download <stax-${currentDevelopmentVersion}-jar-with-dependencies.jar>)
+
+  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/}Stax Mate}} (download <stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar>)
+
+  * {{{http://nexus.cedarsoft.com/content/groups/public-snapshots/com/cedarsoft/serialization/${currentDevelopmentVersion}/}Custom}} (download <serialization-${currentDevelopmentVersion}-jar-with-dependencies.jar>).
 
 * {Maven}
 
@@ -101,7 +104,7 @@ Download
 
   The current development version is: ${currentDevelopmentVersion}
 
-  The snapshots are stored at {{http://nexus.cedarsoft.com/content/repositories/snapshots/}}. Just add a repository
+  The snapshots are stored at {{http://nexus.cedarsoft.com/content/repositories/public-snapshots/}}. Just add a repository
   entry to your pom.xml:
   
 ---
@@ -109,7 +112,7 @@ Download
   <repository>
     <id>cedarsoftSnapshotRepository</id>
     <name>cedarsoft Snapshot Repository</name>
-    <url>http://nexus.cedarsoft.com/content/repositories/snapshots/</url>
+    <url>http://nexus.cedarsoft.com/content/repositories/public-snapshots/</url>
     <snapshots>
       <enabled>true</enabled>
     </snapshots>
