@@ -15,6 +15,11 @@
   <packaging>pom</packaging>
   <url>http://serialization.cedarsoft.org</url>
 
+  <scm>
+     <connection>scm:git:git://git.cedarsoft.com/com.cedarsoft.serialization</connection>
+     <developerConnection>scm:git:ssh://git.cedarsoft.com/home/git/com.cedarsoft.serialization</developerConnection>
+   </scm>
+
   <modules>
     <module>serialization</module>
     <module>jdom</module>
