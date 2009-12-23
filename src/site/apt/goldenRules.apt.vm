@@ -1,6 +1,35 @@
-Don't change format without version update!
+Golden Rules
 
-Verify delegate's version range
+  This page contains some Golden Rules that should be followed. If you follow those rules, you will avoid a lot of troubles.
 
+* One serializer for each business object
 
---> object identity / references
+  It is recommended to create one serializer for each business object you have. Use delegation to reuse the serializers.
+  This keeps your code clean.
+
+* Write at least one test for each serializer
+
+  Write at least one simple test for each serializer. There exist base test classes so writing a test will only
+  take a few seconds.
+
+* Don't change format without version update!
+
+  Every time the format changes (even slightly!), increase the version number. You can create serializers that support
+  different versions within a version range. So reading old versions is no problem.
+
+* Update the *VersionsTest when the format changes
+
+  To ensure backwards compatibility update the versions test for your serializer every time the format changes and a new version is introduced.
+
+* Verify delegate's version range
+
+  Every serializer that uses other serializers as delegate must verify their supported version (range). This will keep all of your
+  serializers stable. There exists a convenience method (AbstractSerializer#verifyDelegatingSerializerVersion) for that purpose.
+
+* Object identity
+
+  If you have to serialize one object multiple times (try to avoid that), be careful to keep the object identity. If it are
+  value objects, there shouldn't be any problem.
+
+  If they are mutable, you have to introduce some kind of id (e.g. hashCode) to identify them. Using <ThreadLocal> to keep a map should
+  do it.
