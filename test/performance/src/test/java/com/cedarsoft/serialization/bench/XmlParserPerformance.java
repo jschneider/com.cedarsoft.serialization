@@ -8,6 +8,10 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 import org.testng.annotations.*;
 
 import javax.xml.stream.XMLInputFactory;
@@ -89,6 +93,9 @@ public class XmlParserPerformance {
 
   public static void main( String[] args ) {
     System.out.println();
+    System.out.println( "Simple XML Serialization (10%)" );
+    new XmlParserPerformance().benchSimpleXml();
+    System.out.println();
     System.out.println( "Xstream (10%)" );
     new XmlParserPerformance().benchXStream();
     System.out.println();
@@ -97,9 +104,9 @@ public class XmlParserPerformance {
     System.out.println();
     System.out.println( "Java6:" );
     new XmlParserPerformance().benchJava();
-//        System.out.println();
-//        System.out.println( "Aalto:" );
-//        new XmlParserPerformance().benchAalto();
+    //        System.out.println();
+    //        System.out.println( "Aalto:" );
+    //        new XmlParserPerformance().benchAalto();
     System.out.println();
     System.out.println( "Woodstox:" );
     new XmlParserPerformance().benchWoodstox();
@@ -122,6 +129,24 @@ public class XmlParserPerformance {
           XStream xStream = createConfiguredXStream();
           for ( int i = 0; i < MEDIUM; i++ ) {
             assertNotNull( xStream.fromXML( CONTENT_SAMPLE_XSTREAM ) );
+          }
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchSimpleXml() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          Serializer serializer = new Persister();
+
+          for ( int i = 0; i < MEDIUM; i++ ) {
+            XmlParserPerformance.FileType read = serializer.read( XmlParserPerformance.FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
+            assertNotNull( read );
           }
         } catch ( Exception e ) {
           throw new RuntimeException( e );
@@ -407,15 +432,19 @@ public class XmlParserPerformance {
   }
 
 
+  @Root
   public static class FileType {
+    @Attribute( name = "dependent" )
     private final boolean dependent;
+    @org.simpleframework.xml.Element( name = "id" )
     @NotNull
     @NonNls
     private final String id;
+    @org.simpleframework.xml.Element( name = "extension" )
     @NotNull
     private final Extension extension;
 
-    public FileType( @NotNull String id, @NotNull Extension extension, boolean dependent ) {
+    public FileType( @org.simpleframework.xml.Element( name = "id" ) @NotNull String id, @org.simpleframework.xml.Element( name = "extension" ) @NotNull Extension extension, @Attribute( name = "dependent" ) boolean dependent ) {
       this.dependent = dependent;
       this.id = id;
       this.extension = extension;
@@ -427,7 +456,6 @@ public class XmlParserPerformance {
     }
 
     public boolean isDependent() {
-
       return dependent;
     }
 
@@ -438,18 +466,21 @@ public class XmlParserPerformance {
   }
 
   public static class Extension {
+    @Attribute( name = "default" )
     private final boolean isDefault;
+    @Attribute( name = "delimiter" )
     @NotNull
     @NonNls
     private final String delimiter;
+    @org.simpleframework.xml.Element( name = "extension" )
     @NotNull
     @NonNls
     private final String extension;
 
-    public Extension( @NotNull String delimiter, @NotNull String extension, boolean aDefault ) {
+    public Extension( @Attribute( name = "delimiter" ) @NotNull String delimiter, @org.simpleframework.xml.Element( name = "extension" ) @NotNull String extension, @Attribute( name = "default" ) boolean isDefault ) {
       this.delimiter = delimiter;
       this.extension = extension;
-      isDefault = aDefault;
+      this.isDefault = isDefault;
     }
 
     public boolean isDefault() {
