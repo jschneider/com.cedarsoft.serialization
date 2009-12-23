@@ -1,0 +1,42 @@
+Comparing to Simple XML Serialization
+
+  {{{http://simple.sourceforge.net/}Simple XML Serialization}} is a serialization library that
+  uses annotations for serialization.
+
+  The main benefit is that your business code and serialization related informations are kept at the same place
+  while you get your first results quite fast.
+
+* Pros
+
+  * Easy to use
+
+  * Get your first results quite fast. While you have to add
+
+  * Mature library that handles many cases very well (collections, references)
+
+  * Quite flexible. Allows the addition of aliases to provide some backwards compatibility
+
+  * Extensible: You can create own converters (for special cases or performance improvements)
+
+* Cons
+
+  * Annotations have to be added to all business classes.
+    When using <final> fields and constructors to set them, you will have to add a lot of annotations with
+    parameters.
+
+  * Unstable. Every change to your business object will break the deserialization of old objects.
+
+  * Missing version information. It is not possible to decide whether the serialized object can be deserialized without
+    simply trying it. Danger! Strange side effects and late error messages may happen.
+
+  * Inflexibility: It is not possible to convert old serialized objects.
+
+  * Performance: Quite good but not necessary for high performance projects
+
+* Conclusion
+
+  Long term storage using Simple XML Serialization is not recommended. Every change might brake your compatibility.
+  You definitely will run into problems if it is used as long/mid term storage.
+
+  Because of the lack of a simple method to recover/convert old serialized objects, you will run into serious trouble with
+  a very high probability of data loss or very high costs for conversion.

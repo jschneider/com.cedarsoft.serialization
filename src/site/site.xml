@@ -16,6 +16,7 @@
       <item name="Sample" href="sample.html" />
       <item name="Versioning" href="versioning.html" />
       <item name="Usage" href="usage.html" />
+      <item name="Performance" href="performance.html" />
       <item name="Download" href="download.html" />
     </menu>
 
@@ -31,7 +32,10 @@
     </menu>
 
     <menu name="Comparing with...">
-      <item name="Performance" href="performance.html" />
+      <item name="Serialization" href="comparing/serialization.html" />
+      <item name="XStream" href="comparing/xstream.html" />
+      <item name="Simple XML Serialization" href="comparing/simpleXml.html" />
+      <item name="Manually written code" href="comparing/manually.html" />
     </menu>
 
     <menu name="Backends">

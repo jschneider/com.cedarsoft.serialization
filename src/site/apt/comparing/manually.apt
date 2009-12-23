@@ -1,0 +1,11 @@
+Comparing to manually written code
+
+  Writing your serialization code manually is always an option. This offers the best flexibility.
+
+  But very often this results in suboptimal design due to missing time and experience. Why
+  reinventing the wheel and repeating many failures?
+
+  Due to the lack of time, often even very basic things are omitted (like the version information).
+  Later somebody has to work around those shortfalls. According to experience this will take a lot of time...
+ 
+

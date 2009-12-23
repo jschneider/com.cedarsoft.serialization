@@ -1,0 +1,40 @@
+Comparing to XStream
+
+
+  {{{http://xstream.codehaus.org/XStream}XStream}} is a very mature library and one of the big player in the world of automated serialization.
+
+  The biggest strength of XStream is that you get your first results with very little effort.
+
+* Pros
+
+  * XStream is very easy to use
+
+  * Get your first results very, very fast
+
+  * Mature library that handles many cases very well (collections, references)
+
+  * Quite flexible. Allows the addition of aliases to provide some backwards compatibility
+
+  * Extensible: You can create own converters (for special cases or performance improvements)
+
+* Cons
+
+  * Unstable. It is possible to refactor your objects and reflect those changes using aliases.
+    But just very basic changes are supported (like renames).
+
+  * Missing version information. It is not possible to decide whether the serialized object can be deserialized without
+    simply trying it. Danger! Strange side effects may happen.
+
+  * Flexibility needs work: It is possible to reflect minor changes using alises. But sooner or later
+    you will have to implement your own converter from scratch.
+
+  * Performance: Quite good but not necessary for high performance projects
+
+* Conclusion
+
+  Long term storage using XStream contains risks. Smaller changes can easily be done, but bigger refactorings need a lot of
+  work to be handled. Many times you will have to write a custom converter later.
+
+  While it is probably possible to convert old serialized objects, it needs some work. And ofter a bit of "magic" to implicitly detect
+  the format version.
+

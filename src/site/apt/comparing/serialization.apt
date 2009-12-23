@@ -1,0 +1,39 @@
+Comparing to plain old Serialization
+
+  Serialization has been added to Java a long time ago (version 1.1) and is a very basic part of the language.
+  It has its strengths and weaknesses. It has quite a good performance. It is commonly used when using
+  RMI or persistent sessions in web application servers.
+
+* Pros
+
+  * Serialization is easy and a build in feature.
+
+  * Performance is not great - but good.
+
+  * Well understood and commonly used (session, RMI)
+
+  * Contains version information. Old serialized objects can't be read accidentally.
+
+* Cons
+
+  * Very unstable! Old serialized objects can *not* be deserialized. Adding the <serialVersionUID> does not
+    solve that issue but improves it a little.
+
+  * Version information is not very verbose. Doesn't contain any information whether the current version is
+    newer or older.
+
+  * Inflexibility: It is not possible to convert old serialized objects.
+
+  * Performance: Quite good but not necessary for high performance projects
+
+* Conclusion
+
+  It is <<not>> suggested to use serialization for long term storage. You definitely will run into problems if Serialization
+  is used as long/mid term storage.
+
+  Because of the lack of a simple method to recover/convert old serialized objects, you will run into serious trouble with
+  a very high probability of data loss or very high costs for conversion.
+
+
+
+
