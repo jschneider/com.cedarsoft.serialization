@@ -17,6 +17,11 @@ import org.testng.annotations.*;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +98,9 @@ public class XmlParserPerformance {
 
   public static void main( String[] args ) {
     System.out.println();
+    System.out.println( "Serialization" );
+    new XmlParserPerformance().benchSerialization();
+    System.out.println();
     System.out.println( "Simple XML Serialization (10%)" );
     new XmlParserPerformance().benchSimpleXml();
     System.out.println();
@@ -119,6 +127,30 @@ public class XmlParserPerformance {
     System.out.println();
     System.out.println( "Javolution" );
     new XmlParserPerformance().benchJavolution();
+  }
+
+  public void benchSerialization() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          FileType type = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
+
+          ByteArrayOutputStream bao = new ByteArrayOutputStream();
+          ObjectOutputStream out = new ObjectOutputStream( bao );
+          out.writeObject( type );
+          out.close();
+
+          byte[] serialized = bao.toByteArray();
+
+          for ( int i = 0; i < MEDIUM; i++ ) {
+            assertNotNull( new ObjectInputStream( new ByteArrayInputStream( serialized ) ).readObject() );
+          }
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
   }
 
   public void benchXStream() {
@@ -433,7 +465,7 @@ public class XmlParserPerformance {
 
 
   @Root
-  public static class FileType {
+  public static class FileType implements Serializable {
     @Attribute( name = "dependent" )
     private final boolean dependent;
     @org.simpleframework.xml.Element( name = "id" )
@@ -465,7 +497,7 @@ public class XmlParserPerformance {
     }
   }
 
-  public static class Extension {
+  public static class Extension implements Serializable{
     @Attribute( name = "default" )
     private final boolean isDefault;
     @Attribute( name = "delimiter" )
