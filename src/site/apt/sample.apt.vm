@@ -1,0 +1,34 @@
+Sample
+
+  This is a very simple example that shows how cedarsoft Serialization works. This sample is based on {{{stax-mate/}Stax Mate}}.
+
+* The resulting XML
+
+  This is a sample XML that is created by a very simple serializer:
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<?format 1.0.0?>
+<money>1199</money>
+---
+
+  The second line is a processing instruction that describes the format version. If the XML format has to be changed,
+  the version number is increased.
+
+  The design of cedarsoft Serialization offers a very easy way to handle the old formats, too.
+
+* The serialization class
+
+  For each business class there should be one serializer. So for our <Money> class we create the class <MoneySerializer>:
+
+%{snippet|id=body|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/MoneySerializer.java}
+
+* The business object
+
+  We can serialize all kinds of business objects. cedarsoft Serialization just provides the structure while the specific code
+  is hand written.
+
+  In this sample we serialize a simple money object with just one value:
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Money.java}
+
