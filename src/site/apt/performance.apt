@@ -1,0 +1,65 @@
+Performance
+
+  Performance is a crucial part for every application. (De)serialization often becomes a bottleneck in today's applications.
+
+* Generally
+
+  cedarsoft Serialization is designed to contain nearly no overhead. Therefore performance is as good as the backend implementations.
+  There exit several implementations for XML based backends.
+  For best performance it is recommended to use a Stax based serializer.
+
+* XML based (de)serialization
+
+  XML is very commonly used for (de)serialization. Unfortunately XML is not optimized for performance because it contains much overhead.
+  But since it is so wide used, there exist really fast implementations for parsing and writing. cedarsoft Serialization
+  uses those fast implementations to provide the best performance possible.
+
+** Comparing different XML parsers
+
+  You can find many, many XML parsing benchmarks in the web. And you can find much more discussions about the validity of them.
+  We don't want to repeat that discussion here. This list should just give you a hint about the relative performance.
+  For performance critical parts, there should be done a specific benchmark that represents the real world environment as good as possible.
+
+
+*** Stax
+
+  {{{http://stax.codehaus.org/Home}Stax}} is the up-to-date XML parser API provided by JDK 6. This API is a step forward. There are plenty of implementations.
+
+
+  Comparison of Stax implementations:
+
+  * {{{http://woodstox.codehaus.org/}Woodstox}} (com.ctc.wstx.stax.WstxInputFactory): In our small tests, Woodstox seems to be one of the fastest implementations.
+
+  * JDK 6 (com.sun.xml.internal.stream.XMLInputFactoryImpl): Sun ships its own parser. That parser offers about 50% of the performance of Woodstox.
+
+  * BEA (com.bea.xml.stream.MXParserFactory): Bea has created its own stax implementation. Unfortunately at least for many small files that implementation
+  doesn't perform very well. We got just about 20% of the performance comparing to Woodstox.
+
+  * {{{http://javolution.org/}Javolution}}: Javolution has created its own api that is heavily inspired by Stax. But it is different
+   and can not be used as drop in replacement.
+
+   This library is mentioned here, because the performance looks very promising (about 20% faster than Woodstox!). So if performance really becomes
+   a problem, this might be worth a look.
+
+
+*** XStream (around 10%)
+
+  XStream is a completely different approach for serializing objects. XStream uses reflection to "magically" (de)serialize your business
+  objects. And it does a good job.
+
+  But of course reflection has its price. Therefore XStream based serialization reaches about 10% of the performance when using
+  cedarsoft Serialization based implementations with Stax/Woodstox.
+
+  The main disadvantage of XStream is the missing support for different format versions and therefore the lack of needed flexibility.
+
+*** JDom (around 1%)
+
+  JDom is one of the first XML parser implementations made for Java. While the API is really usable, the performance is poor
+  (JDom is DOM based).
+  We get about 1% of the performance in our tests.
+
+
+* Custom backend implementations
+
+  For your own backend implementation can be said, that the performance will be as good as your implementation. cedarsoft Serialization
+  needs nearly no overhead.

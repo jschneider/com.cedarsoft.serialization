@@ -30,6 +30,9 @@
       <item name="Backends" href="backends.html" />
     </menu>
 
+    <menu name="Comparing with...">
+      <item name="Performance" href="performance.html" />
+    </menu>
 
     <menu name="Backends">
       <item name="Stax based" href="stax/" />
