@@ -52,6 +52,14 @@ Performance
 
   The main disadvantage of XStream is the missing support for different format versions and therefore the lack of needed flexibility.
 
+*** Simple XML serialization (around 20%)
+
+  {{{http://simple.sourceforge.net/}Simple XML serialization}} is a quite new player in the serializers world. It is based on annotations
+  (and reflection). So yes - it is simple (but pollutes your code with annotations).
+
+  The performance is quite good. It is twice as fast as XStream. But of course reflection takes its time. So we get around 20% of the
+  performance of cedarsoft Serialization and Stax/Woodstox.
+
 *** JDom (around 1%)
 
   JDom is one of the first XML parser implementations made for Java. While the API is really usable, the performance is poor
