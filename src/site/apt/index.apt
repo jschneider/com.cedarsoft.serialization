@@ -13,6 +13,28 @@ cedarsoft Serialization
 
   There exist several backends that can be used. The most commonly used backend is {{{./stax}Stax}}/{{{./stax-mate}Stax-Mate}}.
 
+** Resulting XML
+
+  The resulting XML may be look like that:
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<?format 2.0.1?>
+<businessObject>
+  <name>theName</name>
+  ...
+</businessObject>
+---
+
+  The second line is a processing instruction that describes the format version. If the XML format has to be changed,
+  the version number is increased:
+
+---
+<?format 2.0.2?>
+---
+
+  The design of cedarsoft Serialization offers a very easy way to handle the old formats, too.
+
 * Winding up with the wrong "everything can be done automatically" promise
 
   Most of the serialization frameworks promise that the serialization can be done automatically. There are several approaches.
