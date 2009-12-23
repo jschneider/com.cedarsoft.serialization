@@ -5,7 +5,7 @@ Performance
 * Generally
 
   cedarsoft Serialization is designed to contain nearly no overhead. Therefore performance is as good as the backend implementations.
-  There exit several implementations for XML based backends.
+  There exist several implementations for XML based backends.
   For best performance it is recommended to use a Stax based serializer.
 
 * XML based (de)serialization
