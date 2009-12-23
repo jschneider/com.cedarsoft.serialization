@@ -71,3 +71,9 @@ Performance
 
   For your own backend implementation can be said, that the performance will be as good as your implementation. cedarsoft Serialization
   needs nearly no overhead.
+
+* Serialization
+
+  Serialization using an ObjectOutputStream/ObjectInputStream has been added to Java 1.1. This is a very easy approach that is quite fast.
+  You will get about 20% of the performance compared to cedarsoft Serialization with Stax/Woodstox.
+  
