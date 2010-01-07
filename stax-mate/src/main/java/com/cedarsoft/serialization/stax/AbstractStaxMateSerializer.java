@@ -21,10 +21,6 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     super( defaultElementName, formatVersionRange );
   }
 
-  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, typeForNameSpaceUri, formatVersionRange );
-  }
-
   protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }

@@ -24,7 +24,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {
-    return new AbstractStaxMateSerializer<String>( "aString", String.class, new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
+    return new AbstractStaxMateSerializer<String>( "aString", "http://www.lang.java/String", new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
       @Override
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
         serializeTo.addCharacters( object );

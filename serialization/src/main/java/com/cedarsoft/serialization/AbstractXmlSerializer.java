@@ -34,18 +34,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
     this( defaultElementName, "http://" + defaultElementName, formatVersionRange );
   }
-
-  /**
-   * Creates a new serializer
-   *
-   * @param defaultElementName  the default element name
-   * @param typeForNameSpaceUri the type that is used to calculate the name space uri
-   * @param formatVersionRange  the version range. The max value is used when written.
-   */
-  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
-    this( defaultElementName, createNameSpaceUriBase( typeForNameSpaceUri ), formatVersionRange );
-  }
-
+  
   /**
    * Creates a new serializer
    *
@@ -100,29 +89,5 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     String last = parts[parts.length - 1];
 
     return Version.parse( last );
-  }
-
-  @NotNull
-  @NonNls
-  public static String createNameSpaceUriBase( @NotNull Class<?> type ) {
-    String[] parts = type.getName().split( "\\." );
-
-    //If we have lesser than three parts just return the type - a fallback
-    if ( parts.length < 3 ) {
-      return "http://" + type.getName();
-    }
-
-    StringBuilder uri = new StringBuilder( "http://www." );
-    uri.append( parts[1] );
-    uri.append( "." );
-    uri.append( parts[0] );
-
-    for ( int i = 2, partsLength = parts.length; i < partsLength; i++ ) {
-      String part = parts[i];
-      uri.append( "/" );
-      uri.append( part );
-    }
-
-    return uri.toString();
   }
 }

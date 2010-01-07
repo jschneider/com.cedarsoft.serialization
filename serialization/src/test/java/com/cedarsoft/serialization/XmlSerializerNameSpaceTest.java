@@ -10,12 +10,6 @@ import static org.testng.AssertJUnit.*;
  */
 public class XmlSerializerNameSpaceTest {
   @Test
-  public void testToUri() {
-    assertEquals( AbstractXmlSerializer.createNameSpaceUriBase( XmlSerializerNameSpaceTest.class ), "http://www.cedarsoft.com/serialization/XmlSerializerNameSpaceTest" );
-    assertEquals( AbstractXmlSerializer.createNameSpaceUriBase( String.class ), "http://www.lang.java/String" );
-  }
-
-  @Test
   public void testVersion() {
     assertEquals( new Version( 1, 0, 0, "b4" ).format(), "1.0.0-b4" );
   }
