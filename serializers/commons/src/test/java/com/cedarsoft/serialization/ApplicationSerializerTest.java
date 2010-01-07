@@ -23,10 +23,10 @@ public class ApplicationSerializerTest extends AbstractXmlSerializerTest<Applica
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<application  xmlns=\"http://application/1.0.0\">\n" +
-      "  <name>gimp</name>\n" +
-      "  <version>1.2.3</version>\n" +
-      "</application>";
+    return
+      "<application >\n" +
+        "  <name>gimp</name>\n" +
+        "  <version>1.2.3</version>\n" +
+        "</application>";
   }
 }

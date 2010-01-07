@@ -24,7 +24,7 @@ import java.io.IOException;
 public class MoneySerializer2 extends AbstractStaxMateSerializer<Money> {
   public MoneySerializer2() {
     //This serializer supports an old version, too
-    super( "money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
+    super( "money", "http://www.cedarsoft.com/test/money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
   }
 
   @Override

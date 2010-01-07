@@ -19,12 +19,9 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
+   * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version range
    */
-  protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, formatVersionRange );
-  }
-  
   protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }

@@ -21,7 +21,7 @@ public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
   public static final String SEPARATOR = "x";
 
   public DimensionSerializer() {
-    super( "dimension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "dimension", "http://java.sun.com/awt/dimension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

@@ -31,7 +31,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
 
   @Inject
   public ApplicationSerializer( @NotNull VersionSerializer versionSerializer ) {
-    super( "application", new VersionRange( VERSION_VERSION_SERIALIZER, VERSION_VERSION_SERIALIZER ) );
+    super( "application", "http://www.cedarsoft.com/app/appliaction", new VersionRange( VERSION_VERSION_SERIALIZER, VERSION_VERSION_SERIALIZER ) );
     this.versionSerializer = versionSerializer;
 
     verifyDelegatingSerializerVersion( versionSerializer, VERSION_VERSION_SERIALIZER );

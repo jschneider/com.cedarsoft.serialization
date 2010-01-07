@@ -17,8 +17,8 @@ public abstract class AbstractStaxMateSerializingStrategy<T> extends AbstractSta
   @NotNull
   private final Class<? extends T> supportedType;
 
-  protected AbstractStaxMateSerializingStrategy( @NotNull String id, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
-    super( id, formatVersionRange );
+  protected AbstractStaxMateSerializingStrategy( @NotNull String id, @NonNls @NotNull String nameSpaceUriBase, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
+    super( id, nameSpaceUriBase, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;
   }

@@ -29,22 +29,24 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
+   * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version range
    * @param strategies         the strategies
    */
-  public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull StaxMateSerializingStrategy<? extends T>... strategies ) {
-    this( defaultElementName, formatVersionRange, Arrays.asList( strategies ) );
+  public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange, @NotNull StaxMateSerializingStrategy<? extends T>... strategies ) {
+    this( defaultElementName, nameSpaceUriBase, formatVersionRange, Arrays.asList( strategies ) );
   }
 
   /**
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
+   * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version name
    * @param strategies         the strategies
    */
-  public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends StaxMateSerializingStrategy<? extends T>> strategies ) {
-    super( defaultElementName, formatVersionRange );
+  public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends StaxMateSerializingStrategy<? extends T>> strategies ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
     serializingStrategySupport = new SerializingStrategySupport<T, StaxMateSerializingStrategy<T>>( strategies );
   }
 

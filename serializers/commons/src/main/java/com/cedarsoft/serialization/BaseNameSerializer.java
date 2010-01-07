@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class BaseNameSerializer extends AbstractStaxMateSerializer<BaseName> {
   public BaseNameSerializer() {
-    super( "baseName", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "baseName", "http://www.cedarsoft.com/file/baseName", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

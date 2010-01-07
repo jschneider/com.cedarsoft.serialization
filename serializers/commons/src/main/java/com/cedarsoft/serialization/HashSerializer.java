@@ -22,7 +22,7 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
   private static final String ATTRIBUTE_ALGORITHM = "algorithm";
 
   public HashSerializer() {
-    super( "hash", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "hash", "http://www.cedarsoft.com/crypt/hash", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

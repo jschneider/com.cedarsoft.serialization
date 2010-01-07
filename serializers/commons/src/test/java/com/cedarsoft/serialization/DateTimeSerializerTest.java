@@ -31,7 +31,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
   @Test
   public void testA() throws IOException, SAXException {
     byte[] serialized = serializer.serializeToByteArray( new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ) );
-    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://dateTime/1.0.0\">20010101T010101.001-0500</dateTime>" );
+    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://www.joda.org/time/dateTime/1.0.0\">20010101T010101.001-0500</dateTime>" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( serialized ) ), new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ) );
   }
@@ -62,7 +62,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
 
     byte[] serialized = serializer.serializeToByteArray( dateTime );
 
-    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://dateTime/1.0.0\">20091231T235901.999-0500</dateTime>" );
+    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://www.joda.org/time/dateTime/1.0.0\">20091231T235901.999-0500</dateTime>" );
 
     DateTime deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
     Assert.assertEquals( deserialized, dateTime );

@@ -66,7 +66,7 @@ public class StaxMateVersionTest {
 
   public static class NewOldSerializer extends AbstractStaxMateSerializer<Integer> {
     public NewOldSerializer() {
-      super( "integer", new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
+      super( "integer", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
     }
 
     @Override
@@ -92,7 +92,7 @@ public class StaxMateVersionTest {
 
   public static class NewIntegerSerializer extends AbstractStaxMateSerializer<Integer> {
     public NewIntegerSerializer() {
-      super( "integer", new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 0 ) ) );
+      super( "integer", "http://integer", new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 0 ) ) );
     }
 
     @Override
@@ -109,7 +109,7 @@ public class StaxMateVersionTest {
 
   public static class OldIntegerSerializer extends AbstractStaxMateSerializer<Integer> {
     public OldIntegerSerializer() {
-      super( "integer", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+      super( "integer", "http://integer", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
     }
 
     @Override

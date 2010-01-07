@@ -23,7 +23,7 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
   //START SNIPPET: constructor
 
   public ModelSerializer() {
-    super( "model", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "model", "http://www.cedarsoft.com/test/model", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
   //END SNIPPET: constructor
 

@@ -22,7 +22,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
+    AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", "http://int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
       @Override
       public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException {
         serializeTo.setText( object.toString() );
@@ -34,7 +34,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
         return 1;
       }
     };
-    AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
+    AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", "http://double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
       @Override
       public void serialize( @NotNull Element serializeTo, @NotNull Double object ) throws IOException {
         serializeTo.setText( object.toString() );
@@ -82,7 +82,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
 
   public static class MySerializer extends AbstractDelegatingJDomSerializer<Number> {
     public MySerializer( @NotNull JDomSerializingStrategy<? extends Number>... serializingStrategies ) {
-      super( "number", new VersionRange( new Version( 1, 2, 3 ), new Version( 1, 2, 3 ) ), serializingStrategies );
+      super( "number", "http://number", new VersionRange( new Version( 1, 2, 3 ), new Version( 1, 2, 3 ) ), serializingStrategies );
     }
   }
 }

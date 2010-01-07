@@ -22,7 +22,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   private final MoneySerializer moneySerializer;
 
   public ExtraSerializer( MoneySerializer moneySerializer ) {
-    super( "extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 0 ) ) );
+    super( "extra", "http://www.cedarsoft.com/test/extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 0 ) ) );
     //We choose another version number. Maybe this is an old serializer that has been created within another project.
 
     this.moneySerializer = moneySerializer;

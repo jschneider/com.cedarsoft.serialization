@@ -25,7 +25,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
@@ -41,7 +41,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
       }
     };
 
-    AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", "asdf", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object ) throws IOException, XMLStreamException {
@@ -94,11 +94,11 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
   public static class MySerializer extends AbstractDelegatingStaxMateSerializer<Number> {
     public MySerializer( @NotNull StaxMateSerializingStrategy<? extends Number>... serializingStrategies ) {
-      super( "number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
+      super( "number", "http://number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
     }
 
     public MySerializer( @NotNull Collection<? extends StaxMateSerializingStrategy<? extends Number>> serializingStrategies ) {
-      super( "number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
+      super( "number", "http://number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
     }
   }
 }

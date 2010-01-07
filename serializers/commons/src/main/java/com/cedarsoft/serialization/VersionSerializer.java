@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
   public VersionSerializer() {
-    super( "version", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "version", "http://www.cedarsoft.com/version", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

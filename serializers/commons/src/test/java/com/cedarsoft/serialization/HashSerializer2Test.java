@@ -24,7 +24,7 @@ public class HashSerializer2Test {
   @Test
   public void testIt() throws IOException, SAXException {
     byte[] serialized = serializer.serializeToByteArray( Hash.fromHex( Algorithm.MD5, "121212" ) );
-    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<hash xmlns=\"http://hash/1.0.0\" algorithm=\"MD5\">121212</hash>" );
+    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<hash xmlns=\"http://www.cedarsoft.com/crypt/hash/1.0.0\" algorithm=\"MD5\">121212</hash>" );
 
     Hash deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
     Assert.assertEquals( deserialized, Hash.fromHex( Algorithm.MD5, "121212" ) );

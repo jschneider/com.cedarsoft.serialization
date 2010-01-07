@@ -37,7 +37,7 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @Inject
   public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "fileName", new VersionRange( VERSION_EXTENSION_SERIALIZER, VERSION_EXTENSION_SERIALIZER ) );
+    super( "fileName", "http://www.cedarsoft.com/file/fileName",new VersionRange( VERSION_EXTENSION_SERIALIZER, VERSION_EXTENSION_SERIALIZER ) );
     this.extensionSerializer = extensionSerializer;
     this.baseNameSerializer = baseNameSerializer;
 

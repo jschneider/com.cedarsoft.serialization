@@ -17,14 +17,10 @@ import java.io.OutputStream;
  * @param <T> the type
  */
 public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSerializer<T, SMOutputElement> {
-  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, formatVersionRange );
-  }
-
-  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName,@NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
-
+  
   @Override
   public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
     try {

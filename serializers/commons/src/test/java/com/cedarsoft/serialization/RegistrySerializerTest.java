@@ -30,12 +30,10 @@ public class RegistrySerializerTest {
   @BeforeMethod
   public void setup() {
     access = new InMemorySerializedObjectsAccess();
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
-      @NotNull
+    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
         serializeTo.writeCharacters( object );
-
       }
 
       @NotNull

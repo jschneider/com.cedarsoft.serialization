@@ -21,7 +21,7 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   private static final String ATTRIBUTE_DELIMITER = "delimiter";
 
   public ExtensionSerializer() {
-    super( "extension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "extension", "http://www.cedarsoft.com/file/extension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

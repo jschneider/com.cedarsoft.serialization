@@ -46,7 +46,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
 
   public static class StaxIntegerSerializer extends AbstractStaxSerializer<Integer> {
     public StaxIntegerSerializer() {
-      super( "int", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+      super( "int", "http://int", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
     }
 
     @Override

@@ -28,8 +28,8 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
   @NonNls
   protected static final String LINE_SEPARATOR = "\n";
 
-  protected AbstractJDomSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, formatVersionRange );
+  protected AbstractJDomSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
   @NotNull

@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   public DateTimeSerializer() {
-    super( "dateTime", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "dateTime","http://www.joda.org/time/dateTime", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

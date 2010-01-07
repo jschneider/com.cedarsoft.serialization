@@ -75,7 +75,7 @@ public class JdomSerializationTest {
 
   public static class MySerializer extends AbstractJDomSerializer<Integer> {
     public MySerializer() {
-      super( "my", new VersionRange( new Version( 1, 2, 1 ), new Version( 1, 2, 3 ) ) );
+      super( "my", "http://my", new VersionRange( new Version( 1, 2, 1 ), new Version( 1, 2, 3 ) ) );
     }
 
     @Override

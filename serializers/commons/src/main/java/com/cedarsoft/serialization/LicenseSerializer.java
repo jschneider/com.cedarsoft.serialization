@@ -24,7 +24,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
   private static final String ELEMENT_NAME = "name";
 
   public LicenseSerializer() {
-    super( "license", License.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "license", "http://www.cedarsoft.com/serialization/license", License.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

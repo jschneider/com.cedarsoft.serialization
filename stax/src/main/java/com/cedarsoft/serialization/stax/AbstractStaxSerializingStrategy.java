@@ -21,11 +21,12 @@ public abstract class AbstractStaxSerializingStrategy<T> extends AbstractStaxSer
    * Creates a new strategy
    *
    * @param id                 the id
+   * @param nameSpaceUriBase   the name space uri base
    * @param supportedType      the supported type
    * @param formatVersionRange the format version range
    */
-  protected AbstractStaxSerializingStrategy( @NotNull String id, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
-    super( id, formatVersionRange );
+  protected AbstractStaxSerializingStrategy( @NotNull String id, @NonNls @NotNull String nameSpaceUriBase, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
+    super( id, nameSpaceUriBase, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;
   }

@@ -28,13 +28,9 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * Creates a new serializer
    *
    * @param defaultElementName the name for the root element, if this serializers is not used as delegate. For delegating serializers that value is not used.
+   * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the supported format version range. The upper bound represents the format that is written. All Versions within the range can be read.
    */
-  @Deprecated
-  protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, formatVersionRange );
-  }
-  
   protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }

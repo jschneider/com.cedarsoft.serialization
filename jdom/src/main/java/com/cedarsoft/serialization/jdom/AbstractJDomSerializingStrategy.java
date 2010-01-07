@@ -11,13 +11,11 @@ public abstract class AbstractJDomSerializingStrategy<T> extends AbstractJDomSer
   @NotNull
   @NonNls
   private final String id;
-
   @NotNull
   private final Class<? extends T> supportedType;
 
-
-  protected AbstractJDomSerializingStrategy( @NotNull String id, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
-    super( id, formatVersionRange );
+  protected AbstractJDomSerializingStrategy( @NotNull String id, @NonNls @NotNull String nameSpaceUriBase, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
+    super( id, nameSpaceUriBase, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;
   }

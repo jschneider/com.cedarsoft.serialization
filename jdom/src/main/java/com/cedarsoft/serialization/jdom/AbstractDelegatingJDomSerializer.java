@@ -21,12 +21,12 @@ public class AbstractDelegatingJDomSerializer<T> extends AbstractJDomSerializer<
   @NotNull
   private final SerializingStrategySupport<T, JDomSerializingStrategy<T>> serializingStrategySupport;
 
-  public AbstractDelegatingJDomSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull JDomSerializingStrategy<? extends T>... strategies ) {
-    this( defaultElementName, formatVersionRange, Arrays.asList( strategies ) );
+  public AbstractDelegatingJDomSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange, @NotNull JDomSerializingStrategy<? extends T>... strategies ) {
+    this( defaultElementName, nameSpaceUriBase, formatVersionRange, Arrays.asList( strategies ) );
   }
 
-  public AbstractDelegatingJDomSerializer( @NotNull String defaultElementName, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends JDomSerializingStrategy<? extends T>> strategies ) {
-    super( defaultElementName, formatVersionRange );
+  public AbstractDelegatingJDomSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends JDomSerializingStrategy<? extends T>> strategies ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
     this.serializingStrategySupport = new SerializingStrategySupport<T, JDomSerializingStrategy<T>>( strategies );
   }
 

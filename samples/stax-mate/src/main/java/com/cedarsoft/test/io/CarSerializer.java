@@ -33,7 +33,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   private final ModelSerializer modelSerializer;
 
   public CarSerializer( MoneySerializer moneySerializer, ExtraSerializer extraSerializer, ModelSerializer modelSerializer ) {
-    super( "car", new VersionRange( VERSION_MONEY_SERIALIZER, VERSION_MONEY_SERIALIZER ) );
+    super( "car", "http://www.cedarsoft.com/test/car", new VersionRange( VERSION_MONEY_SERIALIZER, VERSION_MONEY_SERIALIZER ) );
     this.moneySerializer = moneySerializer;
     this.extraSerializer = extraSerializer;
     this.modelSerializer = modelSerializer;
