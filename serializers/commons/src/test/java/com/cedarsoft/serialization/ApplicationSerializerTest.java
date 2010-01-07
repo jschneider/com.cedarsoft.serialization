@@ -24,7 +24,7 @@ public class ApplicationSerializerTest extends AbstractXmlSerializerTest<Applica
   @Override
   protected String getExpectedSerialized() {
     return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<application>\n" +
+      "<application  xmlns=\"http://application/1.0.0\">\n" +
       "  <name>gimp</name>\n" +
       "  <version>1.2.3</version>\n" +
       "</application>";
