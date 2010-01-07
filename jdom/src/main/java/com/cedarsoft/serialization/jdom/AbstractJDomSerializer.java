@@ -7,9 +7,7 @@ import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Parent;
-import org.jdom.ProcessingInstruction;
-import org.jdom.filter.Filter;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -19,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 /**
  * Abstract serializer based on JDom
@@ -45,11 +42,12 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
   @Override
   public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
     Document document = new Document();
-    //Add the format version
-    document.addContent( new ProcessingInstruction( PI_TARGET_FORMAT, getFormatVersion().toString() ) );
+
+    //The name space
+    Namespace namespace = Namespace.getNamespace( createNameSpaceUri( getFormatVersion() ) );
 
     //Create the root
-    Element root = new Element( getDefaultElementName() );
+    Element root = new Element( getDefaultElementName(), namespace );
     document.setRootElement( root );
 
     serialize( root, object );
@@ -62,44 +60,14 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     try {
       Document document = new SAXBuilder().build( in );
 
-      ProcessingInstruction processingInstruction = getFormatInstruction( document );
-
-      Version formatVersion = parseVersion( processingInstruction );
+      String namespaceURI = document.getRootElement().getNamespaceURI();
+      Version formatVersion = parseVersionFromNamespaceUri( namespaceURI );
 
       Version.verifyMatch( getFormatVersion(), formatVersion );
 
       return deserialize( document.getRootElement(), formatVersion );
     } catch ( JDOMException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
-    }
-  }
-
-  @NotNull
-  private static ProcessingInstruction getFormatInstruction( @NotNull Parent document ) {
-    List<? extends ProcessingInstruction> processingInstructions = document.getContent( new PiFormatFilter() );
-    if ( processingInstructions.size() != 1 ) {
-      throw new IllegalStateException( "No processing instructions found" );
-    }
-    return processingInstructions.get( 0 );
-  }
-
-  @NotNull
-  private static Version parseVersion( @NotNull ProcessingInstruction processingInstruction ) {
-    if ( !processingInstruction.getTarget().equals( PI_TARGET_FORMAT ) ) {
-      throw new IllegalStateException( "Invalid target: <" + processingInstruction.getTarget() + "> but expected <" + PI_TARGET_FORMAT + ">" );
-    }
-
-    String data = processingInstruction.getData();
-    return Version.parse( data );
-  }
-
-  /**
-   * Filter that recognizes processing instructions containing the format version number
-   */
-  private static class PiFormatFilter implements Filter {
-    @Override
-    public boolean matches( Object obj ) {
-      return obj instanceof ProcessingInstruction && ( ( ProcessingInstruction ) obj ).getTarget().equals( PI_TARGET_FORMAT );
     }
   }
 }
