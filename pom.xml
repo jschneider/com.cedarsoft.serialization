@@ -45,6 +45,8 @@
     <module>test</module>
 
     <module>samples</module>
+
+    <module>generator</module>
   </modules>
 
   <dependencyManagement>
@@ -73,6 +75,21 @@
       </dependency>
       <dependency>
         <groupId>com.cedarsoft.serialization</groupId>
+        <artifactId>stax-mate</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.serialization</groupId>
+        <artifactId>test-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.serialization.generator</groupId>
+        <artifactId>common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.serialization.generator</groupId>
         <artifactId>stax-mate</artifactId>
         <version>${project.version}</version>
       </dependency>
