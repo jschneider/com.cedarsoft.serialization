@@ -12,20 +12,14 @@ Versioning
 
 * Format versions in XML files
 
-  The XML files should only contain that data. Informations about the file format are not part of the data. Therefore
-  cedarsoft Serialization suggests to use {{{http://www.w3.org/TR/REC-xml/#sec-pi}processing instructions}} to document the format version.
-
-  Those processing instructions are not part of the regular data and can easily be ignored when parsing the xml.
-
-  Therefore existing applications should not be harmed when processing instructions containing the format version are added.
-
+  The format version is encoded within a custom namespace declaration. The first part (without the version) of the
+  namespace can fully be customized.
 
   A serialized xml containing the format version might look like that:
   
 ----------------------------------------
 <?xml version="1.0"?>
-<?format 1.0.1?>
-<car>
+<car xmlns="http://www.cedarsoft.com/test/car/1.0.1">
 ...
 ----------------------------------------
 

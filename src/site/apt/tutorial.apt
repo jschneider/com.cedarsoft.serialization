@@ -100,11 +100,10 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<?format 1.0.0?>
-<model>Toyota</model>
+<model xmlns="http://www.cedarsoft.com/test/model/1.0.0">Toyota</model>
 ---
 
-  The processing instruction (starting with "?format") contains the information about the format version. That information is parsed and used
+  The namespace declaration (starting with "xmlns") contains the information about the format version. That information is parsed and used
   to verify whether the serializer is able to deserialize the object.
 
 ** {Deserialization method}
@@ -181,8 +180,7 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<?format 1.5.0?>
-<extra>
+<extra xmlns="http://www.cedarsoft.com/test/extra/1.5.0">
   <description>Metallic</description>
   <price>40000</price>
 </extra>
@@ -226,8 +224,7 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<?format 1.0.0?>
-<car>
+<car xmlns="http://www.cedarsoft.com/test/car/1.0.0">
   <color red="255" blue="0" green="200" />
   <model>Ford</model>
   <basePrice>1900000</basePrice>
