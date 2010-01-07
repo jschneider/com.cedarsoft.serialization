@@ -52,12 +52,17 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
         throw new VersionException( "Version information is missing for <" + reader.getName().getLocalPart() + ">" );
       }
 
+      //Parse and verify the version
       Version version = parseVersionFromNamespaceUri( namespaceURI );
       if ( !getFormatVersionRange().contains( version ) ) {
         throw new VersionMismatchException( getFormatVersion(), version );
       }
 
+      //Verify the name space
+      verifyNamespaceUri( namespaceURI );
+
       T deserialized = deserialize( reader, version );
+
 
       if ( !reader.isEndElement() ) {
         throw new IllegalStateException( "Not consumed everything in <" + getClass().getName() + ">" );
@@ -70,6 +75,13 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       return deserialized;
     } catch ( XMLStreamException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
+    }
+  }
+
+  private void verifyNamespaceUri( @NotNull @NonNls String namespaceURI ) {
+    String expectedBase = getNameSpaceUriBase();
+    if ( !namespaceURI.startsWith( expectedBase ) ) {
+      throw new IllegalArgumentException( "Invalid namespace. Was <" + namespaceURI + "> but expected <" + expectedBase + "/$VERSION>" );
     }
   }
 

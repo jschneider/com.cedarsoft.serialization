@@ -70,7 +70,6 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
       getSerializer().deserialize( new ByteArrayInputStream( "<aString>asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
     } catch ( VersionException ignore ) {
-
     }
   }
 
@@ -80,6 +79,16 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
       getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.java/String/0.9.9\">asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException ignore ) {
+    }
+  }
+
+  @Test
+  public void testWrongNamespaceVersion() throws IOException {
+    try {
+      getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
+      fail( "Where is the Exception" );
+    } catch ( IllegalArgumentException e ) {
+      assertEquals( e.getMessage(), "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>" );
     }
   }
 }

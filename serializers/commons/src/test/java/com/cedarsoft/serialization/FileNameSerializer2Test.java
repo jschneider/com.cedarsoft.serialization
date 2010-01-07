@@ -15,7 +15,7 @@ public class FileNameSerializer2Test {
   @Test
   public void testDelimiter() throws IOException {
     FileName fileName = deserialize(
-      "<fileName xmlns=\"http://fileName/1.0.0\">\n" +
+      "<fileName xmlns=\"http://www.cedarsoft.com/file/fileName/1.0.0\">\n" +
         "  <baseName>baseName</baseName>\n" +
         "  <extension delimiter=\".\">jpg</extension>\n" +
         "</fileName>" );
@@ -28,7 +28,7 @@ public class FileNameSerializer2Test {
   @Test
   public void testMissingDelimiter() throws IOException {
     FileName fileName = deserialize(
-      "<fileName xmlns=\"http://fileName/1.0.0\">\n" +
+      "<fileName xmlns=\"http://www.cedarsoft.com/file/fileName/1.0.0\">\n" +
         "  <baseName>baseName</baseName>\n" +
         "  <extension>jpg</extension>\n" +
         "</fileName>" );
