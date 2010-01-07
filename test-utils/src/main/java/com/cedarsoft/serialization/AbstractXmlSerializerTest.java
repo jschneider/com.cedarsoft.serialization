@@ -3,6 +3,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * Abstract base class for XML based serializers.
@@ -26,12 +28,16 @@ public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTes
 
   @NotNull
   @NonNls
-  public static String addNameSpace( @NotNull @NonNls String expectedSerialized, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
-    Document doc = new SAXBuilder().build( new ByteArrayInputStream( expectedSerialized.getBytes() ) );
+  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
+    return addNameSpace( xml, serializer.createNameSpaceUri( serializer.getFormatVersion() ) );
+  }
+
+  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpaceUri ) throws JDOMException, IOException {
+    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml.getBytes() ) );
 
     Element root = doc.getRootElement();
     if ( root.getNamespaceURI().length() == 0 ) {
-      Namespace namespace = Namespace.getNamespace( serializer.createNameSpaceUri( serializer.getFormatVersion() ) );
+      Namespace namespace = Namespace.getNamespace( nameSpaceUri );
 
       addNameSpaceRecursively( root, namespace );
     }
@@ -39,7 +45,7 @@ public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTes
     return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc );
   }
 
-  private static void addNameSpaceRecursively( @NotNull Element element, @NotNull Namespace namespace ) {
+  public static void addNameSpaceRecursively( @NotNull Element element, @NotNull Namespace namespace ) {
     element.setNamespace( namespace );
     for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
       addNameSpaceRecursively( child, namespace );

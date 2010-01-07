@@ -1,15 +1,9 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jdom.Document;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +25,7 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
 
   /**
    * Converts the xml string to a byte array used to deserialize.
-   * This method automatically adds the processing instruction containing the version.
+   * This method automatically adds the namespace containing the version.
    *
    * @param xml     the xml
    * @param version the version
@@ -40,13 +34,8 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
   @NotNull
   protected byte[] processXml( @NotNull @NonNls final String xml, @NotNull Version version ) throws Exception {
     String nameSpace = ( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() ).createNameSpaceUri( version );
-
-    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml.getBytes() ) );
-    doc.getRootElement().setNamespace( Namespace.getNamespace( nameSpace ) );
-
-    return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc ).getBytes();
+    return AbstractXmlSerializerTest.addNameSpace( xml, nameSpace ).getBytes();
   }
-
 
   /**
    * Returns a map containing the serialized xmls
