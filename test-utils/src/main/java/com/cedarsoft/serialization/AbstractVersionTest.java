@@ -22,7 +22,7 @@ public abstract class AbstractVersionTest<T> {
    * @throws SAXException
    */
   @Test
-  public void testVersions() throws IOException, SAXException {
+  public void testVersions() throws Exception {
     Serializer<T> serializer = getSerializer();
 
     Map<? extends Version, ? extends byte[]> serializedMap = getSerialized();
@@ -43,7 +43,7 @@ public abstract class AbstractVersionTest<T> {
    * @return the serializer
    */
   @NotNull
-  protected abstract Serializer<T> getSerializer();
+  protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
    * Returns a map containing the version and the serialized object
@@ -51,7 +51,7 @@ public abstract class AbstractVersionTest<T> {
    * @return a map containing the version and the serialized object
    */
   @NotNull
-  protected abstract Map<? extends Version, ? extends byte[]> getSerialized();
+  protected abstract Map<? extends Version, ? extends byte[]> getSerialized() throws Exception;
 
   /**
    * Verifies the deserialized object.
@@ -59,5 +59,5 @@ public abstract class AbstractVersionTest<T> {
    * @param deserialized the deserialized object
    * @param version      the version
    */
-  protected abstract void verifyDeserialized( @NotNull T deserialized, @NotNull Version version );
+  protected abstract void verifyDeserialized( @NotNull T deserialized, @NotNull Version version ) throws Exception;
 }
