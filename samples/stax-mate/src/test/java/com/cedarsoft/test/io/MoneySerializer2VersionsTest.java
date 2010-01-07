@@ -26,8 +26,7 @@ public class MoneySerializer2VersionsTest extends AbstractXmlVersionTest<Money> 
   protected Map<? extends Version, ? extends String> getSerializedXml() {
     Map<Version, String> map = new HashMap<Version, String>();
 
-    //We don't have to add the processing instruction containing the version. This is done
-    //automatically
+    //We don't have to add the namespace containing the version. This is done automatically
     map.put( new Version( 1, 0, 1 ), "<money cents=\"799\" />" );
     map.put( new Version( 1, 0, 0 ), "<money>799</money>" );
 
