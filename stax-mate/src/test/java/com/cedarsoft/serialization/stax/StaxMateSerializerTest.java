@@ -24,12 +24,10 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {
-    return new AbstractStaxMateSerializer<String>( "aString", new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
+    return new AbstractStaxMateSerializer<String>( "aString", String.class, new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
       @Override
-      @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
         serializeTo.addCharacters( object );
-
       }
 
       @Override
@@ -46,7 +44,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws SAXException, IOException {
     super.verifySerialized( serialized );
-    assertTrue( new String( serialized ).contains( "<?format 1.5.3?>" ), XmlCommons.format( new String( serialized ) ) );
+    assertTrue( new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ), XmlCommons.format( new String( serialized ) ) );
   }
 
   @NotNull
@@ -58,7 +56,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<aString>asdf</aString>";
+    return "<aString xmlns=\"http://www.lang.java/String/1.5.3\">asdf</aString>";
   }
 
   @Override
@@ -67,7 +65,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   }
 
   @Test
-  public void testnoVersion() throws IOException {
+  public void testNoVersion() throws IOException {
     try {
       getSerializer().deserialize( new ByteArrayInputStream( "<aString>asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
@@ -79,10 +77,9 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Test
   public void testWrongVersion() throws IOException {
     try {
-      getSerializer().deserialize( new ByteArrayInputStream( "<?format 0.9.9?><aString>asdf</aString>".getBytes() ) );
+      getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.java/String/0.9.9\">asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException ignore ) {
-
     }
   }
 }

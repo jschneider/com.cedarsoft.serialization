@@ -28,7 +28,7 @@ public class StaxMateVersionTest {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
-    AssertUtils.assertXMLEqual( out.toString(), "<integer value=\"7\" />" );
+    AssertUtils.assertXMLEqual( out.toString(), "<integer xmlns=\"http://integer/1.0.0\" value=\"7\" />" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
   }
@@ -39,7 +39,7 @@ public class StaxMateVersionTest {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
-    AssertUtils.assertXMLEqual( out.toString(), "<integer>7</integer>" );
+    AssertUtils.assertXMLEqual( out.toString(), "<integer xmlns=\"http://integer/2.0.0\">7</integer>" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
   }
@@ -95,7 +95,6 @@ public class StaxMateVersionTest {
       super( "integer", new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 0 ) ) );
     }
 
-    @NotNull
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
@@ -113,7 +112,6 @@ public class StaxMateVersionTest {
       super( "integer", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
     }
 
-    @NotNull
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "value", object.toString() );

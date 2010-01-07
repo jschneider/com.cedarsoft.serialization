@@ -1,6 +1,5 @@
 package com.cedarsoft.serialization.stax;
 
-import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -26,13 +25,26 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     super( defaultElementName, formatVersionRange );
   }
 
+  protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, typeForNameSpaceUri, formatVersionRange );
+  }
+
+  protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
+  }
+
   @Override
   public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
     try {
       XMLStreamWriter writer = StaxSupport.getXmlOutputFactory().createXMLStreamWriter( out );
-      serializeFormatVersion( writer, getFormatVersion() );
+
+      //Sets the name space
+      String nameSpace = createNameSpaceUri( getFormatVersion() );
+      writer.setDefaultNamespace( nameSpace );
 
       writer.writeStartElement( getDefaultElementName() );
+      writer.writeDefaultNamespace( nameSpace );
+
       serialize( writer, object );
       writer.writeEndElement();
 
@@ -40,16 +52,5 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
     }
-  }
-
-  /**
-   * Serializes the format version to the given element
-   *
-   * @param writer        the writer
-   * @param formatVersion the format version
-   * @throws XMLStreamException
-   */
-  protected void serializeFormatVersion( @NotNull XMLStreamWriter writer, @NotNull Version formatVersion ) throws XMLStreamException {
-    writer.writeProcessingInstruction( PI_TARGET_FORMAT, formatVersion.toString() );
   }
 }

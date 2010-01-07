@@ -30,8 +30,17 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param defaultElementName the name for the root element, if this serializers is not used as delegate. For delegating serializers that value is not used.
    * @param formatVersionRange the supported format version range. The upper bound represents the format that is written. All Versions within the range can be read.
    */
+  @Deprecated
   protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, formatVersionRange );
+  }
+
+  protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, typeForNameSpaceUri, formatVersionRange );
+  }
+
+  protected AbstractStaxBasedSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
   @Override
@@ -39,12 +48,23 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   public T deserialize( @NotNull InputStream in ) throws IOException, VersionException {
     try {
       XMLStreamReader reader = StaxSupport.getXmlInputFactory().createXMLStreamReader( in );
-      Version version = Version.parse( getProcessingInstructionData( reader, PI_TARGET_FORMAT ) );
+
+      int result = reader.nextTag();
+      if ( result != XMLStreamReader.START_ELEMENT ) {
+        throw new IllegalStateException( "Expected START_ELEMENT but was <" + result + ">" );
+      }
+
+      //Now get the namespace and verify the version
+      String namespaceURI = reader.getNamespaceURI();
+      if ( namespaceURI == null ) {
+        throw new VersionException( "Version information is missing for <" + reader.getName().getLocalPart() + ">" );
+      }
+
+      Version version = parseVersionFromNamespaceUri( namespaceURI );
       if ( !getFormatVersionRange().contains( version ) ) {
         throw new VersionMismatchException( getFormatVersion(), version );
       }
 
-      reader.nextTag();
       T deserialized = deserialize( reader, version );
 
       if ( !reader.isEndElement() ) {

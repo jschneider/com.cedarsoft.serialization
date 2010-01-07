@@ -22,7 +22,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<int>7</int>";
+    return "<int  xmlns=\"http://int/1.0.0\">7</int>";
   }
 
   @NotNull

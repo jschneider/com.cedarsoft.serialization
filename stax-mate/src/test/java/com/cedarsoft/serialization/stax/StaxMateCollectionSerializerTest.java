@@ -26,15 +26,12 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
   protected AbstractStaxMateSerializer<List<String>> getSerializer() {
     return new AbstractStaxMateSerializer<List<String>>( "aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object ) throws XMLStreamException {
         for ( String s : object ) {
-          serializeTo.addElement( "string" ).addCharacters( s );
+          serializeTo.addElement( serializeTo.getNamespace(), "string" ).addCharacters( s );
         }
 
-        serializeTo.addElement( "description" ).addCharacters( "descr" );
-
-
+        serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( "descr" );
       }
 
       @Override
@@ -72,6 +69,6 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<aString><string>1</string><string>2</string><string>3</string><description>descr</description></aString>";
+    return "<aString xmlns=\"http://aString/1.0.0\"><string>1</string><string>2</string><string>3</string><description>descr</description></aString>";
   }
 }

@@ -33,6 +33,41 @@ public class StaxTest {
     "</fileType>";
 
   @Test
+  public void testNameSpace() throws IOException, SAXException, XMLStreamException {
+    XMLOutputFactory factory = XMLOutputFactory.newInstance();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    XMLStreamWriter writer = factory.createXMLStreamWriter( out );
+
+    writer.writeStartDocument();
+
+    writer.setDefaultNamespace( "http://namespace" );
+    writer.writeStartElement( "fileType" );
+    writer.writeDefaultNamespace( "http://namespace" );
+    writer.writeAttribute( "dependent", "false" );
+
+    writer.writeStartElement( "id" );
+    writer.writeCharacters( "Canon Raw" );
+    writer.writeEndElement();
+
+    writer.writeStartElement( "extension" );
+    writer.writeAttribute( "default", "true" );
+    writer.writeAttribute( "delimiter", "." );
+    writer.writeCharacters( "cr2" );
+    writer.writeEndElement();
+
+    writer.writeEndElement();
+    writer.writeEndDocument();
+    writer.close();
+
+    AssertUtils.assertXMLEqual( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+      "<fileType xmlns=\"http://namespace\" dependent=\"false\">\n" +
+      "  <id>Canon Raw</id>\n" +
+      "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
+      "</fileType>", true );
+  }
+
+  @Test
   public void testBug() throws XMLStreamException {
     XMLOutputFactory factory = XMLOutputFactory.newInstance();
     assertEquals( factory.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ), false );

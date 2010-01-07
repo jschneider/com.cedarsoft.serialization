@@ -75,7 +75,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   @Override
   protected String getExpectedSerialized() {
     return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<number type=\"int\">1</number>";
+      "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>";
   }
 
   @Override
@@ -84,13 +84,11 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   }
 
   @Test
-  public void tetIt() throws IOException, SAXException {
+  public void testIt() throws IOException, SAXException {
     Assert.assertEquals( serializer.getStrategies().size(), 2 );
 
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<number type=\"int\">1</number>" );
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<number type=\"double\">2.0</number>" );
+    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>" );
+    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );
   }
 
 

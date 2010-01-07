@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -18,11 +19,16 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    */
   @NotNull
   @NonNls
+  @Deprecated
   public static final String PI_TARGET_FORMAT = "format";
 
   @NotNull
   @NonNls
   private final String defaultElementName;
+
+  @NotNull
+  @NonNls
+  private final String nameSpaceUriBase;
 
   /**
    * Creates a new serializer
@@ -30,9 +36,45 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * @param defaultElementName the default element name that is used for the root element.
    * @param formatVersionRange the version range. The max value is used when written.
    */
+  @Deprecated
   protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
+    this( defaultElementName, "http://" + defaultElementName, formatVersionRange );
+  }
+
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName  the default element name
+   * @param typeForNameSpaceUri the type that is used to calculate the name space uri
+   * @param formatVersionRange  the version range. The max value is used when written.
+   */
+  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
+    this( defaultElementName, createNameSpaceUriBase( typeForNameSpaceUri ), formatVersionRange );
+  }
+
+  /**
+   * Creates a new serializer
+   *
+   * @param defaultElementName the default element name
+   * @param nameSpaceUriBase   the base for the namespace uri
+   * @param formatVersionRange the version range. The max value is used when written.
+   */
+  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( formatVersionRange );
     this.defaultElementName = defaultElementName;
+    this.nameSpaceUriBase = nameSpaceUriBase;
+  }
+
+  @NotNull
+  @NonNls
+  protected String createNameSpaceUri( @NotNull Version formatVersion ) {
+    return getNameSpaceUriBase() + "/" + formatVersion.format();
+  }
+
+  @NonNls
+  @NotNull
+  public String getNameSpaceUriBase() {
+    return nameSpaceUriBase;
   }
 
   /**
@@ -44,5 +86,45 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   @NonNls
   protected String getDefaultElementName() {
     return defaultElementName;
+  }
+
+  /**
+   * Parses the version from a namespace uri
+   *
+   * @param namespaceURI the namespace uri (the version has to be the last part split by "/"
+   * @return the parsed version
+   *
+   * @throws IllegalArgumentException
+   */
+  @NotNull
+  public static Version parseVersionFromNamespaceUri( @NotNull @NonNls String namespaceURI ) throws IllegalArgumentException {
+    String[] parts = namespaceURI.split( "/" );
+    String last = parts[parts.length - 1];
+
+    return Version.parse( last );
+  }
+
+  @NotNull
+  @NonNls
+  public static String createNameSpaceUriBase( @NotNull Class<?> type ) {
+    String[] parts = type.getName().split( "\\." );
+
+    //If we have lesser than three parts just return the type - a fallback
+    if ( parts.length < 3 ) {
+      return "http://" + type.getName();
+    }
+
+    StringBuilder uri = new StringBuilder( "http://www." );
+    uri.append( parts[1] );
+    uri.append( "." );
+    uri.append( parts[0] );
+
+    for ( int i = 2, partsLength = parts.length; i < partsLength; i++ ) {
+      String part = parts[i];
+      uri.append( "/" );
+      uri.append( part );
+    }
+
+    return uri.toString();
   }
 }

@@ -20,7 +20,6 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
   protected AbstractStaxMateSerializer<String> getSerializer() {
     final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
         serializeTo.addCharacters( object );
       }
@@ -37,10 +36,9 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
 
     return new AbstractStaxMateSerializer<String>( "aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
-        stringSerializer.serialize( serializeTo.addElement( "sub" ), object );
-        serializeTo.addElement( "emptyChild" ).addCharacters( "" );
+        stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object );
+        serializeTo.addElement( serializeTo.getNamespace(), "emptyChild" ).addCharacters( "" );
       }
 
       @Override
@@ -66,6 +64,6 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<aString><sub>asdf</sub><emptyChild/></aString>";
+    return "<aString xmlns=\"http://aString/1.0.0\"><sub>asdf</sub><emptyChild/></aString>";
   }
 }

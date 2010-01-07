@@ -1,9 +1,7 @@
 package com.cedarsoft.serialization.stax;
 
-import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractXmlSerializer;
-import org.codehaus.staxmate.out.SMOutputContainer;
+import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -23,28 +21,27 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     super( defaultElementName, formatVersionRange );
   }
 
+  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull Class<? super T> typeForNameSpaceUri, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, typeForNameSpaceUri, formatVersionRange );
+  }
+
+  protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
+  }
+
   @Override
   public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
     try {
       SMOutputDocument doc = StaxMateSupport.getSmOutputFactory().createOutputDocument( out );
-      serializeFormatVersion( doc, getFormatVersion() );
 
-      SMOutputElement root = doc.addElement( getDefaultElementName() );
+      String nameSpaceUri = createNameSpaceUri( getFormatVersion() );
+      SMNamespace nameSpace = doc.getNamespace( nameSpaceUri );
+
+      SMOutputElement root = doc.addElement( nameSpace, getDefaultElementName() );
       serialize( root, object );
       doc.closeRoot();
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
     }
-  }
-
-  /**
-   * Serializes the format version to the given element
-   *
-   * @param element       the element
-   * @param formatVersion the format version
-   * @throws XMLStreamException
-   */
-  protected void serializeFormatVersion( @NotNull SMOutputContainer element, @NotNull Version formatVersion ) throws XMLStreamException {
-    element.addProcessingInstruction( AbstractXmlSerializer.PI_TARGET_FORMAT, formatVersion.toString() );
   }
 }
