@@ -36,12 +36,13 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //END SNIPPET: fieldsAndConstructors
 
   //START SNIPPET: serialize
+
   @Override
   public void serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
-    serializeTo.addElement( "description" ).addCharacters( object.getDescription() );
+    serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
-    moneySerializer.serialize( serializeTo.addElement( "price" ), object.getPrice() );
+    moneySerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "price" ), object.getPrice() );
   }
 
 

@@ -50,17 +50,17 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
 
   @Override
   public void serialize( SMOutputElement serializeTo, Car object ) throws IOException, XMLStreamException {
-    SMOutputElement colorElement = serializeTo.addElement( "color" );  //okay, should be a own serializer in real world...
+    SMOutputElement colorElement = serializeTo.addElement( serializeTo.getNamespace(), "color" );  //okay, should be a own serializer in real world...
     colorElement.addAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
     colorElement.addAttribute( "green", String.valueOf( object.getColor().getGreen() ) );
 
-    modelSerializer.serialize( serializeTo.addElement( "model" ), object.getModel() );
-    moneySerializer.serialize( serializeTo.addElement( "basePrice" ), object.getBasePrice() );
+    modelSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "model" ), object.getModel() );
+    moneySerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), object.getBasePrice() );
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
     for ( Extra extra : object.getExtras() ) {
-      extraSerializer.serialize( serializeTo.addElement( "extra" ), extra );
+      extraSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "extra" ), extra );
     }
   }
   //END SNIPPET: serialize
