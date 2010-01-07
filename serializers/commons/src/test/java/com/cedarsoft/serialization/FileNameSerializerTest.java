@@ -4,7 +4,6 @@ import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.xml.XmlCommons;
 import org.jetbrains.annotations.NotNull;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
@@ -41,8 +40,8 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest<FileName> 
   }
 
   @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws SAXException, IOException {
+  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
     super.verifySerialized( serialized );
-    assertTrue( new String( serialized ).contains( "<?format " + getSerializer().getFormatVersion() + "?>" ), XmlCommons.format( new String( serialized ) ) );
+    assertTrue( new String( serialized ).contains( "xmlns=\"http://fileName/" + getSerializer().getFormatVersion() + "\"" ), XmlCommons.format( new String( serialized ) ) );
   }
 }

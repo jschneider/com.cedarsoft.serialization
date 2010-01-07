@@ -47,7 +47,7 @@ public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Model> deserialized ) {
+  protected void verifyDeserialized( @NotNull List<? extends Model> deserialized ) throws Exception {
     //We *might* override this method and verify the deserialized objects on our own
     //The default implementation simply calls "equals" for each single object.
     super.verifyDeserialized( deserialized );

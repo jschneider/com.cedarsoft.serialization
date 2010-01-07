@@ -31,9 +31,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
   @Test
   public void testA() throws IOException, SAXException {
     byte[] serialized = serializer.serializeToByteArray( new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ) );
-    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<dateTime>20010101T010101.001-0500</dateTime>"
-    );
+    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://dateTime/1.0.0\">20010101T010101.001-0500</dateTime>" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( serialized ) ), new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ) );
   }
@@ -64,8 +62,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
 
     byte[] serialized = serializer.serializeToByteArray( dateTime );
 
-    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<dateTime>20091231T235901.999-0500</dateTime>" );
+    AssertUtils.assertXMLEqual( new String( serialized ).trim(), "<dateTime xmlns=\"http://dateTime/1.0.0\">20091231T235901.999-0500</dateTime>" );
 
     DateTime deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
     Assert.assertEquals( deserialized, dateTime );
@@ -81,8 +78,8 @@ public class DateTimeSerializerTest extends DateTimeTest {
     try {
       DateTimeZone.setDefault( zone );
 
-      assertEquals( serializer.deserialize( new ByteArrayInputStream( "<?format 1.0.0?><startTime>20090701T140952.653+0200</startTime>".getBytes() ) ), new DateTime( 2009, 07, 01, 8, 9, 52, 653, zone ) );
-      assertEquals( serializer.deserialize( new ByteArrayInputStream( "<?format 1.0.0?><startTime>1245859619998</startTime>".getBytes() ) ).withZone( DateTimeZone.UTC ), new DateTime( 2009, 6, 24, 16, 6, 59, 998, DateTimeZone.UTC ) );
+      assertEquals( serializer.deserialize( new ByteArrayInputStream( "<startTime xmlns=\"http://dateTime/1.0.0\">20090701T140952.653+0200</startTime>".getBytes() ) ), new DateTime( 2009, 07, 01, 8, 9, 52, 653, zone ) );
+      assertEquals( serializer.deserialize( new ByteArrayInputStream( "<startTime xmlns=\"http://dateTime/1.0.0\">1245859619998</startTime>".getBytes() ) ).withZone( DateTimeZone.UTC ), new DateTime( 2009, 6, 24, 16, 6, 59, 998, DateTimeZone.UTC ) );
     } finally {
       DateTimeZone.setDefault( oldDefault );
     }

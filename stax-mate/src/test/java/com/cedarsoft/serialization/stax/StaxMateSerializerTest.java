@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
@@ -8,7 +9,6 @@ import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
-import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -42,7 +42,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   }
 
   @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws SAXException, IOException {
+  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
     super.verifySerialized( serialized );
     assertTrue( new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ), XmlCommons.format( new String( serialized ) ) );
   }
@@ -69,7 +69,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
     try {
       getSerializer().deserialize( new ByteArrayInputStream( "<aString>asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
-    } catch ( IllegalArgumentException ignore ) {
+    } catch ( VersionException ignore ) {
 
     }
   }

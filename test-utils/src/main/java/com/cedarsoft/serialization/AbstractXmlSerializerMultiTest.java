@@ -3,9 +3,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,12 +13,13 @@ import java.util.List;
  */
 public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializerMultiTest<T> {
   @Override
-  protected void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws SAXException, IOException {
+  protected void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws Exception {
     List<? extends String> expected = getExpectedSerialized();
 
     int index = 0;
     for ( byte[] current : serialized ) {
-      AssertUtils.assertXMLEqual( new String( current ), expected.get( index ) );
+      String expectedWithNamespace = AbstractXmlSerializerTest.addNameSpace( expected.get( index ), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+      AssertUtils.assertXMLEqual( new String( current ), expectedWithNamespace );
       index++;
     }
   }

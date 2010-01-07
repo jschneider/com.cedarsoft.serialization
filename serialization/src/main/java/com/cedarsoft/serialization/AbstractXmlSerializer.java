@@ -1,9 +1,11 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract base class for xml based serializers.
@@ -89,7 +91,11 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * @throws IllegalArgumentException
    */
   @NotNull
-  public static Version parseVersionFromNamespaceUri( @NotNull @NonNls String namespaceURI ) throws IllegalArgumentException {
+  public static Version parseVersionFromNamespaceUri( @Nullable @NonNls String namespaceURI ) throws IllegalArgumentException, VersionException {
+    if ( namespaceURI == null || namespaceURI.length() == 0 ) {
+      throw new VersionException( "No version information found" );
+    }
+
     String[] parts = namespaceURI.split( "/" );
     String last = parts[parts.length - 1];
 

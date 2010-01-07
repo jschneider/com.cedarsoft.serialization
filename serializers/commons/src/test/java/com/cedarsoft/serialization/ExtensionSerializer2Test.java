@@ -14,9 +14,7 @@ import static org.testng.Assert.*;
 public class ExtensionSerializer2Test {
   @Test
   public void testDelimiter() throws IOException {
-    Extension extension = deserialize(
-      "<?format 1.0.0?>" +
-        "  <extension delimiter=\".\">jpg</extension>\n" );
+    Extension extension = deserialize( "<extension xmlns=\"http://extension/1.0.0\" delimiter=\".\">jpg</extension>\n" );
 
     assertEquals( extension.getDelimiter(), "." );
     assertEquals( extension.getExtension(), "jpg" );
@@ -24,9 +22,7 @@ public class ExtensionSerializer2Test {
 
   @Test
   public void testMissingDelimiter() throws IOException {
-    Extension extension = deserialize(
-      "<?format 1.0.0?>" +
-        "  <extension>jpg</extension>\n" );
+    Extension extension = deserialize( "<extension xmlns=\"http://extension/1.0.0\">jpg</extension>\n" );
 
     assertEquals( extension.getDelimiter(), "." );
     assertEquals( extension.getExtension(), "jpg" );

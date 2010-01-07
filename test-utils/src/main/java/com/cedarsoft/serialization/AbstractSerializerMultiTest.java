@@ -19,7 +19,7 @@ import static org.testng.Assert.*;
  */
 public abstract class AbstractSerializerMultiTest<T> {
   @Test
-  public void testSerializer() throws IOException, SAXException {
+  public void testSerializer() throws Exception {
     Serializer<T> serializer = getSerializer();
 
     Iterable<? extends T> objectsToSerialize = createObjectsToSerialize();
@@ -64,7 +64,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * @return the serializer
    */
   @NotNull
-  protected abstract Serializer<T> getSerializer();
+  protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
    * Verifies the serialized object
@@ -73,7 +73,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * @throws SAXException
    * @throws IOException
    */
-  protected abstract void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws SAXException, IOException;
+  protected abstract void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws Exception;
 
   /**
    * Creates the object to serialize
@@ -81,7 +81,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * @return the object to serialize
    */
   @NotNull
-  protected abstract Iterable<? extends T> createObjectsToSerialize();
+  protected abstract Iterable<? extends T> createObjectsToSerialize() throws Exception;
 
   /**
    * Verifies the deserialized object.
@@ -89,7 +89,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    *
    * @param deserialized the deserialized object
    */
-  protected void verifyDeserialized( @NotNull List<? extends T> deserialized ) {
+  protected void verifyDeserialized( @NotNull List<? extends T> deserialized ) throws Exception {
     int index = 0;
     for ( T currentExpected : createObjectsToSerialize() ) {
       assertEquals( deserialized.get( index ), currentExpected );

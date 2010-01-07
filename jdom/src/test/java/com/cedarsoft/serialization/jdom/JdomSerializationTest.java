@@ -1,11 +1,14 @@
 package com.cedarsoft.serialization.jdom;
 
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
+import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,27 +28,21 @@ public class JdomSerializationTest {
   }
 
   @Test
-  public void testIt() throws IOException {
+  public void testIt() throws IOException, SAXException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
 
-    assertEquals( out.toString().trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<?format 1.2.3?>\n" +
-      "<my>7</my>" );
+    AssertUtils.assertXMLEqual( out.toString().trim(), "<my  xmlns=\"http://my/1.2.3\">7</my>" );
 
 
-    ByteArrayInputStream in = new ByteArrayInputStream( ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<?format 1.2.3?>\n" +
-      "<my>7</my>" ).getBytes() );
+    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my  xmlns=\"http://my/1.2.3\">7</my>" ).getBytes() );
 
     assertEquals( serializer.deserialize( in ), new Integer( 7 ) );
   }
 
   @Test
   public void testWrongVersion() throws IOException {
-    ByteArrayInputStream in = new ByteArrayInputStream( ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<?format 1.0.2?>\n" +
-      "<my>7</my>" ).getBytes() );
+    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my  xmlns=\"http://my/1.0.2\">7</my>" ).getBytes() );
 
     try {
       serializer.deserialize( in );
@@ -56,9 +53,7 @@ public class JdomSerializationTest {
 
   @Test
   public void testVersionRange() throws IOException {
-    ByteArrayInputStream in = new ByteArrayInputStream( ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<?format 1.2.1?>\n" +
-      "<my>7</my>" ).getBytes() );
+    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my xmlns=\"http://my/1.2.1\">7</my>" ).getBytes() );
 
     try {
       serializer.deserialize( in );
@@ -69,13 +64,12 @@ public class JdomSerializationTest {
 
   @Test
   public void testNoVersion() throws IOException {
-    ByteArrayInputStream in = new ByteArrayInputStream( ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<my>7</my>" ).getBytes() );
+    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my>7</my>" ).getBytes() );
 
     try {
       serializer.deserialize( in );
       fail( "Where is the Exception" );
-    } catch ( IllegalStateException ignore ) {
+    } catch ( VersionException ignore ) {
     }
   }
 

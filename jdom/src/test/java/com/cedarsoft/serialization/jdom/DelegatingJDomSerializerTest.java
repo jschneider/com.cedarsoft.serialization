@@ -49,12 +49,6 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
     serializer = new MySerializer( intSerializer, doubleSerializer );
   }
 
-  @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws SAXException, IOException {
-    super.verifySerialized( serialized );
-    assertEquals( new String( serialized ).trim(), getExpectedSerialized().trim() );
-  }
-
   @NotNull
   @Override
   protected AbstractJDomSerializer<Number> getSerializer() {
@@ -70,9 +64,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<?format 1.2.3?>\n" +
-      "<number type=\"int\">1</number>";
+    return "<number type=\"int\">1</number>";
   }
 
   @Override
@@ -81,13 +73,11 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   }
 
   @Test
-  public void tetIt() throws IOException, SAXException {
+  public void testIt() throws IOException, SAXException {
     assertEquals( serializer.getStrategies().size(), 2 );
 
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<number type=\"int\">1</number>" );
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<number type=\"double\">2.0</number>" );
+    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"int\">1</number>" );
+    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"double\">2.0</number>" );
   }
 
   public static class MySerializer extends AbstractDelegatingJDomSerializer<Number> {

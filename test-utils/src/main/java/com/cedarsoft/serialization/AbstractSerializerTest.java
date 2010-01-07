@@ -23,7 +23,7 @@ public abstract class AbstractSerializerTest<T> {
    * @throws SAXException
    */
   @Test
-  public void testSerializer() throws IOException, SAXException {
+  public void testSerializer() throws Exception {
     Serializer<T> serializer = getSerializer();
 
     T objectToSerialize = createObjectToSerialize();
@@ -45,7 +45,7 @@ public abstract class AbstractSerializerTest<T> {
    * @return the serializer
    */
   @NotNull
-  protected abstract Serializer<T> getSerializer();
+  protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
    * Verifies the serialized object
@@ -54,7 +54,7 @@ public abstract class AbstractSerializerTest<T> {
    * @throws SAXException
    * @throws IOException
    */
-  protected abstract void verifySerialized( @NotNull byte[] serialized ) throws SAXException, IOException;
+  protected abstract void verifySerialized( @NotNull byte[] serialized ) throws Exception;
 
   /**
    * Creates the object to serialize
@@ -62,7 +62,7 @@ public abstract class AbstractSerializerTest<T> {
    * @return the object to serialize
    */
   @NotNull
-  protected abstract T createObjectToSerialize();
+  protected abstract T createObjectToSerialize() throws Exception;
 
   /**
    * Verifies the deserialized object.
@@ -70,7 +70,7 @@ public abstract class AbstractSerializerTest<T> {
    *
    * @param deserialized the deserialized object
    */
-  protected void verifyDeserialized( @NotNull T deserialized ) {
+  protected void verifyDeserialized( @NotNull T deserialized ) throws Exception  {
     assertEquals( deserialized, createObjectToSerialize() );
   }
 }

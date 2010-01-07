@@ -45,7 +45,6 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
     doc.getRootElement().setNamespace( Namespace.getNamespace( nameSpace ) );
 
     return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc ).getBytes();
-    //    return ( "<?" + AbstractXmlSerializer.PI_TARGET_FORMAT + " " + version.toString() + "?>" + xml ).getBytes();
   }
 
 
