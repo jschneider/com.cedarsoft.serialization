@@ -14,14 +14,6 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> the exception that might be thrown
  */
 public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> {
-  /**
-   * The target of the processing instruction containing the version information
-   */
-  @NotNull
-  @NonNls
-  @Deprecated
-  public static final String PI_TARGET_FORMAT = "format";
-
   @NotNull
   @NonNls
   private final String defaultElementName;
