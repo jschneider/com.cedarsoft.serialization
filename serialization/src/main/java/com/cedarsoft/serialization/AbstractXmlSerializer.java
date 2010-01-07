@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract base class for xml based serializers.
+ * The version information is stored within the namespace declaration of the root element
  *
  * @param <T> the type of object this serializer is able to (de)serialize
  * @param <S> the object to serialize to
@@ -24,17 +25,6 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   @NonNls
   private final String nameSpaceUriBase;
 
-  /**
-   * Creates a new serializer
-   *
-   * @param defaultElementName the default element name that is used for the root element.
-   * @param formatVersionRange the version range. The max value is used when written.
-   */
-  @Deprecated
-  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NotNull VersionRange formatVersionRange ) {
-    this( defaultElementName, "http://" + defaultElementName, formatVersionRange );
-  }
-  
   /**
    * Creates a new serializer
    *
