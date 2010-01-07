@@ -86,31 +86,6 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   }
 
   /**
-   * Returns the processing instruction data for the given reader and target
-   *
-   * @param reader   the reader
-   * @param piTarget the target
-   * @return the data
-   *
-   * @throws XMLStreamException
-   */
-  @NotNull
-  @NonNls
-  protected String getProcessingInstructionData( @NotNull XMLStreamReader reader, @NotNull @NonNls String piTarget ) throws XMLStreamException {
-    int result = reader.next();
-    if ( result != XMLStreamReader.PROCESSING_INSTRUCTION ) {
-      throw new IllegalArgumentException( "No processing instruction found. Was <" + StaxSupport.getEventName( result ) + ">" );
-    }
-
-    String foundTarget = reader.getPITarget();
-    if ( !foundTarget.equals( piTarget ) ) {
-      throw new IllegalArgumentException( "Invalid processing instruction. Expected <" + piTarget + "> but was <" + foundTarget + ">" );
-    }
-
-    return reader.getPIData();
-  }
-
-  /**
    * Ensures that the current tag equals the given tag name
    *
    * @param streamReader the stream reader
