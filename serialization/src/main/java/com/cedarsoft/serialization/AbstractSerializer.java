@@ -39,6 +39,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    *
    * @return the format version range that is supported
    */
+  @Override
   @NotNull
   public VersionRange getFormatVersionRange() {
     return formatVersionRange;

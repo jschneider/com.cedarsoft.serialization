@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -58,6 +59,12 @@ public class SerializingStrategySupportTest {
     @NotNull
     @Override
     public Version getFormatVersion() {
+      throw new UnsupportedOperationException();
+    }
+
+    @NotNull
+    @Override
+    public VersionRange getFormatVersionRange() {
       throw new UnsupportedOperationException();
     }
 

@@ -2,6 +2,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionRange;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTimeZone;
@@ -29,5 +30,11 @@ public class ZoneInfoSerializer implements Serializer<DateTimeZone> {
   @Override
   public Version getFormatVersion() {
     return new Version( 1, 0, 0 );
+  }
+
+  @NotNull
+  @Override
+  public VersionRange getFormatVersionRange() {
+    return VersionRange.from( 1, 0, 0 ).to();
   }
 }

@@ -2,6 +2,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -46,4 +47,7 @@ public interface Serializer<T> {
    */
   @NotNull
   Version getFormatVersion();
+
+  @NotNull
+  VersionRange getFormatVersionRange();
 }

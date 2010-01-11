@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.BaseName;
-import com.cedarsoft.serialization.BaseNameSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 
