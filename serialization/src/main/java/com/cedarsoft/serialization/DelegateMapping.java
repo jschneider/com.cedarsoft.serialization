@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Contains the mapping for delegating serializers
@@ -35,6 +34,21 @@ public class DelegateMapping {
   @NotNull
   public VersionRange getDelegateVersionRange() {
     return delegateVersionRange;
+  }
+
+  @NotNull
+  public FluentFactory map( @NotNull VersionRange range ) throws VersionException {
+    return new FluentFactory( range );
+  }
+
+  @NotNull
+  public FluentFactory map( @NotNull Version version ) throws VersionException {
+    return new FluentFactory( VersionRange.from( version ).single() );
+  }
+
+  @NotNull
+  public FluentFactory map( int major, int minor, int build ) throws VersionException {
+    return map( Version.valueOf( major, minor, build ) );
   }
 
   /**
@@ -87,6 +101,31 @@ public class DelegateMapping {
     Entry( @NotNull VersionRange versionRange, @NotNull Version delegateVersion ) {
       this.versionRange = versionRange;
       this.delegateVersion = delegateVersion;
+    }
+  }
+
+  public class FluentFactory {
+    @NotNull
+    private final VersionRange range;
+
+    public FluentFactory( @NotNull VersionRange range ) {
+      this.range = range;
+    }
+
+    @NotNull
+    public DelegateMapping toDelegateVersion( int major, int minor, int build ) {
+      return toDelegateVersion( Version.valueOf( major, minor, build ) );
+    }
+
+    @NotNull
+    public DelegateMapping toDelegateVersion( @NotNull Version version ) {
+      addMapping( range, version );
+      return DelegateMapping.this;
+    }
+
+    @NotNull
+    public FluentFactory to( int major, int minor, int build ) {
+      return new FluentFactory( VersionRange.from( range.getMin() ).to( major, minor, build ) );
     }
   }
 }
