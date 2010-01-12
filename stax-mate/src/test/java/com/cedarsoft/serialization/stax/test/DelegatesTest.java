@@ -39,7 +39,7 @@ public class DelegatesTest {
     kitchen = new Room( "kitchen" );
 
 
-    hall.addWindow( new Window( "window1", 10, 10 ) );
+    hall.addWindow( new Window( "window1", 10, 11 ) );
     hall.addDoor( door1 );
     house.addRoom( hall );
 
@@ -50,7 +50,7 @@ public class DelegatesTest {
   }
 
   @Test
-  public void testDelegates() throws IOException, SAXException {
+  public void testSimple() throws IOException, SAXException {
     AbstractStaxMateSerializer<Room> roomSerializer = new AbstractStaxMateSerializer<Room>( "room", "room", VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ) {
       @NotNull
       private final DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException> mappings = new DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException>( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
@@ -60,7 +60,9 @@ public class DelegatesTest {
           .map( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ).toDelegateVersion( 1, 0, 0 );
 
         mappings.add( new Window.Serializer() ).responsibleFor( Window.class )
-          .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+          .map( 1, 0, 0 ).to( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
+          .map( 2, 0, 0 ).toDelegateVersion( 2, 0, 0 )
+          ;
       }
 
       @Override
@@ -84,7 +86,7 @@ public class DelegatesTest {
       @Override
       public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
         String description = getChildText( deserializeFrom, "description" );
-        
+
         final List<Door> doors = new ArrayList<Door>();
 
         nextTag( deserializeFrom, "doors" );
@@ -98,14 +100,13 @@ public class DelegatesTest {
 
         final List<Window> windows = new ArrayList<Window>();
         nextTag( deserializeFrom, "windows" );
-        
+
         visitChildren( deserializeFrom, new CB() {
           @Override
           public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
             windows.add( mappings.deserialize( Window.class, formatVersion, deserializeFrom ) );
           }
         } );
-
 
         closeTag( deserializeFrom );
         return new Room( description, windows, doors );
@@ -125,13 +126,29 @@ public class DelegatesTest {
                                   "    </door>\n" +
                                   "  </doors>\n" +
                                   "  <windows>\n" +
-                                  "    <window width=\"10.0\" height=\"10.0\">\n" +
+                                  "    <window width=\"10.0\" height=\"11.0\">\n" +
                                   "      <description>window1</description>\n" +
                                   "    </window>\n" +
                                   "  </windows>\n" +
                                   "</room>" );
 
-    Room room = roomSerializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) );
-    assertEquals( room, hall );
+    assertEquals( roomSerializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), hall );
+
+    //Deserialize an old one!
+    assertEquals( roomSerializer.deserialize( new ByteArrayInputStream( ( "<room xmlns=\"room/1.0.0\">\n" +
+      "  <description>hall</description>\n" +
+      "  <doors>\n" +
+      "    <door>\n" +
+      "      <description>door1</description>\n" +
+      "    </door>\n" +
+      "  </doors>\n" +
+      "  <windows>\n" +
+      "    <window>" +
+      "       <width>10.0</width>" +
+      "       <height>11.0</height>" +
+      "      <description>window1</description>\n" +
+      "    </window>\n" +
+      "  </windows>\n" +
+      "</room>" ).getBytes() ) ), hall );
   }
 }

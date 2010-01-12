@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
@@ -65,7 +66,7 @@ public class Window {
 
   public static class Serializer extends AbstractStaxMateSerializer<Window> {
     public Serializer() {
-      super( "window", "window", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+      super( "window", "window", new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
     }
 
     @Override
@@ -79,14 +80,27 @@ public class Window {
     @NotNull
     @Override
     public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
-      double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
-      double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
+      if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
+        double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
+        double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
 
-      String description = getChildText( deserializeFrom, "description" );
+        String description = getChildText( deserializeFrom, "description" );
 
-      closeTag( deserializeFrom );
+        closeTag( deserializeFrom );
 
-      return new Window( description, width, height );
+        return new Window( description, width, height );
+      } else if ( formatVersion.equals( Version.valueOf( 1, 0, 0 ) ) ) {
+        double width = Double.parseDouble( getChildText( deserializeFrom, "width" ) );
+        double height = Double.parseDouble( getChildText( deserializeFrom, "height" ) );
+
+        String description = getChildText( deserializeFrom, "description" );
+
+        closeTag( deserializeFrom );
+
+        return new Window( description, width, height );
+      } else {
+        throw new UnsupportedVersionException( formatVersion, getFormatVersionRange() );
+      }
     }
   }
 }
