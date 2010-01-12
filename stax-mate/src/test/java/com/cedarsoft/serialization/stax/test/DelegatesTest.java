@@ -1,9 +1,26 @@
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.DelegatesMappings;
+import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import org.codehaus.staxmate.out.SMOutputElement;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -33,13 +50,88 @@ public class DelegatesTest {
   }
 
   @Test
-  public void testDelegates() {
-    DelegatesMappings mappings = new DelegatesMappings( VersionRange.from( Version.valueOf( 1, 0, 0 ) ).to( Version.valueOf( 2, 0, 0 ) ) );
+  public void testDelegates() throws IOException, SAXException {
+    AbstractStaxMateSerializer<Room> roomSerializer = new AbstractStaxMateSerializer<Room>( "room", "room", VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ) {
+      @NotNull
+      private final DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException> mappings = new DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException>( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
-    mappings.add( new Door.Serializer() ).responsibleFor( Door.class )
-      .map( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ).toDelegateVersion( Version.valueOf( 1, 0, 0 ) );
+      {
+        mappings.add( new Door.Serializer() ).responsibleFor( Door.class )
+          .map( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ).toDelegateVersion( 1, 0, 0 );
 
-    mappings.add( new Door.Serializer() ).responsibleFor( Door.class )
-      .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( Version.valueOf( 1, 0, 0 ) );
+        mappings.add( new Window.Serializer() ).responsibleFor( Window.class )
+          .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+      }
+
+      @Override
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object ) throws IOException, XMLStreamException {
+        serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
+
+        SMOutputElement doorsElement = serializeTo.addElement( serializeTo.getNamespace(), "doors" );
+        for ( Door door : object.getDoors() ) {
+          SMOutputElement doorElement = doorsElement.addElement( doorsElement.getNamespace(), "door" );
+          mappings.getSerializer( Door.class ).serialize( doorElement, door );
+        }
+
+        SMOutputElement windowsElement = serializeTo.addElement( serializeTo.getNamespace(), "windows" );
+        for ( Window window : object.getWindows() ) {
+          SMOutputElement windowElement = windowsElement.addElement( windowsElement.getNamespace(), "window" );
+          mappings.getSerializer( Window.class ).serialize( windowElement, window );
+        }
+      }
+
+      @NotNull
+      @Override
+      public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+        String description = getChildText( deserializeFrom, "description" );
+        
+        final List<Door> doors = new ArrayList<Door>();
+
+        nextTag( deserializeFrom, "doors" );
+        visitChildren( deserializeFrom, new CB() {
+          @Override
+          public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
+            doors.add( mappings.deserialize( Door.class, formatVersion, deserializeFrom ) );
+          }
+        } );
+
+
+        final List<Window> windows = new ArrayList<Window>();
+        nextTag( deserializeFrom, "windows" );
+        
+        visitChildren( deserializeFrom, new CB() {
+          @Override
+          public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
+            windows.add( mappings.deserialize( Window.class, formatVersion, deserializeFrom ) );
+          }
+        } );
+
+
+        closeTag( deserializeFrom );
+        return new Room( description, windows, doors );
+      }
+    };
+
+    //Now try to serialize them
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    roomSerializer.serialize( hall, out );
+
+    AssertUtils.assertXMLEqual( out.toString(),
+                                "<room xmlns=\"room/2.0.0\">\n" +
+                                  "  <description>hall</description>\n" +
+                                  "  <doors>\n" +
+                                  "    <door>\n" +
+                                  "      <description>door1</description>\n" +
+                                  "    </door>\n" +
+                                  "  </doors>\n" +
+                                  "  <windows>\n" +
+                                  "    <window width=\"10.0\" height=\"10.0\">\n" +
+                                  "      <description>window1</description>\n" +
+                                  "    </window>\n" +
+                                  "  </windows>\n" +
+                                  "</room>" );
+
+    Room room = roomSerializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) );
+    assertEquals( room, hall );
   }
 }
