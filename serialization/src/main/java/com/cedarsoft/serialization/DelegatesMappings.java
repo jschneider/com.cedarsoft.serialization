@@ -15,7 +15,9 @@ public class DelegatesMappings {
   private final VersionRange versionRange;
 
   @NotNull
-  private final Map<Serializer<?>, DelegateMapping> mappings = new HashMap<Serializer<?>, DelegateMapping>();
+  private final Map<Class<?>, DelegateMapping> mappings = new HashMap<Class<?>, DelegateMapping>();
+  @NotNull
+  private final Map<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
 
   public DelegatesMappings( @NotNull VersionRange versionRange ) {
     this.versionRange = versionRange;
@@ -27,7 +29,7 @@ public class DelegatesMappings {
   }
 
   @NotNull
-  public <T> Version resolve( @NotNull Serializer<?> key, @NotNull Version version ) {
+  public <T> Version resolveVersion( @NotNull Class<? extends T> key, @NotNull Version version ) {
     return mappings.get( key ).resolveVersion( version );
   }
 
@@ -42,8 +44,8 @@ public class DelegatesMappings {
     @NotNull
     public DelegateMapping responsibleFor( @NotNull Class<? extends T> key ) {
       DelegateMapping mapping = new DelegateMapping( versionRange, serializer.getFormatVersionRange() );
-      mappings.put( serializer, mapping );
-//      serializers.put( key, serializer );
+      mappings.put( key, mapping );
+      serializers.put( key, serializer );
       return mapping;
     }
   }

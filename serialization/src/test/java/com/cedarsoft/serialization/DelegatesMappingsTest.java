@@ -35,11 +35,11 @@ public class DelegatesMappingsTest {
     //      .map( VersionRange.from( 1, 0, 2 ).to( 1, 5, 0 ), new Version( 7, 1, 0 ) );
     //
 
-    assertEquals( delegatesMappings.resolve( serializer, new Version( 1, 0, 0 ) ), new Version( 7, 0, 1 ) );
-    assertEquals( delegatesMappings.resolve( serializer, new Version( 1, 0, 1 ) ), new Version( 7, 0, 2 ) );
-    assertEquals( delegatesMappings.resolve( serializer, new Version( 1, 0, 2 ) ), new Version( 7, 1, 0 ) );
-    assertEquals( delegatesMappings.resolve( serializer, new Version( 1, 0, 3 ) ), new Version( 7, 1, 0 ) );
-    assertEquals( delegatesMappings.resolve( serializer, new Version( 1, 5, 0 ) ), new Version( 7, 1, 0 ) );
+    assertEquals( delegatesMappings.resolveVersion( Object.class, new Version( 1, 0, 0 ) ), new Version( 7, 0, 1 ) );
+    assertEquals( delegatesMappings.resolveVersion( Object.class, new Version( 1, 0, 1 ) ), new Version( 7, 0, 2 ) );
+    assertEquals( delegatesMappings.resolveVersion( Object.class, new Version( 1, 0, 2 ) ), new Version( 7, 1, 0 ) );
+    assertEquals( delegatesMappings.resolveVersion( Object.class, new Version( 1, 0, 3 ) ), new Version( 7, 1, 0 ) );
+    assertEquals( delegatesMappings.resolveVersion( Object.class, new Version( 1, 5, 0 ) ), new Version( 7, 1, 0 ) );
   }
 
   @Test
