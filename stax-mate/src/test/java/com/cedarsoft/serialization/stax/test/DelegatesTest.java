@@ -7,7 +7,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 import org.xml.sax.SAXException;
@@ -17,7 +16,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.*;
@@ -131,26 +129,10 @@ public class DelegatesTest {
     public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
 
-      final List<Door> doors = new ArrayList<Door>();
-
       nextTag( deserializeFrom, "doors" );
-      visitChildren( deserializeFrom, new CB() {
-        @Override
-        public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          doors.add( deserialize( Door.class, formatVersion, deserializeFrom ) );
-        }
-      } );
-
-
-      final List<Window> windows = new ArrayList<Window>();
+      List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion );
       nextTag( deserializeFrom, "windows" );
-
-      visitChildren( deserializeFrom, new CB() {
-        @Override
-        public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          windows.add( deserialize( Window.class, formatVersion, deserializeFrom ) );
-        }
-      } );
+      List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion );
 
       closeTag( deserializeFrom );
       return new Room( description, windows, doors );

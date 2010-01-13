@@ -12,6 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract base class for stax based serializers.
@@ -178,6 +180,32 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       String tagName = streamReader.getName().getLocalPart();
       callback.tagEntered( streamReader, tagName );
     }
+  }
+
+  /**
+   * Deserializes a collection
+   *
+   * @param deserializeFrom where it is deserialized from
+   * @param type            the type
+   * @param formatVersion   the format version
+   * @param <T>             the type
+   * @return the deserialized objects
+   *
+   * @throws XMLStreamException
+   * @throws IOException
+   */
+  @NotNull
+  protected <T> List<? extends T> deserializeCollection( @NotNull XMLStreamReader deserializeFrom, @NotNull final Class<T> type, @NotNull final Version formatVersion ) throws XMLStreamException, IOException {
+    final List<T> deserializedObjects = new ArrayList<T>();
+
+    visitChildren( deserializeFrom, new CB() {
+      @Override
+      public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
+        deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom ) );
+      }
+    } );
+
+    return deserializedObjects;
   }
 
   /**
