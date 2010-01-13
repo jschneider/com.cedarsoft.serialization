@@ -19,6 +19,31 @@ import static org.testng.AssertJUnit.*;
  */
 public class DelegateMappingTest {
   @Test
+  public void testVerify() {
+    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
+    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );
+
+    try {
+      mapping.verify();
+      fail("Where is the Exception");
+    } catch ( Exception ignore ) {
+    }
+
+    mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
+
+    try {
+      mapping.verify();
+      fail("Where is the Exception");
+    } catch ( Exception ignore ) {
+    }
+
+    mapping.addMapping( new VersionRange( new Version( 0, 5, 1 ), new Version( 1, 0, 0 ) ), new Version( 1, 0, 1 ) );
+    mapping.addMapping( new VersionRange( new Version( 1, 0, 1 ), new Version( 2, 2, 7 ) ), new Version( 2, 0, 0 ) );
+
+    mapping.verify();
+  }
+
+  @Test
   public void testBasic() {
     MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
     DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );

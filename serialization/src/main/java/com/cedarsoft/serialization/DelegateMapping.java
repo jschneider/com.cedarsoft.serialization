@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Contains the mapping for delegating serializers
@@ -20,7 +21,7 @@ public class DelegateMapping {
   @NotNull
   private final VersionRange delegateVersionRange;
   @NotNull
-  private final Collection<Entry> entries = new ArrayList<Entry>();
+  private final List<Entry> entries = new ArrayList<Entry>();
 
   public DelegateMapping( @NotNull VersionRange versionRange, @NotNull VersionRange delegateVersionRange ) {
     this.versionRange = versionRange;
@@ -96,6 +97,28 @@ public class DelegateMapping {
     }
 
     throw new UnsupportedVersionException( version );
+  }
+
+  public void verify() {
+    if ( entries.isEmpty() ) {
+      throw new IllegalStateException( "Contains no entries" );
+    }
+
+    {
+      Entry first = entries.get( 0 );
+      Version currentMin = first.getVersionRange().getMin();
+      if ( !currentMin.equals( versionRange.getMin() ) ) {
+        throw new IllegalStateException( "Invalid minimum version: <" + currentMin + ">, expected <" + versionRange.getMin() + ">" );
+      }
+    }
+
+    {
+      Entry last = entries.get( entries.size() - 1 );
+      Version currentMax = last.getVersionRange().getMax();
+      if ( !currentMax.equals( versionRange.getMax() ) ) {
+        throw new IllegalStateException( "Invalid maximum version: <" + currentMax + ">, expected <" + versionRange.getMax() + ">" );
+      }
+    }
   }
 
   public static class Entry {

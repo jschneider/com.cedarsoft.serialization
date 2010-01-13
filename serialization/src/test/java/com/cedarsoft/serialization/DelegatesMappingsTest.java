@@ -24,6 +24,21 @@ public class DelegatesMappingsTest {
   }
 
   @Test
+  public void testVerify() {
+    delegatesMappings.add( serializer ).responsibleFor( Object.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
+      .map( 1, 0, 2 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
+      ;
+
+    try {
+      delegatesMappings.verify();
+      fail("Where is the Exception");
+    } catch ( Exception ignore ) {
+    }
+  }
+
+  @Test
   public void testIt() {
     delegatesMappings.add( serializer ).responsibleFor( Object.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )

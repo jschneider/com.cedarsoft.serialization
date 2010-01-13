@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,8 +56,6 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   public <T> void serialize( @NotNull Class<T> type, @NotNull S outputElement, @NotNull T object ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
-    Version version = resolveVersion( Object.class, serializer.getFormatVersion() );
-
     serializer.serialize( outputElement, object );
   }
 
@@ -69,6 +68,21 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     return type.cast( serializer.deserialize( deserializeFrom, resolveVersion( type, formatVersion ) ) );
+  }
+
+  /**
+   * Verifies the mappings
+   */
+  public void verify() throws VersionException {
+    for ( Map.Entry<Class<?>, DelegateMapping> entry : mappings.entrySet() ) {
+      DelegateMapping mapping = entry.getValue();
+
+      if ( !mapping.getVersionRange().equals( versionRange ) ) {
+        throw new IllegalStateException( "Invalid mapping for <" + entry.getKey().getName() + ">. Expected to cover range " + versionRange + " but covered only <" + mapping.getVersionRange() + ">" );
+      }
+
+      mapping.verify();
+    }
   }
 
   public class FluentFactory<T> {
