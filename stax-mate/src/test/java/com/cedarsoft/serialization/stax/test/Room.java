@@ -86,10 +86,11 @@ public class Room {
   }
 
   public static class Serializer extends AbstractStaxMateSerializer<Room> {
-    private final Window.Serializer windowSerializer;
-    private final Door.Serializer doorSerializer;
     private static final Version WINDOW_SERIALIZER_VERSION = new Version( 1, 0, 0 );
     private static final Version DOOR_SERIALIZER_VERSION = new Version( 1, 0, 0 );
+
+    private final Window.Serializer windowSerializer;
+    private final Door.Serializer doorSerializer;
 
     public Serializer( Window.Serializer windowSerializer, Door.Serializer doorSerializer ) {
       super( "room", "room", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
