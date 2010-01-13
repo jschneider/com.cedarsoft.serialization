@@ -7,6 +7,10 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+
 /**
  * Abstract base class for xml based serializers.
  * The version information is stored within the namespace declaration of the root element

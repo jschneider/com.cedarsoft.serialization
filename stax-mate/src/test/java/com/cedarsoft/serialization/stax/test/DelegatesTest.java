@@ -51,7 +51,7 @@ public class DelegatesTest {
 
   @Test
   public void testVisualize() throws IOException {
-    assertEquals( new DelegatesMappingVisualizer( new MyRoomSerializer().delegateMappings ).visualize(),
+    assertEquals( new DelegatesMappingVisualizer( new MyRoomSerializer().getDelegatesMappings() ).visualize(),
                   "         -->      Door    Window\n" +
                     "--------------------------------\n" +
                     "   1.0.0 -->     1.0.0     1.0.0\n" +
@@ -109,10 +109,10 @@ public class DelegatesTest {
     }
 
     {
-      delegateMappings.add( new Door.Serializer() ).responsibleFor( Door.class )
+      add( new Door.Serializer() ).responsibleFor( Door.class )
         .map( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) ).toDelegateVersion( 1, 0, 0 );
 
-      delegateMappings.add( new Window.Serializer() ).responsibleFor( Window.class )
+      add( new Window.Serializer() ).responsibleFor( Window.class )
         .map( 1, 0, 0 ).to( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
         .map( 2, 0, 0 ).toDelegateVersion( 2, 0, 0 )
         ;
@@ -125,13 +125,13 @@ public class DelegatesTest {
       SMOutputElement doorsElement = serializeTo.addElement( serializeTo.getNamespace(), "doors" );
       for ( Door door : object.getDoors() ) {
         SMOutputElement doorElement = doorsElement.addElement( doorsElement.getNamespace(), "door" );
-        delegateMappings.getSerializer( Door.class ).serialize( doorElement, door );
+        getSerializer( Door.class ).serialize( doorElement, door );
       }
 
       SMOutputElement windowsElement = serializeTo.addElement( serializeTo.getNamespace(), "windows" );
       for ( Window window : object.getWindows() ) {
         SMOutputElement windowElement = windowsElement.addElement( windowsElement.getNamespace(), "window" );
-        delegateMappings.getSerializer( Window.class ).serialize( windowElement, window );
+        getSerializer( Window.class ).serialize( windowElement, window );
       }
     }
 
@@ -146,7 +146,7 @@ public class DelegatesTest {
       visitChildren( deserializeFrom, new CB() {
         @Override
         public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          doors.add( delegateMappings.deserialize( Door.class, formatVersion, deserializeFrom ) );
+          doors.add( deserialize( Door.class, formatVersion, deserializeFrom ) );
         }
       } );
 
@@ -157,7 +157,7 @@ public class DelegatesTest {
       visitChildren( deserializeFrom, new CB() {
         @Override
         public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          windows.add( delegateMappings.deserialize( Window.class, formatVersion, deserializeFrom ) );
+          windows.add( deserialize( Window.class, formatVersion, deserializeFrom ) );
         }
       } );
 

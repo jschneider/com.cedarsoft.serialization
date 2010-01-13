@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DelegatesMappings;
 import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -19,12 +17,8 @@ import java.io.OutputStream;
  * @param <T> the type
  */
 public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSerializer<T, SMOutputElement> {
-  @NotNull
-  protected final DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException> delegateMappings;
-
   protected AbstractStaxMateSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
-    delegateMappings = new DelegatesMappings<SMOutputElement, XMLStreamReader, XMLStreamException>( formatVersionRange );
   }
 
   @Override

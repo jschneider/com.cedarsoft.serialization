@@ -19,6 +19,9 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   @NotNull
   private final VersionRange formatVersionRange;
 
+  @NotNull
+  protected final DelegatesMappings<S,D,E> delegatesMappings;
+
   /**
    * Creates a serializer.
    *
@@ -26,6 +29,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    */
   protected AbstractSerializer( @NotNull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
+    this.delegatesMappings = new DelegatesMappings<S,D,E>( formatVersionRange );
   }
 
   @Override
@@ -58,6 +62,31 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serialize( object, out );
     return out.toByteArray();
+  }
+
+  @NotNull
+  public DelegatesMappings<S, D, E> getDelegatesMappings() {
+    return delegatesMappings;
+  }
+
+  // Delegate methods to the DelegatesMappings
+  @NotNull
+  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> sdePluggableSerializer ) {
+    return delegatesMappings.add( sdePluggableSerializer );
+  }
+
+  public <T> void serialize( @NotNull Class<T> type, @NotNull S outputElement, @NotNull T object ) throws E, IOException {
+    delegatesMappings.serialize( type, outputElement, object );
+  }
+
+  @NotNull
+  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
+    return delegatesMappings.getSerializer( type );
+  }
+
+  @NotNull
+  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
+    return delegatesMappings.deserialize( type, formatVersion, deserializeFrom );
   }
 
   /**
