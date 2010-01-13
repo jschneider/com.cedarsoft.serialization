@@ -15,6 +15,14 @@
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>version</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
 
   <build>

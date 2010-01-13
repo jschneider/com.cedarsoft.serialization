@@ -5,6 +5,7 @@ import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,11 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @NotNull
+  public Map<? extends Class<?>, ? extends DelegateMapping> getMappings() {
+    return Collections.unmodifiableMap( mappings );
+  }
+
+  @NotNull
   public <T> FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> serializer ) {
     return new FluentFactory( serializer );
   }
@@ -39,7 +45,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @NotNull
-  protected DelegateMapping getMapping( @NotNull Class<?> key ) {
+  public DelegateMapping getMapping( @NotNull Class<?> key ) {
     DelegateMapping mapping = mappings.get( key );
     if ( mapping == null ) {
       throw new IllegalArgumentException( "No mapping found for <" + key + ">" );
@@ -86,3 +92,18 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     }
   }
 }
+
+/*
+Ascii-Art sample:
+              Window        Door        Other
+----------------------------------------------
+1.0.0         1.0.0         1.0.0       1.2.1
+1.0.1           |             |         1.2.2
+1.0.2           |             |         1.3.0
+1.1.0           |             |         1.3.1
+1.1.1           |             |         1.4.0
+1.5.0         2.0.0           |           |
+2.0.0           |             |         2.0.0
+----------------------------------------------
+2.0.0         2.0.0         1.0.0       2.0.0
+*/

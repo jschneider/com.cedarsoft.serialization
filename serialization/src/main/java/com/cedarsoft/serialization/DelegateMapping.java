@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Contains the mapping for delegating serializers
@@ -24,6 +25,11 @@ public class DelegateMapping {
   public DelegateMapping( @NotNull VersionRange versionRange, @NotNull VersionRange delegateVersionRange ) {
     this.versionRange = versionRange;
     this.delegateVersionRange = delegateVersionRange;
+  }
+
+  @NotNull
+  public Collection<? extends Entry> getEntries() {
+    return Collections.unmodifiableCollection( entries );
   }
 
   @NotNull
@@ -92,7 +98,7 @@ public class DelegateMapping {
     throw new UnsupportedVersionException( version );
   }
 
-  private static class Entry {
+  public static class Entry {
     @NotNull
     private final VersionRange versionRange;
     @NotNull
@@ -101,6 +107,16 @@ public class DelegateMapping {
     Entry( @NotNull VersionRange versionRange, @NotNull Version delegateVersion ) {
       this.versionRange = versionRange;
       this.delegateVersion = delegateVersion;
+    }
+
+    @NotNull
+    public VersionRange getVersionRange() {
+      return versionRange;
+    }
+
+    @NotNull
+    public Version getDelegateVersion() {
+      return delegateVersion;
     }
   }
 
