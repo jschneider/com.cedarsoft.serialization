@@ -120,19 +120,10 @@ public class DelegatesTest {
 
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object ) throws IOException, XMLStreamException {
-      serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
+      serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
-      SMOutputElement doorsElement = serializeTo.addElement( serializeTo.getNamespace(), "doors" );
-      for ( Door door : object.getDoors() ) {
-        SMOutputElement doorElement = doorsElement.addElement( doorsElement.getNamespace(), "door" );
-        getSerializer( Door.class ).serialize( doorElement, door );
-      }
-
-      SMOutputElement windowsElement = serializeTo.addElement( serializeTo.getNamespace(), "windows" );
-      for ( Window window : object.getWindows() ) {
-        SMOutputElement windowElement = windowsElement.addElement( windowsElement.getNamespace(), "window" );
-        getSerializer( Window.class ).serialize( windowElement, window );
-      }
+      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo );
+      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo );
     }
 
     @NotNull
