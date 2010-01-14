@@ -53,7 +53,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    serializeCollection( Extra.class, object.getExtras(), "extra", serializeTo );
+    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo );
 
     //The statement above does exactly the same as this loop:
     //    for ( Extra extra : object.getExtras() ) {
