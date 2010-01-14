@@ -18,23 +18,21 @@ import java.io.IOException;
  */
 public class ApplicationSerializer extends AbstractStaxMateSerializer<Application> {
   @NotNull
-  private static final Version VERSION_VERSION_SERIALIZER = new Version( 1, 0, 0 );
-  @NotNull
   @NonNls
   private static final String ELEMENT_VERSION = "version";
 
   @NotNull
   @NonNls
   private static final String ELEMENT_NAME = "name";
-  @NotNull
-  private final VersionSerializer versionSerializer;
 
   @Inject
   public ApplicationSerializer( @NotNull VersionSerializer versionSerializer ) {
-    super( "application", "http://www.cedarsoft.com/app/appliaction", new VersionRange( VERSION_VERSION_SERIALIZER, VERSION_VERSION_SERIALIZER ) );
-    this.versionSerializer = versionSerializer;
+    super( "application", "http://www.cedarsoft.com/app/appliaction", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
 
-    verifyDelegatingSerializerVersion( versionSerializer, VERSION_VERSION_SERIALIZER );
+    add( versionSerializer ).responsibleFor( Version.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+
+    getDelegatesMappings().verify();
   }
 
   @Override
@@ -42,9 +40,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_VERSION );
-    versionSerializer.serialize( versionElement, object.getVersion() );
-
-
+    serialize( Version.class, versionElement, object.getVersion() );
   }
 
   @Override
@@ -53,7 +49,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 
     nextTag( deserializeFrom, ELEMENT_VERSION );
-    Version applicationVersion = versionSerializer.deserialize( deserializeFrom, VERSION_VERSION_SERIALIZER );
+    Version applicationVersion = deserialize( Version.class, formatVersion, deserializeFrom );
     closeTag( deserializeFrom );
 
     return new Application( name, applicationVersion );

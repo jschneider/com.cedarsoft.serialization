@@ -20,7 +20,7 @@ public class Car {
     this( model, color, basePrice, null );
   }
 
-  public Car( Model model, Color color, Money basePrice, Collection<Extra> extras ) {
+  public Car( Model model, Color color, Money basePrice, Collection<? extends Extra> extras ) {
     this.model = model;
     this.color = color;
     this.basePrice = basePrice;

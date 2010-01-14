@@ -28,7 +28,6 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
     serializeTo.addCharacters( object.getExtension() );
-
   }
 
   @NotNull

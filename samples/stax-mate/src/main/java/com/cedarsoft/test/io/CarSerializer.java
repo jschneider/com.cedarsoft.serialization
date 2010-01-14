@@ -8,13 +8,11 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,25 +21,20 @@ import java.util.List;
 public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: fieldsAndConstructors
 
-  //We create constants for the expected versions for the delegates
-  private static final Version VERSION_MONEY_SERIALIZER = new Version( 1, 0, 0 );
-  private static final Version VERSION_MODEL_SERIALIZER = new Version( 1, 0, 0 );
-  private static final Version VERSION_EXTRA_SERIALIZER = new Version( 1, 5, 0 );
-
-  private final MoneySerializer moneySerializer;
-  private final ExtraSerializer extraSerializer;
-  private final ModelSerializer modelSerializer;
-
   public CarSerializer( MoneySerializer moneySerializer, ExtraSerializer extraSerializer, ModelSerializer modelSerializer ) {
-    super( "car", "http://www.cedarsoft.com/test/car", new VersionRange( VERSION_MONEY_SERIALIZER, VERSION_MONEY_SERIALIZER ) );
-    this.moneySerializer = moneySerializer;
-    this.extraSerializer = extraSerializer;
-    this.modelSerializer = modelSerializer;
+    super( "car", "http://www.cedarsoft.com/test/car", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
 
-    //Verify the versions for the other serializers
-    verifyDelegatingSerializerVersion( moneySerializer, VERSION_MONEY_SERIALIZER );
-    verifyDelegatingSerializerVersion( extraSerializer, VERSION_EXTRA_SERIALIZER );
-    verifyDelegatingSerializerVersion( modelSerializer, VERSION_MODEL_SERIALIZER );
+    add( moneySerializer ).responsibleFor( Money.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+
+    add( extraSerializer ).responsibleFor( Extra.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 );
+
+    add( modelSerializer ).responsibleFor( Model.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+
+    //Verify the delegate mappings
+    getDelegatesMappings().verify();
   }
   //END SNIPPET: fieldsAndConstructors
 
@@ -55,13 +48,17 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
     colorElement.addAttribute( "green", String.valueOf( object.getColor().getGreen() ) );
 
-    modelSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "model" ), object.getModel() );
-    moneySerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), object.getBasePrice() );
+    serialize( Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), object.getModel() );
+    serialize( Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), object.getBasePrice() );
+
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    for ( Extra extra : object.getExtras() ) {
-      extraSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "extra" ), extra );
-    }
+    serializeCollection( Extra.class, object.getExtras(), "extra", serializeTo );
+
+    //The statement above does exactly the same as this loop:
+    //    for ( Extra extra : object.getExtras() ) {
+    //      serialize( Extra.class,  serializeTo.addElement( serializeTo.getNamespace(), "extra" ), extra );
+    //    }
   }
   //END SNIPPET: serialize
 
@@ -78,19 +75,13 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     closeTag( deserializeFrom );
 
     nextTag( deserializeFrom, "model" );
-    Model model = modelSerializer.deserialize( deserializeFrom, VERSION_MODEL_SERIALIZER );
+    Model model = deserialize( Model.class, formatVersion, deserializeFrom );
 
     nextTag( deserializeFrom, "basePrice" );
-    Money basePrice = moneySerializer.deserialize( deserializeFrom, VERSION_MONEY_SERIALIZER );
+    Money basePrice = deserialize( Money.class, formatVersion, deserializeFrom );
 
     //Now we visit all remaining children (should only be extras)
-    final List<Extra> extras = new ArrayList<Extra>();
-    visitChildren( deserializeFrom, new CB() {
-      @Override
-      public void tagEntered( XMLStreamReader deserializeFrom, @NonNls String tagName ) throws XMLStreamException, IOException {
-        extras.add( extraSerializer.deserialize( deserializeFrom, VERSION_EXTRA_SERIALIZER ) );
-      }
-    } );
+    List<? extends Extra> extras = deserializeCollection( deserializeFrom, Extra.class, formatVersion );
 
     return new Car( model, color, basePrice, extras );
   }

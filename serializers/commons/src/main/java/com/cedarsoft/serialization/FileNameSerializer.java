@@ -20,45 +20,41 @@ import java.io.IOException;
  */
 public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
   @NotNull
-  private static final Version VERSION_EXTENSION_SERIALIZER = new Version( 1, 0, 0 );
-  @NotNull
-  private static final Version VERSION_BASE_NAME_SERIALIZER = new Version( 1, 0, 0 );
-  @NotNull
   @NonNls
   public static final String ELEMENT_EXTENSION = "extension";
-
   @NotNull
   @NonNls
   public static final String ELEMENT_BASE_NAME = "baseName";
-  @NotNull
-  private final ExtensionSerializer extensionSerializer;
-  @NotNull
-  private final BaseNameSerializer baseNameSerializer;
 
   @Inject
   public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "fileName", "http://www.cedarsoft.com/file/fileName",new VersionRange( VERSION_EXTENSION_SERIALIZER, VERSION_EXTENSION_SERIALIZER ) );
-    this.extensionSerializer = extensionSerializer;
-    this.baseNameSerializer = baseNameSerializer;
+    super( "fileName", "http://www.cedarsoft.com/file/fileName", VersionRange.from( 1, 0, 0 ).to() );
 
-    verifyDelegatingSerializerVersion( extensionSerializer, VERSION_EXTENSION_SERIALIZER );
-    verifyDelegatingSerializerVersion( baseNameSerializer, VERSION_BASE_NAME_SERIALIZER );
+    add( extensionSerializer ).responsibleFor( Extension.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
+      ;
+
+    add( baseNameSerializer ).responsibleFor( BaseName.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
+      ;
+
+    getDelegatesMappings().verify();
   }
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object ) throws IOException, XMLStreamException {
-    baseNameSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), object.getBaseName() );
-    extensionSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), object.getExtension() );
+    serialize( BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), object.getBaseName() );
+    serialize( Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), object.getExtension() );
   }
 
   @NotNull
   @Override
   public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
-    BaseName baseName = baseNameSerializer.deserialize( deserializeFrom, VERSION_BASE_NAME_SERIALIZER );
+    BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom );
 
     nextTag( deserializeFrom, ELEMENT_EXTENSION );
-    Extension extension = extensionSerializer.deserialize( deserializeFrom, VERSION_EXTENSION_SERIALIZER );
+    Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom );
 
     closeTag( deserializeFrom );
 
