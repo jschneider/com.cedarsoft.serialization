@@ -86,38 +86,26 @@ public class Room {
   }
 
   public static class Serializer extends AbstractStaxMateSerializer<Room> {
-    private static final Version WINDOW_SERIALIZER_VERSION = new Version( 1, 0, 0 );
-    private static final Version DOOR_SERIALIZER_VERSION = new Version( 1, 0, 0 );
-
-    private final Window.Serializer windowSerializer;
-    private final Door.Serializer doorSerializer;
 
     public Serializer( Window.Serializer windowSerializer, Door.Serializer doorSerializer ) {
       super( "room", "room", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
-      this.windowSerializer = windowSerializer;
-      this.doorSerializer = doorSerializer;
 
-      verifyDelegatingSerializerVersion( windowSerializer, WINDOW_SERIALIZER_VERSION );
-      verifyDelegatingSerializerVersion( doorSerializer, DOOR_SERIALIZER_VERSION );
+      add( windowSerializer ).responsibleFor( Window.class )
+        .map( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 )
+        ;
+      add( doorSerializer ).responsibleFor( Door.class )
+        .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
+        ;
+
+      getDelegatesMappings().verify();
     }
 
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object ) throws IOException, XMLStreamException {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
-      {
-        SMOutputElement windowsElement = serializeTo.addElement( serializeTo.getNamespace(), "windows" );
-        for ( Window window : object.getWindows() ) {
-          windowSerializer.serialize( windowsElement.addElement( windowsElement.getNamespace(), "window" ), window );
-        }
-      }
-
-      {
-        SMOutputElement doorsElement = serializeTo.addElement( serializeTo.getNamespace(), "doors" );
-        for ( Door door : object.getDoors() ) {
-          doorSerializer.serialize( doorsElement.addElement( doorsElement.getNamespace(), "door" ), door );
-        }
-      }
+      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo );
+      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo );
     }
 
     @NotNull
@@ -125,26 +113,13 @@ public class Room {
     public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
 
-      final List<Window> windows = new ArrayList<Window>();
       nextTag( deserializeFrom, "windows" );
-      visitChildren( deserializeFrom, new CB() {
-        @Override
-        public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          windows.add( windowSerializer.deserialize( deserializeFrom, WINDOW_SERIALIZER_VERSION ) );
-        }
-      } );
+      final List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion );
 
-      final List<Door> doors = new ArrayList<Door>();
       nextTag( deserializeFrom, "doors" );
-      visitChildren( deserializeFrom, new CB() {
-        @Override
-        public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-          doors.add( doorSerializer.deserialize( deserializeFrom, DOOR_SERIALIZER_VERSION ) );
-        }
-      } );
+      final List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion );
 
       closeTag( deserializeFrom );
-
       return new Room( description, windows, doors );
     }
   }
