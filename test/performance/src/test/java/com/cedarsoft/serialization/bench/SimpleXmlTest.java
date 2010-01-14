@@ -18,7 +18,7 @@ public class SimpleXmlTest {
   public void testIt() throws Exception {
     Serializer serializer = new Persister();
 
-    XmlParserPerformance.FileType fileType = new XmlParserPerformance.FileType( "Canon Raw", new XmlParserPerformance.Extension( ".", "cr2", true ), false );
+    FileType fileType = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.write( fileType, out );
@@ -30,7 +30,7 @@ public class SimpleXmlTest {
   public void testDeserialize() throws Exception {
     Serializer serializer = new Persister();
 
-    XmlParserPerformance.FileType read = serializer.read( XmlParserPerformance.FileType.class, new ByteArrayInputStream( XmlParserPerformance.CONTENT_SAMPLE_XSTREAM.getBytes() ) );
+    FileType read = serializer.read( FileType.class, new ByteArrayInputStream( XmlParserPerformance.CONTENT_SAMPLE_XSTREAM.getBytes() ) );
     assertNotNull( read.getExtension() );
   }
 }

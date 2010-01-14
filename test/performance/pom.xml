@@ -16,6 +16,10 @@
       <groupId>com.cedarsoft</groupId>
       <artifactId>serialization</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>stax-mate</artifactId>
+    </dependency>
 
     <!--Stax parser-->
     <dependency>

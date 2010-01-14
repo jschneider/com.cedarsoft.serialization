@@ -8,8 +8,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.testng.annotations.*;
@@ -21,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +29,9 @@ import static org.testng.Assert.*;
  *
  */
 public class XmlParserPerformance {
-  private static final int SMALL = 5000;
-  private static final int MEDIUM = SMALL * 10;
-  private static final int BIG = MEDIUM * 10;
+  public static final int SMALL = 5000;
+  public static final int MEDIUM = SMALL * 10;
+  public static final int BIG = MEDIUM * 10;
 
   @NotNull
   @NonNls
@@ -177,7 +174,7 @@ public class XmlParserPerformance {
           Serializer serializer = new Persister();
 
           for ( int i = 0; i < MEDIUM; i++ ) {
-            XmlParserPerformance.FileType read = serializer.read( XmlParserPerformance.FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
+            FileType read = serializer.read( FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
             assertNotNull( read );
           }
         } catch ( Exception e ) {
@@ -461,72 +458,5 @@ public class XmlParserPerformance {
       System.out.println( "--> " + time );
     }
     System.out.println( "-----------------------" );
-  }
-
-
-  @Root
-  public static class FileType implements Serializable {
-    @Attribute( name = "dependent" )
-    private final boolean dependent;
-    @org.simpleframework.xml.Element( name = "id" )
-    @NotNull
-    @NonNls
-    private final String id;
-    @org.simpleframework.xml.Element( name = "extension" )
-    @NotNull
-    private final Extension extension;
-
-    public FileType( @org.simpleframework.xml.Element( name = "id" ) @NotNull String id, @org.simpleframework.xml.Element( name = "extension" ) @NotNull Extension extension, @Attribute( name = "dependent" ) boolean dependent ) {
-      this.dependent = dependent;
-      this.id = id;
-      this.extension = extension;
-    }
-
-    @NotNull
-    public Extension getExtension() {
-      return extension;
-    }
-
-    public boolean isDependent() {
-      return dependent;
-    }
-
-    @NotNull
-    public String getId() {
-      return id;
-    }
-  }
-
-  public static class Extension implements Serializable{
-    @Attribute( name = "default" )
-    private final boolean isDefault;
-    @Attribute( name = "delimiter" )
-    @NotNull
-    @NonNls
-    private final String delimiter;
-    @org.simpleframework.xml.Element( name = "extension" )
-    @NotNull
-    @NonNls
-    private final String extension;
-
-    public Extension( @Attribute( name = "delimiter" ) @NotNull String delimiter, @org.simpleframework.xml.Element( name = "extension" ) @NotNull String extension, @Attribute( name = "default" ) boolean isDefault ) {
-      this.delimiter = delimiter;
-      this.extension = extension;
-      this.isDefault = isDefault;
-    }
-
-    public boolean isDefault() {
-      return isDefault;
-    }
-
-    @NotNull
-    public String getDelimiter() {
-      return delimiter;
-    }
-
-    @NotNull
-    public String getExtension() {
-      return extension;
-    }
   }
 }
