@@ -56,7 +56,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return mapping;
   }
 
-  public <T> void serialize( @NotNull Class<T> type, @NotNull S outputElement, @NotNull T object ) throws E, IOException {
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     serializer.serialize( outputElement, object );
   }

@@ -40,7 +40,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
-    serialize( Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ), object.getPrice() );
+    serialize( object.getPrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ) );
   }
 
   @Override

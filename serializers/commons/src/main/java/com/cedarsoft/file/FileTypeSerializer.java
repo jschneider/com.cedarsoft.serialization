@@ -54,7 +54,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
         extensionElement.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( true ) );
       }
 
-      serialize( Extension.class, extensionElement, extension );
+      serialize( extension, Extension.class, extensionElement );
     }
   }
 

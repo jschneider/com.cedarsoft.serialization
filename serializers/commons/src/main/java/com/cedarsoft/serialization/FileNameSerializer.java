@@ -43,8 +43,8 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object ) throws IOException, XMLStreamException {
-    serialize( BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), object.getBaseName() );
-    serialize( Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), object.getExtension() );
+    serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ) );
+    serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ) );
   }
 
   @NotNull

@@ -40,7 +40,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_VERSION );
-    serialize( Version.class, versionElement, object.getVersion() );
+    serialize( object.getVersion(), Version.class, versionElement );
   }
 
   @Override

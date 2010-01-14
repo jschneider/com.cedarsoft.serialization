@@ -75,8 +75,8 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     return delegatesMappings.add( sdePluggableSerializer );
   }
 
-  public <T> void serialize( @NotNull Class<T> type, @NotNull S outputElement, @NotNull T object ) throws E, IOException {
-    delegatesMappings.serialize( type, outputElement, object );
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement ) throws E, IOException {
+    delegatesMappings.serialize( object, type, outputElement );
   }
 
   @NotNull

@@ -48,8 +48,8 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
     colorElement.addAttribute( "green", String.valueOf( object.getColor().getGreen() ) );
 
-    serialize( Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), object.getModel() );
-    serialize( Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), object.getBasePrice() );
+    serialize( object.getModel(), Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ) );
+    serialize( object.getBasePrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ) );
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
