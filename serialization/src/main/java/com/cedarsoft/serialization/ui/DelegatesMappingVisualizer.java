@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +48,7 @@ public class DelegatesMappingVisualizer {
   }
 
   public void visualize( @NotNull Writer out ) throws IOException {
-    List<Column> columns = new ArrayList<Column>();
+    Collection<Column> columns = new ArrayList<Column>();
 
     //The versions
     SortedSet<Version> keyVersions = mappings.getMappedVersions();
@@ -56,7 +57,7 @@ public class DelegatesMappingVisualizer {
     List<Class<?>> keys = new ArrayList<Class<?>>( mappings.getMappings().keySet() );
     Collections.sort( keys, new Comparator<Class<?>>() {
       @Override
-      public int compare( Class<?> o1, Class<?> o2 ) {
+      public int compare( @NonNls Class<?> o1, @NonNls Class<?> o2 ) {
         return o1.getName().compareTo( o2.getName() );
       }
     } );
@@ -78,7 +79,7 @@ public class DelegatesMappingVisualizer {
     writeSeparator( columns.size(), out );
   }
 
-  private void writeContent( @NotNull List<? extends Version> keyVersions, @NotNull List<? extends Column> columns, @NotNull Writer out ) throws IOException {
+  private static void writeContent( @NotNull List<? extends Version> keyVersions, @NotNull Iterable<? extends Column> columns, @NotNull Writer out ) throws IOException {
     for ( int i = 0, keyVersionsSize = keyVersions.size(); i < keyVersionsSize; i++ ) {
       Version keyVersion = keyVersions.get( i );
       out.write( extend( keyVersion.format() ) );
@@ -125,13 +126,6 @@ public class DelegatesMappingVisualizer {
     return StringUtils.leftPad( string, COL_WIDTH );
   }
 
-  @NotNull
-  @NonNls
-  private static String getRepresentation( @NotNull Class<?> type ) {
-    String[] parts = type.getName().split( "\\." );
-    return parts[parts.length - 1];
-  }
-
 
   public static class Column {
     @NotNull
@@ -140,7 +134,7 @@ public class DelegatesMappingVisualizer {
     @NotNull
     private final List<String> lines = new ArrayList<String>();
 
-    public Column( @NotNull Class<?> type, @NotNull List<? extends Version> versions ) {
+    public Column( @NotNull Class<?> type, @NotNull Iterable<? extends Version> versions ) {
       this.header = getRepresentation( type );
 
       Version lastVersion = null;
@@ -152,6 +146,13 @@ public class DelegatesMappingVisualizer {
         }
         lastVersion = version;
       }
+    }
+
+    @NotNull
+    @NonNls
+    private static String getRepresentation( @NotNull Class<?> type ) {
+      String[] parts = type.getName().split( "\\." );
+      return parts[parts.length - 1];
     }
   }
 }
