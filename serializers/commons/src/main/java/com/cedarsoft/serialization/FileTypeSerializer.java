@@ -1,8 +1,9 @@
-package com.cedarsoft.file;
+package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.ExtensionSerializer;
+import com.cedarsoft.file.Extension;
+import com.cedarsoft.file.FileType;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.google.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
