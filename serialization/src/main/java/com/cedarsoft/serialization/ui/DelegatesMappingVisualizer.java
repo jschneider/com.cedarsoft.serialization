@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  *
@@ -51,16 +50,7 @@ public class DelegatesMappingVisualizer {
     List<Column> columns = new ArrayList<Column>();
 
     //The versions
-    SortedSet<Version> keyVersions = new TreeSet<Version>();
-    for ( DelegateMapping mapping : mappings.getMappings().values() ) {
-      keyVersions.add( mapping.getVersionRange().getMin() );
-      keyVersions.add( mapping.getVersionRange().getMax() );
-
-      for ( DelegateMapping.Entry entry : mapping.getEntries() ) {
-        keyVersions.add( entry.getVersionRange().getMin() );
-        keyVersions.add( entry.getVersionRange().getMax() );
-      }
-    }
+    SortedSet<Version> keyVersions = mappings.getMappedVersions();
 
     //The keys
     List<Class<?>> keys = new ArrayList<Class<?>>( mappings.getMappings().keySet() );

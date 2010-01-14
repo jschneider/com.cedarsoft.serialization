@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Contains several delegates mappings
@@ -74,6 +76,8 @@ public class DelegatesMappings<S, D, E extends Throwable> {
    * Verifies the mappings
    */
   public void verify() throws VersionException {
+    SortedSet<Version> mappedVersions = getMappedVersions();
+
     for ( Map.Entry<Class<?>, DelegateMapping> entry : mappings.entrySet() ) {
       DelegateMapping mapping = entry.getValue();
 
@@ -82,7 +86,28 @@ public class DelegatesMappings<S, D, E extends Throwable> {
       }
 
       mapping.verify();
+      mapping.verifyMappedVersions( mappedVersions );
     }
+  }
+
+  /**
+   * Returns the mapped versions
+   *
+   * @return a set with all mapped versions
+   */
+  @NotNull
+  public SortedSet<Version> getMappedVersions() {
+    SortedSet<Version> keyVersions = new TreeSet<Version>();
+    for ( DelegateMapping mapping : getMappings().values() ) {
+      keyVersions.add( mapping.getVersionRange().getMin() );
+      keyVersions.add( mapping.getVersionRange().getMax() );
+
+      for ( DelegateMapping.Entry entry : mapping.getEntries() ) {
+        keyVersions.add( entry.getVersionRange().getMin() );
+        keyVersions.add( entry.getVersionRange().getMax() );
+      }
+    }
+    return keyVersions;
   }
 
   public class FluentFactory<T> {

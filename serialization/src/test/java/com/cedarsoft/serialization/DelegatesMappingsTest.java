@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import org.testng.annotations.*;
 
@@ -33,8 +34,32 @@ public class DelegatesMappingsTest {
 
     try {
       delegatesMappings.verify();
-      fail("Where is the Exception");
+      fail( "Where is the Exception" );
     } catch ( Exception ignore ) {
+    }
+  }
+
+  @Test
+  public void testVerify2() {
+    delegatesMappings.add( serializer ).responsibleFor( Object.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
+      .map( 1, 0, 3 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 0 )
+      ;
+
+    delegatesMappings.add( serializer ).responsibleFor( String.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
+      .map( 1, 0, 2 ).toDelegateVersion( 7, 0, 3 )
+      .map( 1, 0, 3 ).toDelegateVersion( 7, 0, 4 )
+      .map( 1, 0, 4 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
+      .map( 1, 8, 4 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 10 )
+      ;
+
+    try {
+      delegatesMappings.verify();
+      fail( "Where is the Exception" );
+    } catch ( VersionException e ) {
     }
   }
 

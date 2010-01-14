@@ -120,6 +120,11 @@ public class DelegateMapping {
       }
     }
   }
+  public void verifyMappedVersions( Iterable<? extends Version> mappedVersions ) {
+    for ( Version mappedVersion : mappedVersions ) {
+      resolveVersion( mappedVersion );
+    }
+  }
 
   public static class Entry {
     @NotNull
