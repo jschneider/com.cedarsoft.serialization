@@ -34,7 +34,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
 
   @Inject
   public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "fileType", "http://collustra.cedarsoft.com/fileType", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "fileType", "http://www.cedarsoft.com/file/type", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
 
     add( extensionSerializer ).responsibleFor( Extension.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
