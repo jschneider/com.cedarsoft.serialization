@@ -7,10 +7,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
-
 /**
  * Abstract base class for xml based serializers.
  * The version information is stored within the namespace declaration of the root element
@@ -46,6 +42,17 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   @NonNls
   protected String createNameSpaceUri( @NotNull Version formatVersion ) {
     return getNameSpaceUriBase() + "/" + formatVersion.format();
+  }
+
+  /**
+   * Returns the name space uri (including the version)
+   *
+   * @return the name space uri
+   */
+  @NotNull
+  @NonNls
+  public String getNameSpaceUri() {
+    return createNameSpaceUri( getFormatVersion() );
   }
 
   @NonNls

@@ -44,7 +44,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     Document document = new Document();
 
     //The name space
-    Namespace namespace = Namespace.getNamespace( createNameSpaceUri( getFormatVersion() ) );
+    Namespace namespace = Namespace.getNamespace( getNameSpaceUri() );
 
     //Create the root
     Element root = new Element( getDefaultElementName(), namespace );

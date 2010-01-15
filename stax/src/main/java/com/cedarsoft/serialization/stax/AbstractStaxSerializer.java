@@ -32,7 +32,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
       XMLStreamWriter writer = StaxSupport.getXmlOutputFactory().createXMLStreamWriter( out );
 
       //Sets the name space
-      String nameSpace = createNameSpaceUri( getFormatVersion() );
+      String nameSpace = getNameSpaceUri();
       writer.setDefaultNamespace( nameSpace );
 
       writer.writeStartElement( getDefaultElementName() );

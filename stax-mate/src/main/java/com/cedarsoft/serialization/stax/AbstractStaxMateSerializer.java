@@ -26,7 +26,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     try {
       SMOutputDocument doc = StaxMateSupport.getSmOutputFactory().createOutputDocument( out );
 
-      String nameSpaceUri = createNameSpaceUri( getFormatVersion() );
+      String nameSpaceUri = getNameSpaceUri();
       SMNamespace nameSpace = doc.getNamespace( nameSpaceUri );
 
       SMOutputElement root = doc.addElement( nameSpace, getDefaultElementName() );
