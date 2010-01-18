@@ -18,7 +18,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //START SNIPPET: fieldsAndConstructors
 
   public ExtraSerializer( MoneySerializer moneySerializer ) {
-    super( "extra", "http://www.cedarsoft.com/test/extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 0 ) ) );
+    super( "extra", "http://thecompany.com/test/extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 0 ) ) );
     //We choose another version number. Maybe this is an old serializer that has been created within another project.
 
     add( moneySerializer ).responsibleFor( Money.class )

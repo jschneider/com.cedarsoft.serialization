@@ -22,7 +22,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: fieldsAndConstructors
 
   public CarSerializer( MoneySerializer moneySerializer, ExtraSerializer extraSerializer, ModelSerializer modelSerializer ) {
-    super( "car", "http://www.cedarsoft.com/test/car", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "car", "http://thecompany.com/test/car", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
 
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
