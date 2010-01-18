@@ -64,4 +64,7 @@ Best Practices
   be deserialized some tests are necessary.
 
   A test extending <Abstract(Xml)VersionTest> should be created for each serializer. For each new format version one or more entries should
-  be added to that test. 
+  be added to that test.
+
+** Verify the mappings
+  --> assert

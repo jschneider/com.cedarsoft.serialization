@@ -21,10 +21,10 @@ Golden Rules
 
   To ensure backwards compatibility update the versions test for your serializer every time the format changes and a new version is introduced.
 
-* Verify delegate's version range
+* Verify the delegates mappings
 
-  Every serializer that uses other serializers as delegate must verify their supported version (range). This will keep all of your
-  serializers stable. There exists a convenience method (AbstractSerializer#verifyDelegatingSerializerVersion) for that purpose.
+  Every serializer that uses other serializers as delegate must verify their supported version (ranges). This will keep all of your
+  serializers stable. There exists a convenience method (DelegatesMappings#verify) for that purpose.
 
 * Object identity
 

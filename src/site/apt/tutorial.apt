@@ -57,13 +57,13 @@
 ** {Where to begin?}
 
   Because the serializers of the "bigger" objects delegate parts of the serialization to other serializers it is suggested to start
-  the implementation beginning with the serializers for the "smaller" (value) objects.
+  the implementation beginning with the serializers for the "smaller" leaf objects (often value objects).
 
-  In our example it looks like a good idea to first implement the serializers for the <Model> objects (we could also have chosen <Money>).
+  In our example it might be a good idea to implement the serializers for the <Model> objects first (we could also have chosen <Money>).
 
 * <{ModelSerializer}>
 
-  The <Model> object can be serialized easily. There is just one field that must be serialized (<String name>).
+  The <Model> object can be serialized easily. There is just one field that has be serialized (<String name>).
 
   We chose to serialize to XML using Stax Mate. Therefore our serializers should extend {{{./xref/com/cedarsoft/serialization/stax/AbstractStaxMateSerializer.html}AbstractStaxMateSerializer}}.
 
@@ -75,6 +75,8 @@
   The parameters are:
 
   * <String defaultElementName>: The name for the root element, if this serializers is not used as delegate. For delegating serializers that value is not used.
+
+  * <String nameSpaceUriBase>: The nameSpaceUriBase is extended with the version number represents the name space within the xml.
 
   * <VersionRange formatVersionRange>: The supported format version range. The upper bound represents the format that is written.
     All Versions within the range can be read.
@@ -100,7 +102,7 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<model xmlns="http://www.cedarsoft.com/test/model/1.0.0">Toyota</model>
+<model xmlns="http://thecompany.com/test/model/1.0.0">Toyota</model>
 ---
 
   The namespace declaration (starting with "xmlns") contains the information about the format version. That information is parsed and used
@@ -147,22 +149,23 @@
 
 ** {Constructor}
 
-  The constructor is a little bit more complex, since the delegate for the serialization of the money field is added.
+  The constructor is a little bit more complex, since the delegate for the serialization of the money field is added and configured.
 
 %{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/ExtraSerializer.java}
 
-  This serializers supports a different version range as the other serializers (1.5.0-1.5.0). This has been done to
-  show that the version numbers are completely independent for the serializers - even when they are used as delegates.
+  This serializers supports a different version range as the other serializers (1.5.0-1.5.0).
+  The version numbers of the serializers are independent from each other - even when they are used as delegates.
 
-  In the times of Dependency Injection we chose to add the money serializer as constructor parameter. That serializer
-  is stored within a field and can later be used as delegate.
+  Today - in the time of Dependency Injection - we chose to add the money serializer as constructor parameter. That serializer
+  is added to the delegates mappings.
 
-  The last line within the constructor verifies that version range of the <MoneySerializer> fits the expected one. This is
+  The last line within the constructor verifies the version ranges of the <MoneySerializer> fits the expected one. This is
   necessary to ensure that the format for this serializer stays constant.
   If the format for <Money> is changed, the format for <Extra> is affected, too. Too ensure that the format version is
-  updated accordingly, it is strongly recommended to verify the version range of your delegating objects.
+  updated accordingly, it is necessary to verify the version range of your delegating objects.
 
-  There helper method <verifyDelegatingSerializerVersion> does that job. 
+  Just call <verify> on the DelegatesMappings object. It is good practice to verify every serializer with delegates. To improve
+  performance in production environments, it is suggested to call this method only when assertions are enabled.
 
 ** {(De)serialization}
 
@@ -180,7 +183,7 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<extra xmlns="http://www.cedarsoft.com/test/extra/1.5.0">
+<extra xmlns="http://thecompany.com/test/extra/1.5.0">
   <description>Metallic</description>
   <price>40000</price>
 </extra>
@@ -193,10 +196,8 @@
 
 %{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Car.java}
 
-
   Since we have created serializers for (nearly) all objects the car has references to, the <CarSerializer> is
   also quite simple and straight forward to implement.
-
 
 ** {Constructor for CarSerializer}
 
@@ -205,7 +206,7 @@
 
 %{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
 
-  Each delegate is verified whether the version matches the expected version.
+  The delegates mappings are verified to ensure that the version (ranges) match.
 
 ** {Serialization of a Car}
 
@@ -224,7 +225,7 @@
 
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<car xmlns="http://www.cedarsoft.com/test/car/1.0.0">
+<car xmlns="http://thecompany.com/test/car/1.0.0">
   <color red="255" blue="0" green="200" />
   <model>Ford</model>
   <basePrice>1900000</basePrice>
@@ -242,8 +243,7 @@
 ** {Deserialization of a Car}
 
   Deserialization is always very easy. Just deserialize the stuff using the serializers as delegate.
-  Collections can easily be deserialized using the method <visitChildren> that is defined in <AbstractStaxBasedSerializer>.
-  This method iterates over all children left in the current tag and calls a callback for each child.
+  Collections can easily be deserialized using the method <deserializeCollection> that is defined in <AbstractStaxBasedSerializer>.
 
 %{snippet|id=deserialize|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/CarSerializer.java}
 
