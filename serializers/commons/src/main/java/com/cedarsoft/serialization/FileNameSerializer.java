@@ -38,7 +38,7 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
       ;
 
-    getDelegatesMappings().verify();
+    assert getDelegatesMappings().verify();
   }
 
   @Override

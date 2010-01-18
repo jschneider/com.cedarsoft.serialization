@@ -25,11 +25,14 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
       .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
       ;
 
-    //We verify the version here. This is necessary, to ensure that the file format for the
-    //complete extra keeps constant.
-    //If someone changes the MoneySerializer we have to take some manual steps and ensure
-    //the changes are backwards compatible or handle the differences somehow.
-    getDelegatesMappings().verify();
+    //Verify the delegate mappings
+    //This is necessary, to ensure that the file format for the
+    //object stays constant.
+    //If someone changes the MoneySerializer (and increases the version number), this step
+    //enforces us to take the necessary steps to handle that situation:
+    //Either increase the version number of this serializer (recommended)
+    //or handle the differences with some magic (may be necessary sometimes - but generally not recommended)
+    assert getDelegatesMappings().verify();
   }
   //END SNIPPET: fieldsAndConstructors
 

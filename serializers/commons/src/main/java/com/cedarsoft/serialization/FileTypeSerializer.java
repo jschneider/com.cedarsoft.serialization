@@ -40,7 +40,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
       ;
 
-    getDelegatesMappings().verify();
+    assert getDelegatesMappings().verify();
   }
 
   @Override

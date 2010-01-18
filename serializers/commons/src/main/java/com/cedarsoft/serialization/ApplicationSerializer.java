@@ -32,7 +32,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     add( versionSerializer ).responsibleFor( Version.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
 
-    getDelegatesMappings().verify();
+    assert getDelegatesMappings().verify();
   }
 
   @Override

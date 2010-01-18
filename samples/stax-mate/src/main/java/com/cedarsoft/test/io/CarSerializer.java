@@ -34,7 +34,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
 
     //Verify the delegate mappings
-    getDelegatesMappings().verify();
+    assert getDelegatesMappings().verify();
   }
   //END SNIPPET: fieldsAndConstructors
 

@@ -78,8 +78,9 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   /**
    * Verifies the mappings
+   * @return true if the verification has been successful. Throws an exception if not
    */
-  public void verify() throws VersionException {
+  public boolean verify() throws VersionException {
     SortedSet<Version> mappedVersions = getMappedVersions();
 
     for ( Map.Entry<Class<?>, DelegateMapping> entry : mappings.entrySet() ) {
@@ -92,6 +93,8 @@ public class DelegatesMappings<S, D, E extends Throwable> {
       mapping.verify();
       mapping.verifyMappedVersions( mappedVersions );
     }
+
+    return true;
   }
 
   /**
