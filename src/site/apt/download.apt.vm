@@ -108,7 +108,7 @@ Download
   <repository>
     <id>cedarsoftSnapshotRepository</id>
     <name>cedarsoft Snapshot Repository</name>
-    <url>http://nexus.cedarsoft.com/content/repositories/public-snapshots/</url>
+    <url>http://nexus.cedarsoft.com/content/repositories/snapshots/</url>
     <snapshots>
       <enabled>true</enabled>
     </snapshots>
