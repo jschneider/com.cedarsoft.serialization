@@ -35,7 +35,7 @@
     <dependency>
       <groupId>javolution</groupId>
       <artifactId>javolution</artifactId>
-      <version>5.4.2</version>
+      <version>5.4.3</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>org.simpleframework</groupId>
       <artifactId>simple-xml</artifactId>
-      <version>2.1.9</version>
+      <version>2.2</version>
     </dependency>
 
     <dependency>
