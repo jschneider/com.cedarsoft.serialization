@@ -54,7 +54,7 @@
 
     <menu name="Tutorial">
       <item name="Tutorial" href="tutorial.html" />
-      <item name="Advanced" href="advancedTut.html" />
+      <!--<item name="Advanced" href="advancedTut.html" />-->
     </menu>
 
     <menu name="Documentation">
