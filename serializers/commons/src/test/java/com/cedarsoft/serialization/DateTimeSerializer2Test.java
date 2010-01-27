@@ -1,11 +1,11 @@
 /**
- * Copyright (C) 2010 cedarsoft GmbH.
+ * Copyright (C) cedarsoft GmbH.
  *
  * Licensed under the GNU General Public License version 3 (the "License")
  * with Classpath Exception; you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  *
- *         http://www.cedarsoft.org/gpl3ce.txt
+ *         http://www.cedarsoft.org/gpl3ce
  *         (GPL 3 with Classpath Exception)
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -73,7 +73,7 @@ public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime>
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<dateTime>20090501T020205.004-0400</dateTime>";
+    return "<dateTime>20090501T020205.004@America/New_York</dateTime>";
   }
 
   @Override
