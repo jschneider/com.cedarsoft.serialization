@@ -35,7 +35,6 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.testng.*;
 import org.testng.annotations.*;
 
 /**
@@ -73,11 +72,11 @@ public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime>
   @NotNull
   @Override
   protected String getExpectedSerialized() {
-    return "<dateTime>20090501T020205.004@America/New_York</dateTime>";
+    return "<dateTime>20090501T020205.004-0400</dateTime>";
   }
 
   @Override
   protected void verifyDeserialized( @NotNull DateTime dateTime ) {
-    Assert.assertEquals( dateTime, createObjectToSerialize() );
+    DateTimeSerializerTest.assertEqualsDateTime( dateTime, createObjectToSerialize() );
   }
 }

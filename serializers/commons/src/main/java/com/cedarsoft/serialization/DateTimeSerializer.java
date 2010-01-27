@@ -31,12 +31,14 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import javax.xml.stream.XMLStreamException;
@@ -48,13 +50,12 @@ import java.io.IOException;
  */
 public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   public DateTimeSerializer() {
-    super( "dateTime","http://www.joda.org/time/dateTime", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "dateTime", "http://www.joda.org/time/dateTime", new VersionRange( new Version( 0, 9, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object ) throws IOException, XMLStreamException {
-    serializeTo.addCharacters( ISODateTimeFormat.basicDateTime().print( object ) );
-
+    serializeTo.addCharacters( createFormatter().print( object ) );
   }
 
   @NotNull
@@ -62,11 +63,19 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     String text = getText( deserializeFrom );
 
-    try {
-      return ISODateTimeFormat.basicDateTime().parseDateTime( text );
-    } catch ( IllegalArgumentException ignore ) {
-      //Maybe it is a long
+    if ( formatVersion.equals( Version.valueOf( 0, 9, 0 ) ) ) {
       return new DateTime( Long.parseLong( text ) );
     }
+
+    if ( formatVersion.equals( Version.valueOf( 1, 0, 0 ) ) ) {
+      return createFormatter().withOffsetParsed().parseDateTime( text );
+    }
+
+    throw new UnsupportedVersionException( formatVersion, getFormatVersionRange() );
+  }
+
+  @NotNull
+  static DateTimeFormatter createFormatter() {
+    return ISODateTimeFormat.basicDateTime();
   }
 }
