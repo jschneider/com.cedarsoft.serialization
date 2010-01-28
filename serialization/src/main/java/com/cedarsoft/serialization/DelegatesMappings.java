@@ -31,8 +31,10 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
@@ -109,20 +111,33 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   /**
    * Verifies the mappings
+   *
    * @return true if the verification has been successful. Throws an exception if not
    */
   public boolean verify() throws VersionException {
     SortedSet<Version> mappedVersions = getMappedVersions();
 
+    if ( mappings.isEmpty() ) {
+      throw new IllegalStateException( "No mappings available" );
+    }
+
     for ( Map.Entry<Class<?>, DelegateMapping> entry : mappings.entrySet() ) {
       DelegateMapping mapping = entry.getValue();
 
+      //Check for every entry whether the version ranges fit
       if ( !mapping.getVersionRange().equals( versionRange ) ) {
-        throw new IllegalStateException( "Invalid mapping for <" + entry.getKey().getName() + ">. Expected to cover range " + versionRange + " but covered only <" + mapping.getVersionRange() + ">" );
+        throw new UnsupportedVersionRangeException( versionRange, mapping.getVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
       }
 
+      //Verify the mapping itself
       mapping.verify();
       mapping.verifyMappedVersions( mappedVersions );
+
+      //Check the write version
+      PluggableSerializer<?, S, D, E> serializer = getSerializer( entry.getKey() );
+      if ( !serializer.getFormatVersion().equals( mapping.getDelegateWriteVersion() ) ) {
+        throw new VersionMismatchException( mapping.getDelegateWriteVersion(), serializer.getFormatVersion(), "Invalid writing version for <" + entry.getKey().getName() + ">. " );
+      }
     }
 
     return true;

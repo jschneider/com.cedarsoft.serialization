@@ -130,19 +130,23 @@ public class DelegateMapping {
     throw new UnsupportedVersionException( version );
   }
 
+  /**
+   * Verifies the mapping
+   */
   public void verify() {
     if ( entries.isEmpty() ) {
       throw new IllegalStateException( "Contains no entries" );
     }
 
+    //Check whether the minimum equals the expected version range minimum
     {
-      Entry first = entries.get( 0 );
-      Version currentMin = first.getVersionRange().getMin();
+      Version currentMin = entries.get( 0 ).getVersionRange().getMin();
       if ( !currentMin.equals( versionRange.getMin() ) ) {
         throw new IllegalStateException( "Invalid minimum version: <" + currentMin + ">, expected <" + versionRange.getMin() + ">" );
       }
     }
 
+    //Verify the last entry. Does the max version range fit?
     {
       Entry last = entries.get( entries.size() - 1 );
       Version currentMax = last.getVersionRange().getMax();
@@ -151,6 +155,16 @@ public class DelegateMapping {
       }
     }
   }
+
+  @NotNull
+  public Version getDelegateWriteVersion() {
+    if ( entries.isEmpty() ) {
+      throw new IllegalStateException( "Contains no entries" );
+    }
+
+    return entries.get( entries.size() - 1 ).getDelegateVersion();
+  }
+
   public void verifyMappedVersions( Iterable<? extends Version> mappedVersions ) {
     for ( Version mappedVersion : mappedVersions ) {
       resolveVersion( mappedVersion );

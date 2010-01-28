@@ -71,6 +71,30 @@ public class DelegatesMappingsTest {
   }
 
   @Test
+  public void testVerify3() {
+    {
+      DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+      mappings.add( serializer ).responsibleFor( Object.class )
+        .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 0 );
+
+      try {
+        mappings.verify();
+        fail( "Where is the Exception" );
+      } catch ( Exception ignore ) {
+      }
+    }
+
+    {
+      DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+      mappings.add( serializer ).responsibleFor( Object.class )
+            .map( 1, 0, 0 ).toDelegateVersion( 7, 5, 9 )
+            ;
+
+      mappings.verify();
+    }
+  }
+
+  @Test
   public void testVerify2() {
     delegatesMappings.add( serializer ).responsibleFor( Object.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )

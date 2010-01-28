@@ -56,7 +56,7 @@ public class DelegateMappingTest {
 
     try {
       mapping.verify();
-      fail("Where is the Exception");
+      fail( "Where is the Exception" );
     } catch ( Exception ignore ) {
     }
 
@@ -64,7 +64,7 @@ public class DelegateMappingTest {
 
     try {
       mapping.verify();
-      fail("Where is the Exception");
+      fail( "Where is the Exception" );
     } catch ( Exception ignore ) {
     }
 
@@ -72,6 +72,37 @@ public class DelegateMappingTest {
     mapping.addMapping( new VersionRange( new Version( 1, 0, 1 ), new Version( 2, 2, 7 ) ), new Version( 2, 0, 0 ) );
 
     mapping.verify();
+  }
+
+  @Test
+  public void testWriteVersion() {
+    VersionRange myVersionRange = new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) );
+    VersionRange delegateVersionRange = new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 1 ) );
+
+    DelegateMapping mapping = new DelegateMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
+    
+    mapping.map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 0 );
+    assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 0 ) );
+  }
+
+  @Test
+  public void testWriteVersion2() {
+    VersionRange myVersionRange = new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) );
+    VersionRange delegateVersionRange = new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 1 ) );
+
+    DelegateMapping mapping = new DelegateMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
+
+    mapping.map( 1, 0, 0 ).to( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 );
+    assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 0 ) );
+
+    try {
+      mapping.verify();
+      fail("Where is the Exception");
+    } catch ( Exception ignore ) {
+    }
+
+    mapping.map( 1, 0, 1 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 1 );
+    assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 1 ) );
   }
 
   @Test
