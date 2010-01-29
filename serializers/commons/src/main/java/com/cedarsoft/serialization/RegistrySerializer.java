@@ -40,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,14 +54,13 @@ import java.util.Set;
  */
 public class RegistrySerializer<T, R extends Registry<T>> {
   @NotNull
-  private final Serializer<T> serializer;
-  @NotNull
   private final SerializedObjectsAccess serializedObjectsAccess;
   @NotNull
   private final IdResolver<T> idResolver;
-
   @Nullable
   private final Comparator<T> comparator;
+
+  private final RegistrySerializingStrategy<T> serializingStrategy;
 
   /**
    * Creates a new registry serializer
@@ -71,6 +69,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    */
+  @Deprecated
   public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsAccess, serializer, idResolver, null );
   }
@@ -83,9 +82,33 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
+  @Deprecated
   public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
-    this.serializer = serializer;
+    this( serializedObjectsAccess, new SerializerBasedRegistrySerializingStrategy<T>( serializer ), idResolver, comparator );
+  }
+
+  /**
+   * Creates a new registry serializer
+   *
+   * @param serializedObjectsAccess the serialized objects access
+   * @param serializingStrategy     the serializing strategy
+   * @param idResolver              the id resolver
+   */
+  public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+    this( serializedObjectsAccess, serializingStrategy, idResolver, null );
+  }
+
+  /**
+   * Creates a new registry serializer
+   *
+   * @param serializedObjectsAccess the serialized objects access
+   * @param serializingStrategy     the serializer strategy
+   * @param idResolver              the id resolver
+   * @param comparator              the (optional) comparator
+   */
+  public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this.serializedObjectsAccess = serializedObjectsAccess;
+    this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
     this.comparator = comparator;
   }
@@ -96,7 +119,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
     List<T> objects = new ArrayList<T>();
     for ( String id : ids ) {
-      objects.add( serializer.deserialize( serializedObjectsAccess.getInputStream( id ) ) );
+      objects.add( deserialize( id ) );
     }
 
     //Sort the objects - if a comparator has been set
@@ -107,6 +130,11 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     return objects;
   }
 
+  @NotNull
+  protected T deserialize( @NotNull @NonNls String id ) throws IOException {
+    return serializingStrategy.deserialize( id, serializedObjectsAccess );
+  }
+
   /**
    * Serializes an object
    *
@@ -115,12 +143,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @throws StillContainedException
    */
   public void serialize( @NotNull T object ) throws StillContainedException, IOException {
-    OutputStream out = serializedObjectsAccess.openOut( getId( object ) );
-    try {
-      serializer.serialize( object, out );
-    } finally {
-      out.close();
-    }
+    serializingStrategy.serialize( object, getId( object ), serializedObjectsAccess );
   }
 
   /**
@@ -160,9 +183,14 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     return idResolver.getId( object );
   }
 
+  @Deprecated
   @NotNull
   public Serializer<T> getSerializer() {
-    return serializer;
+    if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy<?> ) {
+      return ( ( SerializerBasedRegistrySerializingStrategy<T> ) serializingStrategy ).getSerializer();
+    }
+
+    throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
   }
 
   @NotNull
