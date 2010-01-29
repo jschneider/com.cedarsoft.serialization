@@ -69,7 +69,6 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    */
-  @Deprecated
   public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsAccess, serializer, idResolver, null );
   }
@@ -82,7 +81,6 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  @Deprecated
   public RegistrySerializer( @NotNull SerializedObjectsAccess serializedObjectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( serializedObjectsAccess, new SerializerBasedRegistrySerializingStrategy<T>( serializer ), idResolver, comparator );
   }
