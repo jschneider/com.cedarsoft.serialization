@@ -33,14 +33,15 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
-import com.cedarsoft.serialization.FileBasedSerializedObjectsAccess;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import static org.testng.Assert.*;
 import org.testng.annotations.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -51,6 +52,11 @@ public class FileBasedSerializedObjectsAccessTest {
   @BeforeMethod
   protected void setUp() throws Exception {
     access = new FileBasedSerializedObjectsAccess( TestUtils.createEmptyTmpDir(), "xml" );
+  }
+
+  @AfterMethod
+  protected void tearDown() throws Exception {
+    FileUtils.deleteDirectory( access.getBaseDir() );
   }
 
   @Test

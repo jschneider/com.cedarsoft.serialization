@@ -33,6 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -50,9 +51,10 @@ import static org.testng.Assert.*;
  *
  */
 public class DirBasedSerializedObjectsAccessTest {
-  @NotNull @NonNls
+  @NotNull
+  @NonNls
   private static final String META_XML = "meta.xml";
-  
+
   private DirBasedSerializedObjectsAccess access;
   private File baseDir;
 
@@ -60,6 +62,11 @@ public class DirBasedSerializedObjectsAccessTest {
   protected void setUp() throws Exception {
     baseDir = TestUtils.createEmptyTmpDir();
     access = new DirBasedSerializedObjectsAccess( baseDir, META_XML );
+  }
+
+  @AfterMethod
+  protected void tearDown() throws Exception {
+    FileUtils.deleteDirectory( baseDir );
   }
 
   @Test
@@ -104,7 +111,7 @@ public class DirBasedSerializedObjectsAccessTest {
 
     try {
       access.openOut( "id" );
-      fail("Where is the Exception");
+      fail( "Where is the Exception" );
     } catch ( StillContainedException ignore ) {
     }
   }
