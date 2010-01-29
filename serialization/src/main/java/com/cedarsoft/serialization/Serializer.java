@@ -79,6 +79,11 @@ public interface Serializer<T> {
   @NotNull
   Version getFormatVersion();
 
+  /**
+   * Returns the format version range this serializer supports when reading.
+   *
+   * @return the format version range that is supported
+   */
   @NotNull
   VersionRange getFormatVersionRange();
 }

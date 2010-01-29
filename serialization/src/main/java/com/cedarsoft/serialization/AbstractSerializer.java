@@ -69,11 +69,6 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     return formatVersionRange.getMax();
   }
 
-  /**
-   * Returns the format version range this serializer supports when reading.
-   *
-   * @return the format version range that is supported
-   */
   @Override
   @NotNull
   public VersionRange getFormatVersionRange() {
