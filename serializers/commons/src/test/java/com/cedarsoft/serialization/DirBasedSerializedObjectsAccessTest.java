@@ -34,16 +34,10 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import static org.testng.Assert.*;
 
@@ -51,17 +45,13 @@ import static org.testng.Assert.*;
  *
  */
 public class DirBasedSerializedObjectsAccessTest {
-  @NotNull
-  @NonNls
-  private static final String META_XML = "meta.xml";
-
   private DirBasedSerializedObjectsAccess access;
   private File baseDir;
 
   @BeforeMethod
   protected void setUp() throws Exception {
     baseDir = TestUtils.createEmptyTmpDir();
-    access = new DirBasedSerializedObjectsAccess( baseDir, META_XML );
+    access = new DirBasedSerializedObjectsAccess( baseDir );
   }
 
   @AfterMethod
@@ -73,44 +63,26 @@ public class DirBasedSerializedObjectsAccessTest {
   public void testIt() throws IOException {
     assertEquals( access.getStoredIds().size(), 0 );
     {
-      File dir = new File( baseDir, "id" );
-      dir.mkdir();
-      OutputStream out = new FileOutputStream( new File( dir, META_XML ) );
-      IOUtils.write( "asdf".getBytes(), out );
-      out.close();
+      new File( baseDir, "id" ).mkdir();
     }
 
     //Check dir exists
     assertTrue( new File( baseDir, "id" ).exists() );
     assertTrue( new File( baseDir, "id" ).isDirectory() );
-    assertTrue( new File( new File( baseDir, "id" ), META_XML ).exists() );
 
     assertEquals( access.getStoredIds().size(), 1 );
     assertTrue( access.getStoredIds().contains( "id" ) );
-
-    {
-      InputStream in = access.getInputStream( "id" );
-      assertEquals( IOUtils.toString( in ), "asdf" );
-      in.close();
-    }
-    InputStream in = new DirBasedSerializedObjectsAccess( access.getBaseDir(), META_XML ).getInputStream( "id" );
-    assertEquals( IOUtils.toString( in ), "asdf" );
-    in.close();
   }
 
   @Test
   public void testExists() throws IOException {
     assertEquals( access.getStoredIds().size(), 0 );
     {
-      File dir = new File( baseDir, "id" );
-      dir.mkdir();
-      OutputStream out = new FileOutputStream( new File( dir, META_XML ) );
-      IOUtils.write( "asdf".getBytes(), out );
-      out.close();
+      new File( baseDir, "id" ).mkdir();
     }
 
     try {
-      access.openOut( "id" );
+      access.addDirectory( "id" );
       fail( "Where is the Exception" );
     } catch ( StillContainedException ignore ) {
     }

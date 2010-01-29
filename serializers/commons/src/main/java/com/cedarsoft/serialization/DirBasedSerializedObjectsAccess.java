@@ -36,15 +36,9 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,15 +50,10 @@ public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess 
   @NonNls
   private final File baseDir;
 
-  @NotNull
-  @NonNls
-  private final String metaFileName;
-
-  public DirBasedSerializedObjectsAccess( @NotNull File baseDir, @NotNull String metaFileName ) {
+  public DirBasedSerializedObjectsAccess( @NotNull File baseDir ) {
     assert baseDir.exists();
     assert baseDir.isDirectory();
 
-    this.metaFileName = metaFileName;
     this.baseDir = baseDir;
   }
 
@@ -85,34 +74,28 @@ public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess 
     return ids;
   }
 
-  @Override
   @NotNull
-  public OutputStream openOut( @NotNull @NonNls String id ) throws FileNotFoundException {
-    File dir = getDirectory( id );
+  public File addDirectory( @NotNull @NonNls String id ) throws StillContainedException {
+    File dir = getDirInternal( id );
     if ( dir.exists() ) {
-      dir.mkdir();
-    }
-
-    File file = new File( dir, metaFileName );
-    if ( file.exists() ) {
       throw new StillContainedException( id );
     }
-    return new BufferedOutputStream( new FileOutputStream( file ) );
-  }
 
-  @Override
-  @NotNull
-  public InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException {
-    return new BufferedInputStream( new FileInputStream( getMetaFile( id ) ) );
+    dir.mkdir();
+    return dir;
   }
 
   @NotNull
-  public File getMetaFile( @NotNull @NonNls String id ) {
-    return new File( getDirectory( id ), metaFileName );
+  public File getDirectory( @NotNull @NonNls String id ) throws FileNotFoundException {
+    File directory = getDirInternal( id );
+    if (! directory.exists() ) {
+      throw new FileNotFoundException( "No dir found for <" + id + "> at " + directory.getAbsolutePath() );
+    }
+    return directory;
   }
 
   @NotNull
-  public File getDirectory( @NotNull @NonNls String id ) {
+  private File getDirInternal( @NotNull @NonNls String id ) {
     return new File( baseDir, id );
   }
 

@@ -23,12 +23,12 @@ public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySe
   @NotNull
   @Override
   public T deserialize( @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-    return serializer.deserialize( serializedObjectsAccess.getInputStream( id ) );
+    return serializer.deserialize( ( ( StreamBasedSerializedObjectsAccess ) serializedObjectsAccess ).getInputStream( id ) );
   }
 
   @Override
   public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-    OutputStream out = serializedObjectsAccess.openOut( id );
+    OutputStream out = ( ( StreamBasedSerializedObjectsAccess ) serializedObjectsAccess ).openOut( id );
     try {
       serializer.serialize( object, out );
     } finally {

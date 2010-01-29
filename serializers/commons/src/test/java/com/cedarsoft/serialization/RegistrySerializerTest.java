@@ -56,7 +56,7 @@ import static org.testng.Assert.*;
  */
 public class RegistrySerializerTest {
   private RegistrySerializer<String, Registry<String>> serializer;
-  private SerializedObjectsAccess access;
+  private StreamBasedSerializedObjectsAccess access;
 
   @BeforeMethod
   public void setup() {

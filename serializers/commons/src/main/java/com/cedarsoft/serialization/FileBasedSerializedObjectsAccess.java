@@ -52,7 +52,7 @@ import java.util.Set;
 /**
  * Implementation of SerializedObjectsAccess that is based on simple files.
  */
-public class FileBasedSerializedObjectsAccess implements SerializedObjectsAccess {
+public class FileBasedSerializedObjectsAccess implements StreamBasedSerializedObjectsAccess {
   @NotNull
   @NonNls
   private final File baseDir;
