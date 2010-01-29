@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Serializer for registries.
+ *
  * @param <T> the type
  * @param <R> the registry for the given type
  */

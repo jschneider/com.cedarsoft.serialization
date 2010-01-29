@@ -46,12 +46,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.Override;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
+ * Implementation of SerializedObjectsAccess that is based on simple files.
  */
 public class FileBasedSerializedObjectsAccess implements SerializedObjectsAccess {
   @NotNull
