@@ -63,7 +63,7 @@ public class RegistrySerializerDirTest {
     baseDir = TestUtils.createEmptyTmpDir();
 
     access = new DirBasedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new DirBasedRegistrySerializingStrategy<String>() {
+    serializer = new RegistrySerializer<String, Registry<String>>( new DirBasedRegistrySerializingStrategy<String>( access ) {
       @NotNull
       @Override
       protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {

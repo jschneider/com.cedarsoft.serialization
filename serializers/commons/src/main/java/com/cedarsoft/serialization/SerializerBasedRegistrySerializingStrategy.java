@@ -42,25 +42,25 @@ import java.io.OutputStream;
  * This is the default strategy and used for most {@link RegistrySerializer}s.
  *
  * @param <T> the type
- * @param <P> the provider type
  */
-public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
+public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
   @NotNull
   private final Serializer<T> serializer;
 
-  public SerializerBasedRegistrySerializingStrategy( @NotNull Serializer<T> serializer ) {
+  public SerializerBasedRegistrySerializingStrategy( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer ) {
+    super( objectsAccess );
     this.serializer = serializer;
   }
 
   @NotNull
   @Override
-  public T deserialize( @NotNull @NonNls String id, @NotNull StreamBasedObjectsAccess serializedObjectsProvider ) throws IOException {
-    return serializer.deserialize( serializedObjectsProvider.getInputStream( id ) );
+  public T deserialize( @NotNull @NonNls String id ) throws IOException {
+    return serializer.deserialize( objectsAccess.getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull StreamBasedObjectsAccess serializedObjectsProvider ) throws IOException {
-    OutputStream out = serializedObjectsProvider.openOut( id );
+  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    OutputStream out = objectsAccess.openOut( id );
     try {
       serializer.serialize( object, out );
     } finally {

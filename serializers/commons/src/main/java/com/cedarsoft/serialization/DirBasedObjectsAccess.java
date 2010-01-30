@@ -46,7 +46,7 @@ import java.util.Set;
 /**
  * Implementation that is based on simple files.
  */
-public class DirBasedObjectsAccess implements ObjectsAccess<String, IOException> {
+public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrategy.ObjectsAccess {
   @NotNull
   @NonNls
   private final File baseDir;

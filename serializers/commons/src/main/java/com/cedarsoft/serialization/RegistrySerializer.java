@@ -44,69 +44,64 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Serializer for registries.
  *
  * @param <T> the type
  * @param <R> the registry for the given type
- * @param <P> the provider
  */
 public class RegistrySerializer<T, R extends Registry<T>> {
-  @NotNull
-  private final ObjectsAccess<String,IOException> serializedObjectsProvider;
   @NotNull
   private final IdResolver<T> idResolver;
   @Nullable
   private final Comparator<T> comparator;
 
-  private final RegistrySerializingStrategy<T,?> serializingStrategy;
+  private final RegistrySerializingStrategy<T> serializingStrategy;
 
   /**
    * Creates a new registry serializer
    *
-   * @param serializedObjectsProvider the serialized objects access
-   * @param serializer              the serializer
-   * @param idResolver              the id resolver
+   * @param objectsAccess the objects access
+   * @param serializer    the serializer
+   * @param idResolver    the id resolver
    */
-  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
-    this( serializedObjectsProvider, serializer, idResolver, null );
+  @Deprecated
+  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
+    this( objectsAccess, serializer, idResolver, null );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param serializedObjectsProvider the serialized objects access
-   * @param serializer              the serializer
-   * @param idResolver              the id resolver
-   * @param comparator              the (optional) comparator
+   * @param objectsAccess the objects access
+   * @param serializer    the serializer
+   * @param idResolver    the id resolver
+   * @param comparator    the (optional) comparator
    */
-  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
-    this( serializedObjectsProvider, new SerializerBasedRegistrySerializingStrategy( serializer ), idResolver, comparator );
+  @Deprecated
+  public RegistrySerializer( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+    this( new SerializerBasedRegistrySerializingStrategy( objectsAccess, serializer ), idResolver, comparator );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param serializedObjectsProvider the serialized objects access
-   * @param serializingStrategy     the serializing strategy
-   * @param idResolver              the id resolver
+   * @param serializingStrategy the serializing strategy
+   * @param idResolver          the id resolver
    */
-  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
-    this( serializedObjectsProvider, serializingStrategy, idResolver, null );
+  public RegistrySerializer( @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+    this( serializingStrategy, idResolver, null );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param serializedObjectsProvider the serialized objects access
-   * @param serializingStrategy     the serializer strategy
-   * @param idResolver              the id resolver
-   * @param comparator              the (optional) comparator
+   * @param serializingStrategy the serializer strategy
+   * @param idResolver          the id resolver
+   * @param comparator          the (optional) comparator
    */
-  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
-    this.serializedObjectsProvider = serializedObjectsProvider;
+  public RegistrySerializer( @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
     this.comparator = comparator;
@@ -114,12 +109,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @NotNull
   public List<? extends T> deserialize() throws IOException {
-    Set<? extends String> ids = serializedObjectsProvider.getIds();
-
-    List<T> objects = new ArrayList<T>();
-    for ( String id : ids ) {
-      objects.add( deserialize( id ) );
-    }
+    List<T> objects = new ArrayList<T>( serializingStrategy.deserialize() );
 
     //Sort the objects - if a comparator has been set
     if ( comparator != null ) {
@@ -127,11 +117,6 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     }
 
     return objects;
-  }
-
-  @NotNull
-  protected T deserialize( @NotNull @NonNls String id ) throws IOException {
-    return (T) ((RegistrySerializingStrategy)serializingStrategy).deserialize( id, serializedObjectsProvider );
   }
 
   /**
@@ -142,7 +127,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @throws StillContainedException
    */
   public void serialize( @NotNull T object ) throws StillContainedException, IOException {
-    ((RegistrySerializingStrategy)serializingStrategy).serialize( object, getId( object ), serializedObjectsProvider );
+    serializingStrategy.serialize( object, getId( object ) );
   }
 
   /**
@@ -190,11 +175,6 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     }
 
     throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
-  }
-
-  @NotNull
-  public ObjectsAccess<String,IOException> getSerializedObjectsProvider() {
-    return serializedObjectsProvider;
   }
 
   @NotNull

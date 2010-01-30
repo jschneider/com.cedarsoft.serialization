@@ -36,11 +36,10 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public interface StreamBasedObjectsAccess extends ObjectsAccess<String,IOException> {
+public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStrategy.ObjectsAccess {
   /**
    * Returns the output for the given id
    *
