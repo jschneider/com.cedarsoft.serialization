@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Abstract base class for registry serialzing strategies based on directory structures
+ * Abstract base class for registry serializing strategies based on directory structures
  *
  * @param <T> the type
  */
