@@ -37,11 +37,30 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
+ * A registry serializing strategy
  *
+ * @param <T> the type that is (de)serialized
  */
 public interface RegistrySerializingStrategy<T> {
+  /**
+   * Deserialize the object
+   *
+   * @param id                      the id
+   * @param serializedObjectsAccess the objects access
+   * @return the deserialized object
+   *
+   * @throws IOException
+   */
   @NotNull
   T deserialize( @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException;
 
+  /**
+   * Serialize the object
+   *
+   * @param object                  the object to serialize
+   * @param id                      the id
+   * @param serializedObjectsAccess the serialized objects access
+   * @throws IOException
+   */
   void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException;
 }
