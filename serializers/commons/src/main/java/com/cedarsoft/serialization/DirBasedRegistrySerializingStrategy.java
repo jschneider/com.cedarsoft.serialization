@@ -31,24 +31,22 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.provider.Provider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * Abstract base class for registry serializing strategies based on directory structures
  *
  * @param <T> the type
  */
-public abstract class DirBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T> {
+public abstract class DirBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, DirBasedSerializedObjectsAccess> {
   @NotNull
   @Override
-  public final T deserialize( @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>,IOException> provider ) throws IOException {
-    File dir = ( ( DirBasedSerializedObjectsAccess ) provider ).getDirectory( id );
+  public T deserialize( @NotNull @NonNls String id, @NotNull DirBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+    File dir = serializedObjectsProvider.getDirectory( id );
     return deserialize( id, dir );
   }
 
@@ -64,9 +62,10 @@ public abstract class DirBasedRegistrySerializingStrategy<T> implements Registry
   @NotNull
   protected abstract T deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
 
+
   @Override
-  public final void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>, IOException> provider ) throws IOException {
-    File dir = ( ( DirBasedSerializedObjectsAccess ) provider ).addDirectory( id );
+  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull DirBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+    File dir = serializedObjectsProvider.addDirectory( id );
     serialize( object, id, dir );
   }
 

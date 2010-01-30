@@ -31,21 +31,20 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.provider.Provider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Set;
 
 /**
  * A serializing strategy based on a serializer.
  * This is the default strategy and used for most {@link RegistrySerializer}s.
  *
  * @param <T> the type
+ * @param <P> the provider type
  */
-public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T> {
+public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, StreamBasedSerializedObjectsAccess> {
   @NotNull
   private final Serializer<T> serializer;
 
@@ -55,13 +54,13 @@ public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySe
 
   @NotNull
   @Override
-  public T deserialize( @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>,IOException> provider ) throws IOException {
-    return serializer.deserialize( ( ( StreamBasedSerializedObjectsAccess ) provider ).getInputStream( id ) );
+  public T deserialize( @NotNull @NonNls String id, @NotNull StreamBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+    return serializer.deserialize( serializedObjectsProvider.getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>, IOException> provider ) throws IOException {
-    OutputStream out = ( ( StreamBasedSerializedObjectsAccess ) provider ).openOut( id );
+  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull StreamBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+    OutputStream out = serializedObjectsProvider.openOut( id );
     try {
       serializer.serialize( object, out );
     } finally {

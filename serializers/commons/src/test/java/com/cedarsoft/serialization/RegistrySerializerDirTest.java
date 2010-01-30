@@ -33,7 +33,6 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
-import com.cedarsoft.provider.Provider;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
@@ -55,8 +54,8 @@ import static org.testng.Assert.*;
  *
  */
 public class RegistrySerializerDirTest {
-  private RegistrySerializer<String, Registry<String>> serializer;
-  private Provider<Set<? extends String>,IOException> access;
+  private RegistrySerializer<String, Registry<String>,DirBasedSerializedObjectsAccess> serializer;
+  private DirBasedSerializedObjectsAccess access;
   private File baseDir;
 
   @BeforeMethod
@@ -64,7 +63,7 @@ public class RegistrySerializerDirTest {
     baseDir = TestUtils.createEmptyTmpDir();
 
     access = new DirBasedSerializedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new DirBasedRegistrySerializingStrategy<String>() {
+    serializer = new RegistrySerializer<String, Registry<String>,DirBasedSerializedObjectsAccess>( access, new DirBasedRegistrySerializingStrategy<String>() {
       @NotNull
       @Override
       protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {

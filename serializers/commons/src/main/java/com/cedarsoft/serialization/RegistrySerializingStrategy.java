@@ -42,27 +42,28 @@ import java.util.Set;
  * A registry serializing strategy
  *
  * @param <T> the type that is (de)serialized
+ * @param <P> the provider type
  */
-public interface RegistrySerializingStrategy<T> {
+public interface RegistrySerializingStrategy<T, P extends Provider<Set<? extends String>,IOException>> {
   /**
    * Deserialize the object
    *
    * @param id       the id
-   * @param provider the provider
+   * @param serializedObjectsProvider the serializedObjectsProvider
    * @return the deserialized object
    *
    * @throws IOException
    */
   @NotNull
-  T deserialize( @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>, IOException> provider ) throws IOException;
+  T deserialize( @NotNull @NonNls String id, @NotNull P serializedObjectsProvider ) throws IOException;
 
   /**
    * Serialize the object
    *
    * @param object   the object to serialize
    * @param id       the id
-   * @param provider the provider
+   * @param serializedObjectsProvider the serializedObjectsProvider
    * @throws IOException
    */
-  void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>, IOException> provider ) throws IOException;
+  void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull P serializedObjectsProvider ) throws IOException;
 }

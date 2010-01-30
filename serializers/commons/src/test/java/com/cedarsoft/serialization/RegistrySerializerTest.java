@@ -55,13 +55,13 @@ import static org.testng.Assert.*;
  *
  */
 public class RegistrySerializerTest {
-  private RegistrySerializer<String, Registry<String>> serializer;
-  private StreamBasedSerializedObjectsAccess access;
+  private RegistrySerializer<String, Registry<String>,InMemorySerializedObjectsAccess> serializer;
+  private InMemorySerializedObjectsAccess access;
 
   @BeforeMethod
   public void setup() {
     access = new InMemorySerializedObjectsAccess();
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    serializer = new RegistrySerializer<String, Registry<String>,InMemorySerializedObjectsAccess>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
         serializeTo.writeCharacters( object );

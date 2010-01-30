@@ -52,61 +52,62 @@ import java.util.Set;
  *
  * @param <T> the type
  * @param <R> the registry for the given type
+ * @param <P> the provider
  */
-public class RegistrySerializer<T, R extends Registry<T>> {
+public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set<? extends String>,IOException>> {
   @NotNull
-  private final Provider<Set<? extends String>,IOException> provider;
+  private final P serializedObjectsProvider;
   @NotNull
   private final IdResolver<T> idResolver;
   @Nullable
   private final Comparator<T> comparator;
 
-  private final RegistrySerializingStrategy<T> serializingStrategy;
+  private final RegistrySerializingStrategy<T,P> serializingStrategy;
 
   /**
    * Creates a new registry serializer
    *
-   * @param provider the serialized objects access
+   * @param serializedObjectsProvider the serialized objects access
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    */
-  public RegistrySerializer( @NotNull Provider<Set<? extends String>,IOException> provider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
-    this( provider, serializer, idResolver, null );
+  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
+    this( serializedObjectsProvider, serializer, idResolver, null );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param provider the serialized objects access
+   * @param serializedObjectsProvider the serialized objects access
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public RegistrySerializer( @NotNull Provider<Set<? extends String>,IOException> provider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
-    this( provider, new SerializerBasedRegistrySerializingStrategy<T>( serializer ), idResolver, comparator );
+  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+    this( serializedObjectsProvider, new SerializerBasedRegistrySerializingStrategy( serializer ), idResolver, comparator );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param provider the serialized objects access
+   * @param serializedObjectsProvider the serialized objects access
    * @param serializingStrategy     the serializing strategy
    * @param idResolver              the id resolver
    */
-  public RegistrySerializer( @NotNull Provider<Set<? extends String>,IOException> provider, @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
-    this( provider, serializingStrategy, idResolver, null );
+  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+    this( serializedObjectsProvider, serializingStrategy, idResolver, null );
   }
 
   /**
    * Creates a new registry serializer
    *
-   * @param provider the serialized objects access
+   * @param serializedObjectsProvider the serialized objects access
    * @param serializingStrategy     the serializer strategy
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public RegistrySerializer( @NotNull Provider<Set<? extends String>,IOException> provider, @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
-    this.provider = provider;
+  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+    this.serializedObjectsProvider = serializedObjectsProvider;
     this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
     this.comparator = comparator;
@@ -114,7 +115,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @NotNull
   public List<? extends T> deserialize() throws IOException {
-    Set<? extends String> ids = provider.provide();
+    Set<? extends String> ids = serializedObjectsProvider.provide();
 
     List<T> objects = new ArrayList<T>();
     for ( String id : ids ) {
@@ -131,7 +132,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @NotNull
   protected T deserialize( @NotNull @NonNls String id ) throws IOException {
-    return serializingStrategy.deserialize( id, provider );
+    return serializingStrategy.deserialize( id, serializedObjectsProvider );
   }
 
   /**
@@ -142,7 +143,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @throws StillContainedException
    */
   public void serialize( @NotNull T object ) throws StillContainedException, IOException {
-    serializingStrategy.serialize( object, getId( object ), provider );
+    serializingStrategy.serialize( object, getId( object ), serializedObjectsProvider );
   }
 
   /**
@@ -185,16 +186,16 @@ public class RegistrySerializer<T, R extends Registry<T>> {
   @Deprecated
   @NotNull
   public Serializer<T> getSerializer() {
-    if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy<?> ) {
-      return ( ( SerializerBasedRegistrySerializingStrategy<T> ) serializingStrategy ).getSerializer();
+    if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy ) {
+      return ( ( SerializerBasedRegistrySerializingStrategy ) serializingStrategy ).getSerializer();
     }
 
     throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
   }
 
   @NotNull
-  public Provider<Set<? extends String>,IOException> getProvider() {
-    return provider;
+  public P getSerializedObjectsProvider() {
+    return serializedObjectsProvider;
   }
 
   @NotNull
