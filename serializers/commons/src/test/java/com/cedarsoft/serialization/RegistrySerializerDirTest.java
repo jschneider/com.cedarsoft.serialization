@@ -33,6 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
+import com.cedarsoft.provider.Provider;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
@@ -55,7 +56,7 @@ import static org.testng.Assert.*;
  */
 public class RegistrySerializerDirTest {
   private RegistrySerializer<String, Registry<String>> serializer;
-  private SerializedObjectsAccess access;
+  private Provider<Set<? extends String>,IOException> access;
   private File baseDir;
 
   @BeforeMethod

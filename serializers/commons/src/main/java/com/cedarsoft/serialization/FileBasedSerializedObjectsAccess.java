@@ -50,7 +50,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Implementation of SerializedObjectsAccess that is based on simple files.
+ * Implementation that is based on simple files.
  */
 public class FileBasedSerializedObjectsAccess implements StreamBasedSerializedObjectsAccess {
   @NotNull

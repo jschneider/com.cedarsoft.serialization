@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
+import com.cedarsoft.provider.Provider;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -39,13 +40,14 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Implementation of SerializedObjectsAccess that is based on simple files.
+ * Implementation that is based on simple files.
  */
-public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess {
+public class DirBasedSerializedObjectsAccess implements Provider<Set<? extends String>,IOException> {
   @NotNull
   @NonNls
   private final File baseDir;

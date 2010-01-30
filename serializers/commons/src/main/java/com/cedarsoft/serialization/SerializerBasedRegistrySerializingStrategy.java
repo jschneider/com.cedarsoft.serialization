@@ -31,11 +31,13 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.provider.Provider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
 
 /**
  * A serializing strategy based on a serializer.
@@ -53,13 +55,13 @@ public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySe
 
   @NotNull
   @Override
-  public T deserialize( @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-    return serializer.deserialize( ( ( StreamBasedSerializedObjectsAccess ) serializedObjectsAccess ).getInputStream( id ) );
+  public T deserialize( @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>,IOException> provider ) throws IOException {
+    return serializer.deserialize( ( ( StreamBasedSerializedObjectsAccess ) provider ).getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-    OutputStream out = ( ( StreamBasedSerializedObjectsAccess ) serializedObjectsAccess ).openOut( id );
+  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull Provider<Set<? extends String>, IOException> provider ) throws IOException {
+    OutputStream out = ( ( StreamBasedSerializedObjectsAccess ) provider ).openOut( id );
     try {
       serializer.serialize( object, out );
     } finally {

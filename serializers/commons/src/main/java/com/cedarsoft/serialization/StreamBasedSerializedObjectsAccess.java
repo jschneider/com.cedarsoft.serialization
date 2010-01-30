@@ -32,14 +32,17 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
+import com.cedarsoft.provider.Provider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
-public interface StreamBasedSerializedObjectsAccess extends SerializedObjectsAccess {
+public interface StreamBasedSerializedObjectsAccess extends Provider<Set<? extends String>, IOException> {
   /**
    * Returns the output for the given id
    *
