@@ -51,6 +51,12 @@
     </dependency>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>provider</artifactId>
+      <version>${commons.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
       <artifactId>app</artifactId>
       <version>${commons.version}</version>
       <optional>true</optional>

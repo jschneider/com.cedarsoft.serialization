@@ -69,9 +69,9 @@ public class FileBasedSerializedObjectsAccess implements StreamBasedSerializedOb
     this.extension = extension;
   }
 
-  @Override
   @NotNull
-  public Set<? extends String> getStoredIds() throws FileNotFoundException {
+  @Override
+  public Set<? extends String> provide() throws FileNotFoundException {
     assert baseDir.exists();
     File[] files = baseDir.listFiles( ( FileFilter ) new SuffixFileFilter( extension ) );
     if ( files == null ) {
@@ -110,5 +110,11 @@ public class FileBasedSerializedObjectsAccess implements StreamBasedSerializedOb
   @NotNull
   public File getBaseDir() {
     return baseDir;
+  }
+
+  @NotNull
+  @Override
+  public String getDescription() {
+    return getClass().getName();
   }
 }

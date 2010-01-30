@@ -113,7 +113,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @NotNull
   public List<? extends T> deserialize() throws IOException {
-    Set<? extends String> ids = serializedObjectsAccess.getStoredIds();
+    Set<? extends String> ids = serializedObjectsAccess.provide();
 
     List<T> objects = new ArrayList<T>();
     for ( String id : ids ) {

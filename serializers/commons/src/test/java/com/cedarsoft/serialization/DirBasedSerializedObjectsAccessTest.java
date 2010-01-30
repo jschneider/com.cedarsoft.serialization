@@ -61,7 +61,7 @@ public class DirBasedSerializedObjectsAccessTest {
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.getStoredIds().size(), 0 );
+    assertEquals( access.provide().size(), 0 );
     {
       new File( baseDir, "id" ).mkdir();
     }
@@ -70,13 +70,13 @@ public class DirBasedSerializedObjectsAccessTest {
     assertTrue( new File( baseDir, "id" ).exists() );
     assertTrue( new File( baseDir, "id" ).isDirectory() );
 
-    assertEquals( access.getStoredIds().size(), 1 );
-    assertTrue( access.getStoredIds().contains( "id" ) );
+    assertEquals( access.provide().size(), 1 );
+    assertTrue( access.provide().contains( "id" ) );
   }
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.getStoredIds().size(), 0 );
+    assertEquals( access.provide().size(), 0 );
     {
       new File( baseDir, "id" ).mkdir();
     }

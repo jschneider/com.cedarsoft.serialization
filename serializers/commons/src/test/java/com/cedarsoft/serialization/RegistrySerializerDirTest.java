@@ -122,7 +122,7 @@ public class RegistrySerializerDirTest {
     registry.store( "2" );
     assertEquals( registry.getStoredObjects().size(), 2 );
 
-    assertEquals( access.getStoredIds().size(), 2 );
+    assertEquals( access.provide().size(), 2 );
   }
 
   @Test
@@ -133,18 +133,18 @@ public class RegistrySerializerDirTest {
 
   @Test
   public void testMulti() throws IOException {
-    assertEquals( access.getStoredIds().size(), 0 );
+    assertEquals( access.provide().size(), 0 );
 
     serializer.serialize( "1" );
 
-    assertEquals( access.getStoredIds().size(), 1 );
+    assertEquals( access.provide().size(), 1 );
     try {
       serializer.serialize( "1" );
       fail( "Where is the Exception" );
     } catch ( Exception e ) {
     }
 
-    Set<? extends String> ids = access.getStoredIds();
+    Set<? extends String> ids = access.provide();
     assertEquals( ids.size(), 1 );
     assertTrue( ids.contains( "1" ) );
   }

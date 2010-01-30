@@ -57,9 +57,9 @@ public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess 
     this.baseDir = baseDir;
   }
 
-  @Override
   @NotNull
-  public Set<? extends String> getStoredIds() throws FileNotFoundException {
+  @Override
+  public Set<? extends String> provide() throws FileNotFoundException {
     assert baseDir.exists();
     File[] dirs = baseDir.listFiles( ( FileFilter ) DirectoryFileFilter.DIRECTORY );
     if ( dirs == null ) {
@@ -88,7 +88,7 @@ public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess 
   @NotNull
   public File getDirectory( @NotNull @NonNls String id ) throws FileNotFoundException {
     File directory = getDirInternal( id );
-    if (! directory.exists() ) {
+    if ( !directory.exists() ) {
       throw new FileNotFoundException( "No dir found for <" + id + "> at " + directory.getAbsolutePath() );
     }
     return directory;
@@ -102,5 +102,11 @@ public class DirBasedSerializedObjectsAccess implements SerializedObjectsAccess 
   @NotNull
   public File getBaseDir() {
     return baseDir;
+  }
+
+  @NotNull
+  @Override
+  public String getDescription() {
+    return getClass().getName();
   }
 }

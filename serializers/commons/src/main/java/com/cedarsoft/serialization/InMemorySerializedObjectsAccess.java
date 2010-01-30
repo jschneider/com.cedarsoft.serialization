@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -63,9 +64,9 @@ public class InMemorySerializedObjectsAccess implements StreamBasedSerializedObj
     return new ByteArrayInputStream( found );
   }
 
-  @Override
   @NotNull
-  public Set<? extends String> getStoredIds() {
+  @Override
+  public Set<? extends String> provide() throws FileNotFoundException {
     return serialized.keySet();
   }
 
@@ -88,5 +89,11 @@ public class InMemorySerializedObjectsAccess implements StreamBasedSerializedObj
 
   public void clear() {
     serialized.clear();
+  }
+
+  @NotNull
+  @Override
+  public String getDescription() {
+    return getClass().getName();
   }
 }

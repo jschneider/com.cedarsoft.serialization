@@ -61,15 +61,15 @@ public class FileBasedSerializedObjectsAccessTest {
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.getStoredIds().size(), 0 );
+    assertEquals( access.provide().size(), 0 );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );
       out.close();
     }
 
-    assertEquals( access.getStoredIds().size(), 1 );
-    assertTrue( access.getStoredIds().contains( "id" ) );
+    assertEquals( access.provide().size(), 1 );
+    assertTrue( access.provide().contains( "id" ) );
 
     {
       InputStream in = access.getInputStream( "id" );
@@ -83,7 +83,7 @@ public class FileBasedSerializedObjectsAccessTest {
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.getStoredIds().size(), 0 );
+    assertEquals( access.provide().size(), 0 );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );
