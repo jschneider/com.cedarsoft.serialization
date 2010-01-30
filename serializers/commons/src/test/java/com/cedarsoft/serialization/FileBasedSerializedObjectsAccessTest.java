@@ -47,11 +47,11 @@ import static org.testng.Assert.*;
  *
  */
 public class FileBasedSerializedObjectsAccessTest {
-  private FileBasedSerializer access;
+  private FileBasedObjectsAccess access;
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    access = new FileBasedSerializer( TestUtils.createEmptyTmpDir(), "xml" );
+    access = new FileBasedObjectsAccess( TestUtils.createEmptyTmpDir(), "xml" );
   }
 
   @AfterMethod
@@ -61,29 +61,29 @@ public class FileBasedSerializedObjectsAccessTest {
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );
       out.close();
     }
 
-    assertEquals( access.provide().size(), 1 );
-    assertTrue( access.provide().contains( "id" ) );
+    assertEquals( access.getIds().size(), 1 );
+    assertTrue( access.getIds().contains( "id" ) );
 
     {
       InputStream in = access.getInputStream( "id" );
       assertEquals( IOUtils.toString( in ), "asdf" );
       in.close();
     }
-    InputStream in = new FileBasedSerializer( access.getBaseDir(), "xml" ).getInputStream( "id" );
+    InputStream in = new FileBasedObjectsAccess( access.getBaseDir(), "xml" ).getInputStream( "id" );
     assertEquals( IOUtils.toString( in ), "asdf" );
     in.close();
   }
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );

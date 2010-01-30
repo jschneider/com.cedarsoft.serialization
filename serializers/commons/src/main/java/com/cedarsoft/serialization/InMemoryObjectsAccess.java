@@ -31,37 +31,61 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.StillContainedException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * A registry serializing strategy
  *
- * @param <T> the type that is (de)serialized
- * @param <P> the provider type
  */
-public interface RegistrySerializingStrategy<T, P extends ObjectsAccess<String, IOException>> {
-  /**
-   * Deserialize the object
-   *
-   * @param id                        the id
-   * @param serializedObjectsProvider the serializedObjectsProvider
-   * @return the deserialized object
-   *
-   * @throws IOException
-   */
+public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   @NotNull
-  T deserialize( @NotNull @NonNls String id, @NotNull P serializedObjectsProvider ) throws IOException;
+  @NonNls
+  private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
 
-  /**
-   * Serialize the object
-   *
-   * @param object                    the object to serialize
-   * @param id                        the id
-   * @param serializedObjectsProvider the serializedObjectsProvider
-   * @throws IOException
-   */
-  void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull P serializedObjectsProvider ) throws IOException;
+  @Override
+  @NotNull
+  public InputStream getInputStream( @NotNull @NonNls String id ) {
+    byte[] found = serialized.get( id );
+    if ( found == null ) {
+      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
+    }
+    return new ByteArrayInputStream( found );
+  }
+
+  @NotNull
+  @Override
+  public Set<? extends String> getIds() throws IOException {
+    return serialized.keySet();
+  }
+
+  @Override
+  @NotNull
+  public OutputStream openOut( @NotNull @NonNls final String id ) {
+    byte[] stored = serialized.get( id );
+    if ( stored != null ) {
+      throw new StillContainedException( id );
+    }
+
+    return new ByteArrayOutputStream() {
+      @Override
+      public void close() throws IOException {
+        super.close();
+        serialized.put( id, toByteArray() );
+      }
+    };
+  }
+
+  public void clear() {
+    serialized.clear();
+  }
 }

@@ -45,13 +45,13 @@ import static org.testng.Assert.*;
  *
  */
 public class DirBasedSerializedObjectsAccessTest {
-  private DirBasedSerializer access;
+  private DirBasedObjectsAccess access;
   private File baseDir;
 
   @BeforeMethod
   protected void setUp() throws Exception {
     baseDir = TestUtils.createEmptyTmpDir();
-    access = new DirBasedSerializer( baseDir );
+    access = new DirBasedObjectsAccess( baseDir );
   }
 
   @AfterMethod
@@ -61,7 +61,7 @@ public class DirBasedSerializedObjectsAccessTest {
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
     {
       new File( baseDir, "id" ).mkdir();
     }
@@ -70,13 +70,13 @@ public class DirBasedSerializedObjectsAccessTest {
     assertTrue( new File( baseDir, "id" ).exists() );
     assertTrue( new File( baseDir, "id" ).isDirectory() );
 
-    assertEquals( access.provide().size(), 1 );
-    assertTrue( access.provide().contains( "id" ) );
+    assertEquals( access.getIds().size(), 1 );
+    assertTrue( access.getIds().contains( "id" ) );
   }
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
     {
       new File( baseDir, "id" ).mkdir();
     }

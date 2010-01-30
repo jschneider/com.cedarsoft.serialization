@@ -44,7 +44,7 @@ import java.io.OutputStream;
  * @param <T> the type
  * @param <P> the provider type
  */
-public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, StreamBasedSerializer> {
+public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
   @NotNull
   private final Serializer<T> serializer;
 
@@ -54,12 +54,12 @@ public class SerializerBasedRegistrySerializingStrategy<T> implements RegistrySe
 
   @NotNull
   @Override
-  public T deserialize( @NotNull @NonNls String id, @NotNull StreamBasedSerializer serializedObjectsProvider ) throws IOException {
+  public T deserialize( @NotNull @NonNls String id, @NotNull StreamBasedObjectsAccess serializedObjectsProvider ) throws IOException {
     return serializer.deserialize( serializedObjectsProvider.getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull StreamBasedSerializer serializedObjectsProvider ) throws IOException {
+  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull StreamBasedObjectsAccess serializedObjectsProvider ) throws IOException {
     OutputStream out = serializedObjectsProvider.openOut( id );
     try {
       serializer.serialize( object, out );

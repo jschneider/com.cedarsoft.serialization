@@ -56,11 +56,11 @@ import static org.testng.Assert.*;
  */
 public class RegistrySerializerTest {
   private RegistrySerializer<String, Registry<String>> serializer;
-  private InMemorySerializer access;
+  private InMemoryObjectsAccess access;
 
   @BeforeMethod
   public void setup() {
-    access = new InMemorySerializer();
+    access = new InMemoryObjectsAccess();
     serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
@@ -115,7 +115,7 @@ public class RegistrySerializerTest {
     registry.store( "2" );
     assertEquals( registry.getStoredObjects().size(), 2 );
 
-    assertEquals( access.provide().size(), 2 );
+    assertEquals( access.getIds().size(), 2 );
   }
 
   @Test
@@ -126,18 +126,18 @@ public class RegistrySerializerTest {
 
   @Test
   public void testMulti() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
 
     serializer.serialize( "1" );
 
-    assertEquals( access.provide().size(), 1 );
+    assertEquals( access.getIds().size(), 1 );
     try {
       serializer.serialize( "1" );
       fail( "Where is the Exception" );
     } catch ( Exception e ) {
     }
 
-    Set<? extends String> ids = access.provide();
+    Set<? extends String> ids = access.getIds();
     assertEquals( ids.size(), 1 );
     assertTrue( ids.contains( "1" ) );
 

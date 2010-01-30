@@ -32,68 +32,84 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.Override;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
+ * Implementation that is based on simple files.
  */
-public class InMemorySerializer implements StreamBasedSerializer {
+public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   @NotNull
   @NonNls
-  private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
+  private final File baseDir;
 
-  @Override
   @NotNull
-  public InputStream getInputStream( @NotNull @NonNls String id ) {
-    byte[] found = serialized.get( id );
-    if ( found == null ) {
-      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
+  @NonNls
+  private final String extension;
+
+  public FileBasedObjectsAccess( @NotNull File baseDir, @NotNull String extension ) {
+    assert baseDir.exists();
+    assert baseDir.isDirectory();
+
+    this.baseDir = baseDir;
+    this.extension = extension;
+  }
+
+  @NotNull
+  @Override
+  public Set<? extends String> getIds() throws IOException {
+    assert baseDir.exists();
+    File[] files = baseDir.listFiles( ( FileFilter ) new SuffixFileFilter( extension ) );
+    if ( files == null ) {
+      throw new FileNotFoundException( "Could not list files in " + baseDir.getAbsolutePath() );
     }
-    return new ByteArrayInputStream( found );
+
+    Set<String> ids = new HashSet<String>();
+    for ( File file : files ) {
+      ids.add( FilenameUtils.getBaseName( file.getName() ) );
+    }
+
+    return ids;
   }
 
-  @NotNull
-  @Override
-  public Set<? extends String> provide() throws FileNotFoundException {
-    return serialized.keySet();
-  }
-
   @Override
   @NotNull
-  public OutputStream openOut( @NotNull @NonNls final String id ) {
-    byte[] stored = serialized.get( id );
-    if ( stored != null ) {
+  public OutputStream openOut( @NotNull @NonNls String id ) throws FileNotFoundException {
+    File file = getFile( id );
+    if ( file.exists() ) {
       throw new StillContainedException( id );
     }
-
-    return new ByteArrayOutputStream() {
-      @Override
-      public void close() throws IOException {
-        super.close();
-        serialized.put( id, toByteArray() );
-      }
-    };
+    return new BufferedOutputStream( new FileOutputStream( file ) );
   }
 
-  public void clear() {
-    serialized.clear();
+  @Override
+  @NotNull
+  public InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException {
+    return new BufferedInputStream( new FileInputStream( getFile( id ) ) );
   }
 
   @NotNull
-  @Override
-  public String getDescription() {
-    return getClass().getName();
+  private File getFile( @NotNull @NonNls String id ) {
+    return new File( baseDir, id + '.' + extension );
+  }
+
+  @NotNull
+  public File getBaseDir() {
+    return baseDir;
   }
 }

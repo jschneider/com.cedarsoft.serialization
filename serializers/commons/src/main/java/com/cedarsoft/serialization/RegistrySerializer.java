@@ -32,7 +32,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.provider.Provider;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
@@ -56,7 +55,7 @@ import java.util.Set;
  */
 public class RegistrySerializer<T, R extends Registry<T>> {
   @NotNull
-  private final Provider<Set<? extends String>,IOException> serializedObjectsProvider;
+  private final ObjectsAccess<String,IOException> serializedObjectsProvider;
   @NotNull
   private final IdResolver<T> idResolver;
   @Nullable
@@ -71,7 +70,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    */
-  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
+  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsProvider, serializer, idResolver, null );
   }
 
@@ -83,7 +82,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( serializedObjectsProvider, new SerializerBasedRegistrySerializingStrategy( serializer ), idResolver, comparator );
   }
 
@@ -94,7 +93,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param serializingStrategy     the serializing strategy
    * @param idResolver              the id resolver
    */
-  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsProvider, serializingStrategy, idResolver, null );
   }
 
@@ -106,7 +105,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public <P extends ObjectsAccess<String,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this.serializedObjectsProvider = serializedObjectsProvider;
     this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
@@ -115,7 +114,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @NotNull
   public List<? extends T> deserialize() throws IOException {
-    Set<? extends String> ids = serializedObjectsProvider.provide();
+    Set<? extends String> ids = serializedObjectsProvider.getIds();
 
     List<T> objects = new ArrayList<T>();
     for ( String id : ids ) {
@@ -194,7 +193,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
   }
 
   @NotNull
-  public Provider<Set<? extends String>,IOException> getSerializedObjectsProvider() {
+  public ObjectsAccess<String,IOException> getSerializedObjectsProvider() {
     return serializedObjectsProvider;
   }
 

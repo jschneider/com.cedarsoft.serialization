@@ -32,7 +32,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.provider.Provider;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -47,18 +46,18 @@ import java.util.Set;
 /**
  * Implementation that is based on simple files.
  */
-public class DirBasedSerializer implements Provider<Set<? extends String>, IOException> {
+public class DirBasedObjectsAccess implements ObjectsAccess<String, IOException> {
   @NotNull
   @NonNls
   private final File baseDir;
 
-  public DirBasedSerializer( @NotNull File baseDir ) {
+  public DirBasedObjectsAccess( @NotNull File baseDir ) {
     assert baseDir.exists();
     assert baseDir.isDirectory();
 
     this.baseDir = baseDir;
   }
- 
+
   /**
    * Provides the ids
    *
@@ -68,7 +67,7 @@ public class DirBasedSerializer implements Provider<Set<? extends String>, IOExc
    */
   @NotNull
   @Override
-  public Set<? extends String> provide() throws FileNotFoundException {
+  public Set<? extends String> getIds() throws IOException {
     assert baseDir.exists();
     File[] dirs = baseDir.listFiles( ( FileFilter ) DirectoryFileFilter.DIRECTORY );
     if ( dirs == null ) {
@@ -111,11 +110,5 @@ public class DirBasedSerializer implements Provider<Set<? extends String>, IOExc
   @NotNull
   public File getBaseDir() {
     return baseDir;
-  }
-
-  @NotNull
-  @Override
-  public String getDescription() {
-    return getClass().getName();
   }
 }

@@ -55,14 +55,14 @@ import static org.testng.Assert.*;
  */
 public class RegistrySerializerDirTest {
   private RegistrySerializer<String, Registry<String>> serializer;
-  private DirBasedSerializer access;
+  private DirBasedObjectsAccess access;
   private File baseDir;
 
   @BeforeMethod
   public void setup() {
     baseDir = TestUtils.createEmptyTmpDir();
 
-    access = new DirBasedSerializer( baseDir );
+    access = new DirBasedObjectsAccess( baseDir );
     serializer = new RegistrySerializer<String, Registry<String>>( access, new DirBasedRegistrySerializingStrategy<String>() {
       @NotNull
       @Override
@@ -122,7 +122,7 @@ public class RegistrySerializerDirTest {
     registry.store( "2" );
     assertEquals( registry.getStoredObjects().size(), 2 );
 
-    assertEquals( access.provide().size(), 2 );
+    assertEquals( access.getIds().size(), 2 );
   }
 
   @Test
@@ -133,18 +133,18 @@ public class RegistrySerializerDirTest {
 
   @Test
   public void testMulti() throws IOException {
-    assertEquals( access.provide().size(), 0 );
+    assertEquals( access.getIds().size(), 0 );
 
     serializer.serialize( "1" );
 
-    assertEquals( access.provide().size(), 1 );
+    assertEquals( access.getIds().size(), 1 );
     try {
       serializer.serialize( "1" );
       fail( "Where is the Exception" );
     } catch ( Exception e ) {
     }
 
-    Set<? extends String> ids = access.provide();
+    Set<? extends String> ids = access.getIds();
     assertEquals( ids.size(), 1 );
     assertTrue( ids.contains( "1" ) );
   }
