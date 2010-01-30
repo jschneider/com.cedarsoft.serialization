@@ -32,73 +32,79 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.provider.Provider;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Implementation that is based on simple files.
  */
-public class DirBasedSerializedObjectsAccess implements Provider<Set<? extends String>,IOException> {
+public class FileBasedSerializer implements StreamBasedSerializer {
   @NotNull
   @NonNls
   private final File baseDir;
 
-  public DirBasedSerializedObjectsAccess( @NotNull File baseDir ) {
+  @NotNull
+  @NonNls
+  private final String extension;
+
+  public FileBasedSerializer( @NotNull File baseDir, @NotNull String extension ) {
     assert baseDir.exists();
     assert baseDir.isDirectory();
 
     this.baseDir = baseDir;
+    this.extension = extension;
   }
 
   @NotNull
   @Override
   public Set<? extends String> provide() throws FileNotFoundException {
     assert baseDir.exists();
-    File[] dirs = baseDir.listFiles( ( FileFilter ) DirectoryFileFilter.DIRECTORY );
-    if ( dirs == null ) {
-      throw new FileNotFoundException( "Could not list dirs in " + baseDir.getAbsolutePath() );
+    File[] files = baseDir.listFiles( ( FileFilter ) new SuffixFileFilter( extension ) );
+    if ( files == null ) {
+      throw new FileNotFoundException( "Could not list files in " + baseDir.getAbsolutePath() );
     }
 
     Set<String> ids = new HashSet<String>();
-    for ( File dir : dirs ) {
-      ids.add( dir.getName() );
+    for ( File file : files ) {
+      ids.add( FilenameUtils.getBaseName( file.getName() ) );
     }
 
     return ids;
   }
 
+  @Override
   @NotNull
-  public File addDirectory( @NotNull @NonNls String id ) throws StillContainedException {
-    File dir = getDirInternal( id );
-    if ( dir.exists() ) {
+  public OutputStream openOut( @NotNull @NonNls String id ) throws FileNotFoundException {
+    File file = getFile( id );
+    if ( file.exists() ) {
       throw new StillContainedException( id );
     }
+    return new BufferedOutputStream( new FileOutputStream( file ) );
+  }
 
-    dir.mkdir();
-    return dir;
+  @Override
+  @NotNull
+  public InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException {
+    return new BufferedInputStream( new FileInputStream( getFile( id ) ) );
   }
 
   @NotNull
-  public File getDirectory( @NotNull @NonNls String id ) throws FileNotFoundException {
-    File directory = getDirInternal( id );
-    if ( !directory.exists() ) {
-      throw new FileNotFoundException( "No dir found for <" + id + "> at " + directory.getAbsolutePath() );
-    }
-    return directory;
-  }
-
-  @NotNull
-  private File getDirInternal( @NotNull @NonNls String id ) {
-    return new File( baseDir, id );
+  private File getFile( @NotNull @NonNls String id ) {
+    return new File( baseDir, id + '.' + extension );
   }
 
   @NotNull

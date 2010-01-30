@@ -54,15 +54,15 @@ import java.util.Set;
  * @param <R> the registry for the given type
  * @param <P> the provider
  */
-public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set<? extends String>,IOException>> {
+public class RegistrySerializer<T, R extends Registry<T>> {
   @NotNull
-  private final P serializedObjectsProvider;
+  private final Provider<Set<? extends String>,IOException> serializedObjectsProvider;
   @NotNull
   private final IdResolver<T> idResolver;
   @Nullable
   private final Comparator<T> comparator;
 
-  private final RegistrySerializingStrategy<T,P> serializingStrategy;
+  private final RegistrySerializingStrategy<T,?> serializingStrategy;
 
   /**
    * Creates a new registry serializer
@@ -71,7 +71,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
    * @param serializer              the serializer
    * @param idResolver              the id resolver
    */
-  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
+  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsProvider, serializer, idResolver, null );
   }
 
@@ -83,7 +83,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( serializedObjectsProvider, new SerializerBasedRegistrySerializingStrategy( serializer ), idResolver, comparator );
   }
 
@@ -94,7 +94,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
    * @param serializingStrategy     the serializing strategy
    * @param idResolver              the id resolver
    */
-  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
     this( serializedObjectsProvider, serializingStrategy, idResolver, null );
   }
 
@@ -106,7 +106,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
    * @param idResolver              the id resolver
    * @param comparator              the (optional) comparator
    */
-  public RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public <P extends Provider<Set<? extends String>,IOException>> RegistrySerializer( @NotNull P serializedObjectsProvider, @NotNull RegistrySerializingStrategy<T,P> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this.serializedObjectsProvider = serializedObjectsProvider;
     this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
@@ -132,7 +132,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
 
   @NotNull
   protected T deserialize( @NotNull @NonNls String id ) throws IOException {
-    return serializingStrategy.deserialize( id, serializedObjectsProvider );
+    return (T) ((RegistrySerializingStrategy)serializingStrategy).deserialize( id, serializedObjectsProvider );
   }
 
   /**
@@ -143,7 +143,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
    * @throws StillContainedException
    */
   public void serialize( @NotNull T object ) throws StillContainedException, IOException {
-    serializingStrategy.serialize( object, getId( object ), serializedObjectsProvider );
+    ((RegistrySerializingStrategy)serializingStrategy).serialize( object, getId( object ), serializedObjectsProvider );
   }
 
   /**
@@ -194,7 +194,7 @@ public class RegistrySerializer<T, R extends Registry<T>, P extends Provider<Set
   }
 
   @NotNull
-  public P getSerializedObjectsProvider() {
+  public Provider<Set<? extends String>,IOException> getSerializedObjectsProvider() {
     return serializedObjectsProvider;
   }
 

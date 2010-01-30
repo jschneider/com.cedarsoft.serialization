@@ -32,37 +32,68 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.provider.Provider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.Override;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-public interface StreamBasedSerializedObjectsAccess extends Provider<Set<? extends String>, IOException> {
-  /**
-   * Returns the output for the given id
-   *
-   * @param id the id
-   * @return the output stream
-   *
-   * @throws FileNotFoundException
-   * @throws StillContainedException if an object with the given id is still contained
-   */
+/**
+ *
+ */
+public class InMemorySerializer implements StreamBasedSerializer {
   @NotNull
-  OutputStream openOut( @NotNull @NonNls String id ) throws StillContainedException, FileNotFoundException;
+  @NonNls
+  private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
 
-  /**
-   * Returns the input stream
-   *
-   * @param id the id
-   * @return the input stream
-   *
-   * @throws FileNotFoundException
-   */
+  @Override
   @NotNull
-  InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException;
+  public InputStream getInputStream( @NotNull @NonNls String id ) {
+    byte[] found = serialized.get( id );
+    if ( found == null ) {
+      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
+    }
+    return new ByteArrayInputStream( found );
+  }
+
+  @NotNull
+  @Override
+  public Set<? extends String> provide() throws FileNotFoundException {
+    return serialized.keySet();
+  }
+
+  @Override
+  @NotNull
+  public OutputStream openOut( @NotNull @NonNls final String id ) {
+    byte[] stored = serialized.get( id );
+    if ( stored != null ) {
+      throw new StillContainedException( id );
+    }
+
+    return new ByteArrayOutputStream() {
+      @Override
+      public void close() throws IOException {
+        super.close();
+        serialized.put( id, toByteArray() );
+      }
+    };
+  }
+
+  public void clear() {
+    serialized.clear();
+  }
+
+  @NotNull
+  @Override
+  public String getDescription() {
+    return getClass().getName();
+  }
 }

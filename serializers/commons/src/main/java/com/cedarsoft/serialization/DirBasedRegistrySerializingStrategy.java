@@ -42,10 +42,10 @@ import java.io.IOException;
  *
  * @param <T> the type
  */
-public abstract class DirBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, DirBasedSerializedObjectsAccess> {
+public abstract class DirBasedRegistrySerializingStrategy<T> implements RegistrySerializingStrategy<T, DirBasedSerializer> {
   @NotNull
   @Override
-  public T deserialize( @NotNull @NonNls String id, @NotNull DirBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+  public T deserialize( @NotNull @NonNls String id, @NotNull DirBasedSerializer serializedObjectsProvider ) throws IOException {
     File dir = serializedObjectsProvider.getDirectory( id );
     return deserialize( id, dir );
   }
@@ -64,7 +64,7 @@ public abstract class DirBasedRegistrySerializingStrategy<T> implements Registry
 
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull DirBasedSerializedObjectsAccess serializedObjectsProvider ) throws IOException {
+  public void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull DirBasedSerializer serializedObjectsProvider ) throws IOException {
     File dir = serializedObjectsProvider.addDirectory( id );
     serialize( object, id, dir );
   }

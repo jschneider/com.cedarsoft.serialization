@@ -45,13 +45,13 @@ import static org.testng.Assert.*;
  *
  */
 public class DirBasedSerializedObjectsAccessTest {
-  private DirBasedSerializedObjectsAccess access;
+  private DirBasedSerializer access;
   private File baseDir;
 
   @BeforeMethod
   protected void setUp() throws Exception {
     baseDir = TestUtils.createEmptyTmpDir();
-    access = new DirBasedSerializedObjectsAccess( baseDir );
+    access = new DirBasedSerializer( baseDir );
   }
 
   @AfterMethod

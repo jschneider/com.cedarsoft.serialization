@@ -54,16 +54,16 @@ import static org.testng.Assert.*;
  *
  */
 public class RegistrySerializerDirTest {
-  private RegistrySerializer<String, Registry<String>,DirBasedSerializedObjectsAccess> serializer;
-  private DirBasedSerializedObjectsAccess access;
+  private RegistrySerializer<String, Registry<String>> serializer;
+  private DirBasedSerializer access;
   private File baseDir;
 
   @BeforeMethod
   public void setup() {
     baseDir = TestUtils.createEmptyTmpDir();
 
-    access = new DirBasedSerializedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>,DirBasedSerializedObjectsAccess>( access, new DirBasedRegistrySerializingStrategy<String>() {
+    access = new DirBasedSerializer( baseDir );
+    serializer = new RegistrySerializer<String, Registry<String>>( access, new DirBasedRegistrySerializingStrategy<String>() {
       @NotNull
       @Override
       protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {

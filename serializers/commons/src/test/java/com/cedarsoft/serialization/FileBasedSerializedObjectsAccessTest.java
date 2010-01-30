@@ -47,11 +47,11 @@ import static org.testng.Assert.*;
  *
  */
 public class FileBasedSerializedObjectsAccessTest {
-  private FileBasedSerializedObjectsAccess access;
+  private FileBasedSerializer access;
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    access = new FileBasedSerializedObjectsAccess( TestUtils.createEmptyTmpDir(), "xml" );
+    access = new FileBasedSerializer( TestUtils.createEmptyTmpDir(), "xml" );
   }
 
   @AfterMethod
@@ -76,7 +76,7 @@ public class FileBasedSerializedObjectsAccessTest {
       assertEquals( IOUtils.toString( in ), "asdf" );
       in.close();
     }
-    InputStream in = new FileBasedSerializedObjectsAccess( access.getBaseDir(), "xml" ).getInputStream( "id" );
+    InputStream in = new FileBasedSerializer( access.getBaseDir(), "xml" ).getInputStream( "id" );
     assertEquals( IOUtils.toString( in ), "asdf" );
     in.close();
   }
