@@ -43,7 +43,6 @@ import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -64,21 +63,18 @@ public class RegistrySerializerDirTest {
     baseDir = TestUtils.createEmptyTmpDir();
 
     access = new DirBasedSerializedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new RegistrySerializingStrategy<String>() {
+    serializer = new RegistrySerializer<String, Registry<String>>( access, new DirBasedRegistrySerializingStrategy<String>() {
       @NotNull
       @Override
-      public String deserialize( @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-        File dir = ( ( DirBasedSerializedObjectsAccess ) serializedObjectsAccess ).getDirectory( id );
+      protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
         return FileUtils.readFileToString( new File( dir, "data" ) );
       }
 
       @Override
-      public void serialize( @NotNull String object, @NotNull @NonNls String id, @NotNull SerializedObjectsAccess serializedObjectsAccess ) throws IOException {
-        File dir = ( ( DirBasedSerializedObjectsAccess ) serializedObjectsAccess ).addDirectory( id );
+      protected void serialize( @NotNull String object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
         File data = new File( dir, "data" );
         FileUtils.writeStringToFile( data, object );
       }
-
     }, new RegistrySerializer.IdResolver<String>() {
       @Override
       @NotNull
