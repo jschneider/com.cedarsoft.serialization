@@ -29,47 +29,64 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
+import com.cedarsoft.StillContainedException;
+import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * A serializing strategy based on a serializer.
- * This is the default strategy and used for most {@link RegistrySerializer}s.
  *
- * @param <T> the type
  */
-public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
+public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   @NotNull
-  private final Serializer<T> serializer;
-
-  public SerializerBasedRegistrySerializingStrategy( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer ) {
-    super( objectsAccess );
-    this.serializer = serializer;
-  }
-
-  @NotNull
-  @Override
-  public T deserialize( @NotNull @NonNls String id ) throws IOException {
-    return serializer.deserialize( objectsAccess.getInputStream( id ) );
-  }
+  @NonNls
+  private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
-    OutputStream out = objectsAccess.openOut( id );
-    try {
-      serializer.serialize( object, out );
-    } finally {
-      out.close();
+  @NotNull
+  public InputStream getInputStream( @NotNull @NonNls String id ) {
+    byte[] found = serialized.get( id );
+    if ( found == null ) {
+      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
     }
+    return new ByteArrayInputStream( found );
   }
 
   @NotNull
-  public Serializer<T> getSerializer() {
-    return serializer;
+  @Override
+  public Set<? extends String> getIds() throws IOException {
+    return serialized.keySet();
+  }
+
+  @Override
+  @NotNull
+  public OutputStream openOut( @NotNull @NonNls final String id ) {
+    byte[] stored = serialized.get( id );
+    if ( stored != null ) {
+      throw new StillContainedException( id );
+    }
+
+    return new ByteArrayOutputStream() {
+      @Override
+      public void close() throws IOException {
+        super.close();
+        serialized.put( id, toByteArray() );
+      }
+    };
+  }
+
+  public void clear() {
+    serialized.clear();
   }
 }

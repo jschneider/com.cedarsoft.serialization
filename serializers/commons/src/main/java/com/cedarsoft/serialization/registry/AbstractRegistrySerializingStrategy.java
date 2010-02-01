@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
 import org.jetbrains.annotations.NotNull;
 

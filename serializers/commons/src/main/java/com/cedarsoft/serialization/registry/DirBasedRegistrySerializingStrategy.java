@@ -29,63 +29,58 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
-import com.cedarsoft.StillContainedException;
+import com.cedarsoft.serialization.registry.DirBasedObjectsAccess;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
+ * Abstract base class for registry serializing strategies based on directory structures
  *
+ * @param <T> the type
  */
-public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
-  @NotNull
-  @NonNls
-  private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
-
-  @Override
-  @NotNull
-  public InputStream getInputStream( @NotNull @NonNls String id ) {
-    byte[] found = serialized.get( id );
-    if ( found == null ) {
-      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
-    }
-    return new ByteArrayInputStream( found );
+public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, DirBasedObjectsAccess> {
+  protected DirBasedRegistrySerializingStrategy( @NotNull DirBasedObjectsAccess objectsAccess ) {
+    super( objectsAccess );
   }
 
   @NotNull
   @Override
-  public Set<? extends String> getIds() throws IOException {
-    return serialized.keySet();
+  public T deserialize( @NotNull @NonNls String id ) throws IOException {
+    File dir = objectsAccess.getDirectory( id );
+    return deserialize( id, dir );
   }
+
+  /**
+   * Deserialize the object from the given directory
+   *
+   * @param id  the id
+   * @param dir the directory
+   * @return the deserialized object
+   *
+   * @throws IOException
+   */
+  @NotNull
+  protected abstract T deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
+
 
   @Override
-  @NotNull
-  public OutputStream openOut( @NotNull @NonNls final String id ) {
-    byte[] stored = serialized.get( id );
-    if ( stored != null ) {
-      throw new StillContainedException( id );
-    }
-
-    return new ByteArrayOutputStream() {
-      @Override
-      public void close() throws IOException {
-        super.close();
-        serialized.put( id, toByteArray() );
-      }
-    };
+  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    File dir = objectsAccess.addDirectory( id );
+    serialize( object, id, dir );
   }
 
-  public void clear() {
-    serialized.clear();
-  }
+  /**
+   * Serialize the object to the given directory
+   *
+   * @param object the object to serialize
+   * @param id     the id
+   * @param dir    the directory
+   * @throws IOException
+   */
+  protected abstract void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
 }

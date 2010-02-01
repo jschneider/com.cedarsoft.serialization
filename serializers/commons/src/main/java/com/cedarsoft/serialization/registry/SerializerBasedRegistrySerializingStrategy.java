@@ -29,37 +29,49 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
-import com.cedarsoft.StillContainedException;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
-public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStrategy.ObjectsAccess {
-  /**
-   * Returns the output for the given id
-   *
-   * @param id the id
-   * @return the output stream
-   *
-   * @throws FileNotFoundException
-   * @throws StillContainedException if an object with the given id is still contained
-   */
+/**
+ * A serializing strategy based on a serializer.
+ * This is the default strategy and used for most {@link RegistrySerializer}s.
+ *
+ * @param <T> the type
+ */
+public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
   @NotNull
-  OutputStream openOut( @NotNull @NonNls String id ) throws StillContainedException, FileNotFoundException;
+  private final Serializer<T> serializer;
 
-  /**
-   * Returns the input stream
-   *
-   * @param id the id
-   * @return the input stream
-   *
-   * @throws FileNotFoundException
-   */
+  public SerializerBasedRegistrySerializingStrategy( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer ) {
+    super( objectsAccess );
+    this.serializer = serializer;
+  }
+
   @NotNull
-  InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException;
+  @Override
+  public T deserialize( @NotNull @NonNls String id ) throws IOException {
+    return serializer.deserialize( objectsAccess.getInputStream( id ) );
+  }
+
+  @Override
+  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    OutputStream out = objectsAccess.openOut( id );
+    try {
+      serializer.serialize( object, out );
+    } finally {
+      out.close();
+    }
+  }
+
+  @NotNull
+  public Serializer<T> getSerializer() {
+    return serializer;
+  }
 }

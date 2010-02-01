@@ -29,71 +29,63 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
+import com.cedarsoft.serialization.registry.DirBasedObjectsAccess;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.testng.annotations.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import static org.testng.Assert.*;
 
 /**
  *
  */
-public class FileBasedSerializedObjectsAccessTest {
-  private FileBasedObjectsAccess access;
+public class DirBasedSerializedObjectsAccessTest {
+  private DirBasedObjectsAccess access;
+  private File baseDir;
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    access = new FileBasedObjectsAccess( TestUtils.createEmptyTmpDir(), "xml" );
+    baseDir = TestUtils.createEmptyTmpDir();
+    access = new DirBasedObjectsAccess( baseDir );
   }
 
   @AfterMethod
   protected void tearDown() throws Exception {
-    FileUtils.deleteDirectory( access.getBaseDir() );
+    FileUtils.deleteDirectory( baseDir );
   }
 
   @Test
   public void testIt() throws IOException {
     assertEquals( access.getIds().size(), 0 );
     {
-      OutputStream out = access.openOut( "id" );
-      IOUtils.write( "asdf".getBytes(), out );
-      out.close();
+      new File( baseDir, "id" ).mkdir();
     }
+
+    //Check dir exists
+    assertTrue( new File( baseDir, "id" ).exists() );
+    assertTrue( new File( baseDir, "id" ).isDirectory() );
 
     assertEquals( access.getIds().size(), 1 );
     assertTrue( access.getIds().contains( "id" ) );
-
-    {
-      InputStream in = access.getInputStream( "id" );
-      assertEquals( IOUtils.toString( in ), "asdf" );
-      in.close();
-    }
-    InputStream in = new FileBasedObjectsAccess( access.getBaseDir(), "xml" ).getInputStream( "id" );
-    assertEquals( IOUtils.toString( in ), "asdf" );
-    in.close();
   }
 
   @Test
   public void testExists() throws IOException {
     assertEquals( access.getIds().size(), 0 );
     {
-      OutputStream out = access.openOut( "id" );
-      IOUtils.write( "asdf".getBytes(), out );
-      out.close();
+      new File( baseDir, "id" ).mkdir();
     }
 
     try {
-      access.openOut( "id" );
-      fail("Where is the Exception");
-    } catch ( StillContainedException e ) {
+      access.addDirectory( "id" );
+      fail( "Where is the Exception" );
+    } catch ( StillContainedException ignore ) {
     }
   }
 }

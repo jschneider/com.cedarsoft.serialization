@@ -29,57 +29,45 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
- * Abstract base class for registry serializing strategies based on directory structures
+ * A registry serializing strategy
  *
- * @param <T> the type
+ * @param <T> the type that is (de)serialized
  */
-public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, DirBasedObjectsAccess> {
-  protected DirBasedRegistrySerializingStrategy( @NotNull DirBasedObjectsAccess objectsAccess ) {
-    super( objectsAccess );
-  }
-
-  @NotNull
-  @Override
-  public T deserialize( @NotNull @NonNls String id ) throws IOException {
-    File dir = objectsAccess.getDirectory( id );
-    return deserialize( id, dir );
-  }
-
+public interface RegistrySerializingStrategy<T> {
   /**
-   * Deserialize the object from the given directory
+   * Deserialize the object
    *
-   * @param id  the id
-   * @param dir the directory
+   * @param id                        the id
    * @return the deserialized object
    *
    * @throws IOException
    */
   @NotNull
-  protected abstract T deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
-
-
-  @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
-    File dir = objectsAccess.addDirectory( id );
-    serialize( object, id, dir );
-  }
+  T deserialize( @NotNull @NonNls String id ) throws IOException;
 
   /**
-   * Serialize the object to the given directory
+   * Serialize the object
    *
-   * @param object the object to serialize
-   * @param id     the id
-   * @param dir    the directory
+   * @param object                    the object to serialize
+   * @param id                        the id
    * @throws IOException
    */
-  protected abstract void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
+  void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+
+  /**
+   * Deserializes all
+   * @return the deserialized objects
+   * @throws IOException
+   */
+  @NotNull
+  Collection<? extends T> deserialize() throws IOException;
 }

@@ -29,19 +29,22 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.TestUtils;
+import com.cedarsoft.Version;
+import com.cedarsoft.VersionRange;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
-import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NonNls;
+import com.cedarsoft.serialization.registry.RegistrySerializer;
+import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
-import java.io.File;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -49,32 +52,28 @@ import java.util.Set;
 
 import static org.testng.Assert.*;
 
-
 /**
  *
  */
-public class RegistrySerializerDirTest {
+public class RegistrySerializerTest {
   private RegistrySerializer<String, Registry<String>> serializer;
-  private DirBasedObjectsAccess access;
-  private File baseDir;
+  private InMemoryObjectsAccess access;
 
   @BeforeMethod
   public void setup() {
-    baseDir = TestUtils.createEmptyTmpDir();
+    access = new InMemoryObjectsAccess();
+    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+      @Override
+      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
+        serializeTo.writeCharacters( object );
+      }
 
-    access = new DirBasedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>>( new DirBasedRegistrySerializingStrategy<String>( access ) {
       @NotNull
       @Override
-      protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
-        return FileUtils.readFileToString( new File( dir, "data" ) );
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+        return getText( deserializeFrom );
       }
 
-      @Override
-      protected void serialize( @NotNull String object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
-        File data = new File( dir, "data" );
-        FileUtils.writeStringToFile( data, object );
-      }
     }, new RegistrySerializer.IdResolver<String>() {
       @Override
       @NotNull
@@ -82,11 +81,6 @@ public class RegistrySerializerDirTest {
         return object;
       }
     } );
-  }
-
-  @AfterMethod
-  protected void tearDown() throws Exception {
-    FileUtils.deleteDirectory( baseDir );
   }
 
   @Test
@@ -147,6 +141,8 @@ public class RegistrySerializerDirTest {
     Set<? extends String> ids = access.getIds();
     assertEquals( ids.size(), 1 );
     assertTrue( ids.contains( "1" ) );
+
+    assertEquals( serializer.getSerializer().deserialize( access.getInputStream( "1" ) ), "1" );
   }
 
   private static class MyRegistryFactory implements RegistryFactory<String, Registry<String>> {
@@ -157,3 +153,5 @@ public class RegistrySerializerDirTest {
     }
   }
 }
+
+
