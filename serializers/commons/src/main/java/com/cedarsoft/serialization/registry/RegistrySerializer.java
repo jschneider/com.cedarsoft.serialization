@@ -36,7 +36,6 @@ import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -177,6 +176,11 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     }
 
     throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
+  }
+
+  @NotNull 
+  public RegistrySerializingStrategy<T> getSerializingStrategy() {
+    return serializingStrategy;
   }
 
   @NotNull
