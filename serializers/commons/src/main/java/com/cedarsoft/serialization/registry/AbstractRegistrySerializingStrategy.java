@@ -66,6 +66,16 @@ public abstract class AbstractRegistrySerializingStrategy<T, O extends AbstractR
   }
 
   /**
+   * Returns the object access
+   *
+   * @return the object access
+   */
+  @NotNull
+  public O getObjectsAccess() {
+    return objectsAccess;
+  }
+
+  /**
    */
   public interface ObjectsAccess {
     /**
