@@ -5,7 +5,7 @@ cedarsoft Serialization
   Its goal is to provide some simple classes (very small framework) that enables rapid development
   of versioned serialization.
 
-  Documentation can be found at the [Maven generated site](http://serialization.cedarsoft.com).
+  Documentation can be found at the [Maven generated site](http://serialization.cedarsoft.org).
 
 
 Introduction
