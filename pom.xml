@@ -19,6 +19,12 @@
     <developerConnection>scm:git:git@github.com:jschneider/com.cedarsoft.serialization.git</developerConnection>
   </scm>
 
+  <mailingLists>
+    <mailingList>
+      <archive>http://groups.google.de/group/users-cedarsoft-serialization</archive>
+    </mailingList>
+  </mailingLists>
+
   <modules>
     <module>serialization</module>
     <module>jdom</module>
