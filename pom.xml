@@ -29,6 +29,11 @@
     </mailingList>
   </mailingLists>
 
+  <issueManagement>
+    <system>github</system>
+    <url>http://github.com/jschneider/com.cedarsoft.serialization/issues</url>
+  </issueManagement>
+
   <modules>
     <module>serialization</module>
     <module>jdom</module>
