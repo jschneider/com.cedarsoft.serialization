@@ -52,8 +52,8 @@ import java.io.IOException;
  * Therefore this serializer is able to still read the old format.
  * Writing is only supported for the latest file.
  */
-public class MoneySerializer2 extends AbstractStaxMateSerializer<Money> {
-  public MoneySerializer2() {
+public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
+  public MoneySerializer() {
     //This serializer supports an old version, too
     super( "money", "http://thecompany.com/test/money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
   }

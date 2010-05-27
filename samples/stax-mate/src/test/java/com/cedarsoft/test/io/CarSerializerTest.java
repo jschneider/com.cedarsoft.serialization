@@ -117,6 +117,6 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
                   "         -->     Extra     Model     Money\n" +
                     "------------------------------------------\n" +
                     "   1.0.0 -->     1.5.0     1.0.0     1.0.0\n" +
-                    "------------------------------------------" );
+                    "------------------------------------------\n" );
   }
 }

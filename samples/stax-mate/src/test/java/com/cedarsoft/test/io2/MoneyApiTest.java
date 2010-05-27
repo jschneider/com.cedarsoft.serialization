@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io;
+package com.cedarsoft.test.io2;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
@@ -38,7 +38,6 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
-import com.cedarsoft.test.io2.MoneySerializer2;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
@@ -63,7 +62,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObjec
   @NotNull
   @Override
   protected Serializer<MyObject> getSerializer() throws Exception {
-    return new MyObjectSerializer( new MoneySerializer2() );
+    return new MyObjectSerializer( new com.cedarsoft.test.io2.MoneySerializer() );
   }
 
   @NotNull
@@ -78,7 +77,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObjec
   }
 
   public static class MyObjectSerializer extends AbstractStaxMateSerializer<MyObject> {
-    public MyObjectSerializer( @NotNull MoneySerializer2 moneySerializer ) {
+    public MyObjectSerializer( @NotNull MoneySerializer moneySerializer ) {
       super( "myObject", "http://serialization.cedarsoft.com/test/myObject", VersionRange.from( Version.valueOf( 1, 4, 0 ) ).to( Version.valueOf( 1, 5, 0 ) ) );
 
       add( moneySerializer ).responsibleFor( Money.class )

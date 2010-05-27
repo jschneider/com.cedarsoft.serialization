@@ -13,7 +13,7 @@ public class ExtraSerializerTest extends AbstractXmlSerializerTest<Extra> {
   @NotNull
   @Override
   protected Serializer<Extra> getSerializer() throws Exception {
-    return new ExtraSerializer2( new MoneySerializer2() );
+    return new ExtraSerializer( new MoneySerializer() );
   }
 
   @NotNull

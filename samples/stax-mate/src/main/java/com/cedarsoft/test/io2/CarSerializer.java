@@ -57,10 +57,10 @@ import java.util.List;
  * Therefore this serializer is able to still read the old format.
  * Writing is only supported for the latest file.
  */
-public class CarSerializer2 extends AbstractStaxMateSerializer<Car> {
+public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: fieldsAndConstructors
 
-  public CarSerializer2( MoneySerializer2 moneySerializer, ExtraSerializer2 extraSerializer, ModelSerializer modelSerializer ) {
+  public CarSerializer( MoneySerializer moneySerializer, ExtraSerializer extraSerializer, ModelSerializer modelSerializer ) {
     super( "car", "http://thecompany.com/test/car", VersionRange.from( 1, 0, 0 ).to( 1, 0, 1 ) );
 
     add( moneySerializer ).responsibleFor( Money.class )

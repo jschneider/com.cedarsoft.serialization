@@ -31,41 +31,42 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import org.testng.annotations.*;
+import org.xml.sax.SAXException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static org.testng.Assert.*;
 
 /**
- *
+ * Test class that tests the old versions manually
  */
-public class MoneySerializer2VersionsTest extends AbstractXmlVersionTest<Money> {
-  @NotNull
-  @Override
-  protected Serializer<Money> getSerializer() {
-    return new MoneySerializer2();
+public class MoneySerializerManualVersionTest {
+  @Test
+  public void testCurrent() throws IOException, SAXException {
+    MoneySerializer serializer = new MoneySerializer();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serializer.serialize( new Money( 7, 99 ), out );
+
+    AssertUtils.assertXMLEqual( out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" );
+
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), new Money( 7, 99 ) );
   }
 
-  @NotNull
-  @Override
-  protected Map<? extends Version, ? extends String> getSerializedXml() {
-    Map<Version, String> map = new HashMap<Version, String>();
-
-    //We don't have to add the namespace containing the version. This is done automatically
-    map.put( new Version( 1, 0, 1 ), "<money cents=\"799\" />" );
-    map.put( new Version( 1, 0, 0 ), "<money>799</money>" );
-
-    return map;
+  @Test
+  public void testOldFormat() throws IOException {
+    MoneySerializer serializer = new MoneySerializer();
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( ( "<money xmlns=\"http://thecompany.com/test/money/1.0.0\">799</money>" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 
-  @Override
-  protected void verifyDeserialized( @NotNull Money deserialized, @NotNull Version version ) {
-    assertEquals( new Money( 7, 99 ), deserialized );
+  @Test
+  public void testCurrentFormat() throws IOException {
+    MoneySerializer serializer = new MoneySerializer();
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( ( "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 }

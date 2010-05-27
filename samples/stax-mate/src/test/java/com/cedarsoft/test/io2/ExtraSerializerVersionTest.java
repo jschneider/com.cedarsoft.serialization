@@ -18,11 +18,11 @@ import static org.testng.Assert.*;
 /**
  * Testing the new version.
  */
-public class ExtraSerializer2VersionTest extends AbstractXmlVersionTest<Extra> {
+public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
   @NotNull
   @Override
   protected Serializer<Extra> getSerializer() throws Exception {
-    return new ExtraSerializer2( new MoneySerializer2() );
+    return new ExtraSerializer( new MoneySerializer() );
   }
 
   @NotNull

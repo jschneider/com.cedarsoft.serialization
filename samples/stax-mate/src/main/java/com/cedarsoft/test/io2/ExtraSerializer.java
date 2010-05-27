@@ -36,7 +36,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import com.cedarsoft.test.io.MoneySerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.xml.stream.XMLStreamException;
@@ -53,10 +52,10 @@ import java.io.IOException;
  * Therefore this serializer is able to still read the old format.
  * Writing is only supported for the latest file.
  */
-public class ExtraSerializer2 extends AbstractStaxMateSerializer<Extra> {
+public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //START SNIPPET: fieldsAndConstructors
 
-  public ExtraSerializer2( MoneySerializer2 moneySerializer ) {
+  public ExtraSerializer( MoneySerializer moneySerializer ) {
     super( "extra", "http://thecompany.com/test/extra", new VersionRange( new Version( 1, 5, 0 ), new Version( 1, 5, 1 ) ) );
     //We choose another version number. Maybe this is an old serializer that has been created within another project.
 

@@ -20,12 +20,12 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class CarSerializer2VersionTest extends AbstractXmlVersionTest<Car> {
+public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
   @NotNull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
-    MoneySerializer2 moneySerializer = new MoneySerializer2();
-    return new CarSerializer2( moneySerializer, new ExtraSerializer2( moneySerializer ), new ModelSerializer() );
+    MoneySerializer moneySerializer = new MoneySerializer();
+    return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
   @NotNull

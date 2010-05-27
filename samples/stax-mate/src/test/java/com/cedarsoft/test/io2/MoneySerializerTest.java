@@ -39,12 +39,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class MoneySerializer2Test extends AbstractXmlSerializerTest<Money>{
+public class MoneySerializerTest extends AbstractXmlSerializerTest<Money>{
   //We don't need a multi test for such an easy class...
   @NotNull
   @Override
   protected Serializer<Money> getSerializer() {
-    return new MoneySerializer2();
+    return new MoneySerializer();
   }
 
   @NotNull
