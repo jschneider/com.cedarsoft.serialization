@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io;
+package com.cedarsoft.test.io2;
 
 import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;

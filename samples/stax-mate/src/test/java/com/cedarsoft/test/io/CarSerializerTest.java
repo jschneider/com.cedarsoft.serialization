@@ -33,13 +33,16 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
+import org.testng.annotations.*;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -103,5 +106,17 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
 
     //....
 
+  }
+
+  @Test
+  public void testAsciiArt() throws IOException {
+    CarSerializer serializer = ( CarSerializer ) getSerializer();
+    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( serializer.getDelegatesMappings() );
+
+    assertEquals( visualizer.visualize(),
+                  "         -->     Extra     Model     Money\n" +
+                    "------------------------------------------\n" +
+                    "   1.0.0 -->     1.5.0     1.0.0     1.0.0\n" +
+                    "------------------------------------------" );
   }
 }

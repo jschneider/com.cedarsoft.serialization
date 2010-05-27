@@ -29,33 +29,44 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io;
+package com.cedarsoft.test.io2;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import org.testng.annotations.*;
+import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static org.testng.Assert.*;
 
 /**
- *
+ * Test class that tests the old versions manually
  */
-public class MoneySerializer2Test extends AbstractXmlSerializerTest<Money>{
-  //We don't need a multi test for such an easy class...
-  @NotNull
-  @Override
-  protected Serializer<Money> getSerializer() {
-    return new MoneySerializer2();
+public class MoneySerializer2ManualVersionTest {
+  @Test
+  public void testCurrent() throws IOException, SAXException {
+    MoneySerializer2 serializer = new MoneySerializer2();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serializer.serialize( new Money( 7, 99 ), out );
+
+    AssertUtils.assertXMLEqual( out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" );
+
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), new Money( 7, 99 ) );
   }
 
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<money cents=\"1199\"/>";
+  @Test
+  public void testOldFormat() throws IOException {
+    MoneySerializer2 serializer = new MoneySerializer2();
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( ( "<money xmlns=\"http://thecompany.com/test/money/1.0.0\">799</money>" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 
-  @NotNull
-  @Override
-  protected Money createObjectToSerialize() {
-    return new Money( 1199 );
+  @Test
+  public void testCurrentFormat() throws IOException {
+    MoneySerializer2 serializer = new MoneySerializer2();
+    assertEquals( serializer.deserialize( new ByteArrayInputStream( ( "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" ).getBytes() ) ), new Money( 7, 99 ) );
   }
 }

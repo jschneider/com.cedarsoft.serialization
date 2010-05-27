@@ -290,7 +290,7 @@
 
 * {Evolution}
 
-  If you are interested in how changes to the format can be handled. Take a look at {{{./xref/com/cedarsoft/test/io/MoneySerializer2.html}<com.cedarsoft.test.io.MoneySerializer2>}}.
+  If you are interested in how changes to the format can be handled. Take a look at {{{./xref/com/cedarsoft/test/io/MoneySerializer2.html}<com.cedarsoft.test.io2.MoneySerializer2>}}.
   That serializer supports two different formats.
 
 

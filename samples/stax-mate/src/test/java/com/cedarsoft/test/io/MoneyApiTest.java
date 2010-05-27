@@ -38,6 +38,7 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
+import com.cedarsoft.test.io2.MoneySerializer2;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
