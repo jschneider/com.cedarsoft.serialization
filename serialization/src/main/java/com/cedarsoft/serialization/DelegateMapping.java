@@ -101,7 +101,7 @@ public class DelegateMapping {
   }
 
   /**
-   * @param sourceRange           the source version range
+   * @param sourceRange     the source version range
    * @param delegateVersion the delegate version
    */
   public void addMapping( @NotNull VersionRange sourceRange, @NotNull Version delegateVersion ) throws VersionException {
@@ -138,13 +138,13 @@ public class DelegateMapping {
       }
     }
 
-    throw new UnsupportedVersionException( version );
+    throw new UnsupportedVersionException( version, null, "No delegate version mapped for source version <" + version + ">", false );
   }
 
   /**
    * Verifies the mapping
    */
-  public void verify() throws IllegalStateException, VersionException {
+  public void verify() throws VersionException {
     if ( entries.isEmpty() ) {
       throw new VersionException( "No mappings available" );
     }
@@ -153,7 +153,7 @@ public class DelegateMapping {
     {
       Version currentMin = entries.get( 0 ).getVersionRange().getMin();
       if ( !currentMin.equals( sourceVersionRange.getMin() ) ) {
-        throw new VersionMismatchException( sourceVersionRange.getMin(), currentMin, "Invalid minimum version (source): " );
+        throw new VersionMismatchException( sourceVersionRange.getMin(), currentMin, "Lower border of source range not mapped: " );
       }
     }
 
@@ -162,7 +162,7 @@ public class DelegateMapping {
       Entry last = entries.get( entries.size() - 1 );
       Version currentMax = last.getVersionRange().getMax();
       if ( !currentMax.equals( sourceVersionRange.getMax() ) ) {
-        throw new VersionMismatchException( sourceVersionRange.getMax(), currentMax, "Invalid maximum version (source): " );
+        throw new VersionMismatchException( sourceVersionRange.getMax(), currentMax, "Upper border of source range not mapped: " );
       }
     }
   }
@@ -176,7 +176,7 @@ public class DelegateMapping {
     return entries.get( entries.size() - 1 ).getDelegateVersion();
   }
 
-  public void verifyMappedVersions( Iterable<? extends Version> mappedVersions ) {
+  public void verifyMappedVersions( Iterable<? extends Version> mappedVersions ) throws UnsupportedVersionException {
     for ( Version mappedVersion : mappedVersions ) {
       resolveVersion( mappedVersion );
     }

@@ -68,7 +68,7 @@ public class DelegateMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "Invalid maximum version (source): Expected <2.2.7> but was <0.5.0>" );
+      assertEquals( e.getMessage(), "Upper border of source range not mapped: Expected <2.2.7> but was <0.5.0>" );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 1 ), new Version( 1, 0, 0 ) ), new Version( 1, 0, 1 ) );
@@ -102,7 +102,7 @@ public class DelegateMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "Invalid maximum version (source): Expected <1.0.1> but was <1.0.0>" );
+      assertEquals( e.getMessage(), "Upper border of source range not mapped: Expected <1.0.1> but was <1.0.0>" );
     }
 
     mapping.map( 1, 0, 1 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 1 );
@@ -132,8 +132,7 @@ public class DelegateMappingTest {
 
   @Test
   public void testDuplicate() {
-    MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
-    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), delegate.getFormatVersionRange() );
+    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
 
     //Version 0.5.0 of me --> 1.0.0
@@ -164,7 +163,6 @@ public class DelegateMappingTest {
       mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 3, 0, 1 ) );
       fail( "Where is the Exception" );
     } catch ( UnsupportedVersionException e ) {
-      e.printStackTrace();
       assertEquals( e.getActual(), new Version( 3, 0, 1 ) );
       assertEquals( e.getSupportedRange(), delegate.getFormatVersionRange() );
       assertEquals( e.getMessage(), "Invalid delegate version: Was <3.0.1>. Supported range <[1.0.0-2.0.0]>" );

@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
@@ -118,7 +119,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     SortedSet<Version> mappedVersions = getMappedVersions();
 
     if ( mappings.isEmpty() ) {
-      throw new IllegalStateException( "No mappings available" );
+      throw new VersionException( "No mappings available" );
     }
 
     for ( Map.Entry<Class<?>, DelegateMapping> entry : mappings.entrySet() ) {
@@ -130,13 +131,23 @@ public class DelegatesMappings<S, D, E extends Throwable> {
       }
 
       //Verify the mapping itself
-      mapping.verify();
-      mapping.verifyMappedVersions( mappedVersions );
+      try {
+        mapping.verify();
+        mapping.verifyMappedVersions( mappedVersions );
+      } catch ( VersionMismatchException e ) {
+        RuntimeException newException = new VersionMismatchException( e.getExpected(), e.getActual(), "Invalid mapping for <" + entry.getKey().getName() + ">: " + e.getMessage(), false );
+        newException.setStackTrace( e.getStackTrace() );
+        throw newException;
+      } catch ( UnsupportedVersionException e ) {
+        RuntimeException newException = new UnsupportedVersionException( e.getActual(), e.getSupportedRange(), "Invalid mapping for <" + entry.getKey().getName() + ">: " + e.getMessage(), false );
+        newException.setStackTrace( e.getStackTrace() );
+        throw newException;
+      }
 
       //Check the write version
       PluggableSerializer<?, S, D, E> serializer = getSerializer( entry.getKey() );
       if ( !serializer.getFormatVersion().equals( mapping.getDelegateWriteVersion() ) ) {
-        throw new VersionMismatchException( mapping.getDelegateWriteVersion(), serializer.getFormatVersion(), "Invalid writing version for <" + entry.getKey().getName() + ">. " );
+        throw new VersionMismatchException( serializer.getFormatVersion(), mapping.getDelegateWriteVersion(), "Invalid serialization/output version for <" + entry.getKey().getName() + ">. " );
       }
     }
 
