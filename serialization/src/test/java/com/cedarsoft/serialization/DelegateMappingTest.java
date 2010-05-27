@@ -43,7 +43,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.Assert.*;
+
 
 /**
  *
@@ -57,7 +58,8 @@ public class DelegateMappingTest {
     try {
       mapping.verify();
       fail( "Where is the Exception" );
-    } catch ( Exception ignore ) {
+    } catch ( VersionException e ) {
+      assertEquals( e.getMessage(), "No mappings available" );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
@@ -65,7 +67,8 @@ public class DelegateMappingTest {
     try {
       mapping.verify();
       fail( "Where is the Exception" );
-    } catch ( Exception ignore ) {
+    } catch ( VersionException e ) {
+      assertEquals( e.getMessage(), "Invalid maximum version (source): Expected <2.2.7> but was <0.5.0>" );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 1 ), new Version( 1, 0, 0 ) ), new Version( 1, 0, 1 ) );
@@ -80,7 +83,7 @@ public class DelegateMappingTest {
     VersionRange delegateVersionRange = new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 1 ) );
 
     DelegateMapping mapping = new DelegateMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
-    
+
     mapping.map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 0 );
     assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 0 ) );
   }
@@ -97,8 +100,9 @@ public class DelegateMappingTest {
 
     try {
       mapping.verify();
-      fail("Where is the Exception");
-    } catch ( Exception ignore ) {
+      fail( "Where is the Exception" );
+    } catch ( VersionException e ) {
+      assertEquals( e.getMessage(), "Invalid maximum version (source): Expected <1.0.1> but was <1.0.0>" );
     }
 
     mapping.map( 1, 0, 1 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 1 );
@@ -107,8 +111,8 @@ public class DelegateMappingTest {
 
   @Test
   public void testBasic() {
-    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
-    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );
+    MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), delegate.getFormatVersionRange() );
 
 
     //Version 0.5.0 of me --> 1.0.0
@@ -128,24 +132,24 @@ public class DelegateMappingTest {
 
   @Test
   public void testDuplicate() {
-    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
-    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );
+    MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), delegate.getFormatVersionRange() );
 
 
     //Version 0.5.0 of me --> 1.0.0
-    mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
+    mapping.addMapping( VersionRange.from( 0, 5, 0 ).to(), new Version( 1, 0, 0 ) );
     try {
-      mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
+      mapping.addMapping( VersionRange.from( 0, 5, 0 ).to(), new Version( 1, 0, 0 ) );
       fail( "Where is the Exception" );
-    } catch ( IllegalArgumentException ignore ) {
+    } catch ( VersionException e ) {
+      assertEquals( e.getMessage(), "The version range has still been mapped: Was <[0.5.0-0.5.0]>" );
     }
   }
 
   @Test
   public void testDelegateWrongVersion() {
-    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
-
-    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
+    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
     try {
       mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 0, 0, 1 ) );
@@ -153,35 +157,40 @@ public class DelegateMappingTest {
     } catch ( UnsupportedVersionException e ) {
       assertEquals( e.getActual(), new Version( 0, 0, 1 ) );
       assertEquals( e.getSupportedRange(), delegate.getFormatVersionRange() );
+      assertEquals( e.getMessage(), "Invalid delegate version: Was <0.0.1>. Supported range <[1.0.0-2.0.0]>" );
     }
 
     try {
       mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 3, 0, 1 ) );
       fail( "Where is the Exception" );
     } catch ( UnsupportedVersionException e ) {
+      e.printStackTrace();
       assertEquals( e.getActual(), new Version( 3, 0, 1 ) );
       assertEquals( e.getSupportedRange(), delegate.getFormatVersionRange() );
+      assertEquals( e.getMessage(), "Invalid delegate version: Was <3.0.1>. Supported range <[1.0.0-2.0.0]>" );
     }
   }
 
   @Test
   public void testMyWrongVersion() {
-    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
+    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
     try {
-      mapping.addMapping( new VersionRange( new Version( 0, 4, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
+      mapping.addMapping( VersionRange.from( 0, 4, 0 ).to( 0, 5, 0 ), new Version( 1, 0, 0 ) );
       fail( "Where is the Exception" );
     } catch ( UnsupportedVersionRangeException e ) {
       assertEquals( e.getActual(), new VersionRange( new Version( 0, 4, 0 ), new Version( 0, 5, 0 ) ) );
-      assertEquals( e.getSupportedRange(), mapping.getVersionRange() );
+      assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
+      assertEquals( e.getMessage(), "Invalid source range: Was <[0.4.0-0.5.0]> but expected <[0.5.0-2.2.7]>" );
     }
 
     try {
-      mapping.addMapping( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 2, 8 ) ), new Version( 1, 0, 0 ) );
+      mapping.addMapping( VersionRange.from( 1, 0, 0 ).to( 2, 2, 8 ), new Version( 1, 0, 0 ) );
       fail( "Where is the Exception" );
     } catch ( UnsupportedVersionRangeException e ) {
       assertEquals( e.getActual(), new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 2, 8 ) ) );
-      assertEquals( e.getSupportedRange(), mapping.getVersionRange() );
+      assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
+      assertEquals( e.getMessage(), "Invalid source range: Was <[1.0.0-2.2.8]> but expected <[0.5.0-2.2.7]>" );
     }
   }
 
@@ -256,7 +265,7 @@ public class DelegateMappingTest {
   //      fail( "Where is the Exception" );
   //    } catch ( UnsupportedVersionException e ) {
   //      assertEquals( e.getActual(), new Version( 0, 0, 1 ) );
-  //      assertEquals( e.getSupportedRange(), mapping.getVersionRange() );
+  //      assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
   //    }
   //
   //    try {
@@ -264,7 +273,7 @@ public class DelegateMappingTest {
   //      fail( "Where is the Exception" );
   //    } catch ( UnsupportedVersionException e ) {
   //      assertEquals( e.getActual(), new Version( 2, 2, 8 ) );
-  //      assertEquals( e.getSupportedRange(), mapping.getVersionRange() );
+  //      assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
   //    }
   //  }
   //

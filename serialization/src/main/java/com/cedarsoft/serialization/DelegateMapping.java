@@ -35,6 +35,7 @@ import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,18 +45,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Contains the mapping for delegating serializers
+ * Contains the mapping for delegating serializers.
+ * <p/>
+ * This class offers a mapping for every version from the source version range
+ * to a version of the delegate version range.
  */
 public class DelegateMapping {
+  /**
+   * Represents the version range of the delegating object (the source).
+   * The complete range has to be mapped to one or more versions of the delegate.
+   */
   @NotNull
-  private final VersionRange versionRange;
+  private final VersionRange sourceVersionRange;
+  /**
+   * The supported version range of the delegate.
+   */
   @NotNull
   private final VersionRange delegateVersionRange;
   @NotNull
   private final List<Entry> entries = new ArrayList<Entry>();
 
-  public DelegateMapping( @NotNull VersionRange versionRange, @NotNull VersionRange delegateVersionRange ) {
-    this.versionRange = versionRange;
+  public DelegateMapping( @NotNull VersionRange sourceVersionRange, @NotNull VersionRange delegateVersionRange ) {
+    this.sourceVersionRange = sourceVersionRange;
     this.delegateVersionRange = delegateVersionRange;
   }
 
@@ -65,8 +76,8 @@ public class DelegateMapping {
   }
 
   @NotNull
-  public VersionRange getVersionRange() {
-    return versionRange;
+  public VersionRange getSourceVersionRange() {
+    return sourceVersionRange;
   }
 
   @NotNull
@@ -90,24 +101,24 @@ public class DelegateMapping {
   }
 
   /**
-   * @param range           the version range
+   * @param sourceRange           the source version range
    * @param delegateVersion the delegate version
    */
-  public void addMapping( @NotNull VersionRange range, @NotNull Version delegateVersion ) throws VersionException {
-    if ( !versionRange.containsCompletely( range ) ) {
-      throw new UnsupportedVersionRangeException( range, versionRange );
+  public void addMapping( @NotNull VersionRange sourceRange, @NotNull Version delegateVersion ) throws VersionException {
+    if ( !sourceVersionRange.containsCompletely( sourceRange ) ) {
+      throw new UnsupportedVersionRangeException( sourceRange, sourceVersionRange, "Invalid source range: " );
     }
 
     if ( !delegateVersionRange.contains( delegateVersion ) ) {
-      throw new UnsupportedVersionException( delegateVersion, delegateVersionRange );
+      throw new UnsupportedVersionException( delegateVersion, delegateVersionRange, "Invalid delegate version: " );
     }
 
     //Exists still a mapping?
-    if ( containsMappingIn( range ) ) {
-      throw new IllegalArgumentException( "The version range <" + range + "> still has been mapped" );
+    if ( containsMappingIn( sourceRange ) ) {
+      throw new UnsupportedVersionRangeException( sourceRange, null, "The version range has still been mapped: " );
     }
 
-    this.entries.add( new Entry( range, delegateVersion ) );
+    this.entries.add( new Entry( sourceRange, delegateVersion ) );
   }
 
   private boolean containsMappingIn( @NotNull VersionRange range ) {
@@ -133,16 +144,16 @@ public class DelegateMapping {
   /**
    * Verifies the mapping
    */
-  public void verify() {
+  public void verify() throws IllegalStateException, VersionException {
     if ( entries.isEmpty() ) {
-      throw new IllegalStateException( "Contains no entries" );
+      throw new VersionException( "No mappings available" );
     }
 
     //Check whether the minimum equals the expected version range minimum
     {
       Version currentMin = entries.get( 0 ).getVersionRange().getMin();
-      if ( !currentMin.equals( versionRange.getMin() ) ) {
-        throw new IllegalStateException( "Invalid minimum version: <" + currentMin + ">, expected <" + versionRange.getMin() + ">" );
+      if ( !currentMin.equals( sourceVersionRange.getMin() ) ) {
+        throw new VersionMismatchException( sourceVersionRange.getMin(), currentMin, "Invalid minimum version (source): " );
       }
     }
 
@@ -150,8 +161,8 @@ public class DelegateMapping {
     {
       Entry last = entries.get( entries.size() - 1 );
       Version currentMax = last.getVersionRange().getMax();
-      if ( !currentMax.equals( versionRange.getMax() ) ) {
-        throw new IllegalStateException( "Invalid maximum version: <" + currentMax + ">, expected <" + versionRange.getMax() + ">" );
+      if ( !currentMax.equals( sourceVersionRange.getMax() ) ) {
+        throw new VersionMismatchException( sourceVersionRange.getMax(), currentMax, "Invalid maximum version (source): " );
       }
     }
   }

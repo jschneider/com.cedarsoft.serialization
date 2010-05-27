@@ -31,8 +31,10 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.testng.annotations.*;
 
@@ -56,7 +58,7 @@ public class DelegatesMappingsTest {
   }
 
   @Test
-  public void testVerify() {
+  public void testVerify() throws Exception {
     delegatesMappings.add( serializer ).responsibleFor( Object.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
@@ -66,7 +68,8 @@ public class DelegatesMappingsTest {
     try {
       delegatesMappings.verify();
       fail( "Where is the Exception" );
-    } catch ( Exception ignore ) {
+    } catch ( VersionMismatchException e ) {
+      assertEquals( e.getMessage(), "Invalid maximum version (source): Expected <2.0.0> but was <1.5.0>" );
     }
   }
 
@@ -87,8 +90,8 @@ public class DelegatesMappingsTest {
     {
       DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
       mappings.add( serializer ).responsibleFor( Object.class )
-            .map( 1, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-            ;
+        .map( 1, 0, 0 ).toDelegateVersion( 7, 5, 9 )
+        ;
 
       mappings.verify();
     }
@@ -160,8 +163,8 @@ public class DelegatesMappingsTest {
         .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
         .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
       fail( "Where is the Exception" );
-    } catch ( IllegalArgumentException ignore ) {
+    } catch ( UnsupportedVersionRangeException e ) {
+      assertEquals( e.getMessage(), "The version range has still been mapped: Was <[1.0.0-1.0.0]>" );
     }
-
   }
 }

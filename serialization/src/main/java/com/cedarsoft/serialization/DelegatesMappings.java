@@ -125,8 +125,8 @@ public class DelegatesMappings<S, D, E extends Throwable> {
       DelegateMapping mapping = entry.getValue();
 
       //Check for every entry whether the version ranges fit
-      if ( !mapping.getVersionRange().equals( versionRange ) ) {
-        throw new UnsupportedVersionRangeException( versionRange, mapping.getVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
+      if ( !mapping.getSourceVersionRange().equals( versionRange ) ) {
+        throw new UnsupportedVersionRangeException( versionRange, mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
       }
 
       //Verify the mapping itself
@@ -152,8 +152,8 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   public SortedSet<Version> getMappedVersions() {
     SortedSet<Version> keyVersions = new TreeSet<Version>();
     for ( DelegateMapping mapping : getMappings().values() ) {
-      keyVersions.add( mapping.getVersionRange().getMin() );
-      keyVersions.add( mapping.getVersionRange().getMax() );
+      keyVersions.add( mapping.getSourceVersionRange().getMin() );
+      keyVersions.add( mapping.getSourceVersionRange().getMax() );
 
       for ( DelegateMapping.Entry entry : mapping.getEntries() ) {
         keyVersions.add( entry.getVersionRange().getMin() );
