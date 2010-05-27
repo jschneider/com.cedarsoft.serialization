@@ -139,6 +139,8 @@ cedarsoft Serialization
 
   All files are released under the GPLv3 with Classpath Exception.
 
+  Details and further explanations can be found {{{./license.html}here}}.
+
 ** Usage in commercial products
 
   cedarsoft Serialization may be used in commercial projects as long as the classes itself are not modified.

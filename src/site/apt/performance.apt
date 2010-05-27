@@ -101,7 +101,7 @@ Performance
 * Custom backend implementations
 
   For your own backend implementation can be said, that the performance will be as good as your implementation. cedarsoft Serialization
-  needs nearly no overhead.
+  adds very less overhead.
 
 * Serialization
 

@@ -56,16 +56,16 @@ Comparing to XStream
   * Missing version information. It is not possible to decide whether the serialized object can be deserialized without
     simply trying it. Danger! Strange side effects may happen.
 
-  * Flexibility needs work: It is possible to reflect minor changes using alises. But sooner or later
+  * Flexibility needs work: It is possible to reflect minor changes using aliases. But sooner or later
     you will have to implement your own converter from scratch.
 
-  * Performance: Quite good but not necessary for high performance projects
+  * Performance: Quite good but probably not necessary for high performance projects
 
 * Conclusion
 
-  Long term storage using XStream contains risks. Smaller changes can easily be done, but bigger refactorings need a lot of
-  work to be handled. Many times you will have to write a custom converter later.
+  Long term storage using XStream contains risks. Small refactoring can be done easily, but bigger refactorings need a lot of
+  work. Many times you will have to write a custom converter later.
 
-  While it is probably possible to convert old serialized objects, it needs some work. And ofter a bit of "magic" to implicitly detect
+  While it is probably possible to convert old serialized objects, it needs some work. And often a bit of "magic" to detect (or better: guess)
   the format version.
 

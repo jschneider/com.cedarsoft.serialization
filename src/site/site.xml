@@ -50,11 +50,17 @@
       <item name="Usage" href="usage.html" />
       <item name="Performance" href="performance.html" />
       <item name="Download" href="download.html" />
+      <item name="License" href="license.html" />
     </menu>
 
     <menu name="Tutorial">
       <item name="Tutorial" href="tutorial.html" />
       <!--<item name="Advanced" href="advancedTut.html" />-->
+    </menu>
+
+    <menu name="Support">
+      <item name="FAQ" href="faq.html" />
+      <item name="Support" href="support.html" />
     </menu>
 
     <menu name="Documentation">

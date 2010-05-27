@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs xmlns="http://maven.apache.org/FML/1.0.1"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
+      title="Frequently Asked Questions"
+      toplink="false">
+
+  <part id="general">
+    <title>General</title>
+
+    <faq id="whats-cedarsoft-serialization">
+      <question>
+        What is cedarsoft Serialization?
+      </question>
+      <answer>
+        <p>cedarsoft Serialization is *not* yet another serialization framework.</p>
+        <p>But it contains several classes that help you to write your own
+          serializers very easily.
+        </p>
+        <p>The key advantage is, that serializers written based on the abstract classes
+          provided by cedarsoft Serialization support versioning very easily.
+        </p>
+
+        <source>
+          <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<businessObject xmlns="http://yourcompany.com/path/2.0.1">
+  <name>theName</name>
+  ...
+</businessObject>]]>
+        </source>
+      </answer>
+    </faq>
+
+    <faq id="what-means-versioning">
+      <question>
+        What does "versioning support" mean?
+      </question>
+      <answer>
+        <p>
+          In some cases serialized objects only live for a few milli seconds (e.g. when using a WebService).
+          But in other cases those objects live much longer (years and longer). And those serialized objects will live
+          longer than your current application version.
+        </p>
+        <p>
+          Therefore it is necessary to make some good decisions to ensure that newer version of an application
+          still support old version of serialized objects.
+          Remember: Their data is one of the key assets for your users/customers.
+        </p>
+        <p>
+          cedarsoft Serialization offers base and support classes that enables you to write fast and powerful
+          serializers that support old versions of your serialized objects properly.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="is-only-xml-supported">
+      <question>
+        Is only XML supported?
+      </question>
+      <answer>
+        <p>No.</p>
+        <p>cedarsoft Serialization basically consists of some classes that are build on some very
+          basic principles.
+          Those principles are valid for all kinds of serialization mechanism.
+        </p>
+        <p>
+          To make work easier, cedarsoft Serialization contains abstract base classes for serializers creating XML (using Stax).
+        </p>
+        <p>
+          If you prefer other XML parser or a completely different approach (e.g. binary) this is possible easily. You have
+          just to implement some base classes for your serialization method.
+          <a href="./customBackend.html">Further explanations</a>
+          can be found<a href="./customBackend.html">here</a>.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="license">
+      <question>What is the license for this project?</question>
+      <answer>
+        <p>
+          <a href="http://www.cedarsoft.org/gpl3ce">GPLv3 with Classpath Exception</a>
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="license2">
+      <question>Can I use cedarsoft Serialization for my project?</question>
+      <answer>
+        <p>Yes</p>
+        <p>The Classpath Exception allows you to use cedarsoft Serialization with every project (every license).</p>
+      </answer>
+    </faq>
+
+    <faq id="sourceCode">
+      <question>Where can I get the source code from?</question>
+      <answer>
+        <p>The source code is available from the Git repository at
+          <a href="http://github.com/jschneider/com.cedarsoft.serialization">http://github.com/jschneider/com.cedarsoft.serialization</a>.
+        </p>
+        <p>
+          To checkout the sources use
+        </p>
+        <source>git clone git://github.com/jschneider/com.cedarsoft.serialization.git</source>
+      </answer>
+    </faq>
+  </part>
+
+  <part id="install">
+    <title>Installation</title>
+    <faq id="how-install">
+      <question>
+        How do I install cedarsoft Serialization?
+      </question>
+      <answer>
+        <p>It is recommended to use Maven. Then you just have to add a dependency. Details are explained<a href="download.html">here</a>.
+        </p>
+        <p>If you prefer downloading the necessary jars on your own, take a look at<a href="download.html">here</a>.
+        </p>
+      </answer>
+    </faq>
+
+  </part>
+
+
+  <part id="Versioning">
+    <title>Versioning</title>
+    <faq id="">
+      <question>The framework will always serialize all the elements on the latest version of the serializers? Why?</question>
+      <answer>
+        <p>
+          Yes. Serialization always uses the newest version available.
+        </p>
+        <p>And there are reasons for:</p>
+        <ul>
+          <li>
+            <p>
+              When writing old versions is supported, you should probably support
+              *all* old versions. And that might become very complex.
+            </p>
+          </li>
+          <li>
+            <p>
+              When you create a new version there is a reason for that decision
+              ("the old format is no longer good enough"). Therefore still writing the old
+              format seems to be a bad idea.
+            </p>
+          </li>
+          <li>
+            <p>
+              It is probably not possible to map a new object to an old version
+              format (e.g. added/changed properties).
+            </p>
+            <p>
+              That is more problematic when writing, because you will loose information!
+              When reading an old format, that won't happen information, instead default
+              values can be used...
+            </p>
+          </li>
+        </ul>
+        <p>
+          So in summary: Writing the old format seems to be unnecessary (or even worse: wrong) for by far the most cases.
+        </p>
+        <p>
+          Of course implementing that functionality is quite easy. So if
+          really necessary, it can be done.
+        </p>
+      </answer>
+    </faq>
+  </part>
+
+
+  <part id="XML">
+    <title>XML based serialization</title>
+    <faq id="how-is-the-version-stored">
+      <question>
+        How is the version information stored within the serialized file?
+      </question>
+      <answer>
+        <p>The default implementation (XML based on Stax) stores the version information
+          as XML namespace declaration.
+        </p>
+        <p>
+          This is the recommended way for XML files. But of course it is possible to store that information in
+          different ways. This is completely up to you. Just override the corresponding methods.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="why-stax">
+      <question>Why is the Stax backend recommended? ${your.preferred.parser} is much better!!!</question>
+      <answer>
+        <p>No it is not.</p>
+        <p>Stax is the (new) standard pull parser interface contained in the JDK (since version 6). And
+          it is very, very fast while providing a good API (that is the "pull" part)
+        </p>
+        <p>
+          But if you really prefer another XML parser - no problem. You just have to implement some abstract
+          base classes (<a href="./customBackend.html">explained here</a>).
+          If you want to contribute your backend, send a message to the<a
+          href="http://groups.google.de/group/users-cedarsoft-serialization">mailing list</a>.
+        </p>
+      </answer>
+    </faq>
+
+  </part>
+
+</faqs>

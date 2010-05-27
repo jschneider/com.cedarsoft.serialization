@@ -29,14 +29,31 @@
 ~~ have any questions.
 ~~
 
-Comparing to manually written code
+Support
 
-  Writing your serialization code manually is always an option. This offers the greatest flexibility.
 
-  But very often this results in suboptimal design due to missing time and experience. Why
-  reinventing the wheel and repeating many failures?
+* Documentation
 
-  Due to the lack of time, often even very basic things are omitted (like the version information).
-  Later somebody has to work around those shortfalls. According to experience this will take a lot of time...
- 
+ There exist several options for support. At first the documentation on this site should solve most of the common questions.
+ Follow the {{{tutorial.html}tutorial}} for first steps.
+
+* FAQ
+
+ We have a {{{./faq.html}FAQ}} that answers some common questions.
+
+* Mailing list
+
+ There also exists a {{{http://groups.google.de/group/users-cedarsoft-serialization}mailing list}} that is activly monitored.
+ This is probably the best place for your advanced questions.
+ To subscribe send a mail to {{{mailto:users-cedarsoft-serialization+subscribe@googlegroups.com}users-cedarsoft-serialization+subscribe@googlegroups.com}}.
+
+* Email support
+
+ For very urgent cases you may contact {{{mailto:support@cedarsoft.com}support@cedarsoft.com}}. But of course free support is limited.
+ Nonetheless just ask...
+
+* Commercial support
+
+ Commercial support is available. Just ask {{{mailto:info@cedarsoft.com}info@cedarsoft.com}} for details.
+
 

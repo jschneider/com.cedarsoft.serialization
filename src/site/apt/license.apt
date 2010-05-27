@@ -29,14 +29,31 @@
 ~~ have any questions.
 ~~
 
-Comparing to manually written code
+License
 
-  Writing your serialization code manually is always an option. This offers the greatest flexibility.
+  All files are released under the {{{http://www.cedarsoft.org/gpl3ce}GPLv3 with Classpath Exception}}.
 
-  But very often this results in suboptimal design due to missing time and experience. Why
-  reinventing the wheel and repeating many failures?
+  This is the same Classpath Exception as Sun/Oracle has chosen for their JDK.
 
-  Due to the lack of time, often even very basic things are omitted (like the version information).
-  Later somebody has to work around those shortfalls. According to experience this will take a lot of time...
- 
+* But the GPL is viral!?
+
+  No, not with the Classpath Exception.
+
+  This exception allows you to use the project within your projects without becoming
+  forced to release everything under the same license.
+
+  Just if you modify the sources you have to publish those changes under the GPL.
+  Please send your patches/ideas/comments to {{{mailto:info@cedarsoft.de}info@cedarsoft.de}}, so that they can be applied
+  to the main version.
+
+* Usage in commercial products
+
+  cedarsoft Serialization may be used in commercial projects as long as the classes itself are not modified.
+  The license contains the same Classpath Exception as Sun uses for
+  the JDK.
+
+  If necessary nontheless, commercial licenses are available. Send your request to {{{mailto:info@cedarsoft.de}info@cedarsoft.de}}.
+
+
+
 
