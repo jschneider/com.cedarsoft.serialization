@@ -72,7 +72,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   @NotNull
   public <T> FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> serializer ) {
-    return new FluentFactory( serializer );
+    return new FluentFactory<T>( serializer );
   }
 
   @NotNull
