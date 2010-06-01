@@ -46,7 +46,7 @@ import static org.testng.Assert.*;
  */
 public class DelegatesMappingsTest {
   private final VersionRange mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
-  private  DelegateMappingTest.MySerializer serializer ;
+  private DelegateMappingTest.MySerializer serializer;
   private DelegatesMappings<Object, Object, IOException> delegatesMappings;
 
   @BeforeMethod
@@ -82,7 +82,7 @@ public class DelegatesMappingsTest {
         mappings.verify();
         fail( "Where is the Exception" );
       } catch ( VersionMismatchException e ) {
-        assertEquals( e.getMessage(), "Invalid serialization/output version for <java.lang.Object>. Expected <7.0.0> but was <7.5.9>" );
+        assertEquals( e.getMessage(), "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.0.0>" );
       }
     }
 
@@ -98,12 +98,6 @@ public class DelegatesMappingsTest {
 
   @Test
   public void testVerify2() throws Exception {
-    delegatesMappings.add( serializer ).responsibleFor( Object.class )
-      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
-      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
-      .map( 1, 0, 3 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 0 )
-      ;
-
     delegatesMappings.add( serializer ).responsibleFor( String.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
@@ -113,11 +107,32 @@ public class DelegatesMappingsTest {
       .map( 1, 8, 4 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 10 )
       ;
 
+    assertEquals( delegatesMappings.getMapping( String.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 10 ) );
+
     try {
       delegatesMappings.verify();
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
-      assertEquals( e.getMessage(), "Invalid serialization/output version for <java.lang.String>. Expected <7.5.9> but was <7.1.10>" );
+      assertEquals( delegatesMappings.getMapping( String.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 10 ) );
+      assertEquals( e.getMessage().trim(), "Invalid serialization/output version for <java.lang.String>. Expected <7.5.9> but was <7.1.10>" );
+    }
+  }
+
+  @Test
+  public void testVerify22() throws Exception {
+    delegatesMappings.add( serializer ).responsibleFor( Object.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
+      .map( 1, 0, 2 ).toDelegateVersion( 7, 0, 2 )
+      .map( 1, 0, 3 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 1 )
+      ;
+
+    try {
+      delegatesMappings.verify();
+      fail( "Where is the Exception" );
+    } catch ( VersionMismatchException e ) {
+      assertEquals( delegatesMappings.getMapping( Object.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 1 ) );
+      assertEquals( e.getMessage().trim(), "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.1.1>" );
     }
   }
 
