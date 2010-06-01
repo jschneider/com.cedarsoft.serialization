@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>2.0.8</version>
+    <version>2.0.11</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -136,7 +136,7 @@
   </dependencyManagement>
 
   <properties>
-    <commons.version>2.0.4-SNAPSHOT</commons.version>
+    <commons.version>2.0.4</commons.version>
     <currentStableVersion>1.0.1</currentStableVersion>
     <currentDevelopmentVersion>1.0.2-SNAPSHOT</currentDevelopmentVersion>
   </properties>
