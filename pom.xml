@@ -137,7 +137,7 @@
 
   <properties>
     <commons.version>2.0.4</commons.version>
-    <currentStableVersion>1.0.1</currentStableVersion>
-    <currentDevelopmentVersion>1.0.2-SNAPSHOT</currentDevelopmentVersion>
+    <currentStableVersion>1.0.2</currentStableVersion>
+    <currentDevelopmentVersion>1.0.3-SNAPSHOT</currentDevelopmentVersion>
   </properties>
 </project>
