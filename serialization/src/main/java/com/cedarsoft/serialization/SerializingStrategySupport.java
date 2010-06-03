@@ -54,11 +54,14 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
    *
    * @param strategies the strategies
    */
-  public SerializingStrategySupport( @NotNull Collection<? extends SerializingStrategy<? extends T, ?, ?, ?>> strategies ) {
-    if ( strategies.isEmpty() ) {
+  public SerializingStrategySupport( @NotNull Iterable<? extends SerializingStrategy<? extends T, ?, ?, ?>> strategies ) {
+    for ( SerializingStrategy<? extends T, ?, ?, ?> strategy : strategies ) {
+      this.strategies.add( ( S ) strategy );
+    }
+
+    if ( this.strategies.isEmpty() ) {
       throw new IllegalArgumentException( "Need at least one strategy" );
     }
-    this.strategies.addAll( ( Collection<? extends S> ) strategies );
   }
 
   /**
