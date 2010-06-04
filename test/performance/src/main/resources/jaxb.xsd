@@ -1,0 +1,18 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://cedarsoft.com/serialization/bench/jaxb" elementFormDefault="qualified" targetNamespace="http://cedarsoft.com/serialization/bench/jaxb">
+  <xs:complexType name="extension">
+    <xs:sequence>
+      <xs:element type="xs:string" name="delimiter" minOccurs="0"/>
+      <xs:element type="xs:string" name="extension" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:boolean" use="required" name="isDefault"/>
+  </xs:complexType>
+  <xs:complexType name="fileType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="id" minOccurs="0"/>
+      <xs:element type="tns:extension" name="extension" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:boolean" use="required" name="dependent"/>
+  </xs:complexType>
+  <xs:element type="tns:fileType" name="fileType"/>
+  <xs:element type="tns:extension" name="extension"/>
+</xs:schema>

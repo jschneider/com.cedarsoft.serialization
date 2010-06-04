@@ -44,6 +44,16 @@
       <version>1.2.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.jibx</groupId>
+      <artifactId>jibx-run</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jibx</groupId>
+      <artifactId>jibx-extras</artifactId>
+      <version>1.2.2</version>
+    </dependency>
 
     <dependency>
       <groupId>org.simpleframework</groupId>
@@ -79,44 +89,61 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>1.3</version>
+        <groupId>org.jibx</groupId>
+        <artifactId>maven-jibx-plugin</artifactId>
+        <version>1.2.2</version>
         <executions>
           <execution>
             <goals>
-              <goal>schemagen</goal>
+              <goal>bind</goal>
             </goals>
+            <phase>compile</phase>
           </execution>
         </executions>
         <configuration>
-          <includes>
-            <include>**/FileType.java</include>
-            <include>**/Extension.java</include>
-          </includes>
-          <indentSize>2</indentSize>
+          <directory>src/main/resources</directory>
+          <verbose>true</verbose>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>1.3</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>xjc</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <!--<includes>-->
-            <!--<include>**/schema*.xsd</include>-->
-          <!--</includes>-->
-          <packageName>com.cedarsoft.serialization.bench.generated</packageName>
-          <schemaDirectory>${basedir}/src/main/resources</schemaDirectory>
-          <indentSize>2</indentSize>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+      <!--<groupId>org.codehaus.mojo</groupId>-->
+      <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
+      <!--<version>1.3</version>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<goals>-->
+      <!--<goal>schemagen</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--<configuration>-->
+      <!--<includes>-->
+      <!--<include>**/FileType.java</include>-->
+      <!--<include>**/Extension.java</include>-->
+      <!--</includes>-->
+      <!--<indentSize>2</indentSize>-->
+      <!--</configuration>-->
+      <!--</plugin>-->
+      <!--<plugin>-->
+      <!--<groupId>org.codehaus.mojo</groupId>-->
+      <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
+      <!--<version>1.3</version>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<goals>-->
+      <!--<goal>xjc</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--<configuration>-->
+      <!--&lt;!&ndash;<includes>&ndash;&gt;-->
+      <!--&lt;!&ndash;<include>**/schema*.xsd</include>&ndash;&gt;-->
+      <!--&lt;!&ndash;</includes>&ndash;&gt;-->
+      <!--<packageName>com.cedarsoft.serialization.bench.generated</packageName>-->
+      <!--<schemaDirectory>${basedir}/src/main/resources</schemaDirectory>-->
+      <!--<indentSize>2</indentSize>-->
+      <!--</configuration>-->
+      <!--</plugin>-->
     </plugins>
   </build>
 

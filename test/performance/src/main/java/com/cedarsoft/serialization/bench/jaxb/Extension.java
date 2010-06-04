@@ -51,20 +51,20 @@ public class Extension implements Serializable {
 
   @XmlElement( name = "default" )
   @Attribute( name = "default" )
-  private final boolean isDefault;
+  private boolean isDefault;
   @Attribute( name = "delimiter" )
   @NotNull
   @NonNls
-  private final String delimiter;
+  private String delimiter;
   @Element( name = "extension" )
   @NotNull
   @NonNls
-  private final String extension;
+  private String extension;
 
   /**
    * JAXB constructor
    */
-  private Extension() {
+  public Extension() {
     isDefault = false;
     this.delimiter = null;
     this.extension = null;
@@ -88,5 +88,17 @@ public class Extension implements Serializable {
   @NotNull
   public String getExtension() {
     return extension;
+  }
+
+  public void setDefault( boolean aDefault ) {
+    isDefault = aDefault;
+  }
+
+  public void setDelimiter( @NotNull String delimiter ) {
+    this.delimiter = delimiter;
+  }
+
+  public void setExtension( @NotNull String extension ) {
+    this.extension = extension;
   }
 }

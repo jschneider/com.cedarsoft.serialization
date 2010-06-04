@@ -39,6 +39,9 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IUnmarshallingContext;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.testng.annotations.*;
@@ -91,6 +94,16 @@ public class XmlParserPerformance {
       "    <extension>cr2</extension>\n" +
       "  </extension>\n" +
       "</fileType>";
+  @NotNull
+  @NonNls
+  public static final String CONTENT_SAMPLE_JIBX =
+    "<fileType xmlns=\"http://cedarsoft.com/serialization/bench/jaxb\" dependent=\"false\">\n" +
+      " <id>Canon Raw</id>\n" +
+      " <extension isDefault=\"true\">\n" +
+      "  <delimiter>.</delimiter>\n" +
+      "  <extension>cr2</extension>\n" +
+      " </extension>\n" +
+      "</fileType>";
 
 
   @Test
@@ -138,6 +151,8 @@ public class XmlParserPerformance {
 
   public static void main( String[] args ) throws IOException {
     System.out.println();
+    System.out.println( "Jibx" );
+    new XmlParserPerformance().benchJibx();
     System.out.println( "Serialization (10%)" );
     new XmlParserPerformance().benchSerialization();
     System.out.println();
@@ -188,6 +203,24 @@ public class XmlParserPerformance {
         try {
           for ( int i = 0; i < MEDIUM; i++ ) {
             assertNotNull( new ObjectInputStream( new ByteArrayInputStream( serialized ) ).readObject() );
+          }
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchJibx() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          IBindingFactory bindingFactory = BindingDirectory.getFactory( com.cedarsoft.serialization.bench.jaxb.Extension.class );
+          IUnmarshallingContext context = bindingFactory.createUnmarshallingContext();
+
+          for ( int i = 0; i < BIG; i++ ) {
+            assertNotNull( context.unmarshalDocument( new StringReader( CONTENT_SAMPLE_JIBX ) ) );
           }
         } catch ( Exception e ) {
           throw new RuntimeException( e );

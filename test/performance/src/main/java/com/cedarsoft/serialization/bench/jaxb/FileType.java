@@ -56,14 +56,14 @@ import java.io.Serializable;
 } )
 public class FileType implements Serializable {
   @Attribute( name = "dependent" )
-  private final boolean dependent;
+  private boolean dependent;
   @Element( name = "id" )
   @NotNull
   @NonNls
-  private final String id;
+  private String id;
   @Element( name = "extension" )
   @NotNull
-  private final Extension extension;
+  private Extension extension;
 
   /**
    * JAXB constructor
@@ -92,5 +92,17 @@ public class FileType implements Serializable {
   @NotNull
   public String getId() {
     return id;
+  }
+
+  public void setDependent( boolean dependent ) {
+    this.dependent = dependent;
+  }
+
+  public void setId( @NotNull String id ) {
+    this.id = id;
+  }
+
+  public void setExtension( @NotNull Extension extension ) {
+    this.extension = extension;
   }
 }
