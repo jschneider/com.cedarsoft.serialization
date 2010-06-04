@@ -36,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 /**
@@ -45,7 +48,7 @@ public class Extension implements Serializable {
   @NonNls
   public static final String DEFAULT_DELIMITER = ".";
 
-
+  @XmlElement( name = "default" )
   @Attribute( name = "default" )
   private final boolean isDefault;
   @Attribute( name = "delimiter" )

@@ -29,48 +29,64 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.bench;
+package com.cedarsoft.serialization.bench.jaxb;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 /**
  *
  */
-@Root
-public class FileType implements Serializable {
-  @Attribute( name = "dependent" )
-  private final boolean dependent;
-  @Element( name = "id" )
+@XmlAccessorType( XmlAccessType.FIELD )
+public class Extension implements Serializable {
+  @NonNls
+  public static final String DEFAULT_DELIMITER = ".";
+
+  @XmlElement( name = "default" )
+  @Attribute( name = "default" )
+  private final boolean isDefault;
+  @Attribute( name = "delimiter" )
   @NotNull
   @NonNls
-  private final String id;
+  private final String delimiter;
   @Element( name = "extension" )
   @NotNull
-  private final Extension extension;
+  @NonNls
+  private final String extension;
 
-  public FileType( @Element( name = "id" ) @NotNull String id, @Element( name = "extension" ) @NotNull Extension extension, @Attribute( name = "dependent" ) boolean dependent ) {
-    this.dependent = dependent;
-    this.id = id;
+  /**
+   * JAXB constructor
+   */
+  private Extension() {
+    isDefault = false;
+    this.delimiter = null;
+    this.extension = null;
+  }
+
+  public Extension( @Attribute( name = "delimiter" ) @NotNull String delimiter, @Element( name = "extension" ) @NotNull String extension, @Attribute( name = "default" ) boolean isDefault ) {
+    this.delimiter = delimiter;
     this.extension = extension;
+    this.isDefault = isDefault;
+  }
+
+  public boolean isDefault() {
+    return isDefault;
   }
 
   @NotNull
-  public Extension getExtension() {
+  public String getDelimiter() {
+    return delimiter;
+  }
+
+  @NotNull
+  public String getExtension() {
     return extension;
-  }
-
-  public boolean isDependent() {
-    return dependent;
-  }
-
-  @NotNull
-  public String getId() {
-    return id;
   }
 }

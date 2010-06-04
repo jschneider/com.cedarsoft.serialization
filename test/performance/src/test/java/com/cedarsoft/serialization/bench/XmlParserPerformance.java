@@ -43,11 +43,14 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.testng.annotations.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringReader;
@@ -79,6 +82,15 @@ public class XmlParserPerformance {
     "    <extension>cr2</extension>\n" +
     "  </extension>\n" +
     "</fileType>";
+  @NotNull
+  @NonNls
+  public static final String CONTENT_SAMPLE_JAXB =
+    "<fileType xmlns=\"http://test.cedarsoft.com/fileType\" dependent=\"false\">\n" +
+      "  <id>Canon Raw</id>\n" +
+      "  <extension default=\"true\" delimiter=\".\">\n" +
+      "    <extension>cr2</extension>\n" +
+      "  </extension>\n" +
+      "</fileType>";
 
 
   @Test
@@ -124,10 +136,13 @@ public class XmlParserPerformance {
   //  }
 
 
-  public static void main( String[] args ) {
+  public static void main( String[] args ) throws IOException {
     System.out.println();
-    System.out.println( "Serialization" );
+    System.out.println( "Serialization (10%)" );
     new XmlParserPerformance().benchSerialization();
+    System.out.println();
+    System.out.println( "JAXB (10%)" );
+    new XmlParserPerformance().benchJAXB();
     System.out.println();
     System.out.println( "Simple XML Serialization (10%)" );
     new XmlParserPerformance().benchSimpleXml();
@@ -157,22 +172,39 @@ public class XmlParserPerformance {
     new XmlParserPerformance().benchJavolution();
   }
 
-  public void benchSerialization() {
+  public void benchSerialization() throws IOException {
+    FileType type = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
+
+    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+    ObjectOutputStream out = new ObjectOutputStream( bao );
+    out.writeObject( type );
+    out.close();
+
+    final byte[] serialized = bao.toByteArray();
+
     runBenchmark( new Runnable() {
       @Override
       public void run() {
         try {
-          FileType type = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
-
-          ByteArrayOutputStream bao = new ByteArrayOutputStream();
-          ObjectOutputStream out = new ObjectOutputStream( bao );
-          out.writeObject( type );
-          out.close();
-
-          byte[] serialized = bao.toByteArray();
-
           for ( int i = 0; i < MEDIUM; i++ ) {
             assertNotNull( new ObjectInputStream( new ByteArrayInputStream( serialized ) ).readObject() );
+          }
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchJAXB() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          Unmarshaller unmarshaller = JAXBContext.newInstance( com.cedarsoft.serialization.bench.jaxb.FileType.class ).createUnmarshaller();
+
+          for ( int i = 0; i < MEDIUM; i++ ) {
+            assertNotNull( unmarshaller.unmarshal( new StringReader( CONTENT_SAMPLE_JAXB ) ) );
           }
         } catch ( Exception e ) {
           throw new RuntimeException( e );
@@ -489,5 +521,12 @@ public class XmlParserPerformance {
       System.out.println( "--> " + time );
     }
     System.out.println( "-----------------------" );
+  }
+
+  @Test
+  public void testSimple() throws Exception {
+    Serializer serializer = new Persister();
+    FileType read = serializer.read( FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
+    assertNotNull( read );
   }
 }
