@@ -43,6 +43,7 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
+import com.sun.codemodel.JVar;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.testng.annotations.*;
 
@@ -173,4 +174,44 @@ public class CodemodelTest {
       "\n" +
       "}" );
   }
+
+  @Test
+  public void testMethod() throws Exception {
+    JDefinedClass aClass = model._class( "org.test.DaTestClass" );
+
+    aClass.method( JMod.PUBLIC, String.class, "getString" );
+    aClass.method( JMod.PUBLIC, Void.TYPE, "doIt" );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.DaTestClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "\n" +
+      "public class DaTestClass {\n" +
+      "\n" +
+      "\n" +
+      "    public String getString() {\n" +
+      "    }\n" +
+      "\n" +
+      "    public void doIt() {\n" +
+      "    }\n" +
+      "\n" +
+      "}" );
+  }
+
+  @Test
+  public void testMethodBody() throws Exception {
+    JDefinedClass aClass = model._class( "org.test.DaTestClass" );
+    JMethod method = aClass.method( JMod.PUBLIC, String.class, "getString" );
+    JVar param = method.param( String.class, "daString" );
+
+    method.body().add( param.invoke( "substring" ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 7 ) ) );
+    method.body()._return( param.invoke( "length" ) );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "ff" );
+
+  }
+
 }
