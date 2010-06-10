@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.google.common.collect.Lists;
+import com.sun.mirror.declaration.ClassDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,20 +44,23 @@ import java.util.List;
  */
 public class ClassToSerialize {
   @NotNull
-  @NonNls
-  private final String qualifiedName;
-
-  @NotNull
   private final List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList();
+  @NotNull
+  private final ClassDeclaration classDeclaration;
 
-  public ClassToSerialize( @NotNull @NonNls String qualifiedName ) {
-    this.qualifiedName = qualifiedName;
+  public ClassToSerialize( @NotNull @NonNls ClassDeclaration classDeclaration ) {
+    this.classDeclaration = classDeclaration;
   }
 
   @NotNull
   @NonNls
   public String getQualifiedName() {
-    return qualifiedName;
+    return classDeclaration.getQualifiedName();
+  }
+
+  @NotNull
+  public ClassDeclaration getClassDeclaration() {
+    return classDeclaration;
   }
 
   public void addField( @NotNull FieldWithInitializationInfo fieldToSerialize ) {

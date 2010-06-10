@@ -52,7 +52,7 @@ public class ModelFactory {
 
   @NotNull
   public ClassToSerialize create() {
-    ClassToSerialize classToSerialize = new ClassToSerialize( classDeclaration.getQualifiedName() );
+    ClassToSerialize classToSerialize = new ClassToSerialize( classDeclaration );
 
     for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
       FieldInitializedInConstructorInfo info = getFieldInitializeInConstructorInfo( fieldDeclaration );
@@ -61,7 +61,6 @@ public class ModelFactory {
 
     return classToSerialize;
   }
-
 
   @NotNull
   public FieldDeclaration findFieldDeclaration( @NotNull @NonNls String fieldName ) {

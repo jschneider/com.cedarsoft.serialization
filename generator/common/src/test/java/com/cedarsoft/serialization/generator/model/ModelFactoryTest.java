@@ -71,22 +71,6 @@ public class ModelFactoryTest {
     FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
     assertEquals( fieldDeclaration.getSimpleName(), "width" );
     assertEquals( fieldDeclaration.getType().toString(), "double" );
-
-
-    //    ClassToSerialize model = new ClassToSerialize( classDeclaration.getQualifiedName() );
-    //
-    //    //We take the first field
-    //    FieldDeclaration fieldDeclaration = classDeclaration.getFields().iterator().next();
-    //    assertEquals( fieldDeclaration.getSimpleName(), "width" );
-    //    assertEquals( fieldDeclaration.getType().toString(), "double" );
-    //
-    //    //Now find the constructor information
-    //    findFittingConstructor( classDeclaration );
-    //
-    //
-    //    ClassToSerialize.FieldToSerialize field = new ClassToSerialize.FieldToSerialize();
-    //
-    //    model.addField( field );
   }
 
   @Test
