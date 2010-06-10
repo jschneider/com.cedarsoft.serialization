@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -54,4 +55,8 @@ public interface FieldWithInitializationInfo {
 
   @NotNull
   TypeMirror getType();
+
+  @NotNull
+  @NonNls
+  MethodDeclaration getGetterDeclaration();
 }

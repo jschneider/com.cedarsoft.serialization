@@ -36,6 +36,7 @@ import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.type.TypeMirror;
 import org.testng.annotations.*;
 
@@ -89,6 +90,17 @@ public class ModelFactoryTest {
   }
 
   @Test
+  public void testGetter() {
+    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
+
+    MethodDeclaration getterDeclaration = factory.findGetterForField( fieldDeclaration );
+    assertNotNull( getterDeclaration );
+
+    assertEquals( getterDeclaration.getReturnType(), fieldDeclaration.getType() );
+    assertEquals( getterDeclaration.getSimpleName(), "getWidth" );
+  }
+
+  @Test
   public void testFieldCons() {
     FieldInitializedInConstructorInfo fieldInfo = factory.findFieldInitializedInConstructor( "width" );
     assertNotNull( fieldInfo );
@@ -106,9 +118,8 @@ public class ModelFactoryTest {
   @Test
   public void testFindConstrParam() {
     FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
-    TypeMirror type = fieldDeclaration.getType();
 
-    ModelFactory.ConstructorCallInfo found = factory.findConstructorParamDeclaration( fieldDeclaration.getSimpleName(), type );
+    ModelFactory.ConstructorCallInfo found = factory.findConstructorParamDeclarationForField( fieldDeclaration );
     assertEquals( found.getIndex(), 1 );
     assertEquals( found.getParameterDeclaration().getSimpleName(), "width" );
   }

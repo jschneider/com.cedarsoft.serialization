@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -44,10 +45,13 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   private final FieldDeclaration fieldDeclaration;
   @NotNull
   private final ModelFactory.ConstructorCallInfo constructorCallInfo;
+  @NotNull
+  private final MethodDeclaration getterDeclaration;
 
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull ModelFactory.ConstructorCallInfo constructorCallInfo ) {
+  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull ModelFactory.ConstructorCallInfo constructorCallInfo, @NotNull MethodDeclaration getterDeclaration ) {
     this.fieldDeclaration = fieldDeclaration;
     this.constructorCallInfo = constructorCallInfo;
+    this.getterDeclaration = getterDeclaration;
   }
 
   @Override
@@ -61,6 +65,12 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   @NonNls
   public String getSimpleName() {
     return fieldDeclaration.getSimpleName();
+  }
+
+  @NotNull
+  @Override
+  public MethodDeclaration getGetterDeclaration() {
+    return getterDeclaration;
   }
 
   @Override

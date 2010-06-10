@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator.model;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
@@ -74,10 +75,33 @@ public class ModelFactory {
   }
 
   @NotNull
+  public MethodDeclaration findGetterForField( FieldDeclaration fieldDeclaration ) {
+    return findGetterForField( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  }
+
+  @NotNull
+  public MethodDeclaration findGetterForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+    String expectedName = "get" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
+
+    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
+      if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
+        if ( methodDeclaration.getReturnType().equals( type ) ) {
+          return methodDeclaration;
+        } else {
+          throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + methodDeclaration.getReturnType() + "> but expected <" + type + ">" );
+        }
+      }
+    }
+
+    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
+  }
+
+  @NotNull
   public ConstructorCallInfo findConstructorParamDeclarationForField( @NotNull FieldDeclaration fieldDeclaration ) {
     return findConstructorParamDeclaration( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
+  @NotNull
   public ConstructorCallInfo findConstructorParamDeclaration( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
     ConstructorDeclaration constructorDeclaration = findBestConstructor();
 
@@ -122,7 +146,8 @@ public class ModelFactory {
   @NotNull
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
     ConstructorCallInfo constructorCallInfo = findConstructorParamDeclarationForField( fieldDeclaration );
-    return new FieldInitializedInConstructorInfo( fieldDeclaration, constructorCallInfo );
+    MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
+    return new FieldInitializedInConstructorInfo( fieldDeclaration, constructorCallInfo, getterDeclaration );
   }
 
   public static class ConstructorCallInfo {
