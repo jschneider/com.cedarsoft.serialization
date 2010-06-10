@@ -16,8 +16,6 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JVar;
-import com.sun.mirror.type.DeclaredType;
-import com.sun.mirror.type.TypeMirror;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -102,13 +100,15 @@ public class StaxMateGenerator {
   }
 
   private void addFieldSerializationStuff( @NotNull FieldWithInitializationInfo fieldInfo, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    TypeMirror type = fieldInfo.getType();
+    SerializingEntryGenerator generator = creators.findGenerator( fieldInfo );
 
     JVar serializeTo = serializeMethod.listParams()[0];
     JVar object = serializeMethod.listParams()[1];
-
-    SerializingEntryGenerator generator = creators.findGenerator( fieldInfo );
     generator.appendSerializing( model, serializeMethod, serializeTo, object, fieldInfo );
+
+    JVar deserializeFrom = deserializeMethod.listParams()[0];
+    JVar formatVersion = deserializeMethod.listParams()[1];
+    generator.appendDeserializing( model, deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
   }
 
   @NotNull

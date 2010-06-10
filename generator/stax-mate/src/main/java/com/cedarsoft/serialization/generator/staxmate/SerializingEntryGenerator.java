@@ -4,12 +4,13 @@ import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
-import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
 public interface SerializingEntryGenerator {
-  void appendSerializing( @NotNull JCodeModel model, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
+  void appendSerializing( @NotNull JCodeModel model, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
+
+  void appendDeserializing( @NotNull JCodeModel model, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
 }
