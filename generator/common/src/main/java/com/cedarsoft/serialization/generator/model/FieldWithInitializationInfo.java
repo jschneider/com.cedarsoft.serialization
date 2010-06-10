@@ -59,4 +59,6 @@ public interface FieldWithInitializationInfo {
   @NotNull
   @NonNls
   MethodDeclaration getGetterDeclaration();
+
+  boolean isType( @NotNull Class<?> type );
 }

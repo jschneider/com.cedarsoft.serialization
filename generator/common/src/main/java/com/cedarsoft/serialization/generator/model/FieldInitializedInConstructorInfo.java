@@ -83,4 +83,8 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   public ModelFactory.ConstructorCallInfo getConstructorCallInfo() {
     return constructorCallInfo;
   }
+
+  public boolean isType( @NotNull Class<?> type ) {
+    return getType().toString().equals( type.getName() );
+  }
 }
