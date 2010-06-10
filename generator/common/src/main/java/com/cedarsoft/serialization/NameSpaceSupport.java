@@ -41,11 +41,17 @@ public class NameSpaceSupport {
   @NotNull
   @NonNls
   public static String createNameSpaceUriBase( @NotNull Class<?> type ) {
-    String[] parts = type.getName().split( "\\." );
+    return createNameSpaceUriBase( type.getName() );
+  }
+
+  @NotNull
+  @NonNls
+  public static String createNameSpaceUriBase( @NotNull @NonNls String className ) {
+    String[] parts = className.split( "\\." );
 
     //If we have lesser than three parts just return the type - a fallback
     if ( parts.length < 3 ) {
-      return "http://" + type.getName();
+      return "http://" + className;
     }
 
     StringBuilder uri = new StringBuilder( "http://www." );
