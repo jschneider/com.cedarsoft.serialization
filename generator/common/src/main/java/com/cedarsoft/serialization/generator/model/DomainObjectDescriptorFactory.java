@@ -43,24 +43,24 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class ModelFactory {
+public class DomainObjectDescriptorFactory {
   @NotNull
   private final ClassDeclaration classDeclaration;
 
-  public ModelFactory( @NotNull ClassDeclaration classDeclaration ) {
+  public DomainObjectDescriptorFactory( @NotNull ClassDeclaration classDeclaration ) {
     this.classDeclaration = classDeclaration;
   }
 
   @NotNull
-  public ClassToSerialize create() {
-    ClassToSerialize classToSerialize = new ClassToSerialize( classDeclaration );
+  public DomainObjectDescriptor create() {
+    DomainObjectDescriptor domainObjectDescriptor = new DomainObjectDescriptor( classDeclaration );
 
     for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
       FieldInitializedInConstructorInfo info = getFieldInitializeInConstructorInfo( fieldDeclaration );
-      classToSerialize.addField( info );
+      domainObjectDescriptor.addField( info );
     }
 
-    return classToSerialize;
+    return domainObjectDescriptor;
   }
 
   @NotNull
@@ -148,33 +148,5 @@ public class ModelFactory {
     ConstructorCallInfo constructorCallInfo = findConstructorParamDeclarationForField( fieldDeclaration );
     MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
     return new FieldInitializedInConstructorInfo( fieldDeclaration, constructorCallInfo, getterDeclaration );
-  }
-
-  public static class ConstructorCallInfo {
-    @NotNull
-    private final ConstructorDeclaration constructorDeclaration;
-    private final int index;
-    @NotNull
-    private final ParameterDeclaration parameterDeclaration;
-
-    public ConstructorCallInfo( @NotNull ConstructorDeclaration constructorDeclaration, int index, @NotNull ParameterDeclaration parameterDeclaration ) {
-      this.constructorDeclaration = constructorDeclaration;
-      this.index = index;
-      this.parameterDeclaration = parameterDeclaration;
-    }
-
-    @NotNull
-    public ConstructorDeclaration getConstructorDeclaration() {
-      return constructorDeclaration;
-    }
-
-    public int getIndex() {
-      return index;
-    }
-
-    @NotNull
-    public ParameterDeclaration getParameterDeclaration() {
-      return parameterDeclaration;
-    }
   }
 }

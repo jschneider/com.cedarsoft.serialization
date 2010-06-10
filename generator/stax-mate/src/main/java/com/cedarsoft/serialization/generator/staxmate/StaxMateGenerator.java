@@ -4,7 +4,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.NameSpaceSupport;
-import com.cedarsoft.serialization.generator.model.ClassToSerialize;
+import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
@@ -93,23 +93,23 @@ public class StaxMateGenerator {
    * @throws JClassAlreadyExistsException
    */
   @NotNull
-  public void generate( @NotNull ClassToSerialize... classesToSerialize ) throws JClassAlreadyExistsException {
+  public void generate( @NotNull DomainObjectDescriptor... classesToSerialize ) throws JClassAlreadyExistsException {
     JCodeModel codeModel = new JCodeModel();
 
-    for ( ClassToSerialize classToSerialize : classesToSerialize ) {
-      generate( classToSerialize );
+    for ( DomainObjectDescriptor domainObjectDescriptor : classesToSerialize ) {
+      generate( domainObjectDescriptor );
     }
   }
 
-  public void generate( @NotNull ClassToSerialize classToSerialize ) throws JClassAlreadyExistsException {
-    JClass domainType = codeModel.ref( classToSerialize.getQualifiedName() );
+  public void generate( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
     JDefinedClass serializerClass = codeModel._class( createSerializerClassName( domainType.fullName() ) )._extends( getExtendType( domainType ) );
 
     //the constructor
     serializerClass.constructor( JMod.PUBLIC ).body()
-      .invoke( "super" ).arg( getDefaultElementName( classToSerialize ) ).arg( getNamespace( classToSerialize ) )
+      .invoke( "super" ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
       .arg( createDefaultVersionRangeInvocation( VERSION, VERSION ) );
 
     //the serialize method
@@ -128,13 +128,13 @@ public class StaxMateGenerator {
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
 
     //Add the serialize stuff
-    addSerializationStuff( classToSerialize, serializeMethod, deserializeMethod );
+    addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
   }
 
-  private void addSerializationStuff( @NotNull ClassToSerialize classToSerialize, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  private void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
-    for ( FieldWithInitializationInfo fieldInfo : classToSerialize.getFieldsToSerialize() ) {
+    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       SerializingEntryGenerator generator = creators.findGenerator();
 
       JVar serializeTo = serializeMethod.listParams()[0];
@@ -151,11 +151,11 @@ public class StaxMateGenerator {
     //Now create the constructor for the deserializeMethod
 
 
-    JClass domainType = codeModel.ref( classToSerialize.getQualifiedName() );
+    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
     {
-      List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList( classToSerialize.getFieldsToSerialize() );
+      List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList( domainObjectDescriptor.getFieldsToSerialize() );
       //Sort the fields to fit the constructor order
       Collections.sort( fieldsToSerialize, new Comparator<FieldWithInitializationInfo>() {
         @Override
@@ -186,14 +186,14 @@ public class StaxMateGenerator {
 
   @NotNull
   @NonNls
-  String getNamespace( @NotNull ClassToSerialize classToSerialize ) {
-    return NameSpaceSupport.createNameSpaceUriBase( classToSerialize.getQualifiedName() ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
+  String getNamespace( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+    return NameSpaceSupport.createNameSpaceUriBase( domainObjectDescriptor.getQualifiedName() ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
   }
 
   @NotNull
   @NonNls
-  protected String getDefaultElementName( @NotNull ClassToSerialize classToSerialize ) {
-    return classToSerialize.getClassDeclaration().getSimpleName().toLowerCase();
+  protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+    return domainObjectDescriptor.getClassDeclaration().getSimpleName().toLowerCase();
   }
 
   @NotNull

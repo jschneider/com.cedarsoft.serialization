@@ -1,8 +1,8 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.generator.model.ClassToSerialize;
-import com.cedarsoft.serialization.generator.model.ModelFactory;
+import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
+import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -25,7 +25,7 @@ import static org.testng.Assert.*;
  *
  */
 public class StaxMateGeneratorTest {
-  private ClassToSerialize classToSerialize;
+  private DomainObjectDescriptor domainObjectDescriptor;
   private StaxMateGenerator generator;
   private JCodeModel model;
 
@@ -38,11 +38,11 @@ public class StaxMateGeneratorTest {
     Result parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
 
-    ModelFactory factory = new ModelFactory( parsed.getClassDeclarations().get( 0 ) );
-    classToSerialize = factory.create();
-    assertNotNull( classToSerialize );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclarations().get( 0 ) );
+    domainObjectDescriptor = factory.create();
+    assertNotNull( domainObjectDescriptor );
 
-    assertEquals( classToSerialize.getFieldsToSerialize().size(), 4 );
+    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 4 );
     generator = new StaxMateGenerator(  );
     model = generator.getCodeModel();
   }
@@ -62,12 +62,12 @@ public class StaxMateGeneratorTest {
 
   @Test
   public void testNameSpace() {
-    assertEquals( generator.getNamespace( classToSerialize ), "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0" );
+    assertEquals( generator.getNamespace( domainObjectDescriptor ), "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0" );
   }
 
   @Test
   public void testIt() throws IOException, JClassAlreadyExistsException {
-    generator.generate( classToSerialize );
+    generator.generate( domainObjectDescriptor );
 
     JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
     JDefinedClass definedClass = thePackage._getClass( "WindowSerializer" );

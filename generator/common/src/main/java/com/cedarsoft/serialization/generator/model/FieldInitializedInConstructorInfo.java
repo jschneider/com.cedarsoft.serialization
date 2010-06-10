@@ -44,11 +44,11 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   @NotNull
   private final FieldDeclaration fieldDeclaration;
   @NotNull
-  private final ModelFactory.ConstructorCallInfo constructorCallInfo;
+  private final ConstructorCallInfo constructorCallInfo;
   @NotNull
   private final MethodDeclaration getterDeclaration;
 
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull ModelFactory.ConstructorCallInfo constructorCallInfo, @NotNull MethodDeclaration getterDeclaration ) {
+  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull ConstructorCallInfo constructorCallInfo, @NotNull MethodDeclaration getterDeclaration ) {
     this.fieldDeclaration = fieldDeclaration;
     this.constructorCallInfo = constructorCallInfo;
     this.getterDeclaration = getterDeclaration;
@@ -80,7 +80,7 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   }
 
   @NotNull
-  public ModelFactory.ConstructorCallInfo getConstructorCallInfo() {
+  public ConstructorCallInfo getConstructorCallInfo() {
     return constructorCallInfo;
   }
 

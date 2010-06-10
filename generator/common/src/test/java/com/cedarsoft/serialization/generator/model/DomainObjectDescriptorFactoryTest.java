@@ -48,8 +48,8 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class ModelFactoryTest {
-  private ModelFactory factory;
+public class DomainObjectDescriptorFactoryTest {
+  private DomainObjectDescriptorFactory factory;
 
   @BeforeMethod
   protected void setUp() throws Exception {
@@ -64,7 +64,7 @@ public class ModelFactoryTest {
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Window" );
 
 
-    factory = new ModelFactory( classDeclaration );
+    factory = new DomainObjectDescriptorFactory( classDeclaration );
   }
 
   @Test
@@ -76,7 +76,7 @@ public class ModelFactoryTest {
 
   @Test
   public void testCreate() {
-    ClassToSerialize model = factory.create();
+    DomainObjectDescriptor model = factory.create();
     assertEquals( model.getQualifiedName(), "com.cedarsoft.serialization.generator.parsing.test.Window" );
     assertEquals( model.getFieldsToSerialize().size(), 3 );
     assertEquals( model.getFieldsToSerialize().get( 0 ).getSimpleName(), "width" );
@@ -119,7 +119,7 @@ public class ModelFactoryTest {
   public void testFindConstrParam() {
     FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
 
-    ModelFactory.ConstructorCallInfo found = factory.findConstructorParamDeclarationForField( fieldDeclaration );
+    ConstructorCallInfo found = factory.findConstructorParamDeclarationForField( fieldDeclaration );
     assertEquals( found.getIndex(), 1 );
     assertEquals( found.getParameterDeclaration().getSimpleName(), "width" );
   }

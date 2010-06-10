@@ -31,14 +31,12 @@
 
 package com.cedarsoft.serialization.generator.parsing;
 
-import com.cedarsoft.serialization.generator.model.ClassToSerialize;
 import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
 import java.io.File;

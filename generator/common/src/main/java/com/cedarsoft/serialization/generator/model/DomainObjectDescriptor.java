@@ -42,13 +42,13 @@ import java.util.List;
 /**
  *
  */
-public class ClassToSerialize {
+public class DomainObjectDescriptor {
   @NotNull
   private final List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList();
   @NotNull
   private final ClassDeclaration classDeclaration;
 
-  public ClassToSerialize( @NotNull @NonNls ClassDeclaration classDeclaration ) {
+  public DomainObjectDescriptor( @NotNull @NonNls ClassDeclaration classDeclaration ) {
     this.classDeclaration = classDeclaration;
   }
 
