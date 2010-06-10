@@ -35,14 +35,21 @@ import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
-import com.sun.tools.jxc.SchemaGenerator;
 import org.testng.annotations.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
+
+import static org.testng.Assert.*;
 
 /**
  *
@@ -50,7 +57,9 @@ import java.util.EventListener;
 public class CodemodelTest {
   @Test
   public void testIt() throws IOException, JClassAlreadyExistsException, InterruptedException {
-    CodeWriter codeWriter = new SingleStreamCodeWriter( System.out );
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    CodeWriter codeWriter = new SingleStreamCodeWriter( out );
 
     JCodeModel codeModel = new JCodeModel();
     {
@@ -66,13 +75,64 @@ public class CodemodelTest {
     }
 
     codeModel.build( codeWriter );
-    Thread.sleep( 100 );
+    assertEquals( out.toString().trim(), "-----------------------------------com.cedarsoft.generator.test.bar.Bar.java-----------------------------------\n" +
+      "\n" +
+      "package com.cedarsoft.generator.test.bar;\n" +
+      "\n" +
+      "import java.util.EventListener;\n" +
+      "\n" +
+      "public class Bar\n" +
+      "    implements EventListener\n" +
+      "{\n" +
+      "\n" +
+      "    protected static int id;\n" +
+      "    private final int id2;\n" +
+      "\n" +
+      "}\n" +
+      "-----------------------------------com.cedarsoft.generator.test.Foo.java-----------------------------------\n" +
+      "\n" +
+      "package com.cedarsoft.generator.test;\n" +
+      "\n" +
+      "import java.util.EventListener;\n" +
+      "\n" +
+      "public class Foo\n" +
+      "    implements EventListener\n" +
+      "{\n" +
+      "\n" +
+      "    private String id;\n" +
+      "\n" +
+      "}" );
   }
 
+  @Test
+  public void testGenerics() throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    CodeWriter codeWriter = new SingleStreamCodeWriter( out );
 
-//  @Test
-//  public void testSchmeaGenerator() throws Exception {
-//    SchemaGenerator.main( new String[]{"/home/johannes/projects/com.cedarsoft.serialization/generator/common/src/test/java/com/cedarsoft/serialization/codemodel/JavaClassToParse.java",
-//    } );
-//  }
+    JCodeModel codeModel = new JCodeModel();
+    JDefinedClass aClass = codeModel._class( "org.test.MyClass" );
+
+    //    JExpression assignment = codeModel.ref( ArrayList.class ).dotclass();
+    //    JExpression assignment = codeModel.ref( ArrayList.class ).;
+    JInvocation assignment = JExpr._new( codeModel.ref( ArrayList.class ).narrow( String.class ) );
+
+    JFieldVar field = aClass.field( JMod.PRIVATE | JMod.FINAL, codeModel.ref( List.class ).narrow( codeModel.ref( String.class ) ), "ids", assignment );
+    aClass.field( JMod.PRIVATE | JMod.FINAL, codeModel.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() ), "ids2", assignment );
+
+
+    codeModel.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.MyClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "import java.util.ArrayList;\n" +
+      "import java.util.List;\n" +
+      "\n" +
+      "public class MyClass {\n" +
+      "\n" +
+      "    private final List<String> ids = new ArrayList<String>();\n" +
+      "    private final List<? extends String> ids2 = new ArrayList<String>();\n" +
+      "\n" +
+      "}" );
+  }
 }
