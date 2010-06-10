@@ -36,11 +36,15 @@ public class StaxMateGenerator {
   @NonNls
   @NotNull
   public static final String DEFAULT_NAMESPACE_SUFFIX = "1.0.0";
+  @NonNls
+  public static final String METHOD_NAME_SERIALIZE = "serialize";
+  @NonNls
+  public static final String METHOD_NAME_DESERIALIZE = "deserialize";
   @NotNull
   public static final Version VERSION_FROM = Version.valueOf( 1, 0, 0 );
+
   @NotNull
   private final JCodeModel model;
-
   @NotNull
   private final SerializingEntryCreators creators;
 
@@ -77,7 +81,7 @@ public class StaxMateGenerator {
       .arg( createDefaultVersionRangeInvocation( VERSION_FROM, VERSION_FROM ) );
 
     //the serialize method
-    JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, "serialize" );
+    JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
     serializeMethod.param( SMOutputElement.class, "serializeTo" );
     serializeMethod.param( domainType, "object" );
@@ -85,12 +89,11 @@ public class StaxMateGenerator {
 
     //the deserialize method
     //the serialize method
-    JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, "deserialize" );
+    JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
     deserializeMethod.param( XMLStreamReader.class, "deserializeFrom" );
     deserializeMethod.param( Version.class, "formatVersion" );
     deserializeMethod.annotate( Override.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
-
 
     //Add the serialize stuff
     for ( FieldWithInitializationInfo fieldInfo : classToSerialize.getFieldsToSerialize() ) {
