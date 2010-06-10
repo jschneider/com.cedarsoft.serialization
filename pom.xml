@@ -149,6 +149,27 @@
         <artifactId>jdom</artifactId>
         <version>1.1</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-concurrent</artifactId>
+        <version>r03</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-collections</artifactId>
+        <version>r03</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-io</artifactId>
+        <version>r03</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-primitives</artifactId>
+        <version>r03</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -157,6 +178,13 @@
       <groupId>com.intellij</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-collections</artifactId>
+      <version>r03</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
