@@ -30,7 +30,12 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     JClass jClass = model.ref( String.class );
 
     JInvocation getterInvocation = object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() );
-    JInvocation wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
+    JInvocation wrappedGetterInvocation;
+    if ( fieldInfo.isType( String.class ) ) {
+      wrappedGetterInvocation = getterInvocation;
+    } else {
+      wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
+    }
 
     method.body().add(
       serializeTo.invoke( "addElementWithCharacters" )
@@ -52,8 +57,17 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
   @NotNull
   private JExpression createParseExpression( @NotNull JVar varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    JInvocation parsingInvocatoin = model.ref( Double.class ).staticInvoke( "parse" );
-    return parsingInvocatoin.arg( varAsString );
+    if ( fieldInfo.isType( Double.class ) ) {
+      return model.ref( Double.class ).staticInvoke( "parse" ).arg( varAsString );
+    }
+
+    if ( fieldInfo.isType( Integer.class ) ) {
+      return model.ref( Integer.class ).staticInvoke( "parse" ).arg( varAsString );
+    }
+
+    JClass fieldType = model.ref( fieldInfo.getType().toString() );
+
+    return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
   }
 
   @NotNull
@@ -61,4 +75,5 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   protected String getAsStringName( @NotNull FieldWithInitializationInfo fieldInfo ) {
     return fieldInfo.getSimpleName() + "AsString";
   }
+
 }
