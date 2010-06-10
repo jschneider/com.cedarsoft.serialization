@@ -225,4 +225,30 @@ public class CodemodelTest {
       "\n" +
       "}" );
   }
+
+  @Test
+  public void testMethodBody2() throws Exception {
+    JDefinedClass aClass = model._class( "org.test.DaTestClass" );
+    JMethod method = aClass.method( JMod.PUBLIC, String.class, "getString" );
+
+    JVar assignmentVar = method.body().decl( model.ref( String.class ), "daAssignmentTarget", JExpr.invoke( "init" ) );
+    method.body()._return( assignmentVar );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.DaTestClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "\n" +
+      "public class DaTestClass {\n" +
+      "\n" +
+      "\n" +
+      "    public String getString() {\n" +
+      "        String daAssignmentTarget = init();\n" +
+      "        return daAssignmentTarget;\n" +
+      "    }\n" +
+      "\n" +
+      "}" );
+  }
+
 }
