@@ -42,7 +42,7 @@ public class StaxMateGeneratorTest {
     classToSerialize = factory.create();
     assertNotNull( classToSerialize );
 
-    assertEquals( classToSerialize.getFieldsToSerialize().size(), 3 );
+    assertEquals( classToSerialize.getFieldsToSerialize().size(), 4 );
     generator = new StaxMateGenerator(  );
     model = generator.getModel();
   }

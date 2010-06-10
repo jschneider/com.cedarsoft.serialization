@@ -47,33 +47,29 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
   @Override
   public void appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    JVar varAsString = method.body().decl( model.ref( String.class ), getAsStringName( fieldInfo ),
-                                           JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() )
-    );
+    JInvocation readToStringExpression = JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
-    JVar var = method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( varAsString, fieldInfo ) );
+    JVar var = method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull
-  private JExpression createParseExpression( @NotNull JVar varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    if ( fieldInfo.isType( Double.class ) ) {
+  private JExpression createParseExpression( @NotNull JExpression varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    if ( fieldInfo.isType( Double.TYPE ) || fieldInfo.isType( Double.class ) ) {
       return model.ref( Double.class ).staticInvoke( "parse" ).arg( varAsString );
     }
 
-    if ( fieldInfo.isType( Integer.class ) ) {
+    if ( fieldInfo.isType( Integer.TYPE ) || fieldInfo.isType( Integer.class ) ) {
       return model.ref( Integer.class ).staticInvoke( "parse" ).arg( varAsString );
     }
 
+    if ( fieldInfo.isType( String.class ) ) {
+      return varAsString;
+    }
+
+    //Fallback to a generic parse method
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
-
     return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
-  }
-
-  @NotNull
-  @NonNls
-  protected String getAsStringName( @NotNull FieldWithInitializationInfo fieldInfo ) {
-    return fieldInfo.getSimpleName() + "AsString";
   }
 
 }

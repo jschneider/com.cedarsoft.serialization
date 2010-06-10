@@ -8,8 +8,9 @@ public class Window {
    * the comment for field width
    */
   private final double width;
-  private final double height;
+  private final int height;
   private final String description;
+  private final Integer anInt;
 
   /**
    * the constructor
@@ -17,19 +18,25 @@ public class Window {
    * @param description the descri
    * @param width       the width
    * @param height      the height
+   * @param anInt
    */
-  public Window( String description, double width, double height ) {
+  public Window( String description, double width, int height, Integer anInt ) {
     this.width = width;
     this.height = height;
     this.description = description;
+    this.anInt = anInt;
   }
 
   public double getWidth() {
     return width;
   }
 
-  public double getHeight() {
+  public int getHeight() {
     return height;
+  }
+
+  public Integer getAnInt() {
+    return anInt;
   }
 
   public String getDescription() {
