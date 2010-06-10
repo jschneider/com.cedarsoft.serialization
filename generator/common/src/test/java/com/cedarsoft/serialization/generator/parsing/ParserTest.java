@@ -60,14 +60,13 @@ import static org.testng.Assert.*;
  *
  */
 public class ParserTest {
-  private File javaFile;
   private Result parsed;
 
   @BeforeMethod
   protected void setUp() throws Exception {
     URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/JavaClassToParse.java" );
     assertNotNull( resource );
-    javaFile = new File( resource.toURI() );
+    File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
     parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
