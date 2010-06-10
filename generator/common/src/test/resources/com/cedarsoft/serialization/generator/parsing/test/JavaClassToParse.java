@@ -39,6 +39,8 @@ public class JavaClassToParse {
     private final List<String> stringList = new ArrayList<String>();
     private final List<? extends String> wildStringList = new ArrayList<String>();
 
+    private final int a = 7;
+
     public InnerStaticClass( int num ) {
     }
 

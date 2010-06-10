@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.parsing;
 
+import com.cedarsoft.MockitoTemplate;
 import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
@@ -40,7 +41,10 @@ import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.ClassType;
 import com.sun.mirror.type.DeclaredType;
 import com.sun.mirror.type.InterfaceType;
+import com.sun.mirror.type.PrimitiveType;
 import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.util.TypeVisitor;
+import org.mockito.Mock;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -48,6 +52,8 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 /**
@@ -65,6 +71,38 @@ public class ParserTest {
     assertTrue( javaFile.exists() );
     parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
+  }
+
+  @Test
+  public void testVisitor() throws Exception {
+    System.out.println( "---------------------" );
+    ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
+
+    final ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
+    assertEquals( fields.get( 1 ).getSimpleName(), "wildStringList" );
+    assertEquals( fields.get( 2 ).getSimpleName(), "a" );
+
+    new MockitoTemplate() {
+      @Mock
+      private TypeVisitor visitor;
+
+      @Override
+      protected void stub() throws Exception {
+      }
+
+      @Override
+      protected void execute() throws Exception {
+        fields.get( 1 ).getType().accept( visitor );
+        fields.get( 2 ).getType().accept( visitor );
+      }
+
+      @Override
+      protected void verifyMocks() throws Exception {
+        verify( visitor ).visitInterfaceType( any( InterfaceType.class ) );
+        verify( visitor ).visitPrimitiveType( any( PrimitiveType.class ) );
+        verifyNoMoreInteractions( visitor );
+      }
+    }.run();
   }
 
   @Test
