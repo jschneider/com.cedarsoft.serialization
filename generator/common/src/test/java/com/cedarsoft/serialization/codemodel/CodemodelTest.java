@@ -31,13 +31,17 @@
 
 package com.cedarsoft.serialization.codemodel;
 
+import com.cedarsoft.Version;
+import com.cedarsoft.VersionRange;
 import com.sun.codemodel.CodeWriter;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.testng.annotations.*;
@@ -55,26 +59,32 @@ import static org.testng.Assert.*;
  *
  */
 public class CodemodelTest {
+  private ByteArrayOutputStream out;
+  private CodeWriter codeWriter;
+  private JCodeModel model;
+
+  @BeforeMethod
+  protected void setUp() throws Exception {
+    out = new ByteArrayOutputStream();
+    codeWriter = new SingleStreamCodeWriter( out );
+    model = new JCodeModel();
+  }
+
   @Test
   public void testIt() throws IOException, JClassAlreadyExistsException, InterruptedException {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-    CodeWriter codeWriter = new SingleStreamCodeWriter( out );
-
-    JCodeModel codeModel = new JCodeModel();
     {
-      JDefinedClass fooClass = codeModel._class( "com.cedarsoft.generator.test.Foo" );
+      JDefinedClass fooClass = model._class( "com.cedarsoft.generator.test.Foo" );
       fooClass._implements( EventListener.class );
       fooClass.field( JMod.PRIVATE, String.class, "id" );
     }
     {
-      JDefinedClass barClass = codeModel._class( "com.cedarsoft.generator.test.bar.Bar" );
+      JDefinedClass barClass = model._class( "com.cedarsoft.generator.test.bar.Bar" );
       barClass._implements( EventListener.class );
       barClass.field( Modifier.PRIVATE | Modifier.FINAL, Integer.TYPE, "id" );
       barClass.field( JMod.PRIVATE | JMod.FINAL, Integer.TYPE, "id2" );
     }
 
-    codeModel.build( codeWriter );
+    model.build( codeWriter );
     assertEquals( out.toString().trim(), "-----------------------------------com.cedarsoft.generator.test.bar.Bar.java-----------------------------------\n" +
       "\n" +
       "package com.cedarsoft.generator.test.bar;\n" +
@@ -106,21 +116,17 @@ public class CodemodelTest {
 
   @Test
   public void testGenerics() throws Exception {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    CodeWriter codeWriter = new SingleStreamCodeWriter( out );
-
-    JCodeModel codeModel = new JCodeModel();
-    JDefinedClass aClass = codeModel._class( "org.test.MyClass" );
+    JDefinedClass aClass = model._class( "org.test.MyClass" );
 
     //    JExpression assignment = codeModel.ref( ArrayList.class ).dotclass();
     //    JExpression assignment = codeModel.ref( ArrayList.class ).;
-    JInvocation assignment = JExpr._new( codeModel.ref( ArrayList.class ).narrow( String.class ) );
+    JInvocation assignment = JExpr._new( model.ref( ArrayList.class ).narrow( String.class ) );
 
-    JFieldVar field = aClass.field( JMod.PRIVATE | JMod.FINAL, codeModel.ref( List.class ).narrow( codeModel.ref( String.class ) ), "ids", assignment );
-    aClass.field( JMod.PRIVATE | JMod.FINAL, codeModel.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() ), "ids2", assignment );
+    JFieldVar field = aClass.field( JMod.PRIVATE | JMod.FINAL, model.ref( List.class ).narrow( model.ref( String.class ) ), "ids", assignment );
+    aClass.field( JMod.PRIVATE | JMod.FINAL, model.ref( List.class ).narrow( model.ref( String.class ).wildcard() ), "ids2", assignment );
 
 
-    codeModel.build( codeWriter );
+    model.build( codeWriter );
     assertEquals( out.toString().trim(), "-----------------------------------org.test.MyClass.java-----------------------------------\n" +
       "\n" +
       "package org.test;\n" +
@@ -132,6 +138,38 @@ public class CodemodelTest {
       "\n" +
       "    private final List<String> ids = new ArrayList<String>();\n" +
       "    private final List<? extends String> ids2 = new ArrayList<String>();\n" +
+      "\n" +
+      "}" );
+  }
+
+  @Test
+  public void testConstructor() throws Exception {
+    JDefinedClass aClass = model._class( "org.test.DaTestClass" );
+
+    JClass versionType = model.ref( Version.class );
+    JInvocation versionInvocation = versionType.staticInvoke( "valueOf" ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) );
+
+    JClass versionRangeType = model.ref( VersionRange.class );
+
+    JInvocation versionRangeInvocation = versionRangeType.staticInvoke( "from" ).arg( versionInvocation ).invoke( "to" ).arg( versionInvocation );
+
+    JMethod constructor = aClass.constructor( JMod.PUBLIC );
+    constructor.body().invoke( "super" ).arg( "window" ).arg( "namespace/window" ).arg( versionRangeInvocation );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.DaTestClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "import com.cedarsoft.Version;\n" +
+      "import com.cedarsoft.VersionRange;\n" +
+      "\n" +
+      "public class DaTestClass {\n" +
+      "\n" +
+      "\n" +
+      "    public DaTestClass() {\n" +
+      "        super(\"window\", \"namespace/window\", VersionRange.from(Version.valueOf(1, 0, 0)).to(Version.valueOf(1, 0, 0)));\n" +
+      "    }\n" +
       "\n" +
       "}" );
   }
