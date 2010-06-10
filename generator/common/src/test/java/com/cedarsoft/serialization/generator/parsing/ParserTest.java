@@ -31,14 +31,22 @@
 
 package com.cedarsoft.serialization.generator.parsing;
 
+import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
+import com.sun.mirror.declaration.TypeParameterDeclaration;
+import com.sun.mirror.type.ClassType;
+import com.sun.mirror.type.DeclaredType;
+import com.sun.mirror.type.InterfaceType;
+import com.sun.mirror.type.TypeMirror;
 import org.testng.annotations.*;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -47,6 +55,7 @@ import static org.testng.Assert.*;
  */
 public class ParserTest {
   private File javaFile;
+  private Result parsed;
 
   @BeforeMethod
   protected void setUp() throws Exception {
@@ -54,13 +63,55 @@ public class ParserTest {
     assertNotNull( resource );
     javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
+    parsed = Parser.parse( javaFile );
+    assertNotNull( parsed );
+  }
+
+  @Test
+  public void testWildcards() {
+    ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
+
+    ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
+    FieldDeclaration field = fields.get( 0 );
+    assertEquals( field.getSimpleName(), "stringList" );
+
+    TypeMirror type = field.getType();
+    assertEquals( type.toString(), "java.util.List<java.lang.String>" );
+    assertEquals( type.getClass().getName(), "com.sun.tools.apt.mirror.type.InterfaceTypeImpl" );
+
+    {
+      InterfaceType interfaceType = ( InterfaceType ) type;
+      assertEquals( interfaceType.getSuperinterfaces().size(), 1 );
+      assertEquals( interfaceType.getSuperinterfaces().iterator().next().toString(), "java.util.Collection<java.lang.String>" );
+
+      //Checking the declaration (the java.util.List class itself!
+      {
+        assertEquals( interfaceType.getDeclaration().toString(), "java.util.List<E>" );
+        assertEquals( interfaceType.getDeclaration().getQualifiedName(), "java.util.List" );
+        assertEquals( interfaceType.getDeclaration().getSimpleName(), "List" );
+        assertEquals( interfaceType.getDeclaration().getPackage().getQualifiedName(), "java.util" );
+        assertEquals( interfaceType.getDeclaration().getFormalTypeParameters().size(), 1 );
+        TypeParameterDeclaration typeParameter = interfaceType.getDeclaration().getFormalTypeParameters().iterator().next();
+        assertEquals( typeParameter.getSimpleName(), "E" );
+        assertEquals( typeParameter.getOwner(), interfaceType.getDeclaration() );
+        assertEquals( typeParameter.getOwner().toString(), "java.util.List<E>" );
+        assertEquals( typeParameter.getBounds().size(), 1 );
+        assertEquals( typeParameter.getBounds().iterator().next().toString(), "java.lang.Object" );
+      }
+
+      //Check the interface itself
+      List<TypeMirror> actualTypeArgs = ImmutableList.copyOf( interfaceType.getActualTypeArguments() );
+      assertEquals( actualTypeArgs.size(), 1 );
+      assertEquals( actualTypeArgs.get( 0 ).toString(), "java.lang.String" );
+      assertEquals( actualTypeArgs.get( 0 ).getClass().getName(), "com.sun.tools.apt.mirror.type.ClassTypeImpl" );
+      assertEquals( ( ( ClassType ) actualTypeArgs.get( 0 ) ).getDeclaration().getSimpleName(), "String" );
+      assertEquals( ( ( ClassType ) actualTypeArgs.get( 0 ) ).getSuperclass().toString(), "java.lang.Object" );
+      assertEquals( ( ( DeclaredType ) actualTypeArgs.get( 0 ) ).getDeclaration().getMethods().size(), 69 );
+    }
   }
 
   @Test
   public void testParsing() throws ClassNotFoundException, NoSuchMethodException {
-    Result parsed = Parser.parse( javaFile );
-    assertNotNull( parsed );
-
     assertEquals( parsed.getClassDeclarations().size(), 4 );
 
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
