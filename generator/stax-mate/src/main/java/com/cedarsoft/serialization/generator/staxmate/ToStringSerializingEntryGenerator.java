@@ -45,22 +45,23 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     );
   }
 
+  @NotNull
   @Override
-  public void appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  public JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
     JInvocation readToStringExpression = JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
-    JVar var = method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( readToStringExpression, fieldInfo ) );
+    return method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull
   private JExpression createParseExpression( @NotNull JExpression varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
     if ( fieldInfo.isType( Double.TYPE ) || fieldInfo.isType( Double.class ) ) {
-      return model.ref( Double.class ).staticInvoke( "parse" ).arg( varAsString );
+      return model.ref( Double.class ).staticInvoke( "parseDouble" ).arg( varAsString );
     }
 
     if ( fieldInfo.isType( Integer.TYPE ) || fieldInfo.isType( Integer.class ) ) {
-      return model.ref( Integer.class ).staticInvoke( "parse" ).arg( varAsString );
+      return model.ref( Integer.class ).staticInvoke( "parseInt" ).arg( varAsString );
     }
 
     if ( fieldInfo.isType( String.class ) ) {

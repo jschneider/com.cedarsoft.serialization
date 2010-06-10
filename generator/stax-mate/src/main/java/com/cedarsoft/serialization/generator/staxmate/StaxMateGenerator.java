@@ -5,8 +5,11 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.model.ClassToSerialize;
+import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -23,6 +26,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -94,22 +101,51 @@ public class StaxMateGenerator {
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
 
     //Add the serialize stuff
+    addSerializationStuff( classToSerialize, serializeMethod, deserializeMethod );
+  }
+
+  private void addSerializationStuff( @NotNull ClassToSerialize classToSerialize, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+    Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
+
     for ( FieldWithInitializationInfo fieldInfo : classToSerialize.getFieldsToSerialize() ) {
-      addFieldSerializationStuff( fieldInfo, serializeMethod, deserializeMethod );
+      SerializingEntryGenerator generator = creators.findGenerator();
+
+      JVar serializeTo = serializeMethod.listParams()[0];
+      JVar object = serializeMethod.listParams()[1];
+      generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
+
+      JVar deserializeFrom = deserializeMethod.listParams()[0];
+      JVar formatVersion = deserializeMethod.listParams()[1];
+      JVar theVar = generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
+
+      fieldToVar.put( fieldInfo, theVar );
+    }
+
+    //Now create the constructor for the deserializeMethod
+
+
+    JClass domainType = model.ref( classToSerialize.getQualifiedName() );
+    JInvocation domainTypeInit = JExpr._new( domainType );
+
+    {
+      List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList( classToSerialize.getFieldsToSerialize() );
+      //Sort the fields to fit the constructor order
+      Collections.sort( fieldsToSerialize, new Comparator<FieldWithInitializationInfo>() {
+        @Override
+        public int compare( FieldWithInitializationInfo o1, FieldWithInitializationInfo o2 ) {
+          return Integer.valueOf( ( ( FieldInitializedInConstructorInfo ) o1 ).getConstructorCallInfo().getIndex() ).compareTo( ( ( FieldInitializedInConstructorInfo ) o2 ).getConstructorCallInfo().getIndex() );
+        }
+      } );
+
+      for ( FieldWithInitializationInfo fieldInfo : fieldsToSerialize ) {
+        domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
+      }
+
+      JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
+      deserializeMethod.body()._return( domainObjectVar );
     }
   }
 
-  private void addFieldSerializationStuff( @NotNull FieldWithInitializationInfo fieldInfo, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    SerializingEntryGenerator generator = creators.findGenerator();
-
-    JVar serializeTo = serializeMethod.listParams()[0];
-    JVar object = serializeMethod.listParams()[1];
-    generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
-
-    JVar deserializeFrom = deserializeMethod.listParams()[0];
-    JVar formatVersion = deserializeMethod.listParams()[1];
-    generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
-  }
 
   @NotNull
   private JClass getExtendType( @NotNull JClass domainType ) {
