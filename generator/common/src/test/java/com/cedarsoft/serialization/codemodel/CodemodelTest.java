@@ -210,8 +210,19 @@ public class CodemodelTest {
     method.body()._return( param.invoke( "length" ) );
 
     model.build( codeWriter );
-    assertEquals( out.toString().trim(), "ff" );
-
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.DaTestClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "\n" +
+      "public class DaTestClass {\n" +
+      "\n" +
+      "\n" +
+      "    public String getString(String daString) {\n" +
+      "        daString.substring(0, 7);\n" +
+      "        return daString.length();\n" +
+      "    }\n" +
+      "\n" +
+      "}" );
   }
-
 }
