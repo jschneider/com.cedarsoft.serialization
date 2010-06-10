@@ -44,7 +44,7 @@ public class StaxMateGeneratorTest {
 
     assertEquals( classToSerialize.getFieldsToSerialize().size(), 4 );
     generator = new StaxMateGenerator(  );
-    model = generator.getModel();
+    model = generator.getCodeModel();
   }
 
   @Test

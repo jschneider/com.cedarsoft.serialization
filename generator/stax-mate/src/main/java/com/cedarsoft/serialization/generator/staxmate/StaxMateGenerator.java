@@ -32,58 +32,85 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Generator for stax mate based parsers
  */
 public class StaxMateGenerator {
+  /**
+   * The suffix used for generated serializers
+   */
   @NonNls
   @NotNull
   public static final String SERIALIZER_CLASS_NAME_SUFFIX = "Serializer";
+  /**
+   * The default namespace suffix
+   */
   @NonNls
   @NotNull
   public static final String DEFAULT_NAMESPACE_SUFFIX = "1.0.0";
+  /**
+   * The name of the serialize method
+   */
   @NonNls
   public static final String METHOD_NAME_SERIALIZE = "serialize";
+  /**
+   * The name of the deserialize method
+   */
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE = "deserialize";
+  /**
+   * The version the serializer supports
+   */
   @NotNull
-  public static final Version VERSION_FROM = Version.valueOf( 1, 0, 0 );
+  public static final Version VERSION = Version.valueOf( 1, 0, 0 );
 
   @NotNull
-  private final JCodeModel model;
+  private final JCodeModel codeModel;
   @NotNull
   private final SerializingEntryCreators creators;
 
+  /**
+   * Creatse a new generator
+   */
   public StaxMateGenerator() {
-    this.model = new JCodeModel();
-    this.creators = new SerializingEntryCreators( model );
+    this.codeModel = new JCodeModel();
+    this.creators = new SerializingEntryCreators( codeModel );
   }
 
+  /**
+   * Returns the code model this generator is using
+   *
+   * @return the code model
+   */
   @NotNull
-  public JCodeModel getModel() {
-    return model;
+  public JCodeModel getCodeModel() {
+    return codeModel;
   }
 
+  /**
+   * Generates the source code for the given classes
+   *
+   * @param classesToSerialize the classes test will be generated for
+   * @throws JClassAlreadyExistsException
+   */
   @NotNull
-  public JCodeModel generate( @NotNull ClassToSerialize... classesToSerialize ) throws JClassAlreadyExistsException {
+  public void generate( @NotNull ClassToSerialize... classesToSerialize ) throws JClassAlreadyExistsException {
     JCodeModel codeModel = new JCodeModel();
 
     for ( ClassToSerialize classToSerialize : classesToSerialize ) {
       generate( classToSerialize );
     }
-
-    return codeModel;
   }
 
   public void generate( @NotNull ClassToSerialize classToSerialize ) throws JClassAlreadyExistsException {
-    JClass domainType = model.ref( classToSerialize.getQualifiedName() );
+    JClass domainType = codeModel.ref( classToSerialize.getQualifiedName() );
 
     //the class
-    JDefinedClass serializerClass = model._class( createSerializerClassName( domainType.fullName() ) )._extends( getExtendType( domainType ) );
+    JDefinedClass serializerClass = codeModel._class( createSerializerClassName( domainType.fullName() ) )._extends( getExtendType( domainType ) );
 
     //the constructor
     serializerClass.constructor( JMod.PUBLIC ).body()
       .invoke( "super" ).arg( getDefaultElementName( classToSerialize ) ).arg( getNamespace( classToSerialize ) )
-      .arg( createDefaultVersionRangeInvocation( VERSION_FROM, VERSION_FROM ) );
+      .arg( createDefaultVersionRangeInvocation( VERSION, VERSION ) );
 
     //the serialize method
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
@@ -124,7 +151,7 @@ public class StaxMateGenerator {
     //Now create the constructor for the deserializeMethod
 
 
-    JClass domainType = model.ref( classToSerialize.getQualifiedName() );
+    JClass domainType = codeModel.ref( classToSerialize.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
     {
@@ -154,7 +181,7 @@ public class StaxMateGenerator {
 
   @NotNull
   private JClass getSerializerBaseClass() {
-    return model.ref( AbstractStaxMateSerializer.class );
+    return codeModel.ref( AbstractStaxMateSerializer.class );
   }
 
   @NotNull
@@ -171,7 +198,7 @@ public class StaxMateGenerator {
 
   @NotNull
   protected JInvocation createDefaultVersionRangeInvocation( @NotNull Version from, @NotNull Version to ) {
-    JClass versionRangeType = model.ref( VersionRange.class );
+    JClass versionRangeType = codeModel.ref( VersionRange.class );
     return versionRangeType.staticInvoke( "from" ).arg( JExpr.lit( from.getMajor() ) ).arg( JExpr.lit( from.getMinor() ) ).arg( JExpr.lit( from.getBuild() ) )
       .invoke( "to" ).arg( JExpr.lit( to.getMajor() ) ).arg( JExpr.lit( to.getMinor() ) ).arg( JExpr.lit( to.getBuild() ) );
   }
