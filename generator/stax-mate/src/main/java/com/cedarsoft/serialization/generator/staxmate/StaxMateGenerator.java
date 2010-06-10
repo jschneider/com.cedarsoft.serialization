@@ -46,9 +46,9 @@ public class StaxMateGenerator {
   @NotNull
   private final SerializingEntryCreators creators;
 
-  public StaxMateGenerator( @NotNull SerializingEntryCreators creators ) {
+  public StaxMateGenerator() {
     this.model = new JCodeModel();
-    this.creators = creators;
+    this.creators = new SerializingEntryCreators( model );
   }
 
   @NotNull
@@ -100,15 +100,15 @@ public class StaxMateGenerator {
   }
 
   private void addFieldSerializationStuff( @NotNull FieldWithInitializationInfo fieldInfo, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    SerializingEntryGenerator generator = creators.findGenerator( fieldInfo );
+    SerializingEntryGenerator generator = creators.findGenerator();
 
     JVar serializeTo = serializeMethod.listParams()[0];
     JVar object = serializeMethod.listParams()[1];
-    generator.appendSerializing( model, serializeMethod, serializeTo, object, fieldInfo );
+    generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
 
     JVar deserializeFrom = deserializeMethod.listParams()[0];
     JVar formatVersion = deserializeMethod.listParams()[1];
-    generator.appendDeserializing( model, deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
+    generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
   }
 
   @NotNull

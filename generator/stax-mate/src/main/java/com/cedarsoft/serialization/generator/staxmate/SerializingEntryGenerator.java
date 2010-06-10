@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public interface SerializingEntryGenerator {
-  void appendSerializing( @NotNull JCodeModel model, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
+  void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
 
-  void appendDeserializing( @NotNull JCodeModel model, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
+  void appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
 }
