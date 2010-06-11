@@ -136,23 +136,31 @@ public class StaxMateGenerator {
   private void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
+    //Extract the parameters for the serialize method
+    JVar serializeTo = serializeMethod.listParams()[0];
+    JVar object = serializeMethod.listParams()[1];
+
+    //Extract the parameters for the deserialize method
+    JVar deserializeFrom = deserializeMethod.listParams()[0];
+    JVar formatVersion = deserializeMethod.listParams()[1];
+
+    //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       SerializingEntryGenerator generator = creators.findGenerator();
 
-      JVar serializeTo = serializeMethod.listParams()[0];
-      JVar object = serializeMethod.listParams()[1];
       generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
 
-      JVar deserializeFrom = deserializeMethod.listParams()[0];
-      JVar formatVersion = deserializeMethod.listParams()[1];
       JVar theVar = generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
 
       fieldToVar.put( fieldInfo, theVar );
     }
 
+    //Call closeTag( deserializeFrom ); on deserialize
+    deserializeMethod.body().invoke( "closeTag" ).arg( deserializeFrom );
+
+    deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
+
     //Now create the constructor for the deserializeMethod
-
-
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
@@ -170,7 +178,11 @@ public class StaxMateGenerator {
         domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
       }
 
+      //Add the return type
       JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
+
+      //todo setters(?)
+      
       deserializeMethod.body()._return( domainObjectVar );
     }
   }
