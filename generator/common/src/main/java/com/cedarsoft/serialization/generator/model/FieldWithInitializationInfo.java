@@ -40,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Contains informations about a field and its initialization
  */
-public interface FieldWithInitializationInfo extends FieldTypeInformation {
+public interface FieldWithInitializationInfo extends FieldTypeInformation, FieldInfo {
   /**
    * Returns the the field declaration
    *
@@ -48,10 +48,6 @@ public interface FieldWithInitializationInfo extends FieldTypeInformation {
    */
   @NotNull
   FieldDeclaration getFieldDeclaration();
-
-  @NotNull
-  @NonNls
-  String getSimpleName();
 
   @NotNull
   @NonNls
