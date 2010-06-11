@@ -20,10 +20,13 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   @NotNull
   protected final JCodeModel model;
 
-  public ToStringSerializingEntryGenerator( @NotNull JCodeModel model ) {
-    this.model = model;
-  }
+  @NotNull
+  private final ParseExpressionFactory parseExpressionFactory;
 
+  public ToStringSerializingEntryGenerator( @NotNull JCodeModel model, @NotNull ParseExpressionFactory parseExpressionFactory ) {
+    this.model = model;
+    this.parseExpressionFactory = parseExpressionFactory;
+  }
 
   @Override
   public void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
@@ -49,26 +52,7 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     JInvocation readToStringExpression = strategy.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
-    return method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( readToStringExpression, fieldInfo ) );
-  }
-
-  @NotNull
-  private JExpression createParseExpression( @NotNull JExpression varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    if ( fieldInfo.isType( Double.TYPE ) || fieldInfo.isType( Double.class ) ) {
-      return model.ref( Double.class ).staticInvoke( "parseDouble" ).arg( varAsString );
-    }
-
-    if ( fieldInfo.isType( Integer.TYPE ) || fieldInfo.isType( Integer.class ) ) {
-      return model.ref( Integer.class ).staticInvoke( "parseInt" ).arg( varAsString );
-    }
-
-    if ( fieldInfo.isType( String.class ) ) {
-      return varAsString;
-    }
-
-    //Fallback to a generic parse method
-    JClass fieldType = model.ref( fieldInfo.getType().toString() );
-    return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
+    return method.body().decl( fieldType, fieldInfo.getSimpleName(), parseExpressionFactory.createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull
