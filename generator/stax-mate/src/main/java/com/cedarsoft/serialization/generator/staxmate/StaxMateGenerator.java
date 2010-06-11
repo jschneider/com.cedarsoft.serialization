@@ -1,9 +1,5 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
@@ -13,22 +9,15 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
-import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -51,57 +40,8 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     this.creators = new SerializingEntryCreators( codeGenerator );
   }
 
-  /**
-   * Generates the source code for the given classes
-   *
-   * @param classesToSerialize the classes test will be generated for
-   * @throws JClassAlreadyExistsException
-   */
-  public void generate( @NotNull DomainObjectDescriptor... classesToSerialize ) throws JClassAlreadyExistsException {
-    for ( DomainObjectDescriptor domainObjectDescriptor : classesToSerialize ) {
-      generate( domainObjectDescriptor );
-    }
-  }
-
-  public void generate( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
-
-    //the class
-    JDefinedClass serializerClass = codeModel._class( createSerializerClassName( domainType.fullName() ) )._extends( getExtendType( domainType ) );
-
-    //the constructor
-    serializerClass.constructor( JMod.PUBLIC ).body()
-      .invoke( "super" ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
-      .arg( createDefaultVersionRangeInvocation( VERSION, VERSION ) );
-
-    JMethod serializeMethod = createSerializeMethodStub( domainType, serializerClass );
-    JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
-
-    //Add the serialize stuff
-    addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
-  }
-
-  @NotNull
-  protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
-    JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
-    deserializeMethod.param( XMLStreamReader.class, "deserializeFrom" ).annotate( NotNull.class );
-    deserializeMethod.param( Version.class, "formatVersion" ).annotate( NotNull.class );
-    deserializeMethod.annotate( Override.class );
-    deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
-    return deserializeMethod;
-  }
-
-  @NotNull
-  protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
-    JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
-    serializeMethod.annotate( Override.class );
-    serializeMethod.param( SMOutputElement.class, "serializeTo" ).annotate( NotNull.class );
-    serializeMethod.param( domainType, "object" ).annotate( NotNull.class );
-    serializeMethod._throws( IOException.class )._throws( XMLStreamException.class );
-    return serializeMethod;
-  }
-
-  private void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  @Override
+  protected void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
@@ -155,39 +95,27 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     }
   }
 
-
   @NotNull
-  private JClass getExtendType( @NotNull JClass domainType ) {
-    return getSerializerBaseClass().narrow( domainType );
+  @Override
+  protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
+    return codeModel.ref( AbstractStaxMateSerializer.class ).narrow( domainType );
   }
 
+  @Override
   @NotNull
-  private JClass getSerializerBaseClass() {
-    return codeModel.ref( AbstractStaxMateSerializer.class );
+  protected Class<?> getExceptionType() {
+    return XMLStreamException.class;
   }
 
+  @Override
   @NotNull
-  @NonNls
-  String getNamespace( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return NameSpaceSupport.createNameSpaceUriBase( domainObjectDescriptor.getQualifiedName() ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
+  protected Class<?> getSerializeFromType() {
+    return XMLStreamReader.class;
   }
 
+  @Override
   @NotNull
-  @NonNls
-  protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return domainObjectDescriptor.getClassDeclaration().getSimpleName().toLowerCase();
-  }
-
-  @NotNull
-  protected JInvocation createDefaultVersionRangeInvocation( @NotNull Version from, @NotNull Version to ) {
-    JClass versionRangeType = codeModel.ref( VersionRange.class );
-    return versionRangeType.staticInvoke( "from" ).arg( JExpr.lit( from.getMajor() ) ).arg( JExpr.lit( from.getMinor() ) ).arg( JExpr.lit( from.getBuild() ) )
-      .invoke( "to" ).arg( JExpr.lit( to.getMajor() ) ).arg( JExpr.lit( to.getMinor() ) ).arg( JExpr.lit( to.getBuild() ) );
-  }
-
-  @NotNull
-  @NonNls
-  String createSerializerClassName( @NotNull @NonNls String domainClassName ) {
-    return domainClassName + SERIALIZER_CLASS_NAME_SUFFIX;
+  protected Class<?> getSerializeToType() {
+    return SMOutputElement.class;
   }
 }
