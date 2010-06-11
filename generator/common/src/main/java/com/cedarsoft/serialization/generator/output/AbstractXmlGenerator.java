@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.generator.staxmate;
+package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
@@ -6,7 +6,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;

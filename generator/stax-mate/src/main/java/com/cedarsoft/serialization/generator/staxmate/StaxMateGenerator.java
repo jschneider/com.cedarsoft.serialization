@@ -4,6 +4,7 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.output.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.google.common.collect.Lists;

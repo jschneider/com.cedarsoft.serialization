@@ -1,8 +1,7 @@
-package com.cedarsoft.serialization.generator.staxmate;
+package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
