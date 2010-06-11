@@ -126,19 +126,19 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
-    {
-      List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsToSerializeInitializedInConstructor();
-      for ( FieldInitializedInConstructorInfo fieldInfo : fieldsToSerialize ) {
-        domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
-      }
 
-      //Add the return type
-      JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
-
-      //todo setters(?)
-
-      deserializeMethod.body()._return( domainObjectVar );
+    List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsToSerializeInitializedInConstructor();
+    for ( FieldInitializedInConstructorInfo fieldInfo : fieldsToSerialize ) {
+      domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
     }
+
+    //Add the return type
+    JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
+
+    //todo setters(?)
+
+    deserializeMethod.body()._return( domainObjectVar );
+
   }
 
   /**
