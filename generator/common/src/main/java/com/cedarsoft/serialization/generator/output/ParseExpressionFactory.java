@@ -1,6 +1,6 @@
-package com.cedarsoft.serialization.generator.staxmate;
+package com.cedarsoft.serialization.generator.output;
 
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
@@ -19,7 +19,7 @@ public class ParseExpressionFactory {
   }
 
   @NotNull
-  public JExpression createParseExpression( @NotNull JExpression varAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  public JExpression createParseExpression( @NotNull JExpression varAsString, @NotNull FieldTypeInformation fieldInfo ) {
     if ( fieldInfo.isType( Double.TYPE ) || fieldInfo.isType( Double.class ) ) {
       return model.ref( Double.class ).staticInvoke( "parseDouble" ).arg( varAsString );
     }

@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;

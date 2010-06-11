@@ -84,6 +84,7 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
     return constructorCallInfo;
   }
 
+  @Override
   public boolean isType( @NotNull Class<?> type ) {
     return getType().toString().equals( type.getName() );
   }
