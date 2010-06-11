@@ -33,14 +33,13 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
-import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class FieldInitializedInConstructorInfo implements FieldWithInitializationInfo {
+public class FieldInitializedInConstructorInfo extends DefaultFieldTypeInformation implements FieldWithInitializationInfo {
   @NotNull
   private final FieldDeclaration fieldDeclaration;
   @NotNull
@@ -49,6 +48,7 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
   private final MethodDeclaration getterDeclaration;
 
   public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull ConstructorCallInfo constructorCallInfo, @NotNull MethodDeclaration getterDeclaration ) {
+    super( fieldDeclaration.getType() );
     this.fieldDeclaration = fieldDeclaration;
     this.constructorCallInfo = constructorCallInfo;
     this.getterDeclaration = getterDeclaration;
@@ -73,19 +73,8 @@ public class FieldInitializedInConstructorInfo implements FieldWithInitializatio
     return getterDeclaration;
   }
 
-  @Override
-  @NotNull
-  public TypeMirror getType() {
-    return fieldDeclaration.getType();
-  }
-
   @NotNull
   public ConstructorCallInfo getConstructorCallInfo() {
     return constructorCallInfo;
-  }
-
-  @Override
-  public boolean isType( @NotNull Class<?> type ) {
-    return getType().toString().equals( type.getName() );
   }
 }
