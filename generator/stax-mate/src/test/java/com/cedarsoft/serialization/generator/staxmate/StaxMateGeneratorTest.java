@@ -1,6 +1,5 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
-import com.cedarsoft.Version;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
@@ -9,7 +8,6 @@ import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.testng.annotations.*;
@@ -17,7 +15,6 @@ import org.testng.annotations.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URL;
 
 import static org.testng.Assert.*;
@@ -46,24 +43,6 @@ public class StaxMateGeneratorTest {
     assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 4 );
     generator = new StaxMateGenerator( new DefaultXmlDecisionCallback( "width", "height" ) );
     model = generator.getCodeGenerator().getModel();
-  }
-
-  @Test
-  public void testName() {
-    assertEquals( generator.createSerializerClassName( "com.cedarsoft.serialization.generator.staxmate.StaxMateGenerator" ), "com.cedarsoft.serialization.generator.staxmate.StaxMateGeneratorSerializer" );
-    assertEquals( generator.createSerializerClassName( "java.lang.String" ), "java.lang.StringSerializer" );
-  }
-
-  @Test
-  public void testVersionRangeInvo() {
-    StringWriter out = new StringWriter();
-    generator.createDefaultVersionRangeInvocation( Version.valueOf( 1, 0, 0 ), Version.valueOf( 1, 0, 0 ) ).state( new JFormatter( out ) );
-    assertEquals( out.toString().trim(), "com.cedarsoft.VersionRange.from(1, 0, 0).to(1, 0, 0);" );
-  }
-
-  @Test
-  public void testNameSpace() {
-    assertEquals( generator.getNamespace( domainObjectDescriptor ), "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0" );
   }
 
   @Test

@@ -47,20 +47,20 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @Override
   protected void createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
     serializerClass.constructor( JMod.PUBLIC ).body()
-      .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
+      .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
       .arg( createDefaultVersionRangeInvocation( AbstractXmlGenerator.VERSION, AbstractXmlGenerator.VERSION ) );
   }
 
   /**
    * Returns the namespace that is used for the serialized documents
    *
-   * @param domainObjectDescriptor the object descriptor
+   * @param domainObjectType the domain object type
    * @return the namespace
    */
   @NotNull
   @NonNls
-  protected String getNamespace( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return NameSpaceSupport.createNameSpaceUriBase( domainObjectDescriptor.getQualifiedName() ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
+  protected String getNamespace( @NotNull @NonNls final String domainObjectType ) {
+    return NameSpaceSupport.createNameSpaceUriBase( domainObjectType ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
   }
 
   /**
