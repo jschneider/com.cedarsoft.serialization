@@ -51,7 +51,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   @NonNls
   public static final String PARAM_NAME_SERIALIZE_TO = "serializeTo";
   @NonNls
-  public static final String PARAM_NAME_OBJECT = "object";
+  public static final String VAR_NAME_OBJECT = "object";
 
   @NotNull
   protected final CodeGenerator<T> codeGenerator;
@@ -134,7 +134,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     }
 
     //Add the object type
-    JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
+    JVar domainObjectVar = deserializeMethod.body().decl( domainType, VAR_NAME_OBJECT, domainTypeInit );
 
     //Now call the setters
     for ( FieldInitializedInSetterInfo fieldInfo : domainObjectDescriptor.getFieldsInitializedInSetter() ) {
@@ -158,7 +158,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
     serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO );
-    serializeMethod.param( domainType, PARAM_NAME_OBJECT );
+    serializeMethod.param( domainType, VAR_NAME_OBJECT );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
 
     for ( MethodDecorator methodDecorator : codeGenerator.getMethodDecorators() ) {
