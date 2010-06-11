@@ -30,11 +30,11 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   /**
    * Creates a new generator
    *
-   * @param decisionCallback the decision callback
+   * @param codeGenerator the code generator
    */
-  public StaxMateGenerator( @NotNull XmlDecisionCallback decisionCallback ) {
-    super( new CodeGenerator<XmlDecisionCallback>( decisionCallback ) );
-    this.creators = new SerializingEntryCreators( codeGenerator );
+  public StaxMateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+    super( codeGenerator );
+    this.creators = new SerializingEntryCreators( this.codeGenerator );
   }
 
   @Override

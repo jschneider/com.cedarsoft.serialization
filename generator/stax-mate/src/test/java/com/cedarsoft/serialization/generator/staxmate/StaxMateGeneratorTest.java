@@ -1,8 +1,11 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.decorators.NotNullMethodDecorator;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -41,7 +44,10 @@ public class StaxMateGeneratorTest {
     assertNotNull( domainObjectDescriptor );
 
     assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 5 );
-    generator = new StaxMateGenerator( new DefaultXmlDecisionCallback( "width", "height" ) );
+    final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
+    CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
+    codeGenerator.addMethodDecorator( new NotNullMethodDecorator() );
+    generator = new StaxMateGenerator( codeGenerator );
     model = generator.getCodeGenerator().getModel();
   }
 

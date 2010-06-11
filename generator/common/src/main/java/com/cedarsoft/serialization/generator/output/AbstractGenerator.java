@@ -157,20 +157,29 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
-    serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO ).annotate( NotNull.class );
-    serializeMethod.param( domainType, PARAM_NAME_OBJECT ).annotate( NotNull.class );
+    serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO );
+    serializeMethod.param( domainType, PARAM_NAME_OBJECT );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
+
+    for ( MethodDecorator methodDecorator : codeGenerator.getMethodDecorators() ) {
+      methodDecorator.decorateSerializeMethod( codeGenerator, domainType, serializerClass, serializeMethod );
+    }
+
     return serializeMethod;
   }
 
   @NotNull
   protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
     JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
-    deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM ).annotate( NotNull.class );
-    deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION ).annotate( NotNull.class );
+    deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM );
+    deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION );
     deserializeMethod.annotate( Override.class );
-    deserializeMethod.annotate( NotNull.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
+
+    for ( MethodDecorator methodDecorator : codeGenerator.getMethodDecorators() ) {
+      methodDecorator.decorateDeserializeMethod( codeGenerator, domainType, serializerClass, deserializeMethod );
+    }
+
     return deserializeMethod;
   }
 
