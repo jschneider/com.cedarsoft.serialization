@@ -28,6 +28,14 @@ public class ParseExpressionFactory {
       return model.ref( Integer.class ).staticInvoke( "parseInt" ).arg( varAsString );
     }
 
+    if ( fieldInfo.isType( Float.TYPE ) || fieldInfo.isType( Float.class ) ) {
+      return model.ref( Float.class ).staticInvoke( "parseFloat" ).arg( varAsString );
+    }
+
+    if ( fieldInfo.isType( Boolean.TYPE ) || fieldInfo.isType( Boolean.class ) ) {
+      return model.ref( Boolean.class ).staticInvoke( "parseBoolean" ).arg( varAsString );
+    }
+
     if ( fieldInfo.isType( String.class ) ) {
       return varAsString;
     }
