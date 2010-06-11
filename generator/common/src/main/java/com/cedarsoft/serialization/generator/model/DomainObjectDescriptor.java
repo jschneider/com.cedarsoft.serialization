@@ -94,6 +94,18 @@ public class DomainObjectDescriptor {
     return found;
   }
 
+  @NotNull
+  public List<? extends FieldInitializedInSetterInfo> getFieldsToSerializeInitializedInSetter() {
+    List<FieldInitializedInSetterInfo> found = new ArrayList<FieldInitializedInSetterInfo>();
+    for ( FieldWithInitializationInfo info : fieldsToSerialize ) {
+      if ( info instanceof FieldInitializedInSetterInfo ) {
+        found.add( ( FieldInitializedInSetterInfo ) info );
+      }
+    }
+
+    return found;
+  }
+
   private static class FieldWithInitializationInfoComparator implements Comparator<FieldInitializedInConstructorInfo>, Serializable {
     @Override
     public int compare( FieldInitializedInConstructorInfo o1, FieldInitializedInConstructorInfo o2 ) {

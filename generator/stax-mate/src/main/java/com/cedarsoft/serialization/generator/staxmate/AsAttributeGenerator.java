@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
   public class AsAttributeGenerator implements SerializeToGenerator {
     @Override
     @NotNull
-    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo ) {
       return serializeTo.invoke( "addAttribute" )
         .arg( fieldInfo.getSimpleName() )
         .arg( objectAsString );
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
     @Override
     @NotNull
-    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
       return deserializeFrom.invoke( "getAttributeValue" ).arg( JExpr._null() ).arg( fieldInfo.getSimpleName() );
     }
   }

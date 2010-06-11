@@ -4,8 +4,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -113,13 +113,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
 
     //Add the serialize stuff
-    Map<FieldWithInitializationInfo, JVar> fieldToVar = addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+    Map<FieldDeclarationInfo, JVar> fieldToVar = addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
 
     //Now construct the deserialized object
     constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
   }
 
-  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldWithInitializationInfo, JVar> fieldToVar ) {
+  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
     //Now create the constructor for the deserializeMethod
@@ -176,7 +176,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    * @param serializeMethod        the serialize method
    * @param deserializeMethod      the deserialize method
    */
-  protected abstract Map<FieldWithInitializationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
+  protected abstract Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
 
   /**
    * Returns the exception type that is thrown on the serialize and deserialize methods

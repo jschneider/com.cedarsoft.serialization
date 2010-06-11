@@ -2,8 +2,7 @@ package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -40,8 +38,8 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   }
 
   @Override
-  protected Map<FieldWithInitializationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
+  protected Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+    Map<FieldDeclarationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
     JVar serializeTo = serializeMethod.listParams()[0];
@@ -52,7 +50,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     JVar formatVersion = deserializeMethod.listParams()[1];
 
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
-    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
+    for ( FieldDeclarationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       SerializingEntryGenerator generator = creators.findGenerator();
 
       generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );

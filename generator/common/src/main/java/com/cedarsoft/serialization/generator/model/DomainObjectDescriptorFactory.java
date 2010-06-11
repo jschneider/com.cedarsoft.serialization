@@ -56,11 +56,23 @@ public class DomainObjectDescriptorFactory {
     DomainObjectDescriptor domainObjectDescriptor = new DomainObjectDescriptor( classDeclaration );
 
     for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
-      FieldWithInitializationInfo info = getFieldInitializeInConstructorInfo( fieldDeclaration );
+      FieldWithInitializationInfo info = getFieldWithInitializationInfo( fieldDeclaration );
       domainObjectDescriptor.addField( info );
     }
 
     return domainObjectDescriptor;
+  }
+
+  @NotNull
+  public FieldWithInitializationInfo getFieldWithInitializationInfo( @NotNull FieldDeclaration fieldDeclaration ) {
+    MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
+    try {
+      ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
+      return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
+    } catch ( IllegalArgumentException ignore ) {
+      MethodDeclaration setter = findSetter( fieldDeclaration );
+      return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter );
+    }
   }
 
   @NotNull
@@ -97,12 +109,12 @@ public class DomainObjectDescriptorFactory {
   }
 
   @NotNull
-  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull FieldDeclaration fieldDeclaration ) {
+  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull FieldDeclaration fieldDeclaration ) throws IllegalArgumentException {
     return findConstructorCallInfoForField( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
   @NotNull
-  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
     ConstructorDeclaration constructorDeclaration = findBestConstructor();
 
     int index = 0;
@@ -120,6 +132,35 @@ public class DomainObjectDescriptorFactory {
     }
 
     throw new IllegalArgumentException( "No parameter found that fits <" + simpleName + ">" );
+  }
+
+  @NotNull
+  public MethodDeclaration findSetter( @NotNull FieldDeclaration fieldDeclaration ) {
+    return findSetter( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  }
+
+  @NotNull
+  public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+    String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
+
+    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
+      if ( !methodDeclaration.getSimpleName().equals( expectedName ) ) {
+        continue;
+      }
+
+      if ( methodDeclaration.getParameters().size() != 1 ) {
+        throw new IllegalArgumentException( "Expected one parameter. But was <" + methodDeclaration.getParameters() + ">" );
+      }
+
+      ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
+      if ( !parameterDeclaration.getType().equals( type ) ) {
+        throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
+      }
+
+      return methodDeclaration;
+    }
+
+    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
   }
 
   @NotNull
@@ -147,6 +188,6 @@ public class DomainObjectDescriptorFactory {
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
     ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
     MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
-    return new FieldInitializedInConstructorInfo( fieldDeclaration, constructorCallInfo, getterDeclaration );
+    return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
   }
 }

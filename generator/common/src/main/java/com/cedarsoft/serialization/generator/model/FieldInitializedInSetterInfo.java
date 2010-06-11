@@ -38,17 +38,17 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class FieldInitializedInConstructorInfo extends DefaultFieldDeclarationInfo implements FieldWithInitializationInfo {
+public class FieldInitializedInSetterInfo extends DefaultFieldDeclarationInfo implements FieldWithInitializationInfo {
   @NotNull
-  private final ConstructorCallInfo constructorCallInfo;
+  private final MethodDeclaration setterDeclaration;
 
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo ) {
+  public FieldInitializedInSetterInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull MethodDeclaration setterDeclaration ) {
     super( getterDeclaration, fieldDeclaration );
-    this.constructorCallInfo = constructorCallInfo;
+    this.setterDeclaration = setterDeclaration;
   }
 
   @NotNull
-  public ConstructorCallInfo getConstructorCallInfo() {
-    return constructorCallInfo;
+  public MethodDeclaration getSetterDeclaration() {
+    return setterDeclaration;
   }
 }

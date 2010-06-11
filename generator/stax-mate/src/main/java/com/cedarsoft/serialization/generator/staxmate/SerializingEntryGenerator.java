@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public interface SerializingEntryGenerator {
-  void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
+  void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
 
   /**
    * Returns the var the deserialized value is stored in
@@ -21,5 +21,5 @@ public interface SerializingEntryGenerator {
    * @return
    */
   @NotNull
-  JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
+  JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
 }

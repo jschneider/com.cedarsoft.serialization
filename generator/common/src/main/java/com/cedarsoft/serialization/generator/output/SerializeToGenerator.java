@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.output;
 
-import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JStatement;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ public interface SerializeToGenerator {
    * @return the invocation the serializes the given
    */
   @NotNull
-  JStatement createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo );
+  JStatement createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo );
 
   /**
    * Creates an expression that is used to read an object (as String) from <code>deserializeFrom</code>
@@ -29,5 +29,5 @@ public interface SerializeToGenerator {
    * @return the expression that returns the object as string
    */
   @NotNull
-  JExpression createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo );
+  JExpression createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo );
 }

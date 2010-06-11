@@ -33,22 +33,24 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.type.TypeMirror;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Contains informations about a field and its initialization
  */
-public class FieldInitializedInConstructorInfo extends DefaultFieldDeclarationInfo implements FieldWithInitializationInfo {
+public interface FieldDeclarationInfo extends FieldTypeInformation, FieldInfo {
+  /**
+   * Returns the the field declaration
+   *
+   * @return the field declaration
+   */
   @NotNull
-  private final ConstructorCallInfo constructorCallInfo;
-
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo ) {
-    super( getterDeclaration, fieldDeclaration );
-    this.constructorCallInfo = constructorCallInfo;
-  }
+  FieldDeclaration getFieldDeclaration();
 
   @NotNull
-  public ConstructorCallInfo getConstructorCallInfo() {
-    return constructorCallInfo;
-  }
+  @NonNls
+  MethodDeclaration getGetterDeclaration();
+
 }
