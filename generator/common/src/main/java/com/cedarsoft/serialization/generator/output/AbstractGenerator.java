@@ -4,17 +4,24 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
+import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
+import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
+import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @param <T> the type of the decision callback
@@ -106,7 +113,32 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
 
     //Add the serialize stuff
-    addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+    Map<FieldWithInitializationInfo, JVar> fieldToVar = addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+
+    //Now construct the deserialized object
+    constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
+  }
+
+  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldWithInitializationInfo, JVar> fieldToVar ) {
+    deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
+
+    //Now create the constructor for the deserializeMethod
+    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JInvocation domainTypeInit = JExpr._new( domainType );
+
+    {
+      List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsToSerializeInitializedInConstructor();
+      for ( FieldInitializedInConstructorInfo fieldInfo : fieldsToSerialize ) {
+        domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
+      }
+
+      //Add the return type
+      JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
+
+      //todo setters(?)
+
+      deserializeMethod.body()._return( domainObjectVar );
+    }
   }
 
   /**
@@ -144,7 +176,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    * @param serializeMethod        the serialize method
    * @param deserializeMethod      the deserialize method
    */
-  protected abstract void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
+  protected abstract Map<FieldWithInitializationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
 
   /**
    * Returns the exception type that is thrown on the serialize and deserialize methods

@@ -7,11 +7,8 @@ import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.output.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -20,9 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,7 +40,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   }
 
   @Override
-  protected void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  protected Map<FieldWithInitializationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
@@ -69,29 +64,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
 
     //Call closeTag( deserializeFrom ); on deserialize
     deserializeMethod.body().invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
-
-    deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
-
-    //Now create the constructor for the deserializeMethod
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
-    JInvocation domainTypeInit = JExpr._new( domainType );
-
-    {
-      List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList( domainObjectDescriptor.getFieldsToSerialize() );
-      //Sort the fields to fit the constructor order
-      Collections.sort( fieldsToSerialize, new FieldWithInitializationInfoComparator() );
-
-      for ( FieldWithInitializationInfo fieldInfo : fieldsToSerialize ) {
-        domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
-      }
-
-      //Add the return type
-      JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
-
-      //todo setters(?)
-
-      deserializeMethod.body()._return( domainObjectVar );
-    }
+    return fieldToVar;
   }
 
   @NotNull
@@ -116,12 +89,5 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   protected Class<?> getSerializeToType() {
     return SMOutputElement.class;
-  }
-
-  private static class FieldWithInitializationInfoComparator implements Comparator<FieldWithInitializationInfo> {
-    @Override
-    public int compare( FieldWithInitializationInfo o1, FieldWithInitializationInfo o2 ) {
-      return Integer.valueOf( ( ( FieldInitializedInConstructorInfo ) o1 ).getConstructorCallInfo().getIndex() ).compareTo( ( ( FieldInitializedInConstructorInfo ) o2 ).getConstructorCallInfo().getIndex() );
-    }
   }
 }
