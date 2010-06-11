@@ -11,7 +11,7 @@ public class SerializingEntryCreators {
   private final SerializingEntryGenerator toStringEntryGenerator;
 
   public SerializingEntryCreators( @NotNull JCodeModel model ) {
-    toStringEntryGenerator = new ToStringSerializingEntryGenerator( model );
+    toStringEntryGenerator = new ToStringSerializingEntryGenerator.AsElementGenerator( model );
   }
 
   @NotNull

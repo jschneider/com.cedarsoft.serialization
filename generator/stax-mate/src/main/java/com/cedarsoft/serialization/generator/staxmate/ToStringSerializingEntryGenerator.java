@@ -17,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 public class ToStringSerializingEntryGenerator implements SerializingEntryGenerator {
   @NonNls
   public static final String STRING_VALUE_OF = "valueOf";
-
   @NotNull
-  private final JCodeModel model;
+  protected final JCodeModel model;
 
   public ToStringSerializingEntryGenerator( @NotNull JCodeModel model ) {
     this.model = model;
   }
+
 
   @Override
   public void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
@@ -73,4 +73,12 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
   }
 
+  /**
+   *
+   */
+  public static class AsElementGenerator extends ToStringSerializingEntryGenerator {
+    public AsElementGenerator( @NotNull JCodeModel model ) {
+      super( model );
+    }
+  }
 }
