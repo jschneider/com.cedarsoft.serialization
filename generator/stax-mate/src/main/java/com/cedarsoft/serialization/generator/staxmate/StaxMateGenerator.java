@@ -6,7 +6,6 @@ import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
@@ -39,30 +38,26 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
 
   @Override
   protected Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    Map<FieldDeclarationInfo, JVar> fieldToVar = Maps.newHashMap();
-
-    //Extract the parameters for the serialize method
-    JVar serializeTo = serializeMethod.listParams()[0];
-    JVar object = serializeMethod.listParams()[1];
-
-    //Extract the parameters for the deserialize method
-    JVar deserializeFrom = deserializeMethod.listParams()[0];
-    JVar formatVersion = deserializeMethod.listParams()[1];
-
-    //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
-    for ( FieldDeclarationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
-      SerializingEntryGenerator generator = creators.findGenerator();
-
-      generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
-
-      JVar theVar = generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
-
-      fieldToVar.put( fieldInfo, theVar );
+    try {
+      return super.addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+    } finally {
+      //Call closeTag( deserializeFrom ); on deserialize
+      JVar deserializeFrom = deserializeMethod.listParams()[0];
+      deserializeMethod.body().invoke( StaxMateGenerator.METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
     }
+  }
 
-    //Call closeTag( deserializeFrom ); on deserialize
-    deserializeMethod.body().invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
-    return fieldToVar;
+  @Override
+  @NotNull
+  protected JVar appendDeserializeStatement( @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+    SerializingEntryGenerator generator = creators.findGenerator();
+    return generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
+  }
+
+  @Override
+  protected void appendSerializeStatement( @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
+    SerializingEntryGenerator generator = creators.findGenerator();
+    generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
   }
 
   @NotNull

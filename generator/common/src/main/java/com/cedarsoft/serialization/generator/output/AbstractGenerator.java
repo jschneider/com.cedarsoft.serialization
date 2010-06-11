@@ -7,6 +7,7 @@ import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
+import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -183,15 +184,26 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     return deserializeMethod;
   }
 
-  /**
-   * Adds the serialization stuff to the (de)serialize methods
-   *
-   * @param domainObjectDescriptor the domain object descriptor
-   * @param serializeMethod        the serialize method
-   * @param deserializeMethod      the deserialize method
-   * @return the mapping between the field declarations and the created vars
-   */
-  protected abstract Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
+  protected Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+    Map<FieldDeclarationInfo, JVar> fieldToVar = Maps.newHashMap();
+
+    //Extract the parameters for the serialize method
+    JVar serializeTo = serializeMethod.listParams()[0];
+    JVar object = serializeMethod.listParams()[1];
+
+    //Extract the parameters for the deserialize method
+    JVar deserializeFrom = deserializeMethod.listParams()[0];
+    JVar formatVersion = deserializeMethod.listParams()[1];
+
+    //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
+    for ( FieldDeclarationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
+      appendSerializeStatement( serializeMethod, serializeTo, object, fieldInfo );
+
+      fieldToVar.put( fieldInfo, appendDeserializeStatement( deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
+    }
+    
+    return fieldToVar;
+  }
 
   /**
    * Returns the exception type that is thrown on the serialize and deserialize methods
@@ -216,4 +228,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    */
   @NotNull
   protected abstract Class<?> getSerializeToType();
+
+  @NotNull
+  protected abstract JVar appendDeserializeStatement( @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+
+  protected abstract void appendSerializeStatement( @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
 }
