@@ -3,8 +3,6 @@ package com.cedarsoft.serialization.generator.staxmate;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
@@ -40,23 +38,23 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
       wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
     }
 
-    Strategy strategy = getStrategy( fieldInfo );
-    method.body().add( strategy.createAddToSerializeToExpression( serializeTo, wrappedGetterInvocation, fieldInfo ) );
+    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
+    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializeTo, wrappedGetterInvocation, fieldInfo ) );
   }
 
   @NotNull
   @Override
   public JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    Strategy strategy = getStrategy( fieldInfo );
+    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JInvocation readToStringExpression = strategy.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
+    JInvocation readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), parseExpressionFactory.createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull
-  private Strategy getStrategy( @NotNull FieldWithInitializationInfo fieldInfo ) {
+  private SerializeToGenerator getStrategy( @NotNull FieldWithInitializationInfo fieldInfo ) {
     if ( fieldInfo.isType( Integer.TYPE ) ) {
       return asAttribute;
     }
@@ -65,62 +63,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
 
   @NotNull
-  private final Strategy asElement = new AsElementGenerator();
+  private final SerializeToGenerator asElement = new AsElementGenerator();
   @NotNull
-  private final Strategy asAttribute = new AsAttributeGenerator();
+  private final SerializeToGenerator asAttribute = new AsAttributeGenerator();
 
-  public interface Strategy {
-    /**
-     * Creates an invocation that is used to store the object (converted as string) to the serializeTo object
-     *
-     * @param serializeTo    the serialize to var
-     * @param objectAsString the getter invocation used to get the value as string
-     * @param fieldInfo      the field info
-     * @return the invocation the serializes the given
-     */
-    @NotNull
-    JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo );
-
-    @NotNull
-    JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo );
-  }
-
-  /**
-   * Generates a new element
-   */
-  public static class AsElementGenerator implements Strategy {
-    @Override
-    @NotNull
-    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
-      return serializeTo.invoke( "addElementWithCharacters" )
-        .arg( serializeTo.invoke( "getNamespace" ) )
-        .arg( fieldInfo.getSimpleName() )
-        .arg( objectAsString );
-    }
-
-    @Override
-    @NotNull
-    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo ) {
-      return JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() );
-    }
-  }
-
-  /**
-   * Generates an attribute
-   */
-  public static class AsAttributeGenerator implements Strategy {
-    @Override
-    @NotNull
-    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
-      return serializeTo.invoke( "addAttribute" )
-        .arg( fieldInfo.getSimpleName() )
-        .arg( objectAsString );
-    }
-
-    @Override
-    @NotNull
-    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo ) {
-      return deserializeFrom.invoke( "getAttributeValue" ).arg( JExpr._null() ).arg( fieldInfo.getSimpleName() );
-    }
-  }
 }
