@@ -3,8 +3,10 @@ package com.cedarsoft.serialization.generator.staxmate;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +49,7 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   public JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JInvocation readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
+    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), parseExpressionFactory.createParseExpression( readToStringExpression, fieldInfo ) );
