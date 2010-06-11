@@ -28,8 +28,18 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
    */
   @NotNull
   public static final Version VERSION = Version.valueOf( 1, 0, 0 );
+  @NonNls
+  public static final String METHOD_NAME_FROM = "from";
+  @NonNls
+  public static final String METHOD_NAME_TO = "to";
+  @NonNls
+  public static final String METHOD_SUPER = "super";
 
-
+  /**
+   * Creates a new generator
+   *
+   * @param codeGenerator the used code generator
+   */
   protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
@@ -37,26 +47,45 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @Override
   protected void createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
     serializerClass.constructor( JMod.PUBLIC ).body()
-      .invoke( "super" ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
+      .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
       .arg( createDefaultVersionRangeInvocation( AbstractXmlGenerator.VERSION, AbstractXmlGenerator.VERSION ) );
   }
 
+  /**
+   * Returns the namespace that is used for the serialized documents
+   *
+   * @param domainObjectDescriptor the object descriptor
+   * @return the namespace
+   */
   @NotNull
   @NonNls
-  String getNamespace( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  protected String getNamespace( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
     return NameSpaceSupport.createNameSpaceUriBase( domainObjectDescriptor.getQualifiedName() ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
   }
 
+  /**
+   * Returns the default element name
+   *
+   * @param domainObjectDescriptor the descriptor
+   * @return the default element name
+   */
   @NotNull
   @NonNls
   protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
     return domainObjectDescriptor.getClassDeclaration().getSimpleName().toLowerCase();
   }
 
+  /**
+   * Creates the default version range invocation
+   *
+   * @param from the from version
+   * @param to   the to version
+   * @return the invocation creating the version range
+   */
   @NotNull
   protected JInvocation createDefaultVersionRangeInvocation( @NotNull Version from, @NotNull Version to ) {
     JClass versionRangeType = codeModel.ref( VersionRange.class );
-    return versionRangeType.staticInvoke( "from" ).arg( JExpr.lit( from.getMajor() ) ).arg( JExpr.lit( from.getMinor() ) ).arg( JExpr.lit( from.getBuild() ) )
-      .invoke( "to" ).arg( JExpr.lit( to.getMajor() ) ).arg( JExpr.lit( to.getMinor() ) ).arg( JExpr.lit( to.getBuild() ) );
+    return versionRangeType.staticInvoke( METHOD_NAME_FROM ).arg( JExpr.lit( from.getMajor() ) ).arg( JExpr.lit( from.getMinor() ) ).arg( JExpr.lit( from.getBuild() ) )
+      .invoke( METHOD_NAME_TO ).arg( JExpr.lit( to.getMajor() ) ).arg( JExpr.lit( to.getMinor() ) ).arg( JExpr.lit( to.getBuild() ) );
   }
 }

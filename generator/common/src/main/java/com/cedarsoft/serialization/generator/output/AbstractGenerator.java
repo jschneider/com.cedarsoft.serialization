@@ -36,10 +36,17 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    */
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE = "deserialize";
+  @NonNls
+  public static final String METHOD_NAME_DESERIALIZE_FROM = "deserializeFrom";
+  @NonNls
+  public static final String PARAM_NAME_FORMAT_VERSION = "formatVersion";
+  @NonNls
+  public static final String PARAM_NAME_SERIALIZE_TO = "serializeTo";
+  @NonNls
+  public static final String PARAM_NAME_OBJECT = "object";
 
   @NotNull
   protected final CodeGenerator<T> codeGenerator;
-
   @NotNull
   protected final JCodeModel codeModel;
 
@@ -111,23 +118,23 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   protected abstract void createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor );
 
   @NotNull
-  protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
-    JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
-    deserializeMethod.param( getSerializeFromType(), "deserializeFrom" ).annotate( NotNull.class );
-    deserializeMethod.param( Version.class, "formatVersion" ).annotate( NotNull.class );
-    deserializeMethod.annotate( Override.class );
-    deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
-    return deserializeMethod;
-  }
-
-  @NotNull
   protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
-    serializeMethod.param( getSerializeToType(), "serializeTo" ).annotate( NotNull.class );
-    serializeMethod.param( domainType, "object" ).annotate( NotNull.class );
+    serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO ).annotate( NotNull.class );
+    serializeMethod.param( domainType, PARAM_NAME_OBJECT ).annotate( NotNull.class );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
     return serializeMethod;
+  }
+
+  @NotNull
+  protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
+    JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
+    deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM ).annotate( NotNull.class );
+    deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION ).annotate( NotNull.class );
+    deserializeMethod.annotate( Override.class );
+    deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
+    return deserializeMethod;
   }
 
   /**

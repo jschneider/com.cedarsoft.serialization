@@ -15,6 +15,7 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
@@ -28,6 +29,8 @@ import java.util.Map;
  * Generator for stax mate based parsers
  */
 public class StaxMateGenerator extends AbstractXmlGenerator {
+  @NonNls
+  public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
   @NotNull
   private final SerializingEntryCreators creators;
 
@@ -65,7 +68,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     }
 
     //Call closeTag( deserializeFrom ); on deserialize
-    deserializeMethod.body().invoke( "closeTag" ).arg( deserializeFrom );
+    deserializeMethod.body().invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
 
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
@@ -76,12 +79,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     {
       List<FieldWithInitializationInfo> fieldsToSerialize = Lists.newArrayList( domainObjectDescriptor.getFieldsToSerialize() );
       //Sort the fields to fit the constructor order
-      Collections.sort( fieldsToSerialize, new Comparator<FieldWithInitializationInfo>() {
-        @Override
-        public int compare( FieldWithInitializationInfo o1, FieldWithInitializationInfo o2 ) {
-          return Integer.valueOf( ( ( FieldInitializedInConstructorInfo ) o1 ).getConstructorCallInfo().getIndex() ).compareTo( ( ( FieldInitializedInConstructorInfo ) o2 ).getConstructorCallInfo().getIndex() );
-        }
-      } );
+      Collections.sort( fieldsToSerialize, new FieldWithInitializationInfoComparator() );
 
       for ( FieldWithInitializationInfo fieldInfo : fieldsToSerialize ) {
         domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
@@ -118,5 +116,12 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   protected Class<?> getSerializeToType() {
     return SMOutputElement.class;
+  }
+
+  private static class FieldWithInitializationInfoComparator implements Comparator<FieldWithInitializationInfo> {
+    @Override
+    public int compare( FieldWithInitializationInfo o1, FieldWithInitializationInfo o2 ) {
+      return Integer.valueOf( ( ( FieldInitializedInConstructorInfo ) o1 ).getConstructorCallInfo().getIndex() ).compareTo( ( ( FieldInitializedInConstructorInfo ) o2 ).getConstructorCallInfo().getIndex() );
+    }
   }
 }
