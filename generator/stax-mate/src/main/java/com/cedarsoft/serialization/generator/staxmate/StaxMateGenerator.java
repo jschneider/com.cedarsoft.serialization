@@ -51,13 +51,13 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
 
   @Override
   @NotNull
-  protected JVar appendDeserializeStatement( @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     SerializingEntryGenerator generator = creators.findGenerator();
     return generator.appendDeserializing( deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
   }
 
   @Override
-  protected void appendSerializeStatement( @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
+  protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
     SerializingEntryGenerator generator = creators.findGenerator();
     generator.appendSerializing( serializeMethod, serializeTo, object, fieldInfo );
   }

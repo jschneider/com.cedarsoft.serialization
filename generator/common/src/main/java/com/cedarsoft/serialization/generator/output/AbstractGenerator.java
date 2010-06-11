@@ -198,9 +198,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
 
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
     for ( FieldDeclarationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
-      appendSerializeStatement( serializeMethod, serializeTo, object, fieldInfo );
+      appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
 
-      fieldToVar.put( fieldInfo, appendDeserializeStatement( deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
+      fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
     }
 
     return fieldToVar;
@@ -231,7 +231,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   protected abstract Class<?> getSerializeToType();
 
   @NotNull
-  protected abstract JVar appendDeserializeStatement( @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  protected abstract JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
 
-  protected abstract void appendSerializeStatement( @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
+  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
 }
