@@ -251,4 +251,29 @@ public class CodemodelTest {
       "}" );
   }
 
+  @Test
+  public void testcomments() throws Exception {
+    JDefinedClass aClass = model._class( "org.test.DaTestClass" );
+    JMethod method = aClass.method( JMod.PUBLIC, String.class, "getString" );
+
+    method.body().directStatement( "//a comment!!" );
+    method.body().directStatement( "//a comment2!!" );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------org.test.DaTestClass.java-----------------------------------\n" +
+      "\n" +
+      "package org.test;\n" +
+      "\n" +
+      "\n" +
+      "public class DaTestClass {\n" +
+      "\n" +
+      "\n" +
+      "    public String getString() {\n" +
+      "        //a comment!!\n" +
+      "        //a comment2!!\n" +
+      "    }\n" +
+      "\n" +
+      "}" );
+  }
+
 }
