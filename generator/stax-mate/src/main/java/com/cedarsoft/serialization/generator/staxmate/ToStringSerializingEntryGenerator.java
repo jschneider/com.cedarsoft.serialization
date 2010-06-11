@@ -38,13 +38,15 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     }
 
     Strategy strategy = getStrategy( fieldInfo );
-    method.body().add( strategy.createSerializeInvocation( serializeTo, wrappedGetterInvocation, fieldInfo ) );
+    method.body().add( strategy.createAddToSerializeToExpression( serializeTo, wrappedGetterInvocation, fieldInfo ) );
   }
 
   @NotNull
   @Override
   public JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
-    JInvocation readToStringExpression = JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() );
+    Strategy strategy = getStrategy( fieldInfo );
+
+    JInvocation readToStringExpression = strategy.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
 
     JClass fieldType = model.ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), createParseExpression( readToStringExpression, fieldInfo ) );
@@ -85,7 +87,7 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
   public interface Strategy {
     /**
-     * Creates the serialize invocation
+     * Creates an invocation that is used to store the object (converted as string) to the serializeTo object
      *
      * @param serializeTo    the serialize to var
      * @param objectAsString the getter invocation used to get the value as string
@@ -93,7 +95,10 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
      * @return the invocation the serializes the given
      */
     @NotNull
-    JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo );
+    JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo );
+
+    @NotNull
+    JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo );
   }
 
   /**
@@ -102,11 +107,17 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   public static class AsElementGenerator implements Strategy {
     @Override
     @NotNull
-    public JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
       return serializeTo.invoke( "addElementWithCharacters" )
         .arg( serializeTo.invoke( "getNamespace" ) )
         .arg( fieldInfo.getSimpleName() )
         .arg( objectAsString );
+    }
+
+    @Override
+    @NotNull
+    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      return JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( fieldInfo.getSimpleName() );
     }
   }
 
@@ -116,10 +127,16 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   public static class AsAttributeGenerator implements Strategy {
     @Override
     @NotNull
-    public JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    public JInvocation createAddToSerializeToExpression( @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
       return serializeTo.invoke( "addAttribute" )
         .arg( fieldInfo.getSimpleName() )
         .arg( objectAsString );
+    }
+
+    @Override
+    @NotNull
+    public JInvocation createReadFromDeserializeFromExpression( @NotNull JExpression deserializeFrom, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      return deserializeFrom.invoke( "getAttributeValue" ).arg( JExpr._null() ).arg( fieldInfo.getSimpleName() );
     }
   }
 }
