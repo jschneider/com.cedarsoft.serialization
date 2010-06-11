@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.generator.staxmate;
+package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.sun.codemodel.JExpression;

@@ -1,12 +1,12 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
