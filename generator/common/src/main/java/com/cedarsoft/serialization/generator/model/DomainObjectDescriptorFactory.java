@@ -56,7 +56,7 @@ public class DomainObjectDescriptorFactory {
     DomainObjectDescriptor domainObjectDescriptor = new DomainObjectDescriptor( classDeclaration );
 
     for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
-      FieldInitializedInConstructorInfo info = getFieldInitializeInConstructorInfo( fieldDeclaration );
+      FieldWithInitializationInfo info = getFieldInitializeInConstructorInfo( fieldDeclaration );
       domainObjectDescriptor.addField( info );
     }
 
