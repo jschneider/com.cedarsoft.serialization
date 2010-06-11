@@ -115,7 +115,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
 
     //Add the serialize stuff
-    Map<FieldDeclarationInfo, JVar> fieldToVar = addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+    Map<FieldDeclarationInfo, JVar> fieldToVar = fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
 
     //Now construct the deserialized object
     constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
@@ -184,7 +184,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     return deserializeMethod;
   }
 
-  protected Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  @NotNull
+  protected Map<FieldDeclarationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     Map<FieldDeclarationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
@@ -201,7 +202,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
 
       fieldToVar.put( fieldInfo, appendDeserializeStatement( deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
     }
-    
+
     return fieldToVar;
   }
 

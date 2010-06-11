@@ -7,6 +7,7 @@ import com.cedarsoft.serialization.generator.output.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.sun.codemodel.JClass;
+import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -36,10 +37,11 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     this.creators = new SerializingEntryCreators( this.codeGenerator );
   }
 
+  @NotNull
   @Override
-  protected Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  protected Map<FieldDeclarationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
     try {
-      return super.addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+      return super.fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
     } finally {
       //Call closeTag( deserializeFrom ); on deserialize
       JVar deserializeFrom = deserializeMethod.listParams()[0];
