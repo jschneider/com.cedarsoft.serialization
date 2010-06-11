@@ -72,8 +72,9 @@ public class StaxMateGenerator {
   private final SerializingEntryCreators creators;
 
   /**
-   * Creatse a new generator
-   * @param decisionCallback
+   * Creates a new generator
+   *
+   * @param decisionCallback the decision callback
    */
   public StaxMateGenerator( @NotNull XmlDecisionCallback decisionCallback ) {
     this.codeModel = new JCodeModel();
@@ -96,10 +97,7 @@ public class StaxMateGenerator {
    * @param classesToSerialize the classes test will be generated for
    * @throws JClassAlreadyExistsException
    */
-  @NotNull
   public void generate( @NotNull DomainObjectDescriptor... classesToSerialize ) throws JClassAlreadyExistsException {
-    JCodeModel codeModel = new JCodeModel();
-
     for ( DomainObjectDescriptor domainObjectDescriptor : classesToSerialize ) {
       generate( domainObjectDescriptor );
     }
