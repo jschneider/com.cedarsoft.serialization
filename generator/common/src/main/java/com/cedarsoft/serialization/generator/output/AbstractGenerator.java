@@ -6,6 +6,7 @@ import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
+import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -126,16 +127,19 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
-
+    //Add the arguments for the fields
     List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsToSerializeInitializedInConstructor();
     for ( FieldInitializedInConstructorInfo fieldInfo : fieldsToSerialize ) {
       domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
     }
 
-    //Add the return type
+    //Add the object type
     JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
 
-    //todo setters(?)
+    //Now call the setters
+    for ( FieldInitializedInSetterInfo fieldInfo : domainObjectDescriptor.getFieldsToSerializeInitializedInSetter() ) {
+      deserializeMethod.body().add( domainObjectVar.invoke( fieldInfo.getSetterDeclaration().getSimpleName() ).arg( fieldToVar.get( fieldInfo ) ) );
+    }
 
     deserializeMethod.body()._return( domainObjectVar );
 
