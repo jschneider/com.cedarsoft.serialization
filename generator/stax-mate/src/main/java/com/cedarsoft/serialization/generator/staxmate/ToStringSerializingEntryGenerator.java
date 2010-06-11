@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JClass;
@@ -18,21 +19,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ToStringSerializingEntryGenerator implements SerializingEntryGenerator {
   @NotNull
-  protected final JCodeModel model;
+private final CodeGenerator codeGenerator;
 
-  @NotNull
-  private final ParseExpressionFactory parseExpressionFactory;
-
-  public ToStringSerializingEntryGenerator( @NotNull JCodeModel model, @NotNull ParseExpressionFactory parseExpressionFactory ) {
-    this.model = model;
-    this.parseExpressionFactory = parseExpressionFactory;
+  public ToStringSerializingEntryGenerator( @NotNull CodeGenerator codeGenerator ) {
+    this.codeGenerator = codeGenerator;
   }
 
   @Override
   public void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
-    JExpression objectAsString = parseExpressionFactory.createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
+    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
 
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
     method.body().add( serializeToHandler.createAddToSerializeToExpression( serializeTo, objectAsString, fieldInfo ) );
@@ -46,8 +43,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
     JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
 
-    JClass fieldType = model.ref( fieldInfo.getType().toString() );
-    return method.body().decl( fieldType, fieldInfo.getSimpleName(), parseExpressionFactory.createParseExpression( readToStringExpression, fieldInfo ) );
+    JClass fieldType = codeGenerator.getModel().ref( fieldInfo.getType().toString() );
+    return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull

@@ -7,6 +7,8 @@ import com.cedarsoft.serialization.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -73,7 +75,7 @@ public class StaxMateGenerator {
    */
   public StaxMateGenerator() {
     this.codeModel = new JCodeModel();
-    this.creators = new SerializingEntryCreators( codeModel );
+    this.creators = new SerializingEntryCreators( new CodeGenerator( codeModel, new ParseExpressionFactory( codeModel ) ) );
   }
 
   /**
