@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
+import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
@@ -16,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public class ToStringSerializingEntryGenerator implements SerializingEntryGenerator {
-  @NonNls
-  public static final String STRING_VALUE_OF = "valueOf";
   @NotNull
   protected final JCodeModel model;
 
@@ -33,18 +32,10 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   public void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
-    JClass jClass = model.ref( String.class );
-
-    JInvocation getterInvocation = object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() );
-    JInvocation wrappedGetterInvocation;
-    if ( fieldInfo.isType( String.class ) ) {
-      wrappedGetterInvocation = getterInvocation;
-    } else {
-      wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
-    }
+    JExpression objectAsString = parseExpressionFactory.createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
 
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
-    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializeTo, wrappedGetterInvocation, fieldInfo ) );
+    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializeTo, objectAsString, fieldInfo ) );
   }
 
   @NotNull
