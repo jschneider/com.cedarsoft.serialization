@@ -24,22 +24,22 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   }
 
   @Override
-  public void appendSerializing( JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
     JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
 
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
-    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializeTo, objectAsString, fieldInfo ) );
+    method.body().add( serializeToHandler.createAddToSerializeToExpression(serializerClass, serializeTo, objectAsString, fieldInfo ) );
   }
 
   @NotNull
   @Override
-  public JVar appendDeserializing( JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JVar appendDeserializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
+    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression(serializerClass, deserializeFrom, fieldInfo );
 
     JClass fieldType = codeGenerator.getModel().ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
