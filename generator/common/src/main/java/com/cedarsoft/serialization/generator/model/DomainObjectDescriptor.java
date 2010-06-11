@@ -36,7 +36,10 @@ import com.sun.mirror.declaration.ClassDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -70,5 +73,31 @@ public class DomainObjectDescriptor {
   @NotNull
   public List<? extends FieldWithInitializationInfo> getFieldsToSerialize() {
     return Collections.unmodifiableList( fieldsToSerialize );
+  }
+
+  /**
+   * Returns only the field infos that are initialized using the constructor
+   *
+   * @return the field infos initialized within the constructor
+   */
+  @NotNull
+  public List<? extends FieldInitializedInConstructorInfo> getFieldsToSerializeInitializedInConstructor() {
+    List<FieldInitializedInConstructorInfo> found = new ArrayList<FieldInitializedInConstructorInfo>();
+    for ( FieldWithInitializationInfo info : fieldsToSerialize ) {
+      if ( info instanceof FieldInitializedInConstructorInfo ) {
+        found.add( ( FieldInitializedInConstructorInfo ) info );
+      }
+    }
+
+    Collections.sort( found, new FieldWithInitializationInfoComparator() );
+
+    return found;
+  }
+
+  private static class FieldWithInitializationInfoComparator implements Comparator<FieldInitializedInConstructorInfo>, Serializable {
+    @Override
+    public int compare( FieldInitializedInConstructorInfo o1, FieldInitializedInConstructorInfo o2 ) {
+      return Integer.valueOf( o1.getConstructorCallInfo().getIndex() ).compareTo( o2.getConstructorCallInfo().getIndex() );
+    }
   }
 }
