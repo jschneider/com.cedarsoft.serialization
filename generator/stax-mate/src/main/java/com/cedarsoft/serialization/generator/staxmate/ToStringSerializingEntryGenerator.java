@@ -37,12 +37,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
       wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
     }
 
-    method.body().add(
-      serializeTo.invoke( "addElementWithCharacters" )
-        .arg( serializeTo.invoke( "getNamespace" ) )
-        .arg( fieldInfo.getSimpleName() )
-        .arg( wrappedGetterInvocation )
-    );
+    Strategy strategy = getStrategy( fieldInfo );
+    method.body().add( strategy.createSerializeInvocation( serializeTo, wrappedGetterInvocation, fieldInfo ) );
   }
 
   @NotNull
@@ -73,12 +69,57 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
     return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
   }
 
+  @NotNull
+  private Strategy getStrategy( @NotNull FieldWithInitializationInfo fieldInfo ) {
+    if ( fieldInfo.isType( Integer.TYPE ) ) {
+      return asAttribute;
+    }
+    return asElement;
+  }
+
+
+  @NotNull
+  private final Strategy asElement = new AsElementGenerator();
+  @NotNull
+  private final Strategy asAttribute = new AsAttributeGenerator();
+
+  public interface Strategy {
+    /**
+     * Creates the serialize invocation
+     *
+     * @param serializeTo    the serialize to var
+     * @param objectAsString the getter invocation used to get the value as string
+     * @param fieldInfo      the field info
+     * @return the invocation the serializes the given
+     */
+    @NotNull
+    JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo );
+  }
+
   /**
-   *
+   * Generates a new element
    */
-  public static class AsElementGenerator extends ToStringSerializingEntryGenerator {
-    public AsElementGenerator( @NotNull JCodeModel model ) {
-      super( model );
+  public static class AsElementGenerator implements Strategy {
+    @Override
+    @NotNull
+    public JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      return serializeTo.invoke( "addElementWithCharacters" )
+        .arg( serializeTo.invoke( "getNamespace" ) )
+        .arg( fieldInfo.getSimpleName() )
+        .arg( objectAsString );
+    }
+  }
+
+  /**
+   * Generates an attribute
+   */
+  public static class AsAttributeGenerator implements Strategy {
+    @Override
+    @NotNull
+    public JInvocation createSerializeInvocation( @NotNull JVar serializeTo, @NotNull JExpression objectAsString, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      return serializeTo.invoke( "addAttribute" )
+        .arg( fieldInfo.getSimpleName() )
+        .arg( objectAsString );
     }
   }
 }
