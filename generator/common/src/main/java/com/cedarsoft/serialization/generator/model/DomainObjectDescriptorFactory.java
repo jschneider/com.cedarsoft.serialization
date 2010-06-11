@@ -119,7 +119,7 @@ public class DomainObjectDescriptorFactory {
       index++;
     }
 
-    throw new IllegalArgumentException( "No parameter found that fits! " + simpleName );
+    throw new IllegalArgumentException( "No parameter found that fits <" + simpleName + ">" );
   }
 
   @NotNull
