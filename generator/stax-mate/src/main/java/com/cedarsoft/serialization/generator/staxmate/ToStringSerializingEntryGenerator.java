@@ -31,6 +31,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
   @Override
   public void appendSerializing( @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
+
     JClass jClass = model.ref( String.class );
 
     JInvocation getterInvocation = object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() );
@@ -48,6 +50,7 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   @NotNull
   @Override
   public JVar appendDeserializing( @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
     JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( deserializeFrom, fieldInfo );
