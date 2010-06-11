@@ -103,6 +103,7 @@ public class StaxMateGeneratorTest {
       "    }\n" +
       "\n" +
       "    @Override\n" +
+      "    @NotNull\n" +
       "    public Window deserialize(\n" +
       "        @NotNull\n" +
       "        XMLStreamReader deserializeFrom,\n" +

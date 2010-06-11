@@ -169,6 +169,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM ).annotate( NotNull.class );
     deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION ).annotate( NotNull.class );
     deserializeMethod.annotate( Override.class );
+    deserializeMethod.annotate( NotNull.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
     return deserializeMethod;
   }
