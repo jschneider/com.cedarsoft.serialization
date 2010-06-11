@@ -119,7 +119,7 @@ public class DomainObjectDescriptorFactoryTest {
   public void testFindConstrParam() {
     FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
 
-    ConstructorCallInfo found = factory.findConstructorParamDeclarationForField( fieldDeclaration );
+    ConstructorCallInfo found = factory.findConstructorCallInfoForField( fieldDeclaration );
     assertEquals( found.getIndex(), 1 );
     assertEquals( found.getParameterDeclaration().getSimpleName(), "width" );
   }
@@ -130,7 +130,7 @@ public class DomainObjectDescriptorFactoryTest {
     TypeMirror type = factory.findFieldDeclaration( "description" ).getType();
 
     try {
-      factory.findConstructorParamDeclaration( fieldDeclaration.getSimpleName(), type );
+      factory.findConstructorCallInfoForField( fieldDeclaration.getSimpleName(), type );
       fail( "Where is the Exception" );
     } catch ( IllegalArgumentException e ) {
       assertEquals( e.getMessage(), "Type mismatch for <width>. Was <double> but expected <java.lang.String>" );

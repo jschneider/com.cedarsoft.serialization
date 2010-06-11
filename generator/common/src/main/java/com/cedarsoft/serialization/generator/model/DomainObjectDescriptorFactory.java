@@ -97,12 +97,12 @@ public class DomainObjectDescriptorFactory {
   }
 
   @NotNull
-  public ConstructorCallInfo findConstructorParamDeclarationForField( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findConstructorParamDeclaration( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull FieldDeclaration fieldDeclaration ) {
+    return findConstructorCallInfoForField( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
   @NotNull
-  public ConstructorCallInfo findConstructorParamDeclaration( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+  public ConstructorCallInfo findConstructorCallInfoForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
     ConstructorDeclaration constructorDeclaration = findBestConstructor();
 
     int index = 0;
@@ -145,7 +145,7 @@ public class DomainObjectDescriptorFactory {
 
   @NotNull
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
-    ConstructorCallInfo constructorCallInfo = findConstructorParamDeclarationForField( fieldDeclaration );
+    ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
     MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
     return new FieldInitializedInConstructorInfo( fieldDeclaration, constructorCallInfo, getterDeclaration );
   }
