@@ -81,7 +81,7 @@ public class DomainObjectDescriptor {
    * @return the field infos initialized within the constructor
    */
   @NotNull
-  public List<? extends FieldInitializedInConstructorInfo> getFieldsToSerializeInitializedInConstructor() {
+  public List<? extends FieldInitializedInConstructorInfo> getFieldsInitializedInConstructor() {
     List<FieldInitializedInConstructorInfo> found = new ArrayList<FieldInitializedInConstructorInfo>();
     for ( FieldWithInitializationInfo info : fieldsToSerialize ) {
       if ( info instanceof FieldInitializedInConstructorInfo ) {
@@ -95,7 +95,7 @@ public class DomainObjectDescriptor {
   }
 
   @NotNull
-  public List<? extends FieldInitializedInSetterInfo> getFieldsToSerializeInitializedInSetter() {
+  public List<? extends FieldInitializedInSetterInfo> getFieldsInitializedInSetter() {
     List<FieldInitializedInSetterInfo> found = new ArrayList<FieldInitializedInSetterInfo>();
     for ( FieldWithInitializationInfo info : fieldsToSerialize ) {
       if ( info instanceof FieldInitializedInSetterInfo ) {

@@ -40,7 +40,7 @@ public class StaxMateGeneratorTest {
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 4 );
+    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 5 );
     generator = new StaxMateGenerator( new DefaultXmlDecisionCallback( "width", "height" ) );
     model = generator.getCodeGenerator().getModel();
   }

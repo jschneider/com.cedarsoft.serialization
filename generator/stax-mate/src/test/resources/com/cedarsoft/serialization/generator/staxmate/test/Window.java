@@ -11,6 +11,7 @@ public class Window {
   private final int height;
   private final String description;
   private final Integer anInt;
+  private float floatField;
 
   /**
    * the constructor
@@ -41,6 +42,14 @@ public class Window {
 
   public String getDescription() {
     return description;
+  }
+
+  public float getFloatField() {
+    return floatField;
+  }
+
+  public void setFloatField( float floatField ) {
+    this.floatField = floatField;
   }
 
   @Override

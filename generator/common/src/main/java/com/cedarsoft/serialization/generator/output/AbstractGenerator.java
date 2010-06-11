@@ -128,7 +128,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JInvocation domainTypeInit = JExpr._new( domainType );
 
     //Add the arguments for the fields
-    List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsToSerializeInitializedInConstructor();
+    List<? extends FieldInitializedInConstructorInfo> fieldsToSerialize = domainObjectDescriptor.getFieldsInitializedInConstructor();
     for ( FieldInitializedInConstructorInfo fieldInfo : fieldsToSerialize ) {
       domainTypeInit.arg( fieldToVar.get( fieldInfo ) );
     }
@@ -137,7 +137,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
 
     //Now call the setters
-    for ( FieldInitializedInSetterInfo fieldInfo : domainObjectDescriptor.getFieldsToSerializeInitializedInSetter() ) {
+    for ( FieldInitializedInSetterInfo fieldInfo : domainObjectDescriptor.getFieldsInitializedInSetter() ) {
       deserializeMethod.body().add( domainObjectVar.invoke( fieldInfo.getSetterDeclaration().getSimpleName() ).arg( fieldToVar.get( fieldInfo ) ) );
     }
 

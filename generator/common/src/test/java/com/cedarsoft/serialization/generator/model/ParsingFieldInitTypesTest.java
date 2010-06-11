@@ -51,11 +51,11 @@ public class ParsingFieldInitTypesTest {
   @Test
   public void testInitTypes() {
     DomainObjectDescriptor descriptor = factory.create();
-    assertEquals( descriptor.getFieldsToSerializeInitializedInConstructor().size(), 2 );
-    assertEquals( descriptor.getFieldsToSerializeInitializedInConstructor().get( 0 ).getSimpleName(), "description" );
-    assertEquals( descriptor.getFieldsToSerializeInitializedInConstructor().get( 1 ).getSimpleName(), "width" );
+    assertEquals( descriptor.getFieldsInitializedInConstructor().size(), 2 );
+    assertEquals( descriptor.getFieldsInitializedInConstructor().get( 0 ).getSimpleName(), "description" );
+    assertEquals( descriptor.getFieldsInitializedInConstructor().get( 1 ).getSimpleName(), "width" );
 
-    assertEquals( descriptor.getFieldsToSerializeInitializedInSetter().size(), 1 );
-    assertEquals( descriptor.getFieldsToSerializeInitializedInSetter().get( 0 ).getSimpleName(), "height" );
+    assertEquals( descriptor.getFieldsInitializedInSetter().size(), 1 );
+    assertEquals( descriptor.getFieldsInitializedInSetter().get( 0 ).getSimpleName(), "height" );
   }
 }
