@@ -117,15 +117,15 @@ public class StaxMateGenerator {
     //the serialize method
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
-    serializeMethod.param( SMOutputElement.class, "serializeTo" );
-    serializeMethod.param( domainType, "object" );
+    serializeMethod.param( SMOutputElement.class, "serializeTo" ).annotate( NotNull.class );
+    serializeMethod.param( domainType, "object" ).annotate( NotNull.class );
     serializeMethod._throws( IOException.class )._throws( XMLStreamException.class );
 
     //the deserialize method
     //the serialize method
     JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
-    deserializeMethod.param( XMLStreamReader.class, "deserializeFrom" );
-    deserializeMethod.param( Version.class, "formatVersion" );
+    deserializeMethod.param( XMLStreamReader.class, "deserializeFrom" ).annotate( NotNull.class );
+    deserializeMethod.param( Version.class, "formatVersion" ).annotate( NotNull.class );
     deserializeMethod.annotate( Override.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
 
