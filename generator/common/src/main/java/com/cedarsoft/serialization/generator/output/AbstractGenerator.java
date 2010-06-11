@@ -180,6 +180,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    * @param domainObjectDescriptor the domain object descriptor
    * @param serializeMethod        the serialize method
    * @param deserializeMethod      the deserialize method
+   * @return the mapping between the field declarations and the created vars
    */
   protected abstract Map<FieldDeclarationInfo, JVar> addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod );
 
