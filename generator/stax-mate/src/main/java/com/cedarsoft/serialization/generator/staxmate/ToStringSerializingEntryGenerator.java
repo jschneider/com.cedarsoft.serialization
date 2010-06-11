@@ -1,17 +1,14 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
-import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
+import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ToStringSerializingEntryGenerator implements SerializingEntryGenerator {
   @NotNull
-private final CodeGenerator codeGenerator;
+  private final CodeGenerator<XmlDecisionCallback> codeGenerator;
 
-  public ToStringSerializingEntryGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public ToStringSerializingEntryGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     this.codeGenerator = codeGenerator;
   }
 
@@ -48,13 +45,17 @@ private final CodeGenerator codeGenerator;
   }
 
   @NotNull
-  private SerializeToGenerator getStrategy( @NotNull FieldWithInitializationInfo fieldInfo ) {
-    if ( fieldInfo.isType( Integer.TYPE ) ) {
-      return asAttribute;
+  private SerializeToGenerator getStrategy( @NotNull FieldInfo fieldInfo ) {
+    XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
+    switch ( target ) {
+      case ELEMENT:
+        return asElement;
+      case ATTRIBUTE:
+        return asAttribute;
     }
-    return asElement;
-  }
 
+    throw new IllegalStateException( "Should not reach! " + fieldInfo );
+  }
 
   @NotNull
   private final SerializeToGenerator asElement = new AsElementGenerator();

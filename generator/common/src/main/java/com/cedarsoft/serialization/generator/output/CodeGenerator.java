@@ -1,20 +1,26 @@
 package com.cedarsoft.serialization.generator.output;
 
+import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.sun.codemodel.JCodeModel;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
+ * @param <T> the type of the decision callback
  */
-public class CodeGenerator {
+public class CodeGenerator <T extends DecisionCallback> {
   @NotNull
   protected final JCodeModel model;
   @NotNull
   private final ParseExpressionFactory parseExpressionFactory;
 
-  public CodeGenerator( @NotNull JCodeModel model, @NotNull ParseExpressionFactory parseExpressionFactory ) {
+  @NotNull
+  private final T decisionCallback;
+
+  public CodeGenerator( @NotNull JCodeModel model, @NotNull ParseExpressionFactory parseExpressionFactory, @NotNull T decisionCallback ) {
     this.model = model;
     this.parseExpressionFactory = parseExpressionFactory;
+    this.decisionCallback = decisionCallback;
   }
 
   @NotNull
@@ -25,5 +31,10 @@ public class CodeGenerator {
   @NotNull
   public JCodeModel getModel() {
     return model;
+  }
+
+  @NotNull
+  public T getDecisionCallback() {
+    return decisionCallback;
   }
 }

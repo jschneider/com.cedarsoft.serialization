@@ -4,6 +4,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.NameSpaceSupport;
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
@@ -72,10 +73,11 @@ public class StaxMateGenerator {
 
   /**
    * Creatse a new generator
+   * @param decisionCallback
    */
-  public StaxMateGenerator() {
+  public StaxMateGenerator( @NotNull XmlDecisionCallback decisionCallback ) {
     this.codeModel = new JCodeModel();
-    this.creators = new SerializingEntryCreators( new CodeGenerator( codeModel, new ParseExpressionFactory( codeModel ) ) );
+    this.creators = new SerializingEntryCreators( new CodeGenerator<XmlDecisionCallback>( codeModel, new ParseExpressionFactory( codeModel ), decisionCallback ) );
   }
 
   /**

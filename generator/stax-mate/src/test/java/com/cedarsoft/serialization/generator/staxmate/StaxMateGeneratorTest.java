@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.serialization.generator.parsing.Parser;
@@ -43,7 +44,7 @@ public class StaxMateGeneratorTest {
     assertNotNull( domainObjectDescriptor );
 
     assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 4 );
-    generator = new StaxMateGenerator(  );
+    generator = new StaxMateGenerator( new DefaultXmlDecisionCallback( "width", "height" ) );
     model = generator.getCodeModel();
   }
 
