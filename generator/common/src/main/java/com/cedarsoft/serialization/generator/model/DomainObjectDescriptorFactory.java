@@ -75,7 +75,7 @@ public class DomainObjectDescriptorFactory {
   }
 
   @NotNull
-  public MethodDeclaration findGetterForField( FieldDeclaration fieldDeclaration ) {
+  public MethodDeclaration findGetterForField( @NotNull FieldDeclaration fieldDeclaration ) {
     return findGetterForField( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
