@@ -5,10 +5,9 @@ import com.sun.codemodel.JCodeModel;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
  * @param <T> the type of the decision callback
  */
-public class CodeGenerator <T extends DecisionCallback> {
+public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   protected final JCodeModel model;
   @NotNull
@@ -17,9 +16,13 @@ public class CodeGenerator <T extends DecisionCallback> {
   @NotNull
   private final T decisionCallback;
 
-  public CodeGenerator( @NotNull JCodeModel model, @NotNull ParseExpressionFactory parseExpressionFactory, @NotNull T decisionCallback ) {
+  public CodeGenerator( @NotNull T decisionCallback ) {
+    this( new JCodeModel(), decisionCallback );
+  }
+
+  public CodeGenerator( @NotNull JCodeModel model, @NotNull T decisionCallback ) {
     this.model = model;
-    this.parseExpressionFactory = parseExpressionFactory;
+    this.parseExpressionFactory = new ParseExpressionFactory( model );
     this.decisionCallback = decisionCallback;
   }
 

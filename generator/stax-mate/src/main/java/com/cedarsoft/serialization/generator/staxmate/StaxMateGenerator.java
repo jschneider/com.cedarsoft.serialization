@@ -9,7 +9,6 @@ import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -21,6 +20,7 @@ import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
+import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -37,37 +37,7 @@ import java.util.Map;
 /**
  * Generator for stax mate based parsers
  */
-public class StaxMateGenerator {
-  /**
-   * The suffix used for generated serializers
-   */
-  @NonNls
-  @NotNull
-  public static final String SERIALIZER_CLASS_NAME_SUFFIX = "Serializer";
-  /**
-   * The default namespace suffix
-   */
-  @NonNls
-  @NotNull
-  public static final String DEFAULT_NAMESPACE_SUFFIX = "1.0.0";
-  /**
-   * The name of the serialize method
-   */
-  @NonNls
-  public static final String METHOD_NAME_SERIALIZE = "serialize";
-  /**
-   * The name of the deserialize method
-   */
-  @NonNls
-  public static final String METHOD_NAME_DESERIALIZE = "deserialize";
-  /**
-   * The version the serializer supports
-   */
-  @NotNull
-  public static final Version VERSION = Version.valueOf( 1, 0, 0 );
-
-  @NotNull
-  private final JCodeModel codeModel;
+public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   private final SerializingEntryCreators creators;
 
@@ -77,18 +47,8 @@ public class StaxMateGenerator {
    * @param decisionCallback the decision callback
    */
   public StaxMateGenerator( @NotNull XmlDecisionCallback decisionCallback ) {
-    this.codeModel = new JCodeModel();
-    this.creators = new SerializingEntryCreators( new CodeGenerator<XmlDecisionCallback>( codeModel, new ParseExpressionFactory( codeModel ), decisionCallback ) );
-  }
-
-  /**
-   * Returns the code model this generator is using
-   *
-   * @return the code model
-   */
-  @NotNull
-  public JCodeModel getCodeModel() {
-    return codeModel;
+    super( new CodeGenerator<XmlDecisionCallback>( decisionCallback ) );
+    this.creators = new SerializingEntryCreators( codeGenerator );
   }
 
   /**
@@ -114,23 +74,31 @@ public class StaxMateGenerator {
       .invoke( "super" ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor ) )
       .arg( createDefaultVersionRangeInvocation( VERSION, VERSION ) );
 
-    //the serialize method
-    JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
-    serializeMethod.annotate( Override.class );
-    serializeMethod.param( SMOutputElement.class, "serializeTo" ).annotate( NotNull.class );
-    serializeMethod.param( domainType, "object" ).annotate( NotNull.class );
-    serializeMethod._throws( IOException.class )._throws( XMLStreamException.class );
+    JMethod serializeMethod = createSerializeMethodStub( domainType, serializerClass );
+    JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
 
-    //the deserialize method
-    //the serialize method
+    //Add the serialize stuff
+    addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+  }
+
+  @NotNull
+  protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
     JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
     deserializeMethod.param( XMLStreamReader.class, "deserializeFrom" ).annotate( NotNull.class );
     deserializeMethod.param( Version.class, "formatVersion" ).annotate( NotNull.class );
     deserializeMethod.annotate( Override.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( XMLStreamException.class );
+    return deserializeMethod;
+  }
 
-    //Add the serialize stuff
-    addSerializationStuff( domainObjectDescriptor, serializeMethod, deserializeMethod );
+  @NotNull
+  protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
+    JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
+    serializeMethod.annotate( Override.class );
+    serializeMethod.param( SMOutputElement.class, "serializeTo" ).annotate( NotNull.class );
+    serializeMethod.param( domainType, "object" ).annotate( NotNull.class );
+    serializeMethod._throws( IOException.class )._throws( XMLStreamException.class );
+    return serializeMethod;
   }
 
   private void addSerializationStuff( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
@@ -182,7 +150,7 @@ public class StaxMateGenerator {
       JVar domainObjectVar = deserializeMethod.body().decl( domainType, "object", domainTypeInit );
 
       //todo setters(?)
-      
+
       deserializeMethod.body()._return( domainObjectVar );
     }
   }
