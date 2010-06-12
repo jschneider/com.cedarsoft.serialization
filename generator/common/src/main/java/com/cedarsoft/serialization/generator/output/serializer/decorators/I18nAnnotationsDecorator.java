@@ -29,10 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.decorators;
+package com.cedarsoft.serialization.generator.output.serializer.decorators;
 
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.Decorator;
+import com.cedarsoft.serialization.generator.output.serializer.Decorator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;

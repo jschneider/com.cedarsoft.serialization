@@ -29,9 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output;
+package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.DefaultFieldTypeInformation;
+import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;

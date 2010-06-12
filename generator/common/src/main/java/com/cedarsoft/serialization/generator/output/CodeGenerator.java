@@ -32,6 +32,8 @@
 package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
+import com.cedarsoft.serialization.generator.output.serializer.Decorator;
+import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;

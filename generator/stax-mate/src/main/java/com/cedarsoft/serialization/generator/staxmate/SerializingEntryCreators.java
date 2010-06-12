@@ -33,8 +33,6 @@ package com.cedarsoft.serialization.generator.staxmate;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.ParseExpressionFactory;
-import com.sun.codemodel.JCodeModel;
 import org.jetbrains.annotations.NotNull;
 
 /**

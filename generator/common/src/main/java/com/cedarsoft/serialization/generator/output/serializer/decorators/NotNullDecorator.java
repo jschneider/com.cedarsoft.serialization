@@ -29,43 +29,50 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output;
+package com.cedarsoft.serialization.generator.output.serializer.decorators;
 
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.Decorator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
+import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.annotation.Annotation;
+
 /**
- * Decorators can be used to generate additional code (e.g. annotations, comments etc.)
+ *
  */
-public interface Decorator {
-  /**
-   * Decorates the serialize method
-   *
-   * @param codeGenerator   the code generator
-   * @param domainType      the domain type
-   * @param serializerClass the serializer class
-   * @param serializeMethod the serialize method
-   */
-  void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod );
+public class NotNullDecorator implements Decorator {
+  @NotNull
+  private final Class<? extends Annotation> notNullAnnotationType;
 
-  /**
-   * Decorates the deserialize method
-   *
-   * @param codeGenerator     the code generator
-   * @param domainType        the domain type
-   * @param serializerClass   the serializer class
-   * @param deserializeMethod the deserialize method
-   */
-  void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod );
+  public NotNullDecorator( @NotNull Class<? extends Annotation> notNullAnnotationType ) {
+    this.notNullAnnotationType = notNullAnnotationType;
+  }
 
-  /**
-   * Decorates constants
-   *
-   * @param codeGenerator the code generator
-   * @param constant      the constant
-   */
-  void decorateConstant( @NotNull CodeGenerator<?> codeGenerator, @NotNull JFieldVar constant );
+  @Override
+  public void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
+    annotateParamsWithNotNull( serializeMethod );
+  }
+
+  @Override
+  public void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
+    deserializeMethod.annotate( notNullAnnotationType );
+
+    annotateParamsWithNotNull( deserializeMethod );
+  }
+
+  @Override
+  public void decorateConstant( @NotNull CodeGenerator<?> codeGenerator, @NotNull JFieldVar constant ) {
+    constant.annotate( notNullAnnotationType );
+  }
+
+  protected void annotateParamsWithNotNull( @NotNull JMethod method ) {
+    for ( JVar param : method.listParams() ) {
+      param.annotate( notNullAnnotationType );
+    }
+  }
 }
