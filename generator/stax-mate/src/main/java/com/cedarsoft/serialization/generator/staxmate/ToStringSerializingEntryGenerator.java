@@ -21,6 +21,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
   public ToStringSerializingEntryGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     this.codeGenerator = codeGenerator;
+    asAttribute = new AsAttributeGenerator( codeGenerator );
+    asElement = new AsElementGenerator( codeGenerator );
   }
 
   @Override
@@ -59,8 +61,8 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
   }
 
   @NotNull
-  private final SerializeToGenerator asElement = new AsElementGenerator();
+  private final SerializeToGenerator asElement;
   @NotNull
-  private final SerializeToGenerator asAttribute = new AsAttributeGenerator();
+  private final SerializeToGenerator asAttribute;
 
 }

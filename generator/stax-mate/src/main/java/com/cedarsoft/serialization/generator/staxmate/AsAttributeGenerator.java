@@ -1,14 +1,15 @@
 package com.cedarsoft.serialization.generator.staxmate;
 
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInfo;
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
-import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,13 @@ public class AsAttributeGenerator implements SerializeToGenerator {
   public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
   @NonNls
   public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
+
+  @NotNull
+  private final CodeGenerator<XmlDecisionCallback> codeGenerator;
+
+  public AsAttributeGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+    this.codeGenerator = codeGenerator;
+  }
 
   @Override
   @NotNull
@@ -41,14 +49,7 @@ public class AsAttributeGenerator implements SerializeToGenerator {
 
   @NotNull
   private JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
-    String constantName = getConstantName( fieldInfo );
-    JFieldVar fieldVar = serializerClass.fields().get( constantName );
-    if ( fieldVar != null ) {
-      return fieldVar;
-    }
-
-    //Create
-    return serializerClass.field( JMod.FINAL | JMod.PUBLIC | JMod.STATIC, String.class, constantName, JExpr.lit( fieldInfo.getSimpleName() ) );
+    return codeGenerator.getOrCreateConstant( serializerClass, String.class, getConstantName( fieldInfo ), JExpr.lit( fieldInfo.getSimpleName() ) );
   }
 
   @NotNull

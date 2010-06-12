@@ -65,7 +65,7 @@ public class StaxMateGeneratorTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
-    assertEquals( out.toString().trim(), "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
+    assertEquals( out.toString().trim(),"-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
       "\n" +
       "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
       "\n" +
@@ -83,6 +83,11 @@ public class StaxMateGeneratorTest {
       "    extends AbstractStaxMateSerializer<Window>\n" +
       "{\n" +
       "\n" +
+      "    public final static String ATTRIBUTE_WIDTH = \"width\";\n" +
+      "    public final static String ATTRIBUTE_HEIGHT = \"height\";\n" +
+      "    public final static String ELEMENT_DESCRIPTION = \"description\";\n" +
+      "    public final static String ELEMENT_ANINT = \"anInt\";\n" +
+      "    public final static String ELEMENT_FLOATFIELD = \"floatField\";\n" +
       "\n" +
       "    public WindowSerializer() {\n" +
       "        super(\"window\", \"http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0\", VersionRange.from(1, 0, 0).to(1, 0, 0));\n" +
@@ -97,15 +102,15 @@ public class StaxMateGeneratorTest {
       "        throws IOException, XMLStreamException\n" +
       "    {\n" +
       "        //width\n" +
-      "        serializeTo.addAttribute(\"width\", String.valueOf(object.getWidth()));\n" +
+      "        serializeTo.addAttribute(ATTRIBUTE_WIDTH, String.valueOf(object.getWidth()));\n" +
       "        //height\n" +
-      "        serializeTo.addAttribute(\"height\", String.valueOf(object.getHeight()));\n" +
+      "        serializeTo.addAttribute(ATTRIBUTE_HEIGHT, String.valueOf(object.getHeight()));\n" +
       "        //description\n" +
-      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), \"description\", object.getDescription());\n" +
+      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_DESCRIPTION, object.getDescription());\n" +
       "        //anInt\n" +
-      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), \"anInt\", String.valueOf(object.getAnInt()));\n" +
+      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));\n" +
       "        //floatField\n" +
-      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), \"floatField\", String.valueOf(object.getFloatField()));\n" +
+      "        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));\n" +
       "    }\n" +
       "\n" +
       "    @Override\n" +
@@ -118,15 +123,15 @@ public class StaxMateGeneratorTest {
       "        throws VersionException, IOException, XMLStreamException\n" +
       "    {\n" +
       "        //width\n" +
-      "        double width = Double.parseDouble(deserializeFrom.getAttributeValue(null, \"width\"));\n" +
+      "        double width = Double.parseDouble(deserializeFrom.getAttributeValue(null, ATTRIBUTE_WIDTH));\n" +
       "        //height\n" +
-      "        int height = Integer.parseInt(deserializeFrom.getAttributeValue(null, \"height\"));\n" +
+      "        int height = Integer.parseInt(deserializeFrom.getAttributeValue(null, ATTRIBUTE_HEIGHT));\n" +
       "        //description\n" +
-      "        String description = getChildText(deserializeFrom, \"description\");\n" +
+      "        String description = getChildText(deserializeFrom, ELEMENT_DESCRIPTION);\n" +
       "        //anInt\n" +
-      "        Integer anInt = Integer.parseInt(getChildText(deserializeFrom, \"anInt\"));\n" +
+      "        Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));\n" +
       "        //floatField\n" +
-      "        float floatField = Float.parseFloat(getChildText(deserializeFrom, \"floatField\"));\n" +
+      "        float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));\n" +
       "        closeTag(deserializeFrom);\n" +
       "        //Constructing the deserialized object\n" +
       "        Window object = new Window(description, width, height, anInt);\n" +

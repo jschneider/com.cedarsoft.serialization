@@ -2,6 +2,10 @@ package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -55,5 +59,17 @@ public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   public List<? extends MethodDecorator> getMethodDecorators() {
     return Collections.unmodifiableList( methodDecorators );
+  }
+
+  @NotNull
+  public JFieldVar getOrCreateConstant( @NotNull JDefinedClass serializerClass, @NotNull Class<?> type, @NotNull String constantName, @NotNull JExpression initExpression ) {
+    //Get the constant if it still exists
+    JFieldVar fieldVar = serializerClass.fields().get( constantName );
+    if ( fieldVar != null ) {
+      return fieldVar;
+    }
+
+    //Create
+    return serializerClass.field( JMod.FINAL | JMod.PUBLIC | JMod.STATIC, type, constantName, initExpression );
   }
 }
