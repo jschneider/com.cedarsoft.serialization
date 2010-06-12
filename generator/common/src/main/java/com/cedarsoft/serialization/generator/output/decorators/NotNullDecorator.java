@@ -3,6 +3,7 @@ package com.cedarsoft.serialization.generator.output.decorators;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.Decorator;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
@@ -31,6 +32,11 @@ public class NotNullDecorator implements Decorator {
     deserializeMethod.annotate( notNullAnnotationType );
 
     annotateParamsWithNotNull( deserializeMethod );
+  }
+
+  @Override
+  public void decorateConstant( @NotNull CodeGenerator<?> codeGenerator, @NotNull JFieldVar constant ) {
+    constant.annotate( notNullAnnotationType );
   }
 
   protected void annotateParamsWithNotNull( @NotNull JMethod method ) {

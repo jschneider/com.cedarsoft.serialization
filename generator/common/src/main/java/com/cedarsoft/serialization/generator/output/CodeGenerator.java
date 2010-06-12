@@ -6,6 +6,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMod;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class CodeGenerator<T extends DecisionCallback> {
   }
 
   @NotNull
-  public JFieldVar getOrCreateConstant( @NotNull JDefinedClass serializerClass, @NotNull Class<?> type, @NotNull String constantName, @NotNull JExpression initExpression ) {
+  public JFieldVar getOrCreateConstant( @NotNull JDefinedClass serializerClass, @NotNull Class<?> type, @NotNull @NonNls String constantName, @NotNull JExpression initExpression ) {
     //Get the constant if it still exists
     JFieldVar fieldVar = serializerClass.fields().get( constantName );
     if ( fieldVar != null ) {
@@ -70,6 +71,17 @@ public class CodeGenerator<T extends DecisionCallback> {
     }
 
     //Create
-    return serializerClass.field( JMod.FINAL | JMod.PUBLIC | JMod.STATIC, type, constantName, initExpression );
+    return createConstant( serializerClass, type, constantName, initExpression );
+  }
+
+  @NotNull
+  public JFieldVar createConstant( @NotNull JDefinedClass serializerClass, @NotNull Class<?> type, @NotNull @NonNls String constantName, @NotNull JExpression initExpression ) {
+    JFieldVar constant = serializerClass.field( JMod.FINAL | JMod.PUBLIC | JMod.STATIC, type, constantName, initExpression );
+
+    for ( Decorator decorator : decorators ) {
+      decorator.decorateConstant( this, constant );
+    }
+
+    return constant;
   }
 }

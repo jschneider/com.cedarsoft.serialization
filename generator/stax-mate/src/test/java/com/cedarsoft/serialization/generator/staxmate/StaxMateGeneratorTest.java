@@ -84,10 +84,15 @@ public class StaxMateGeneratorTest {
       "    extends AbstractStaxMateSerializer<Window>\n" +
       "{\n" +
       "\n" +
+      "    @NotNull\n" +
       "    public final static String ATTRIBUTE_WIDTH = \"width\";\n" +
+      "    @NotNull\n" +
       "    public final static String ATTRIBUTE_HEIGHT = \"height\";\n" +
+      "    @NotNull\n" +
       "    public final static String ELEMENT_DESCRIPTION = \"description\";\n" +
+      "    @NotNull\n" +
       "    public final static String ELEMENT_ANINT = \"anInt\";\n" +
+      "    @NotNull\n" +
       "    public final static String ELEMENT_FLOATFIELD = \"floatField\";\n" +
       "\n" +
       "    public WindowSerializer() {\n" +
