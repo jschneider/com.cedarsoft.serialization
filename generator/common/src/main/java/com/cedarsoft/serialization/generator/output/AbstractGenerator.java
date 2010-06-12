@@ -103,7 +103,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
    */
   public void generate( @NotNull DomainObjectDescriptor... classesToSerialize ) throws JClassAlreadyExistsException {
     for ( DomainObjectDescriptor domainObjectDescriptor : classesToSerialize ) {
-      generate( domainObjectDescriptor );
+      generateSerializer( domainObjectDescriptor );
     }
   }
 
@@ -133,7 +133,16 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     return codeGenerator;
   }
 
-  public void generate( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+  /**
+   * Generates the serializer
+   *
+   * @param domainObjectDescriptor the domain object descriptor
+   * @return the defined serializer class
+   *
+   * @throws JClassAlreadyExistsException
+   */
+  @NotNull
+  public JDefinedClass generateSerializer( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
@@ -150,6 +159,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
 
     //Now construct the deserialized object
     constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
+
+    return serializerClass;
   }
 
   protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
@@ -174,7 +185,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
     }
 
     deserializeMethod.body()._return( domainObjectVar );
-
   }
 
   /**

@@ -87,8 +87,8 @@ public class StaxMateGeneratorTest {
   }
 
   @Test
-  public void testIt() throws IOException, JClassAlreadyExistsException {
-    generator.generate( domainObjectDescriptor );
+  public void testSerializer() throws IOException, JClassAlreadyExistsException {
+    generator.generateSerializer( domainObjectDescriptor );
 
     JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
     JDefinedClass definedClass = thePackage._getClass( "WindowSerializer" );
