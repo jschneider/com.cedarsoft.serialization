@@ -1,17 +1,26 @@
 package com.cedarsoft.serialization.generator.output.decorators;
 
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.MethodDecorator;
+import com.cedarsoft.serialization.generator.output.Decorator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.annotation.Annotation;
+
 /**
  *
  */
-public class NotNullMethodDecorator implements MethodDecorator {
+public class NotNullDecorator implements Decorator {
+  @NotNull
+  private final Class<? extends Annotation> notNullAnnotationType;
+
+  public NotNullDecorator( @NotNull Class<? extends Annotation> notNullAnnotationType ) {
+    this.notNullAnnotationType = notNullAnnotationType;
+  }
+
   @Override
   public void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
     annotateParamsWithNotNull( serializeMethod );
@@ -19,14 +28,14 @@ public class NotNullMethodDecorator implements MethodDecorator {
 
   @Override
   public void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
-    deserializeMethod.annotate( NotNull.class );
+    deserializeMethod.annotate( notNullAnnotationType );
 
     annotateParamsWithNotNull( deserializeMethod );
   }
 
   protected void annotateParamsWithNotNull( @NotNull JMethod method ) {
     for ( JVar param : method.listParams() ) {
-      param.annotate( NotNull.class );
+      param.annotate( notNullAnnotationType );
     }
   }
 }

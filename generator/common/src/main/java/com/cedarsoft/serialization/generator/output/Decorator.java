@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public interface MethodDecorator {
+public interface Decorator {
   void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod );
 
   void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod );

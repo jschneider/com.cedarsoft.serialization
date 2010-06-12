@@ -5,7 +5,7 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.decorators.NotNullMethodDecorator;
+import com.cedarsoft.serialization.generator.output.decorators.NotNullDecorator;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -13,6 +13,7 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
 import java.io.ByteArrayOutputStream;
@@ -46,7 +47,7 @@ public class StaxMateGeneratorTest {
     assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 5 );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
-    codeGenerator.addMethodDecorator( new NotNullMethodDecorator() );
+    codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
     generator = new StaxMateGenerator( codeGenerator );
     model = generator.getCodeGenerator().getModel();
   }
@@ -65,7 +66,7 @@ public class StaxMateGeneratorTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
-    assertEquals( out.toString().trim(),"-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
+    assertEquals( out.toString().trim(), "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
       "\n" +
       "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
       "\n" +

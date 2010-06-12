@@ -25,7 +25,7 @@ public class CodeGenerator<T extends DecisionCallback> {
   private final T decisionCallback;
 
   @NotNull
-  private final List<MethodDecorator> methodDecorators = new ArrayList<MethodDecorator>();
+  private final List<Decorator> decorators = new ArrayList<Decorator>();
 
   public CodeGenerator( @NotNull T decisionCallback ) {
     this( new JCodeModel(), decisionCallback );
@@ -52,13 +52,13 @@ public class CodeGenerator<T extends DecisionCallback> {
     return decisionCallback;
   }
 
-  public void addMethodDecorator( @NotNull MethodDecorator decorator ) {
-    this.methodDecorators.add( decorator );
+  public void addMethodDecorator( @NotNull Decorator decorator ) {
+    this.decorators.add( decorator );
   }
 
   @NotNull
-  public List<? extends MethodDecorator> getMethodDecorators() {
-    return Collections.unmodifiableList( methodDecorators );
+  public List<? extends Decorator> getMethodDecorators() {
+    return Collections.unmodifiableList( decorators );
   }
 
   @NotNull
