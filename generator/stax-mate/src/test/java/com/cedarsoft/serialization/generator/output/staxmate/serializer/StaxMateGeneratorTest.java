@@ -69,7 +69,7 @@ protected StaxMateGenerator generator;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
-    assertEquals( out.toString().trim(), "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
+    assertGeneratedCode( "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------\n" +
       "\n" +
       "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
       "\n" +

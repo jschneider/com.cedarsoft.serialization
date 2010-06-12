@@ -10,16 +10,17 @@ import com.cedarsoft.serialization.generator.output.serializer.decorators.NotNul
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  *
@@ -50,5 +51,12 @@ public class AbstractGeneratorTest {
     this.codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
     codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
     model = codeGenerator.getModel();
+  }
+
+  protected void assertGeneratedCode( @NotNull @NonNls String expected ) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    model.build( new SingleStreamCodeWriter( out ) );
+
+    assertEquals( out.toString().trim(), expected.trim() );
   }
 }
