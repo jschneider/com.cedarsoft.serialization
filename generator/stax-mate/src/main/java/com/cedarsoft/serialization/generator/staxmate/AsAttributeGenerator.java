@@ -16,12 +16,17 @@ import org.jetbrains.annotations.NotNull;
  * Generates an attribute
  */
 public class AsAttributeGenerator implements SerializeToGenerator {
+  @NonNls
+  public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
+  @NonNls
+  public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
+
   @Override
   @NotNull
   public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    return serializeTo.invoke( "addAttribute" )
+    return serializeTo.invoke( METHOD_NAME_ADD_ATTRIBUTE )
       .arg( constant )
       .arg( objectAsString );
   }
@@ -31,7 +36,7 @@ public class AsAttributeGenerator implements SerializeToGenerator {
   public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    return deserializeFrom.invoke( "getAttributeValue" ).arg( JExpr._null() ).arg( constant );
+    return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
   }
 
   @NotNull
