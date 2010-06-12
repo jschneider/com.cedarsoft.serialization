@@ -39,10 +39,10 @@ import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.GeneratorBase;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
@@ -58,9 +58,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Generator base class for serializer generators
+ *
  * @param <T> the type of the decision callback
  */
-public abstract class AbstractGenerator<T extends DecisionCallback> {
+public abstract class AbstractGenerator<T extends DecisionCallback> extends GeneratorBase<T> {
   /**
    * The suffix used for generated serializers
    */
@@ -86,14 +88,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   @NonNls
   public static final String VAR_NAME_OBJECT = "object";
 
-  @NotNull
-  protected final CodeGenerator<T> codeGenerator;
-  @NotNull
-  protected final JCodeModel codeModel;
-
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
-    this.codeGenerator = codeGenerator;
-    this.codeModel = codeGenerator.getModel();
+    super( codeGenerator );
   }
 
   /**
@@ -127,11 +123,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> {
   @NonNls
   protected String createSerializerClassName( @NotNull @NonNls String domainClassName ) {
     return domainClassName + SERIALIZER_CLASS_NAME_SUFFIX;
-  }
-
-  @NotNull
-  public CodeGenerator<T> getCodeGenerator() {
-    return codeGenerator;
   }
 
   /**
