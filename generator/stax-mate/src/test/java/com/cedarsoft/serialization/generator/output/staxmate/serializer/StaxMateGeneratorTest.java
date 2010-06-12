@@ -31,59 +31,28 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
-import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.decorators.I18nAnnotationsDecorator;
-import com.cedarsoft.serialization.generator.output.serializer.decorators.NotNullDecorator;
-import com.cedarsoft.serialization.generator.parsing.Parser;
-import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import static org.testng.Assert.*;
 
 /**
  *
  */
-public class StaxMateGeneratorTest {
-  private DomainObjectDescriptor domainObjectDescriptor;
-  private StaxMateGenerator generator;
-  private JCodeModel model;
+public class StaxMateGeneratorTest extends AbstractGeneratorTest{
+protected StaxMateGenerator generator;
 
   @BeforeMethod
+  @Override
   protected void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Window.java" );
-    assertNotNull( resource );
-    File javaFile = new File( resource.toURI() );
-    assertTrue( javaFile.exists() );
-    Result parsed = Parser.parse( javaFile );
-    assertNotNull( parsed );
-
-    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclarations().get( 0 ) );
-    domainObjectDescriptor = factory.create();
-    assertNotNull( domainObjectDescriptor );
-
-    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 5 );
-    final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
-    CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
-    codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
-    codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
+    super.setUp();
     generator = new StaxMateGenerator( codeGenerator );
-    model = generator.getCodeGenerator().getModel();
   }
 
   @Test
