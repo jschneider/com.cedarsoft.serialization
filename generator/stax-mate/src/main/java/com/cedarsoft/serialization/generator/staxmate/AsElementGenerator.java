@@ -19,6 +19,12 @@ import org.jetbrains.annotations.NotNull;
 public class AsElementGenerator implements SerializeToGenerator {
   @NotNull
   private final CodeGenerator<XmlDecisionCallback> codeGenerator;
+  @NonNls
+  public static final String METHOD_NAME_GET_CHILD_TEXT = "getChildText";
+  @NonNls
+  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
+  @NonNls
+  public static final String METHOD_NAME_ADD_ELEMENT_WITH_CHARACTERS = "addElementWithCharacters";
 
   public AsElementGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     this.codeGenerator = codeGenerator;
@@ -29,8 +35,8 @@ public class AsElementGenerator implements SerializeToGenerator {
   public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    return serializeTo.invoke( "addElementWithCharacters" )
-      .arg( serializeTo.invoke( "getNamespace" ) )
+    return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT_WITH_CHARACTERS )
+      .arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) )
       .arg( constant )
       .arg( objectAsString );
   }
@@ -39,7 +45,7 @@ public class AsElementGenerator implements SerializeToGenerator {
   @NotNull
   public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return JExpr.invoke( "getChildText" ).arg( deserializeFrom ).arg( constant );
+    return JExpr.invoke( METHOD_NAME_GET_CHILD_TEXT ).arg( deserializeFrom ).arg( constant );
   }
 
   @NotNull
