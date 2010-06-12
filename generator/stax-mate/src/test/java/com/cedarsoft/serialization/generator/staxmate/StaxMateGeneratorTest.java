@@ -5,6 +5,7 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.decorators.I18nAnnotationsDecorator;
 import com.cedarsoft.serialization.generator.output.decorators.NotNullDecorator;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
@@ -13,6 +14,7 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
@@ -48,6 +50,7 @@ public class StaxMateGeneratorTest {
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
+    codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
     generator = new StaxMateGenerator( codeGenerator );
     model = generator.getCodeGenerator().getModel();
   }
@@ -78,6 +81,7 @@ public class StaxMateGeneratorTest {
       "import com.cedarsoft.VersionRange;\n" +
       "import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;\n" +
       "import org.codehaus.staxmate.out.SMOutputElement;\n" +
+      "import org.jetbrains.annotations.NonNls;\n" +
       "import org.jetbrains.annotations.NotNull;\n" +
       "\n" +
       "public class WindowSerializer\n" +
@@ -85,14 +89,19 @@ public class StaxMateGeneratorTest {
       "{\n" +
       "\n" +
       "    @NotNull\n" +
+      "    @NonNls\n" +
       "    public final static String ATTRIBUTE_WIDTH = \"width\";\n" +
       "    @NotNull\n" +
+      "    @NonNls\n" +
       "    public final static String ATTRIBUTE_HEIGHT = \"height\";\n" +
       "    @NotNull\n" +
+      "    @NonNls\n" +
       "    public final static String ELEMENT_DESCRIPTION = \"description\";\n" +
       "    @NotNull\n" +
+      "    @NonNls\n" +
       "    public final static String ELEMENT_ANINT = \"anInt\";\n" +
       "    @NotNull\n" +
+      "    @NonNls\n" +
       "    public final static String ELEMENT_FLOATFIELD = \"floatField\";\n" +
       "\n" +
       "    public WindowSerializer() {\n" +
