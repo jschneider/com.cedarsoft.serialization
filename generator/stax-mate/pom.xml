@@ -21,12 +21,11 @@
       <groupId>com.cedarsoft.serialization.generator</groupId>
       <artifactId>common</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>test-utils</artifactId>
-      <scope>test</scope>
     </dependency>
+    
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>test-utils</artifactId>
