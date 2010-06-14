@@ -9,9 +9,12 @@ import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
+import com.sun.mirror.declaration.ConstructorDeclaration;
+import com.sun.mirror.declaration.ParameterDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +45,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     createGetSerializerMethod( serializerTestClass, serializerClass, domainType );
 
     //createObjectToSerialize
-    createCreateObjectToSerializeMethod( serializerTestClass, serializerClass, domainType );
+    createCreateObjectToSerializeMethod( domainObjectDescriptor, serializerTestClass, serializerClass, domainType );
 
     //Create the verify method
     createVerifyMethod( serializerTestClass, serializerClass, domainType );
@@ -51,12 +54,24 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   @NotNull
-  protected JMethod createCreateObjectToSerializeMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+  protected JMethod createCreateObjectToSerializeMethod( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
     JMethod method = serializerTestClass.method( JMod.PROTECTED, domainType, METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE )._throws( Exception.class );
     method.annotate( Override.class );
 
-    method.body()._return( JExpr._new( domainType ) );
+    method.body()._return( createDomainObjectCreationExpression( domainObjectDescriptor ) );
     return method;
+  }
+
+  @NotNull
+  protected JInvocation createDomainObjectCreationExpression( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+    JInvocation invocation = JExpr._new( codeModel.ref( domainObjectDescriptor.getQualifiedName() ) );
+
+    ConstructorDeclaration constructor = domainObjectDescriptor.findBestConstructor();
+    for ( ParameterDeclaration parameterDeclaration : constructor.getParameters() ) {
+      invocation.arg( codeGenerator.getNewInstanceFactory().create( parameterDeclaration.getType(), parameterDeclaration.getSimpleName() ) );
+    }
+
+    return invocation;
   }
 
   @NotNull
