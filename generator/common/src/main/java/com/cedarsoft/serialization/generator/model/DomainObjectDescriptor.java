@@ -239,6 +239,12 @@ public class DomainObjectDescriptor {
     throw new IllegalArgumentException( "No field delaration found for <" + fieldName + ">" );
   }
 
+  public static boolean isType( @NotNull TypeMirror typeMirror, @NotNull Class<?> type ) {
+    @NonNls
+    String typeAsName = type.getName();
+    return typeMirror.toString().equals( typeAsName );
+  }
+
   private static class FieldWithInitializationInfoComparator implements Comparator<FieldInitializedInConstructorInfo>, Serializable {
     @Override
     public int compare( FieldInitializedInConstructorInfo o1, FieldInitializedInConstructorInfo o2 ) {
