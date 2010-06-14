@@ -27,7 +27,7 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
     JMethod method = serializerTestClass.method( JMod.PROTECTED, String.class, METHOD_NAME_GET_EXPECTED_SERIALIZED );
     method.annotate( Override.class );
 
-    method.body()._return( JExpr.lit( "</implementMe>" ) );
+    method.body()._return( JExpr.lit( "<implementMe/>" ) );
 
     return method;
   }

@@ -44,7 +44,38 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     assertEquals( definedClass.name(), "WindowSerializerTest" );
 
 
-    String expected = "asdf";
+    String expected = "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerTest.java-----------------------------------\n" +
+      "\n" +
+      "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
+      "\n" +
+      "import com.cedarsoft.serialization.AbstractXmlSerializerTest;\n" +
+      "import com.cedarsoft.serialization.Serializer;\n" +
+      "\n" +
+      "public class WindowSerializerTest\n" +
+      "    extends AbstractXmlSerializerTest<Window>\n" +
+      "{\n" +
+      "\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected Serializer<Window> getSerializer()\n" +
+      "        throws Exception\n" +
+      "    {\n" +
+      "        return new WindowSerializer();\n" +
+      "    }\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected Window createObjectToSerialize()\n" +
+      "        throws Exception\n" +
+      "    {\n" +
+      "        return new Window(\"description\", 12.5D, 42, Integer.valueOf(42));\n" +
+      "    }\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected String getExpectedSerialized() {\n" +
+      "        return \"<implementMe/>\";\n" +
+      "    }\n" +
+      "\n" +
+      "}";
     assertGeneratedCode( expected );
   }
 }
