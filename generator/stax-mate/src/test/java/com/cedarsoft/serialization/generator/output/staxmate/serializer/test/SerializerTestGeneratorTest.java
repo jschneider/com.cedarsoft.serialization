@@ -57,7 +57,18 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
 
   @Test
   public void testNames() {
-    assertEquals( generator.createSerializerClassTestName( "com.test.Serializer" ), "com.test.SerializerTest" );
+    assertEquals( generator.createSerializerTestName( "com.test.Serializer" ), "com.test.SerializerTest" );
+  }
+
+  @Test
+  public void testGenerateVersionsTest() throws JClassAlreadyExistsException, IOException {
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer" );
+    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( serializerClass, domainObjectDescriptor );
+
+    assertEquals( serializerVersionTestClass.name(), "WindowSerializerVersionTest" );
+    assertEquals( serializerVersionTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
+
+    assertGeneratedCode( "asdf" );
   }
 
   @Test

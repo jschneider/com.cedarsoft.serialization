@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
@@ -44,8 +45,10 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
+import com.sun.codemodel.JVar;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
+import org.fest.assertions.Assert;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,35 +60,84 @@ import java.util.Arrays;
 public abstract class AbstractGenerator<T extends DecisionCallback> extends GeneratorBase<T> {
   @NonNls
   @NotNull
-  public static final String SERIALIZER_TEST_CLASS_NAME_SUFFIX = "Test";
+  public static final String SERIALIZER_TEST_NAME_SUFFIX = "Test";
+  @NonNls
+  @NotNull
+  public static final String SERIALIZER_VERSION_TEST_NAME_SUFFIX = "VersionTest";
   @NonNls
   public static final String METHOD_NAME_GET_SERIALIZER = "getSerializer";
   @NonNls
   public static final String METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE = "createObjectsToSerialize";
 
   public static final int NUMBER_OF_OBJECTS = 3;
+  @NonNls
+  public static final String METHOD_NAME_VERIFY_DESERIALIZED = "verifyDeserialized";
+  @NonNls
+  public static final String PARAM_NAME_DESERIALIZED = "deserialized";
+  @NonNls
+  public static final String PARAM_NAME_VERSION = "version";
+  @NonNls
+  public static final String METHOD_NAME_ASSERT_EQUALS = "assertEquals";
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
   }
 
+
+  @NotNull
+  public JDefinedClass generateSerializerVersionTest( @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+
+    //the class
+    JDefinedClass testClass = codeModel._class( createSerializerVersionTestName( serializerClass.fullName() ) )._extends( createVersionExtendsClass( domainType, serializerClass ) );
+
+    //getSerializer
+    createGetSerializerMethod( testClass, serializerClass, domainType );
+
+    createGetSerializedMethod( testClass, serializerClass, domainType );
+    createVersionVerifyMethod( testClass, serializerClass, domainType );
+
+    return testClass;
+  }
+
+  protected void createVersionVerifyMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+    JMethod method = testClass.method( JMod.PROTECTED, Void.TYPE, METHOD_NAME_VERIFY_DESERIALIZED )._throws( Exception.class );
+    method.annotate( Override.class );
+    JVar deserialized = method.param( domainType, PARAM_NAME_DESERIALIZED );
+    method.param( Version.class, PARAM_NAME_VERSION );
+
+    JClass assertClass = codeModel.ref( "org.testng.Assert" );
+
+    method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized ).arg( "daValue" ) );
+  }
+
+  /**
+   * Creates the getSerialized method (used for versioned tests
+   *
+   * @param testClass       the test class
+   * @param serializerClass the serializer class
+   * @param domainType      the domain type
+   */
+  protected abstract void createGetSerializedMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType );
+
+  @NotNull
   public JDefinedClass generateSerializerTest( @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
-    JDefinedClass serializerTestClass = codeModel._class( createSerializerClassTestName( serializerClass.fullName() ) )._extends( createExtendsClass( domainType, serializerClass ) );
+    JDefinedClass testClass = codeModel._class( createSerializerTestName( serializerClass.fullName() ) )._extends( createExtendsClass( domainType, serializerClass ) );
 
 
     //getSerializer
-    createGetSerializerMethod( serializerTestClass, serializerClass, domainType );
+    createGetSerializerMethod( testClass, serializerClass, domainType );
 
     //createObjectToSerialize
-    createCreateObjectsToSerializeMethod( domainObjectDescriptor, serializerTestClass, serializerClass, domainType );
+    createCreateObjectsToSerializeMethod( domainObjectDescriptor, testClass, serializerClass, domainType );
 
     //Create the verify method
-    createVerifyMethod( serializerTestClass, serializerClass, domainType );
+    createVerifyMethod( testClass, serializerClass, domainType );
 
-    return serializerTestClass;
+    return testClass;
   }
 
   @NotNull
@@ -135,8 +187,17 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   protected abstract JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass );
 
   @NotNull
+  protected abstract JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass );
+
+  @NotNull
   @NonNls
-  public String createSerializerClassTestName( @NotNull @NonNls String serializerClassName ) {
-    return serializerClassName + SERIALIZER_TEST_CLASS_NAME_SUFFIX;
+  public String createSerializerTestName( @NotNull @NonNls String serializerClassName ) {
+    return serializerClassName + SERIALIZER_TEST_NAME_SUFFIX;
+  }
+
+  @NotNull
+  @NonNls
+  public String createSerializerVersionTestName( @NotNull @NonNls String serializerClassName ) {
+    return serializerClassName + SERIALIZER_VERSION_TEST_NAME_SUFFIX;
   }
 }

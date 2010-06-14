@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JClass;
@@ -39,11 +40,14 @@ import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
+import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -51,9 +55,31 @@ import java.util.List;
 public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NonNls
   public static final String METHOD_NAME_GET_EXPECTED_SERIALIZED = "getExpectedSerialized";
+  @NonNls
+  public static final String METHOD_NAME_GET_SERIALIZED_XML = "getSerializedXml";
 
   protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
+  }
+
+  @Override
+  protected void createGetSerializedMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+    JClass versionRef = codeModel.ref( Version.class );
+
+    JClass returnType = codeModel.ref( Map.class ).narrow( versionRef.wildcard(), codeModel.ref( String.class ).wildcard() );
+
+    JMethod method = testClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_SERIALIZED_XML );
+    method.annotate( Override.class );
+
+    JClass mapType = codeModel.ref( Map.class ).narrow( Version.class, String.class );
+    JClass hashMapType = codeModel.ref( HashMap.class ).narrow( Version.class, String.class );
+
+    JVar map = method.body().decl( mapType, "map", JExpr._new( hashMapType ) );
+
+    JInvocation invocation = map.invoke( "put" ).arg( versionRef.staticInvoke( "valueOf" ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) ).arg( "<todo/>" );
+
+    method.body().add( invocation );
+    method.body()._return( map );
   }
 
   @Override
