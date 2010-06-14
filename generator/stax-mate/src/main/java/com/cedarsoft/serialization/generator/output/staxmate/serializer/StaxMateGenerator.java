@@ -34,8 +34,8 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -63,6 +63,8 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
    *
    * @param codeGenerator the code generator
    */
+
+
   public StaxMateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
     this.creators = new SerializingEntryCreators( this.codeGenerator );

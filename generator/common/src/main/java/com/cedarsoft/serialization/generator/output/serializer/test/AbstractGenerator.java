@@ -52,6 +52,8 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -82,7 +84,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
   }
-
 
   @NotNull
   public JDefinedClass generateSerializerVersionTest( @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {

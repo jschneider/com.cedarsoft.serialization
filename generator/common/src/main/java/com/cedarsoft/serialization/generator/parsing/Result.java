@@ -46,7 +46,6 @@ public class Result {
   @NotNull
   private final List<ClassDeclaration> classDeclarations = new ArrayList<ClassDeclaration>();
 
-
   public void addClassDeclaration( @NotNull ClassDeclaration classDeclaration ) {
     this.classDeclarations.add( classDeclaration );
   }
@@ -65,5 +64,14 @@ public class Result {
     }
 
     throw new IllegalArgumentException( "No class declaration found for <" + fqName + ">" );
+  }
+
+  @NotNull
+  public ClassDeclaration getClassDeclaration() {
+    if ( classDeclarations.size() != 1 ) {
+      throw new IllegalStateException( "Invalid class declarations count found: " + classDeclarations.size() + " (" + classDeclarations + ")" );
+    }
+
+    return classDeclarations.get( 0 );
   }
 }

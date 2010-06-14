@@ -53,6 +53,7 @@ import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -90,18 +91,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
-  }
-
-  /**
-   * Generates the source code for the given classes
-   *
-   * @param classesToSerialize the classes test will be generated for
-   * @throws JClassAlreadyExistsException
-   */
-  public void generate( @NotNull DomainObjectDescriptor... classesToSerialize ) throws JClassAlreadyExistsException {
-    for ( DomainObjectDescriptor domainObjectDescriptor : classesToSerialize ) {
-      generateSerializer( domainObjectDescriptor );
-    }
   }
 
   /**
