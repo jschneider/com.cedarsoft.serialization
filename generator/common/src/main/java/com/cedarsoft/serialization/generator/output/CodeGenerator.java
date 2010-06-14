@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.Decorator;
+import com.cedarsoft.serialization.generator.output.serializer.NewInstanceFactory;
 import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
@@ -54,6 +55,8 @@ public class CodeGenerator<T extends DecisionCallback> {
   protected final JCodeModel model;
   @NotNull
   private final ParseExpressionFactory parseExpressionFactory;
+  @NotNull
+  private final NewInstanceFactory newInstanceFactory;
 
   @NotNull
   private final T decisionCallback;
@@ -68,12 +71,18 @@ public class CodeGenerator<T extends DecisionCallback> {
   protected CodeGenerator( @NotNull JCodeModel model, @NotNull T decisionCallback ) {
     this.model = model;
     this.parseExpressionFactory = new ParseExpressionFactory( model );
+    this.newInstanceFactory = new NewInstanceFactory( model );
     this.decisionCallback = decisionCallback;
   }
 
   @NotNull
   public ParseExpressionFactory getParseExpressionFactory() {
     return parseExpressionFactory;
+  }
+
+  @NotNull
+  public NewInstanceFactory getNewInstanceFactory() {
+    return newInstanceFactory;
   }
 
   @NotNull
