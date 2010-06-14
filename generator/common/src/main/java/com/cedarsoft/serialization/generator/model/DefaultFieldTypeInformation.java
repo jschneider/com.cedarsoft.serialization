@@ -53,6 +53,7 @@ public class DefaultFieldTypeInformation implements FieldTypeInformation {
 
   @Override
   public boolean isType( @NotNull Class<?> type ) {
+    //noinspection CallToStringEquals
     return getType().toString().equals( type.getName() );
   }
 }
