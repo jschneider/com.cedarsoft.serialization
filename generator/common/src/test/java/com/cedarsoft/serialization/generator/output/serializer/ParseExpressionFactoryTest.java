@@ -32,13 +32,10 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.DefaultFieldTypeInformation;
-import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFormatter;
-import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.util.TypeVisitor;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
@@ -85,22 +82,4 @@ public class ParseExpressionFactoryTest {
     assertEquals( out.toString(), expected );
   }
 
-  private static class TypeMirrorMock implements TypeMirror {
-    @NotNull
-    private final Class<?> type;
-
-    private TypeMirrorMock( @NotNull Class<?> type ) {
-      this.type = type;
-    }
-
-    @Override
-    public void accept( TypeVisitor v ) {
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String toString() {
-      return type.getName();
-    }
-  }
 }
