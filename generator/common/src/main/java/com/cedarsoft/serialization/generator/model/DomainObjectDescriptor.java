@@ -112,26 +112,6 @@ public class DomainObjectDescriptor {
   }
 
   @NotNull
-  public ConstructorDeclaration findSimplestConstructor() {
-    return findSimplestConstructor( classDeclaration );
-  }
-
-  @NotNull
-  public static ConstructorDeclaration findSimplestConstructor( @NotNull ClassDeclaration classDeclaration ) {
-    ConstructorDeclaration currentlyBest = null;
-    for ( ConstructorDeclaration constructorDeclaration : classDeclaration.getConstructors() ) {
-      if ( currentlyBest == null || constructorDeclaration.getParameters().size() < currentlyBest.getParameters().size() ) {
-        currentlyBest = constructorDeclaration;
-      }
-    }
-
-    if ( currentlyBest == null ) {
-      throw new IllegalStateException( "No constructor found in " + classDeclaration.getSimpleName() );
-    }
-    return currentlyBest;
-  }
-
-  @NotNull
   public ConstructorDeclaration findBestConstructor() {
     return findBestConstructor( classDeclaration );
   }
