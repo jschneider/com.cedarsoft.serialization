@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
+import com.cedarsoft.serialization.generator.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
 import com.sun.codemodel.JClass;
@@ -48,7 +49,6 @@ import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import org.fest.assertions.Assert;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -95,12 +95,14 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     createGetSerializerMethod( testClass, serializerClass, domainType );
 
     createGetSerializedMethod( testClass, serializerClass, domainType );
-    createVersionVerifyMethod( testClass, serializerClass, domainType );
+    createVersionVerifyMethod( testClass, serializerClass, domainObjectDescriptor );
 
     return testClass;
   }
 
-  protected void createVersionVerifyMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+  protected void createVersionVerifyMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+
     JMethod method = testClass.method( JMod.PROTECTED, Void.TYPE, METHOD_NAME_VERIFY_DESERIALIZED )._throws( Exception.class );
     method.annotate( Override.class );
     JVar deserialized = method.param( domainType, PARAM_NAME_DESERIALIZED );
@@ -108,7 +110,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
     JClass assertClass = codeModel.ref( "org.testng.Assert" );
 
-    method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized ).arg( "daValue" ) );
+    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
+      method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ) ).arg( "daValue" ) );
+    }
   }
 
   /**
