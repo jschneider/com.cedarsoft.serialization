@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer.test;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.AbstractXmlGenerator;
@@ -49,6 +49,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   @Override
   protected JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
-    return codeModel.ref( AbstractXmlSerializerTest.class ).narrow( domainType );
+    //    return codeModel.ref( AbstractXmlSerializerTest.class ).narrow( domainType );
+    return codeModel.ref( AbstractXmlSerializerMultiTest.class ).narrow( domainType );
   }
 }

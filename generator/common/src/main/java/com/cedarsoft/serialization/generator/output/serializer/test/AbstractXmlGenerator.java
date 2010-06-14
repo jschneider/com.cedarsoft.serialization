@@ -36,10 +36,14 @@ import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -55,11 +59,17 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @Override
   @NotNull
   protected JMethod createVerifyMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JMethod method = serializerTestClass.method( JMod.PROTECTED, String.class, METHOD_NAME_GET_EXPECTED_SERIALIZED );
+    JClass returnType = codeModel.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() );
+    JMethod method = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_EXPECTED_SERIALIZED );
     method.annotate( Override.class );
 
-    method.body()._return( JExpr.lit( "<implementMe/>" ) );
 
+    JInvocation asListInvocation = codeModel.ref( Arrays.class ).staticInvoke( "asList" );
+    for ( int i = 0; i < NUMBER_OF_OBJECTS; i++ ) {
+      asListInvocation.arg( JExpr.lit( "<implementMe/>" ) );
+    }
+
+    method.body()._return( asListInvocation );
     return method;
   }
 }

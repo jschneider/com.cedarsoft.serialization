@@ -52,7 +52,6 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-
     generator = new StaxMateGenerator( codeGenerator );
   }
 
@@ -75,15 +74,17 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     assertEquals( definedClass.name(), "WindowSerializerTest" );
 
 
-    String expected = "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerTest.java-----------------------------------\n" +
+    assertGeneratedCode( "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerTest.java-----------------------------------\n" +
       "\n" +
       "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
       "\n" +
-      "import com.cedarsoft.serialization.AbstractXmlSerializerTest;\n" +
+      "import java.util.Arrays;\n" +
+      "import java.util.List;\n" +
+      "import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;\n" +
       "import com.cedarsoft.serialization.Serializer;\n" +
       "\n" +
       "public class WindowSerializerTest\n" +
-      "    extends AbstractXmlSerializerTest<Window>\n" +
+      "    extends AbstractXmlSerializerMultiTest<Window>\n" +
       "{\n" +
       "\n" +
       "\n" +
@@ -95,18 +96,17 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
       "    }\n" +
       "\n" +
       "    @Override\n" +
-      "    protected Window createObjectToSerialize()\n" +
+      "    protected Iterable<? extends Window> createObjectsToSerialize()\n" +
       "        throws Exception\n" +
       "    {\n" +
-      "        return new Window(\"description\", 12.5D, 42, Integer.valueOf(42));\n" +
+      "        return Arrays.asList(new Window(\"description\", 12.5D, 42, Integer.valueOf(42)), new Window(\"description\", 12.5D, 42, Integer.valueOf(42)), new Window(\"description\", 12.5D, 42, Integer.valueOf(42)));\n" +
       "    }\n" +
       "\n" +
       "    @Override\n" +
-      "    protected String getExpectedSerialized() {\n" +
-      "        return \"<implementMe/>\";\n" +
+      "    protected List<? extends String> getExpectedSerialized() {\n" +
+      "        return Arrays.asList(\"<implementMe/>\", \"<implementMe/>\", \"<implementMe/>\");\n" +
       "    }\n" +
       "\n" +
-      "}";
-    assertGeneratedCode( expected );
+      "}" );
   }
 }

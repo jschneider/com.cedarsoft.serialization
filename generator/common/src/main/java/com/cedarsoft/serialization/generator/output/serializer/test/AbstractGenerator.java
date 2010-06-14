@@ -49,6 +49,8 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * @param <T>
  */
@@ -59,7 +61,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NonNls
   public static final String METHOD_NAME_GET_SERIALIZER = "getSerializer";
   @NonNls
-  public static final String METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE = "createObjectToSerialize";
+  public static final String METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE = "createObjectsToSerialize";
+
+  public static final int NUMBER_OF_OBJECTS = 3;
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
@@ -76,7 +80,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     createGetSerializerMethod( serializerTestClass, serializerClass, domainType );
 
     //createObjectToSerialize
-    createCreateObjectToSerializeMethod( domainObjectDescriptor, serializerTestClass, serializerClass, domainType );
+    createCreateObjectsToSerializeMethod( domainObjectDescriptor, serializerTestClass, serializerClass, domainType );
 
     //Create the verify method
     createVerifyMethod( serializerTestClass, serializerClass, domainType );
@@ -85,11 +89,18 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   @NotNull
-  protected JMethod createCreateObjectToSerializeMethod( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JMethod method = serializerTestClass.method( JMod.PROTECTED, domainType, METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE )._throws( Exception.class );
+  protected JMethod createCreateObjectsToSerializeMethod( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+    JClass returnType = codeModel.ref( Iterable.class ).narrow( domainType.wildcard() );
+
+    JMethod method = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE )._throws( Exception.class );
     method.annotate( Override.class );
 
-    method.body()._return( createDomainObjectCreationExpression( domainObjectDescriptor ) );
+    JInvocation asListInvocation = codeModel.ref( Arrays.class ).staticInvoke( "asList" );
+    for ( int i = 0; i < NUMBER_OF_OBJECTS; i++ ) {
+      asListInvocation.arg( createDomainObjectCreationExpression( domainObjectDescriptor ) );
+    }
+
+    method.body()._return( asListInvocation );
     return method;
   }
 
