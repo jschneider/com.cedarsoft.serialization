@@ -68,7 +68,48 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     assertEquals( serializerVersionTestClass.name(), "WindowSerializerVersionTest" );
     assertEquals( serializerVersionTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
 
-    assertGeneratedCode( "asdf" );
+    assertGeneratedCode( "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerVersionTest.java-----------------------------------\n" +
+      "\n" +
+      "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
+      "\n" +
+      "import java.util.HashMap;\n" +
+      "import java.util.Map;\n" +
+      "import com.cedarsoft.Version;\n" +
+      "import com.cedarsoft.serialization.AbstractXmlVersionTest;\n" +
+      "import com.cedarsoft.serialization.Serializer;\n" +
+      "import org.testng.Assert;\n" +
+      "\n" +
+      "public class WindowSerializerVersionTest\n" +
+      "    extends AbstractXmlVersionTest<Window>\n" +
+      "{\n" +
+      "\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected Serializer<Window> getSerializer()\n" +
+      "        throws Exception\n" +
+      "    {\n" +
+      "        return new WindowSerializer();\n" +
+      "    }\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected Map<? extends Version, ? extends String> getSerializedXml() {\n" +
+      "        Map<Version, String> map = new HashMap<Version, String>();\n" +
+      "        map.put(Version.valueOf(1, 0, 0), \"<todo/>\");\n" +
+      "        return map;\n" +
+      "    }\n" +
+      "\n" +
+      "    @Override\n" +
+      "    protected void verifyDeserialized(Window deserialized, Version version)\n" +
+      "        throws Exception\n" +
+      "    {\n" +
+      "        Assert.assertEquals(deserialized.getWidth(), \"daValue\");\n" +
+      "        Assert.assertEquals(deserialized.getHeight(), \"daValue\");\n" +
+      "        Assert.assertEquals(deserialized.getDescription(), \"daValue\");\n" +
+      "        Assert.assertEquals(deserialized.getAnInt(), \"daValue\");\n" +
+      "        Assert.assertEquals(deserialized.getFloatField(), \"daValue\");\n" +
+      "    }\n" +
+      "\n" +
+      "}" );
   }
 
   @Test
