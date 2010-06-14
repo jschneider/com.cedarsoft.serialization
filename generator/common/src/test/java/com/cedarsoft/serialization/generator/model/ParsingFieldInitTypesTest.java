@@ -66,15 +66,15 @@ public class ParsingFieldInitTypesTest {
 
   @Test
   public void testFindField() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
     assertEquals( fieldDeclaration.getSimpleName(), "width" );
     assertEquals( fieldDeclaration.getType().toString(), "double" );
   }
 
   @Test
   public void testFindSetterInit() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "height" );
-    MethodDeclaration setter = factory.findSetter( fieldDeclaration );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "height" );
+    MethodDeclaration setter = DomainObjectDescriptor.findSetter( factory.getClassDeclaration(), fieldDeclaration );
     assertNotNull( setter );
     assertEquals( setter.getSimpleName(), "setHeight" );
   }

@@ -33,6 +33,11 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.ConstructorDeclaration;
+import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.ParameterDeclaration;
+import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -104,6 +109,154 @@ public class DomainObjectDescriptor {
     }
 
     return found;
+  }
+
+  @NotNull
+  public ConstructorDeclaration findSimplestConstructor() {
+    return findSimplestConstructor( classDeclaration );
+  }
+
+  @NotNull
+  public static ConstructorDeclaration findSimplestConstructor( @NotNull ClassDeclaration classDeclaration ) {
+    ConstructorDeclaration currentlyBest = null;
+    for ( ConstructorDeclaration constructorDeclaration : classDeclaration.getConstructors() ) {
+      if ( currentlyBest == null || constructorDeclaration.getParameters().size() < currentlyBest.getParameters().size() ) {
+        currentlyBest = constructorDeclaration;
+      }
+    }
+
+    if ( currentlyBest == null ) {
+      throw new IllegalStateException( "No constructor found in " + classDeclaration.getSimpleName() );
+    }
+    return currentlyBest;
+  }
+
+  @NotNull
+  public ConstructorDeclaration findBestConstructor() {
+    return findBestConstructor( classDeclaration );
+  }
+
+  @NotNull
+  public static ConstructorDeclaration findBestConstructor( @NotNull ClassDeclaration classDeclaration ) {
+    ConstructorDeclaration currentlyBest = null;
+    for ( ConstructorDeclaration constructorDeclaration : classDeclaration.getConstructors() ) {
+      if ( currentlyBest == null || constructorDeclaration.getParameters().size() > currentlyBest.getParameters().size() ) {
+        currentlyBest = constructorDeclaration;
+      }
+    }
+
+    if ( currentlyBest == null ) {
+      throw new IllegalStateException( "No constructor found in " + classDeclaration.getSimpleName() );
+    }
+    return currentlyBest;
+  }
+
+  @NotNull
+  public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+    return findSetter( classDeclaration, simpleName, type );
+  }
+
+  /**
+   * @param classDeclaration the class declaration
+   * @param simpleName       the simple name
+   * @param type             the type
+   * @return the method declaration for the setter
+   *
+   * @noinspection TypeMayBeWeakened
+   */
+  @NotNull
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
+    String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
+
+    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
+      if ( !methodDeclaration.getSimpleName().equals( expectedName ) ) {
+        continue;
+      }
+
+      if ( methodDeclaration.getParameters().size() != 1 ) {
+        throw new IllegalArgumentException( "Expected one parameter. But was <" + methodDeclaration.getParameters() + ">" );
+      }
+
+      ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
+      if ( !parameterDeclaration.getType().equals( type ) ) {
+        throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
+      }
+
+      return methodDeclaration;
+    }
+
+    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
+  }
+
+  @NotNull
+  public MethodDeclaration findSetter( @NotNull FieldDeclaration fieldDeclaration ) {
+    return findSetter( classDeclaration, fieldDeclaration );
+  }
+
+  @NotNull
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
+    return findSetter( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  }
+
+  @NotNull
+  public MethodDeclaration findGetterForField( @NotNull FieldDeclaration fieldDeclaration ) {
+    return findGetterForField( classDeclaration, fieldDeclaration );
+  }
+
+  public static MethodDeclaration findGetterForField( ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
+    return findGetterForField( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  }
+
+  @NotNull
+  public MethodDeclaration findGetterForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+    return findGetterForField( classDeclaration, simpleName, type );
+  }
+
+  /**
+   * @param classDeclaration the class declaration
+   * @param simpleName       the simple name
+   * @param type             the type
+   * @return the getter declaration
+   *
+   * @noinspection TypeMayBeWeakened
+   */
+  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+    String expectedName = "get" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
+
+    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
+      if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
+        if ( methodDeclaration.getReturnType().equals( type ) ) {
+          return methodDeclaration;
+        } else {
+          throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + methodDeclaration.getReturnType() + "> but expected <" + type + ">" );
+        }
+      }
+    }
+
+    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
+  }
+
+  @NotNull
+  public FieldDeclaration findFieldDeclaration( @NotNull @NonNls String fieldName ) {
+    return findFieldDeclaration( classDeclaration, fieldName );
+  }
+
+  /**
+   * @param classDeclaration the class declaration
+   * @param fieldName        the field name
+   * @return the field declaration
+   *
+   * @noinspection TypeMayBeWeakened
+   */
+  @NotNull
+  public static FieldDeclaration findFieldDeclaration( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String fieldName ) {
+    for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
+      if ( fieldDeclaration.getSimpleName().equals( fieldName ) ) {
+        return fieldDeclaration;
+      }
+    }
+
+    throw new IllegalArgumentException( "No field delaration found for <" + fieldName + ">" );
   }
 
   private static class FieldWithInitializationInfoComparator implements Comparator<FieldInitializedInConstructorInfo>, Serializable {

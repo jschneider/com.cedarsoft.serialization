@@ -65,47 +65,14 @@ public class DomainObjectDescriptorFactory {
 
   @NotNull
   public FieldWithInitializationInfo getFieldWithInitializationInfo( @NotNull FieldDeclaration fieldDeclaration ) {
-    MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration );
     try {
       ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
       return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
     } catch ( IllegalArgumentException ignore ) {
-      MethodDeclaration setter = findSetter( fieldDeclaration );
+      MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration );
       return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter );
     }
-  }
-
-  @NotNull
-  public FieldDeclaration findFieldDeclaration( @NotNull @NonNls String fieldName ) {
-    for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
-      if ( fieldDeclaration.getSimpleName().equals( fieldName ) ) {
-        return fieldDeclaration;
-      }
-    }
-
-    throw new IllegalArgumentException( "No field delaration found for <" + fieldName + ">" );
-  }
-
-  @NotNull
-  public MethodDeclaration findGetterForField( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findGetterForField( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
-  }
-
-  @NotNull
-  public MethodDeclaration findGetterForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    String expectedName = "get" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
-
-    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
-      if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
-        if ( methodDeclaration.getReturnType().equals( type ) ) {
-          return methodDeclaration;
-        } else {
-          throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + methodDeclaration.getReturnType() + "> but expected <" + type + ">" );
-        }
-      }
-    }
-
-    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
   }
 
   @NotNull
@@ -115,7 +82,7 @@ public class DomainObjectDescriptorFactory {
 
   @NotNull
   public ConstructorCallInfo findConstructorCallInfoForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
-    ConstructorDeclaration constructorDeclaration = findBestConstructor();
+    ConstructorDeclaration constructorDeclaration = DomainObjectDescriptor.findBestConstructor( classDeclaration );
 
     int index = 0;
 
@@ -135,59 +102,20 @@ public class DomainObjectDescriptorFactory {
   }
 
   @NotNull
-  public MethodDeclaration findSetter( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findSetter( fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
-  }
-
-  @NotNull
-  public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
-
-    for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
-      if ( !methodDeclaration.getSimpleName().equals( expectedName ) ) {
-        continue;
-      }
-
-      if ( methodDeclaration.getParameters().size() != 1 ) {
-        throw new IllegalArgumentException( "Expected one parameter. But was <" + methodDeclaration.getParameters() + ">" );
-      }
-
-      ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
-      if ( !parameterDeclaration.getType().equals( type ) ) {
-        throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
-      }
-
-      return methodDeclaration;
-    }
-
-    throw new IllegalArgumentException( "No method declaration found for <" + expectedName + ">" );
-  }
-
-  @NotNull
-  public ConstructorDeclaration findBestConstructor() {
-    ConstructorDeclaration currentlyBest = null;
-    for ( ConstructorDeclaration constructorDeclaration : classDeclaration.getConstructors() ) {
-      if ( currentlyBest == null || constructorDeclaration.getParameters().size() > currentlyBest.getParameters().size() ) {
-        currentlyBest = constructorDeclaration;
-      }
-    }
-
-    if ( currentlyBest == null ) {
-      throw new IllegalStateException( "No constructor found in " + classDeclaration.getSimpleName() );
-    }
-    return currentlyBest;
-  }
-
-  @NotNull
   public FieldInitializedInConstructorInfo findFieldInitializedInConstructor( @NotNull @NonNls String simpleName ) {
-    FieldDeclaration fieldDeclaration = findFieldDeclaration( simpleName );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( classDeclaration, simpleName );
     return getFieldInitializeInConstructorInfo( fieldDeclaration );
   }
 
   @NotNull
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
     ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
-    MethodDeclaration getterDeclaration = findGetterForField( fieldDeclaration );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration );
     return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
+  }
+
+  @NotNull
+  public ClassDeclaration getClassDeclaration() {
+    return classDeclaration;
   }
 }

@@ -69,7 +69,7 @@ public class DomainObjectDescriptorFactoryTest {
 
   @Test
   public void testFindField() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
     assertEquals( fieldDeclaration.getSimpleName(), "width" );
     assertEquals( fieldDeclaration.getType().toString(), "double" );
   }
@@ -91,9 +91,9 @@ public class DomainObjectDescriptorFactoryTest {
 
   @Test
   public void testGetter() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
 
-    MethodDeclaration getterDeclaration = factory.findGetterForField( fieldDeclaration );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( factory.getClassDeclaration(), fieldDeclaration );
     assertNotNull( getterDeclaration );
 
     assertEquals( getterDeclaration.getReturnType(), fieldDeclaration.getType() );
@@ -111,13 +111,13 @@ public class DomainObjectDescriptorFactoryTest {
 
   @Test
   public void testGetConstructor() {
-    ConstructorDeclaration constructorDeclaration = factory.findBestConstructor();
+    ConstructorDeclaration constructorDeclaration = DomainObjectDescriptor.findBestConstructor( factory.getClassDeclaration() );
     assertNotNull( constructorDeclaration );
   }
 
   @Test
   public void testFindConstrParam() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
 
     ConstructorCallInfo found = factory.findConstructorCallInfoForField( fieldDeclaration );
     assertEquals( found.getIndex(), 1 );
@@ -126,8 +126,8 @@ public class DomainObjectDescriptorFactoryTest {
 
   @Test
   public void testFindConstrParamWrongType() {
-    FieldDeclaration fieldDeclaration = factory.findFieldDeclaration( "width" );
-    TypeMirror type = factory.findFieldDeclaration( "description" ).getType();
+    FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
+    TypeMirror type = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "description" ).getType();
 
     try {
       factory.findConstructorCallInfoForField( fieldDeclaration.getSimpleName(), type );
