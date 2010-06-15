@@ -53,7 +53,6 @@ import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -252,8 +251,27 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NotNull
   protected abstract Class<?> getSerializeToType();
 
+  /**
+   * Appends the deserialize statement and return the created var containing the value
+   *
+   * @param serializerClass   the serializer class
+   * @param deserializeMethod the deserialize method
+   * @param deserializeFrom   deserialize from
+   * @param formatVersion     the format version
+   * @param fieldInfo         the field info
+   * @return the var holding the deserialized value
+   */
   @NotNull
   protected abstract JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
 
+  /**
+   * Appends the serialize statement
+   *
+   * @param serializerClass the serializer class
+   * @param serializeMethod the serialize method
+   * @param serializeTo     serialize to
+   * @param object          the object that is serialized
+   * @param fieldInfo       the field info
+   */
   protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
 }
