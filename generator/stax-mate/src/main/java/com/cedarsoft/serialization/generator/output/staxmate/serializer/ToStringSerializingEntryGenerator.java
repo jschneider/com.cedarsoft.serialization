@@ -74,7 +74,7 @@ public class ToStringSerializingEntryGenerator implements SerializingEntryGenera
 
     JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression(serializerClass, deserializeFrom, fieldInfo );
 
-    JClass fieldType = codeGenerator.getModel().ref( fieldInfo.getType().toString() );
+    JClass fieldType = codeGenerator.ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
   }
 

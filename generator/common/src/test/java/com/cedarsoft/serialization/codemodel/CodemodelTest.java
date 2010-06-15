@@ -72,6 +72,25 @@ public class CodemodelTest {
   }
 
   @Test
+  public void testFqNames() throws JClassAlreadyExistsException, IOException {
+    JDefinedClass daClass = model._class( "a.b.c.Foo" );
+    daClass._extends( model.ref( "a.b.c.Bar" ) );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------a.b.c.Foo.java-----------------------------------\n" +
+      "\n" +
+      "package a.b.c;\n" +
+      "\n" +
+      "\n" +
+      "public class Foo\n" +
+      "    extends Bar\n" +
+      "{\n" +
+      "\n" +
+      "\n" +
+      "}".trim() );
+  }
+
+  @Test
   public void testIt() throws IOException, JClassAlreadyExistsException, InterruptedException {
     {
       JDefinedClass fooClass = model._class( "com.cedarsoft.generator.test.Foo" );

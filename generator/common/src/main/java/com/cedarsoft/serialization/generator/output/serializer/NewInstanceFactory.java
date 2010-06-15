@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
+import com.cedarsoft.serialization.generator.output.ClassRefSupport;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -51,8 +52,12 @@ public class NewInstanceFactory {
   public static final double DEFAULT_VALUE_DOUBLE = 12.5;
   public static final char DEFAULT_VALUE_CHAR = 'c';
 
-  public NewInstanceFactory( @NotNull JCodeModel codeModel ) {
+  @NotNull
+  private final ClassRefSupport classRefSupport;
+
+  public NewInstanceFactory( @NotNull JCodeModel codeModel, @NotNull ClassRefSupport classRefSupport ) {
     this.codeModel = codeModel;
+    this.classRefSupport = classRefSupport;
   }
 
   @NotNull
@@ -99,6 +104,6 @@ public class NewInstanceFactory {
     }
 
 
-    return JExpr._new( codeModel.ref( type.toString() ) );
+    return JExpr._new( classRefSupport.ref( type.toString() ) );
   }
 }

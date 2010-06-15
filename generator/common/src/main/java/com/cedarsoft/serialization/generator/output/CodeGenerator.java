@@ -35,6 +35,7 @@ import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.Decorator;
 import com.cedarsoft.serialization.generator.output.serializer.NewInstanceFactory;
 import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
@@ -57,7 +58,8 @@ public class CodeGenerator<T extends DecisionCallback> {
   private final ParseExpressionFactory parseExpressionFactory;
   @NotNull
   private final NewInstanceFactory newInstanceFactory;
-
+  @NotNull
+  private final ClassRefSupport classRefSupport;
   @NotNull
   private final T decisionCallback;
 
@@ -70,8 +72,9 @@ public class CodeGenerator<T extends DecisionCallback> {
 
   protected CodeGenerator( @NotNull JCodeModel model, @NotNull T decisionCallback ) {
     this.model = model;
-    this.parseExpressionFactory = new ParseExpressionFactory( model );
-    this.newInstanceFactory = new NewInstanceFactory( model );
+    this.classRefSupport = new ClassRefSupport( model );
+    this.parseExpressionFactory = new ParseExpressionFactory( model, classRefSupport );
+    this.newInstanceFactory = new NewInstanceFactory( model, classRefSupport );
     this.decisionCallback = decisionCallback;
   }
 
@@ -88,6 +91,11 @@ public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   public JCodeModel getModel() {
     return model;
+  }
+
+  @NotNull
+  public ClassRefSupport getClassRefSupport() {
+    return classRefSupport;
   }
 
   @NotNull
@@ -125,5 +133,10 @@ public class CodeGenerator<T extends DecisionCallback> {
     }
 
     return constant;
+  }
+
+  @NotNull
+  public JClass ref( @NotNull @NonNls String qualifiedName ) {
+    return getClassRefSupport().ref( qualifiedName );
   }
 }

@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.DefaultFieldTypeInformation;
+import com.cedarsoft.serialization.generator.output.ClassRefSupport;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -54,7 +55,7 @@ public class ParseExpressionFactoryTest {
   @BeforeMethod
   protected void setUp() throws Exception {
     model = new JCodeModel();
-    factory = new ParseExpressionFactory( model );
+    factory = new ParseExpressionFactory( model, new ClassRefSupport( model ) );
   }
 
   @Test

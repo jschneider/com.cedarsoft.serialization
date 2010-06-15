@@ -124,7 +124,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    */
   @NotNull
   public JDefinedClass generateSerializer( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
     JDefinedClass serializerClass = codeModel._class( createSerializerClassName( domainType.fullName() ) )._extends( createSerializerExtendsExpression( domainType ) );
@@ -148,7 +148,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
     //Now create the constructor for the deserializeMethod
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
     JInvocation domainTypeInit = JExpr._new( domainType );
 
     //Add the arguments for the fields

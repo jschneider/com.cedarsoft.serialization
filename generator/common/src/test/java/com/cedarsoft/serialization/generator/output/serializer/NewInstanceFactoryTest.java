@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
+import com.cedarsoft.serialization.generator.output.ClassRefSupport;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JFormatter;
 import org.jetbrains.annotations.NonNls;
@@ -55,7 +56,7 @@ public class NewInstanceFactoryTest {
   @BeforeMethod
   protected void setUp() throws Exception {
     codeModel = new JCodeModel();
-    factory = new NewInstanceFactory( codeModel );
+    factory = new NewInstanceFactory( codeModel, new ClassRefSupport( codeModel ) );
     initializeFormatter();
   }
 

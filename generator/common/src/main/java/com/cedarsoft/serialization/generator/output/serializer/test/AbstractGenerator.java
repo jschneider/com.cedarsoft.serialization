@@ -85,7 +85,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   public JDefinedClass generateSerializerVersionTest( @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
     JDefinedClass testClass = codeModel._class( createSerializerVersionTestName( serializerClass.fullName() ) )._extends( createVersionExtendsClass( domainType, serializerClass ) );
@@ -100,14 +100,14 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void createVersionVerifyMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
 
     JMethod method = testClass.method( JMod.PROTECTED, Void.TYPE, METHOD_NAME_VERIFY_DESERIALIZED )._throws( Exception.class );
     method.annotate( Override.class );
     JVar deserialized = method.param( domainType, PARAM_NAME_DESERIALIZED );
     method.param( Version.class, PARAM_NAME_VERSION );
 
-    JClass assertClass = codeModel.ref( "org.testng.Assert" );
+    JClass assertClass = codeGenerator.ref( "org.testng.Assert" );
 
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ) ).arg( "daValue" ) );
@@ -125,8 +125,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   public JDefinedClass generateSerializerTest( @NotNull String serializerClassName, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
-    JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
-    JClass serializerClass = codeModel.ref( serializerClassName );
+    JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass serializerClass = codeGenerator.ref( serializerClassName );
 
     //the class
     JDefinedClass testClass = codeModel._class( createSerializerTestName( serializerClassName ) )._extends( createExtendsClass( domainType, serializerClass ) );
@@ -162,7 +162,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   protected JInvocation createDomainObjectCreationExpression( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JInvocation invocation = JExpr._new( codeModel.ref( domainObjectDescriptor.getQualifiedName() ) );
+    JInvocation invocation = JExpr._new( codeGenerator.ref( domainObjectDescriptor.getQualifiedName() ) );
 
     ConstructorDeclaration constructor = domainObjectDescriptor.findBestConstructor();
     for ( ParameterDeclaration parameterDeclaration : constructor.getParameters() ) {

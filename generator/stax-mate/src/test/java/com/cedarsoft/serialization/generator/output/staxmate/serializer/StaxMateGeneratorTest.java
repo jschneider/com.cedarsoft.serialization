@@ -34,10 +34,8 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
-import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.testng.annotations.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.testng.Assert.*;
@@ -45,8 +43,8 @@ import static org.testng.Assert.*;
 /**
  *
  */
-public class StaxMateGeneratorTest extends AbstractGeneratorTest{
-protected StaxMateGenerator generator;
+public class StaxMateGeneratorTest extends AbstractGeneratorTest {
+  protected StaxMateGenerator generator;
 
   @BeforeMethod
   @Override
@@ -65,9 +63,6 @@ protected StaxMateGenerator generator;
 
     assertEquals( definedClass.name(), "WindowSerializer" );
 
-
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    model.build( new SingleStreamCodeWriter( out ) );
     assertGeneratedCode( getClass().getResource( "StaxMateGeneratorTest.1.txt" ) );
   }
 }

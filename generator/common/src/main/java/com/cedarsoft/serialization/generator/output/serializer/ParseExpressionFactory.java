@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
+import com.cedarsoft.serialization.generator.output.ClassRefSupport;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
@@ -49,9 +50,12 @@ public class ParseExpressionFactory {
 
   @NotNull
   private final JCodeModel model;
+  @NotNull
+  private final ClassRefSupport classRefSupport;
 
-  public ParseExpressionFactory( @NotNull JCodeModel model ) {
+  public ParseExpressionFactory( @NotNull JCodeModel model, @NotNull ClassRefSupport classRefSupport ) {
     this.model = model;
+    this.classRefSupport = classRefSupport;
   }
 
   @NotNull
@@ -77,7 +81,7 @@ public class ParseExpressionFactory {
     }
 
     //Fallback to a generic parse method
-    JClass fieldType = model.ref( fieldInfo.getType().toString() );
+    JClass fieldType = classRefSupport.ref( fieldInfo.getType().toString() );
     return JExpr.invoke( "parse" + fieldType.name() ).arg( varAsString );
   }
 
