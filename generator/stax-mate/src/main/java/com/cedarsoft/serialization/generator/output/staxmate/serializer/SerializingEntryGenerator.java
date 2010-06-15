@@ -31,8 +31,14 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
+import com.cedarsoft.serialization.generator.model.FieldInfo;
+import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
@@ -40,19 +46,52 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public interface SerializingEntryGenerator {
-  void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
-
-  /**
-   * Returns the var the deserialized value is stored in
-   *
-   * @param serializerClass the serializer class
-   * @param method          the method
-   * @param deserializeFrom the deserializedFrom
-   * @param formatVersion   the format version
-   * @param fieldInfo       the field info
-   * @return the var
-   */
+public class SerializingEntryGenerator {
   @NotNull
-  JVar appendDeserializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  private final CodeGenerator<XmlDecisionCallback> codeGenerator;
+
+  public SerializingEntryGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+    this.codeGenerator = codeGenerator;
+    asAttribute = new AsAttributeGenerator( codeGenerator );
+    asElement = new AsElementGenerator( codeGenerator );
+  }
+
+  public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
+    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
+
+    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
+
+    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
+    method.body().add( serializeToHandler.createAddToSerializeToExpression(serializerClass, serializeTo, objectAsString, fieldInfo ) );
+  }
+
+  @NotNull
+  public JVar appendDeserializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
+    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
+
+    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression(serializerClass, deserializeFrom, fieldInfo );
+
+    JClass fieldType = codeGenerator.ref( fieldInfo.getType().toString() );
+    return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
+  }
+
+  @NotNull
+  private SerializeToGenerator getStrategy( @NotNull FieldInfo fieldInfo ) {
+    XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
+    switch ( target ) {
+      case ELEMENT:
+        return asElement;
+      case ATTRIBUTE:
+        return asAttribute;
+    }
+
+    throw new IllegalStateException( "Should not reach! " + fieldInfo );
+  }
+
+  @NotNull
+  private final SerializeToGenerator asElement;
+  @NotNull
+  private final SerializeToGenerator asAttribute;
+
 }

@@ -56,7 +56,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NonNls
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
   @NotNull
-  private final SerializingEntryCreators creators;
+  private final SerializingEntryGenerator serializingEntryGenerator;
 
   /**
    * Creates a new generator
@@ -67,7 +67,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
 
   public StaxMateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
-    this.creators = new SerializingEntryCreators( this.codeGenerator );
+    this.serializingEntryGenerator = new SerializingEntryGenerator( codeGenerator );
   }
 
   @NotNull
@@ -85,14 +85,12 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @Override
   @NotNull
   protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    SerializingEntryGenerator generator = creators.findGenerator();
-    return generator.appendDeserializing( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
+    return serializingEntryGenerator.appendDeserializing( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
   }
 
   @Override
   protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
-    SerializingEntryGenerator generator = creators.findGenerator();
-    generator.appendSerializing( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
+    serializingEntryGenerator.appendSerializing( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
   }
 
   @NotNull
