@@ -65,8 +65,6 @@ public class Generator {
   @NonNls
   public static final String VERSION_OPTION = "v";
   @NonNls
-  public static final String OPTION_CLASS_PATH = "cp";
-  @NonNls
   public static final String OPTION_DESTINATION = "d";
   @NonNls
   public static final String OPTION_TEST_DESTINATION = "t";
