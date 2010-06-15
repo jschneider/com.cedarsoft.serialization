@@ -35,6 +35,7 @@ import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JStatement;
+import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -47,12 +48,12 @@ public interface SerializeToGenerator {
    *
    * @param serializerClass the serializer class
    * @param serializeTo     the serialize to var
-   * @param objectAsString  the getter invocation used to get the value as string
    * @param fieldInfo       the field info    @return the invocation the serializes the given
+   * @param object          the object that is serialized
    * @return the created statement
    */
   @NotNull
-  JStatement createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo );
+  JStatement createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object );
 
   /**
    * Creates an expression that is used to read an object (as String) from <code>deserializeFrom</code>

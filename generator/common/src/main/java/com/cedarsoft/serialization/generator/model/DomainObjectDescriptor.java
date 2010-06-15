@@ -38,6 +38,7 @@ import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,8 +57,12 @@ public class DomainObjectDescriptor {
   @NotNull
   private final ClassDeclaration classDeclaration;
 
-  public DomainObjectDescriptor( @NotNull @NonNls ClassDeclaration classDeclaration ) {
+  @NotNull
+  private final Types types;
+
+  public DomainObjectDescriptor( @NotNull @NonNls ClassDeclaration classDeclaration, @NotNull Types types ) {
     this.classDeclaration = classDeclaration;
+    this.types = types;
   }
 
   @NotNull
@@ -73,6 +78,11 @@ public class DomainObjectDescriptor {
 
   public void addField( @NotNull FieldWithInitializationInfo fieldToSerialize ) {
     this.fieldsToSerialize.add( fieldToSerialize );
+  }
+
+  @NotNull
+  public Types getTypes() {
+    return types;
   }
 
   @NotNull
@@ -133,19 +143,20 @@ public class DomainObjectDescriptor {
 
   @NotNull
   public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    return findSetter( classDeclaration, simpleName, type );
+    return findSetter( classDeclaration, simpleName, type, types );
   }
 
   /**
    * @param classDeclaration the class declaration
    * @param simpleName       the simple name
    * @param type             the type
+   * @param types            the types utility method
    * @return the method declaration for the setter
    *
    * @noinspection TypeMayBeWeakened
    */
   @NotNull
-  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type, @NotNull Types types ) throws IllegalArgumentException {
     String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
 
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
@@ -158,7 +169,7 @@ public class DomainObjectDescriptor {
       }
 
       ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
-      if ( !parameterDeclaration.getType().equals( type ) ) {
+      if ( !types.isAssignable( type, parameterDeclaration.getType() ) ) {
         throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
       }
 
@@ -170,45 +181,47 @@ public class DomainObjectDescriptor {
 
   @NotNull
   public MethodDeclaration findSetter( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findSetter( classDeclaration, fieldDeclaration );
+    return findSetter( classDeclaration, fieldDeclaration, types );
   }
 
   @NotNull
-  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
-    return findSetter( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration, @NotNull Types types ) {
+    return findSetter( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType(), types );
   }
 
   @NotNull
   public MethodDeclaration findGetterForField( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findGetterForField( classDeclaration, fieldDeclaration );
+    return findGetterForField( classDeclaration, fieldDeclaration, types );
   }
 
-  public static MethodDeclaration findGetterForField( ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
-    return findGetterForField( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
+  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration, @NotNull Types types ) {
+    return findGetterForField( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType(), types );
   }
 
   @NotNull
   public MethodDeclaration findGetterForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    return findGetterForField( classDeclaration, simpleName, type );
+    return findGetterForField( classDeclaration, simpleName, type, types );
   }
 
   /**
    * @param classDeclaration the class declaration
    * @param simpleName       the simple name
    * @param type             the type
+   * @param types            the types utility
    * @return the getter declaration
    *
    * @noinspection TypeMayBeWeakened
    */
-  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
+  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type, @NotNull Types types ) {
     String expectedName = "get" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
 
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
       if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
-        if ( methodDeclaration.getReturnType().equals( type ) ) {
+        TypeMirror returnType = methodDeclaration.getReturnType();
+        if ( types.isAssignable( type, returnType ) ) {
           return methodDeclaration;
         } else {
-          throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + methodDeclaration.getReturnType() + "> but expected <" + type + ">" );
+          throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + returnType + "> but expected <" + type + ">" );
         }
       }
     }

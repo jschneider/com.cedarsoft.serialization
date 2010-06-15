@@ -42,8 +42,11 @@ import com.sun.mirror.type.ClassType;
 import com.sun.mirror.type.DeclaredType;
 import com.sun.mirror.type.InterfaceType;
 import com.sun.mirror.type.PrimitiveType;
+import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.type.WildcardType;
 import com.sun.mirror.util.TypeVisitor;
+import com.sun.tools.apt.mirror.type.WildcardTypeImpl;
 import org.mockito.Mock;
 import org.testng.annotations.*;
 
@@ -73,8 +76,56 @@ public class ParserTest {
   }
 
   @Test
+  public void testCollectionType() {
+    ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
+    final ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
+
+    {
+      FieldDeclaration field = fields.get( 0 );
+      assertEquals( field.getSimpleName(), "stringList" );
+
+      TypeMirror type = field.getType();
+      assertEquals( type.toString(), "java.util.List<java.lang.String>" );
+      assertTrue( type instanceof DeclaredType );
+
+      DeclaredType declaredType = ( DeclaredType ) type;
+      assertEquals( declaredType.getActualTypeArguments().size(), 1 );
+
+      List<TypeMirror> arguments = ImmutableList.copyOf( declaredType.getActualTypeArguments() );
+      assertEquals( arguments.size(), 1 );
+      assertEquals( arguments.get( 0 ).toString(), "java.lang.String" );
+      assertTrue( arguments.get( 0 ) instanceof DeclaredType );
+    }
+
+    {
+      FieldDeclaration field = fields.get( 1 );
+      assertEquals( field.getSimpleName(), "wildStringList" );
+
+      TypeMirror type = field.getType();
+      assertEquals( type.toString(), "java.util.List<? extends java.lang.String>" );
+      assertTrue( type instanceof DeclaredType );
+
+      DeclaredType declaredType = ( DeclaredType ) type;
+      assertEquals( declaredType.getActualTypeArguments().size(), 1 );
+
+      List<TypeMirror> arguments = ImmutableList.copyOf( declaredType.getActualTypeArguments() );
+      assertEquals( arguments.size(), 1 );
+      assertEquals( arguments.get( 0 ).toString(), "? extends java.lang.String" );
+      assertTrue( arguments.get( 0 ) instanceof WildcardTypeImpl, arguments.get( 0 ).getClass().getName() );
+      assertTrue( arguments.get( 0 ) instanceof WildcardType, arguments.get( 0 ).getClass().getName() );
+
+      WildcardType wildcardType = ( WildcardType ) arguments.get( 0 );
+      assertEquals( wildcardType.getUpperBounds().size(), 1 );
+      assertEquals( wildcardType.getLowerBounds().size(), 0 );
+
+      ReferenceType lowerBoundType = wildcardType.getUpperBounds().iterator().next();
+      assertEquals( lowerBoundType.toString(), "java.lang.String" );
+      assertTrue( lowerBoundType instanceof DeclaredType );
+    }
+  }
+
+  @Test
   public void testVisitor() throws Exception {
-    System.out.println( "---------------------" );
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
 
     final ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );

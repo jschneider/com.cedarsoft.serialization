@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
+import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.serializer.Decorator;
 import com.cedarsoft.serialization.generator.output.serializer.NewInstanceFactory;
 import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
@@ -40,6 +41,7 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -138,5 +140,15 @@ public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   public JClass ref( @NotNull @NonNls String qualifiedName ) {
     return getClassRefSupport().ref( qualifiedName );
+  }
+
+  @NotNull
+  public JInvocation createGetterInvocation( @NotNull JExpression object, @NotNull FieldDeclarationInfo fieldInfo ) {
+    return object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() );
+  }
+
+  @NotNull
+  public JClass getCollectionTypeClass( @NotNull FieldDeclarationInfo fieldInfo ) {
+    return null;
   }
 }

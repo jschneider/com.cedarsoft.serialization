@@ -39,6 +39,7 @@ import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
@@ -69,6 +70,30 @@ public class CodemodelTest {
     out = new ByteArrayOutputStream();
     codeWriter = new SingleStreamCodeWriter( out );
     model = new JCodeModel();
+  }
+
+  @Test
+  public void testClass() throws Exception {
+    JDefinedClass daClass = model._class( "a.b.c.Foo" );
+
+    JMethod method = daClass.method( JMod.PUBLIC, Void.TYPE, "daMethod" );
+    JExpression dotClass = JExpr.dotclass( model.ref( String.class ) );
+    method.body()._return( dotClass );
+
+    model.build( codeWriter );
+    assertEquals( out.toString().trim(), "-----------------------------------a.b.c.Foo.java-----------------------------------\n" +
+      "\n" +
+      "package a.b.c;\n" +
+      "\n" +
+      "\n" +
+      "public class Foo {\n" +
+      "\n" +
+      "\n" +
+      "    public void daMethod() {\n" +
+      "        return String.class;\n" +
+      "    }\n" +
+      "\n" +
+      "}".trim() );
   }
 
   @Test

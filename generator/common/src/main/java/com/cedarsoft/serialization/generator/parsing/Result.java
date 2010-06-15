@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.parsing;
 
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.ClassDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,13 @@ import java.util.List;
 public class Result {
   @NotNull
   private final List<ClassDeclaration> classDeclarations = new ArrayList<ClassDeclaration>();
+
+  @NotNull
+  private final AnnotationProcessorEnvironment environment;
+
+  public Result( @NotNull AnnotationProcessorEnvironment environment ) {
+    this.environment = environment;
+  }
 
   public void addClassDeclaration( @NotNull ClassDeclaration classDeclaration ) {
     this.classDeclarations.add( classDeclaration );
@@ -73,5 +81,10 @@ public class Result {
     }
 
     return classDeclarations.get( 0 );
+  }
+
+  @NotNull
+  public AnnotationProcessorEnvironment getEnvironment() {
+    return environment;
   }
 }

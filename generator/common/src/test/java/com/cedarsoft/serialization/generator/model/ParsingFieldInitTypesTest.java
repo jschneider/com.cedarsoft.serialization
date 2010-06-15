@@ -61,7 +61,7 @@ public class ParsingFieldInitTypesTest {
     assertEquals( parsed.getClassDeclarations().size(), 1 );
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.FieldTypesInit" );
 
-    factory = new DomainObjectDescriptorFactory( classDeclaration );
+    factory = new DomainObjectDescriptorFactory( classDeclaration, parsed.getEnvironment().getTypeUtils() );
   }
 
   @Test
@@ -74,7 +74,7 @@ public class ParsingFieldInitTypesTest {
   @Test
   public void testFindSetterInit() {
     FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "height" );
-    MethodDeclaration setter = DomainObjectDescriptor.findSetter( factory.getClassDeclaration(), fieldDeclaration );
+    MethodDeclaration setter = DomainObjectDescriptor.findSetter( factory.getClassDeclaration(), fieldDeclaration, factory.getTypes() );
     assertNotNull( setter );
     assertEquals( setter.getSimpleName(), "setHeight" );
   }

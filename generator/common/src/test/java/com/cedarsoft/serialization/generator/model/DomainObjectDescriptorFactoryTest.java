@@ -64,7 +64,7 @@ public class DomainObjectDescriptorFactoryTest {
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Window" );
 
 
-    factory = new DomainObjectDescriptorFactory( classDeclaration );
+    factory = new DomainObjectDescriptorFactory( classDeclaration, parsed.getEnvironment().getTypeUtils() );
   }
 
   @Test
@@ -93,7 +93,7 @@ public class DomainObjectDescriptorFactoryTest {
   public void testGetter() {
     FieldDeclaration fieldDeclaration = DomainObjectDescriptor.findFieldDeclaration( factory.getClassDeclaration(), "width" );
 
-    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( factory.getClassDeclaration(), fieldDeclaration );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( factory.getClassDeclaration(), fieldDeclaration, factory.getTypes() );
     assertNotNull( getterDeclaration );
 
     assertEquals( getterDeclaration.getReturnType(), fieldDeclaration.getType() );

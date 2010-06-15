@@ -62,7 +62,7 @@ public class Parser {
   }
 
   private static class CollectingFactory implements AnnotationProcessorFactory {
-    private final Result result = new Result();
+    private Result result;
 
     @Override
     public Collection<String> supportedOptions() {
@@ -75,7 +75,12 @@ public class Parser {
     }
 
     @Override
-    public AnnotationProcessor getProcessorFor( final Set<AnnotationTypeDeclaration> atds, final AnnotationProcessorEnvironment env ) {
+    public AnnotationProcessor getProcessorFor( @NotNull final Set<AnnotationTypeDeclaration> atds, @NotNull final AnnotationProcessorEnvironment env ) {
+      if ( result != null ) {
+        throw new IllegalStateException( "Has still been called!" );
+      }
+      result = new Result( env );
+
       return new AnnotationProcessor() {
         @Override
         public void process() {
@@ -91,6 +96,7 @@ public class Parser {
 
     @NotNull
     public Result getResult() {
+      assert result != null;
       return result;
     }
   }

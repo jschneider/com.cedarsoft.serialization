@@ -86,6 +86,11 @@ public class Room {
     return Collections.unmodifiableList( doors );
   }
 
+  public void setDoors( @NotNull List<? extends Door> doors ) {
+    this.doors.clear();
+    this.doors.addAll( doors );
+  }
+
   @Override
   public boolean equals( Object o ) {
     if ( this == o ) return true;
