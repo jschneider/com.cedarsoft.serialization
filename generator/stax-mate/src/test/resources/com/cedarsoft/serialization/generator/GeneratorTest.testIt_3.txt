@@ -1,0 +1,41 @@
+package com.cedarsoft.serialization.generator.staxmate.test;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer;
+import org.testng.Assert;
+
+public class WindowSerializerVersionTest
+    extends AbstractXmlVersionTest<Window>
+{
+
+
+    @Override
+    protected Serializer<Window> getSerializer()
+        throws Exception
+    {
+        return new WindowSerializer();
+    }
+
+    @Override
+    protected Map<? extends Version, ? extends String> getSerializedXml() {
+        Map<Version, String> map = new HashMap<Version, String>();
+        map.put(Version.valueOf(1, 0, 0), "<todo/>");
+        return map;
+    }
+
+    @Override
+    protected void verifyDeserialized(Window deserialized, Version version)
+        throws Exception
+    {
+        Assert.assertEquals(deserialized.getWidth(), "daValue");
+        Assert.assertEquals(deserialized.getHeight(), "daValue");
+        Assert.assertEquals(deserialized.getDescription(), "daValue");
+        Assert.assertEquals(deserialized.getAnInt(), "daValue");
+        Assert.assertEquals(deserialized.getFloatField(), "daValue");
+    }
+
+}
