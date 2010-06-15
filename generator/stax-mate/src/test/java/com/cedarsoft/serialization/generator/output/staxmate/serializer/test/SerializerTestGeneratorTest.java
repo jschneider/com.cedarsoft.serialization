@@ -68,48 +68,7 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     assertEquals( serializerVersionTestClass.name(), "WindowSerializerVersionTest" );
     assertEquals( serializerVersionTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
 
-    assertGeneratedCode( "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerVersionTest.java-----------------------------------\n" +
-      "\n" +
-      "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
-      "\n" +
-      "import java.util.HashMap;\n" +
-      "import java.util.Map;\n" +
-      "import com.cedarsoft.Version;\n" +
-      "import com.cedarsoft.serialization.AbstractXmlVersionTest;\n" +
-      "import com.cedarsoft.serialization.Serializer;\n" +
-      "import org.testng.Assert;\n" +
-      "\n" +
-      "public class WindowSerializerVersionTest\n" +
-      "    extends AbstractXmlVersionTest<Window>\n" +
-      "{\n" +
-      "\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected Serializer<Window> getSerializer()\n" +
-      "        throws Exception\n" +
-      "    {\n" +
-      "        return new WindowSerializer();\n" +
-      "    }\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected Map<? extends Version, ? extends String> getSerializedXml() {\n" +
-      "        Map<Version, String> map = new HashMap<Version, String>();\n" +
-      "        map.put(Version.valueOf(1, 0, 0), \"<todo/>\");\n" +
-      "        return map;\n" +
-      "    }\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected void verifyDeserialized(Window deserialized, Version version)\n" +
-      "        throws Exception\n" +
-      "    {\n" +
-      "        Assert.assertEquals(deserialized.getWidth(), \"daValue\");\n" +
-      "        Assert.assertEquals(deserialized.getHeight(), \"daValue\");\n" +
-      "        Assert.assertEquals(deserialized.getDescription(), \"daValue\");\n" +
-      "        Assert.assertEquals(deserialized.getAnInt(), \"daValue\");\n" +
-      "        Assert.assertEquals(deserialized.getFloatField(), \"daValue\");\n" +
-      "    }\n" +
-      "\n" +
-      "}" );
+    assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.1.txt" ) );
   }
 
   @Test
@@ -125,40 +84,6 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     assertNotNull( definedClass );
     assertEquals( definedClass.name(), "WindowSerializerTest" );
 
-
-    assertGeneratedCode( "-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerTest.java-----------------------------------\n" +
-      "\n" +
-      "package com.cedarsoft.serialization.generator.staxmate.test;\n" +
-      "\n" +
-      "import java.util.Arrays;\n" +
-      "import java.util.List;\n" +
-      "import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;\n" +
-      "import com.cedarsoft.serialization.Serializer;\n" +
-      "\n" +
-      "public class WindowSerializerTest\n" +
-      "    extends AbstractXmlSerializerMultiTest<Window>\n" +
-      "{\n" +
-      "\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected Serializer<Window> getSerializer()\n" +
-      "        throws Exception\n" +
-      "    {\n" +
-      "        return new WindowSerializer();\n" +
-      "    }\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected Iterable<? extends Window> createObjectsToSerialize()\n" +
-      "        throws Exception\n" +
-      "    {\n" +
-      "        return Arrays.asList(new Window(\"description\", 12.5D, 42, Integer.valueOf(42)), new Window(\"description\", 12.5D, 42, Integer.valueOf(42)), new Window(\"description\", 12.5D, 42, Integer.valueOf(42)));\n" +
-      "    }\n" +
-      "\n" +
-      "    @Override\n" +
-      "    protected List<? extends String> getExpectedSerialized() {\n" +
-      "        return Arrays.asList(\"<implementMe/>\", \"<implementMe/>\", \"<implementMe/>\");\n" +
-      "    }\n" +
-      "\n" +
-      "}" );
+    assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.2.txt" ) );
   }
 }

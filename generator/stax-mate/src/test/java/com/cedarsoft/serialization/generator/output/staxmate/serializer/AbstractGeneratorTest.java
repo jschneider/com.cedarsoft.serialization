@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
@@ -82,6 +83,13 @@ public class AbstractGeneratorTest {
     this.codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
     codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
     model = codeGenerator.getModel();
+  }
+
+  protected void assertGeneratedCode( @NotNull @NonNls URL expected ) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    model.build( new SingleStreamCodeWriter( out ) );
+
+    AssertUtils.assertEquals( out.toString().trim(), expected );
   }
 
   protected void assertGeneratedCode( @NotNull @NonNls String expected ) throws IOException {

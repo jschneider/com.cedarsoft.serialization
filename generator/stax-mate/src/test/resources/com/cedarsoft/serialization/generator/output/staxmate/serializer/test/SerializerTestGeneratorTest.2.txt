@@ -1,0 +1,34 @@
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerTest.java-----------------------------------
+
+package com.cedarsoft.serialization.generator.staxmate.test;
+
+import java.util.Arrays;
+import java.util.List;
+import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.Serializer;
+
+public class WindowSerializerTest
+    extends AbstractXmlSerializerMultiTest<Window>
+{
+
+
+    @Override
+    protected Serializer<Window> getSerializer()
+        throws Exception
+    {
+        return new WindowSerializer();
+    }
+
+    @Override
+    protected Iterable<? extends Window> createObjectsToSerialize()
+        throws Exception
+    {
+        return Arrays.asList(new Window("description", 12.5D, 42, Integer.valueOf(42)), new Window("description", 12.5D, 42, Integer.valueOf(42)), new Window("description", 12.5D, 42, Integer.valueOf(42)));
+    }
+
+    @Override
+    protected List<? extends String> getExpectedSerialized() {
+        return Arrays.asList("<implementMe/>", "<implementMe/>", "<implementMe/>");
+    }
+
+}

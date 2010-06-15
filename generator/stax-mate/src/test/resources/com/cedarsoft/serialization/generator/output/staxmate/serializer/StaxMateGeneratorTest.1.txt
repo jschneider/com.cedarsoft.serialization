@@ -1,0 +1,86 @@
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------
+
+package com.cedarsoft.serialization.generator.staxmate.test;
+
+import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import org.codehaus.staxmate.out.SMOutputElement;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+
+public class WindowSerializer
+    extends AbstractStaxMateSerializer<Window>
+{
+
+    @NotNull
+    @NonNls
+    public final static String ATTRIBUTE_WIDTH = "width";
+    @NotNull
+    @NonNls
+    public final static String ATTRIBUTE_HEIGHT = "height";
+    @NotNull
+    @NonNls
+    public final static String ELEMENT_DESCRIPTION = "description";
+    @NotNull
+    @NonNls
+    public final static String ELEMENT_ANINT = "anInt";
+    @NotNull
+    @NonNls
+    public final static String ELEMENT_FLOATFIELD = "floatField";
+
+    public WindowSerializer() {
+        super("window", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
+    }
+
+    @Override
+    public void serialize(
+        @NotNull
+        SMOutputElement serializeTo,
+        @NotNull
+        Window object)
+        throws IOException, XMLStreamException
+    {
+        //width
+        serializeTo.addAttribute(ATTRIBUTE_WIDTH, String.valueOf(object.getWidth()));
+        //height
+        serializeTo.addAttribute(ATTRIBUTE_HEIGHT, String.valueOf(object.getHeight()));
+        //description
+        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_DESCRIPTION, object.getDescription());
+        //anInt
+        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));
+        //floatField
+        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
+    }
+
+    @Override
+    @NotNull
+    public Window deserialize(
+        @NotNull
+        XMLStreamReader deserializeFrom,
+        @NotNull
+        Version formatVersion)
+        throws VersionException, IOException, XMLStreamException
+    {
+        //width
+        double width = Double.parseDouble(deserializeFrom.getAttributeValue(null, ATTRIBUTE_WIDTH));
+        //height
+        int height = Integer.parseInt(deserializeFrom.getAttributeValue(null, ATTRIBUTE_HEIGHT));
+        //description
+        String description = getChildText(deserializeFrom, ELEMENT_DESCRIPTION);
+        //anInt
+        Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));
+        //floatField
+        float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
+        closeTag(deserializeFrom);
+        //Constructing the deserialized object
+        Window object = new Window(description, width, height, anInt);
+        object.setFloatField(floatField);
+        return object;
+    }
+
+}
