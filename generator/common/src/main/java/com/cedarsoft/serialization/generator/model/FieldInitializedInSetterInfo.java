@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -42,8 +43,8 @@ public class FieldInitializedInSetterInfo extends DefaultFieldDeclarationInfo im
   @NotNull
   private final MethodDeclaration setterDeclaration;
 
-  public FieldInitializedInSetterInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull MethodDeclaration setterDeclaration ) {
-    super( getterDeclaration, fieldDeclaration );
+  public FieldInitializedInSetterInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull MethodDeclaration setterDeclaration, @NotNull Types types ) {
+    super( getterDeclaration, fieldDeclaration, types );
     this.setterDeclaration = setterDeclaration;
   }
 

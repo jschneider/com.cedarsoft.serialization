@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,4 +54,9 @@ public interface FieldTypeInformation {
    * @return true if the field is of the given type
    */
   boolean isType( @NotNull Class<?> type );
+
+  @NotNull
+  TypeMirror getCollectionType();
+
+  boolean isCollectionType();
 }

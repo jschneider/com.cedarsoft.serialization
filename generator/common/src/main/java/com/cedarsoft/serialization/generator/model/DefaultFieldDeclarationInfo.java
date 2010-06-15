@@ -33,9 +33,16 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.TypeDeclaration;
+import com.sun.mirror.type.DeclaredType;
+import com.sun.mirror.type.InterfaceType;
+import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
  *
@@ -46,8 +53,8 @@ public class DefaultFieldDeclarationInfo extends DefaultFieldTypeInformation imp
   @NotNull
   protected final MethodDeclaration getterDeclaration;
 
-  public DefaultFieldDeclarationInfo( @NotNull MethodDeclaration getterDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
-    super( fieldDeclaration.getType() );
+  public DefaultFieldDeclarationInfo( @NotNull MethodDeclaration getterDeclaration, @NotNull FieldDeclaration fieldDeclaration, @NotNull Types types ) {
+    super( fieldDeclaration.getType(), types );
     this.getterDeclaration = getterDeclaration;
     this.fieldDeclaration = fieldDeclaration;
   }

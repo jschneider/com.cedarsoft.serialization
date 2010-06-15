@@ -31,12 +31,6 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
-import com.cedarsoft.serialization.generator.model.DefaultFieldTypeInformation;
-import com.cedarsoft.serialization.generator.output.ClassRefSupport;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JFormatter;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.declaration.TypeParameterDeclaration;
 import com.sun.mirror.type.ArrayType;
@@ -48,51 +42,60 @@ import com.sun.mirror.type.TypeVariable;
 import com.sun.mirror.type.VoidType;
 import com.sun.mirror.type.WildcardType;
 import com.sun.mirror.util.Types;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
 
-import java.io.StringWriter;
 import java.util.Collection;
-
-import static org.testng.Assert.*;
 
 /**
  *
  */
-public class ParseExpressionFactoryTest {
-  private JCodeModel model;
-  private ParseExpressionFactory factory;
-
-  @BeforeMethod
-  protected void setUp() throws Exception {
-    model = new JCodeModel();
-    factory = new ParseExpressionFactory( model, new ClassRefSupport( model ) );
+public class TypesMock implements Types {
+  @Override
+  public boolean isSubtype( TypeMirror t1, TypeMirror t2 ) {
+    throw new UnsupportedOperationException();
   }
 
-  @Test
-  public void testString() {
-    checkForType( String.class, "aCall()" );
+  @Override
+  public boolean isAssignable( TypeMirror t1, TypeMirror t2 ) {
+    throw new UnsupportedOperationException();
   }
 
-  @Test
-  public void testNumbers() {
-    checkForType( Double.class, "java.lang.Double.parseDouble(aCall())" );
-    checkForType( Double.TYPE, "java.lang.Double.parseDouble(aCall())" );
-    checkForType( Integer.class, "java.lang.Integer.parseInt(aCall())" );
-    checkForType( Integer.TYPE, "java.lang.Integer.parseInt(aCall())" );
-    checkForType( Float.class, "java.lang.Float.parseFloat(aCall())" );
-    checkForType( Float.TYPE, "java.lang.Float.parseFloat(aCall())" );
-    checkForType( Boolean.class, "java.lang.Boolean.parseBoolean(aCall())" );
-    checkForType( Boolean.TYPE, "java.lang.Boolean.parseBoolean(aCall())" );
+  @Override
+  public TypeMirror getErasure( TypeMirror t ) {
+    throw new UnsupportedOperationException();
   }
 
-  private void checkForType( @NotNull Class<?> type, @NotNull @NonNls String expected ) {
-    JExpression parseExpression = factory.createParseExpression( JExpr.invoke( "aCall" ), new DefaultFieldTypeInformation( new TypeMirrorMock( type ), new TypesMock() ) );
-
-    StringWriter out = new StringWriter();
-    parseExpression.generate( new JFormatter( out ) );
-    assertEquals( out.toString(), expected );
+  @Override
+  public PrimitiveType getPrimitiveType( PrimitiveType.Kind kind ) {
+    throw new UnsupportedOperationException();
   }
 
+  @Override
+  public VoidType getVoidType() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ArrayType getArrayType( TypeMirror componentType ) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public TypeVariable getTypeVariable( TypeParameterDeclaration tparam ) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public WildcardType getWildcardType( Collection<ReferenceType> upperBounds, Collection<ReferenceType> lowerBounds ) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public DeclaredType getDeclaredType( TypeDeclaration decl, TypeMirror... typeArgs ) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public DeclaredType getDeclaredType( DeclaredType containing, TypeDeclaration decl, TypeMirror... typeArgs ) {
+    throw new UnsupportedOperationException();
+  }
 }

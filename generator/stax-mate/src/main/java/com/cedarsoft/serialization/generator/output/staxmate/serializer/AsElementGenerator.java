@@ -41,6 +41,7 @@ import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,8 +64,10 @@ public class AsElementGenerator implements SerializeToGenerator {
 
   @Override
   @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull JExpression objectAsString, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
+
+    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
 
     return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT_WITH_CHARACTERS )
       .arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) )
@@ -74,7 +77,7 @@ public class AsElementGenerator implements SerializeToGenerator {
 
   @Override
   @NotNull
-  public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     return JExpr.invoke( METHOD_NAME_GET_CHILD_TEXT ).arg( deserializeFrom ).arg( constant );
   }

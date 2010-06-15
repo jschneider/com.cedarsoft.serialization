@@ -72,11 +72,11 @@ public class AbstractGeneratorTest {
     Result parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
 
-    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclarations().get( 0 ) );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclarations().get( 0 ), parsed.getEnvironment().getTypeUtils() );
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 5 );
+    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 6 );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator = codeGenerator;

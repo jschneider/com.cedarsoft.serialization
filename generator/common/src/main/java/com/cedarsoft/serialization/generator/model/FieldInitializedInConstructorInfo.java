@@ -33,7 +33,16 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
+import com.sun.mirror.declaration.TypeDeclaration;
+import com.sun.mirror.type.DeclaredType;
+import com.sun.mirror.type.InterfaceType;
+import com.sun.mirror.type.ReferenceType;
+import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 /**
  *
@@ -42,8 +51,8 @@ public class FieldInitializedInConstructorInfo extends DefaultFieldDeclarationIn
   @NotNull
   private final ConstructorCallInfo constructorCallInfo;
 
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo ) {
-    super( getterDeclaration, fieldDeclaration );
+  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo, @NotNull Types types ) {
+    super( getterDeclaration, fieldDeclaration, types );
     this.constructorCallInfo = constructorCallInfo;
   }
 

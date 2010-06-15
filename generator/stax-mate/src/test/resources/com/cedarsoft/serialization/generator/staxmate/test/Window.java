@@ -1,5 +1,11 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  */
@@ -13,19 +19,29 @@ public class Window {
   private final Integer anInt;
   private float floatField;
 
+  @NotNull
+  private final List<Double> doubleValues = new ArrayList<Double>();
+
   /**
    * the constructor
    *
-   * @param description the descri
-   * @param width       the width
-   * @param height      the height
-   * @param anInt
+   * @param description  the descri
+   * @param width        the width
+   * @param height       the height
+   * @param anInt        the int
+   * @param doubleValues the double values
    */
-  public Window( String description, double width, int height, Integer anInt ) {
+  public Window( String description, double width, int height, Integer anInt, List<Double> doubleValues ) {
     this.width = width;
     this.height = height;
     this.description = description;
     this.anInt = anInt;
+    this.doubleValues.addAll( doubleValues );
+  }
+
+  @NotNull
+  public List<Double> getDoubleValues() {
+    return Collections.unmodifiableList( doubleValues );
   }
 
   public double getWidth() {

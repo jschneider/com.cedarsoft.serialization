@@ -43,6 +43,7 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMod;
+import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -145,10 +146,5 @@ public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   public JInvocation createGetterInvocation( @NotNull JExpression object, @NotNull FieldDeclarationInfo fieldInfo ) {
     return object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() );
-  }
-
-  @NotNull
-  public JClass getCollectionTypeClass( @NotNull FieldDeclarationInfo fieldInfo ) {
-    return null;
   }
 }

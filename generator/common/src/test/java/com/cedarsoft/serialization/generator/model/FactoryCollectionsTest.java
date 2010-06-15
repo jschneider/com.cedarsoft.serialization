@@ -125,5 +125,19 @@ public class FactoryCollectionsTest {
     assertEquals( descriptor.getFieldsToSerialize().size(), 3 );
   }
 
+  @Test
+  public void testIsCollType() {
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    assertFalse( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).isCollectionType() );
+    assertTrue( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).isCollectionType() );
+    assertTrue( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).isCollectionType() );
+  }
 
+  @Test
+  public void testIsCollType2() {
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    assertNull( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionType() );
+    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Door" );
+    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Window" );
+  }
 }

@@ -60,9 +60,9 @@ public interface SerializeToGenerator {
    *
    * @param serializerClass the serializer class
    * @param deserializeFrom the object that shall be used to deserialize from
-   * @param fieldInfo       the field info   @return the expression that returns the object as string
-   * @return the created statement
+   * @param formatVersion   the format version
+   * @param fieldInfo       the field info   @return the expression that returns the object as string  @return the created statement
    */
   @NotNull
-  JExpression createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo );
+  JExpression createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
 }

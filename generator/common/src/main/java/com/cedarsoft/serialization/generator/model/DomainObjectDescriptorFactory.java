@@ -72,10 +72,10 @@ public class DomainObjectDescriptorFactory {
     MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration, types );
     try {
       ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
-      return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
+      return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo, types );
     } catch ( IllegalArgumentException ignore ) {
       MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration, types );
-      return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter );
+      return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter, types );
     }
   }
 
@@ -115,7 +115,7 @@ public class DomainObjectDescriptorFactory {
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
     ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
     MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration, types );
-    return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
+    return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo, types );
   }
 
   @NotNull

@@ -188,7 +188,7 @@ public class Generator {
     public static void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       Result result = Parser.parse( configuration.getDomainSourceFile() );
 
-      DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration() ).create();
+      DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration(), result.getEnvironment().getTypeUtils() ).create();
 
       XmlDecisionCallback decisionCallback = new XmlDecisionCallback() {
         @NotNull

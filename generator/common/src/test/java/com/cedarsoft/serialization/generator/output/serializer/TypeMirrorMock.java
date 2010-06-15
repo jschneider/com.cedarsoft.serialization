@@ -31,14 +31,14 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
-import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.util.TypeVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
-*
-*/
-public class TypeMirrorMock implements TypeMirror {
+ *
+ */
+public class TypeMirrorMock implements ReferenceType {
   @NotNull
   private final Class<?> type;
 

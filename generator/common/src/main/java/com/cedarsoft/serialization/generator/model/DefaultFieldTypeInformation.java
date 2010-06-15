@@ -31,8 +31,14 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.sun.mirror.declaration.TypeDeclaration;
+import com.sun.mirror.type.DeclaredType;
+import com.sun.mirror.type.InterfaceType;
 import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
  *
@@ -41,8 +47,22 @@ public class DefaultFieldTypeInformation implements FieldTypeInformation {
   @NotNull
   private final TypeMirror typeMirror;
 
-  public DefaultFieldTypeInformation( @NotNull TypeMirror typeMirror ) {
+  @NotNull
+  private final Types types;
+
+  public DefaultFieldTypeInformation( @NotNull TypeMirror typeMirror, @NotNull Types types ) {
     this.typeMirror = typeMirror;
+    this.types = types;
+  }
+
+  @NotNull
+  public TypeMirror getTypeMirror() {
+    return typeMirror;
+  }
+
+  @NotNull
+  public Types getTypes() {
+    return types;
   }
 
   @NotNull
@@ -54,5 +74,48 @@ public class DefaultFieldTypeInformation implements FieldTypeInformation {
   @Override
   public boolean isType( @NotNull Class<?> type ) {
     return DomainObjectDescriptor.isType( getType(), type );
+  }
+
+  @Override
+  public boolean isCollectionType() {
+    try {
+      getCollectionType();
+      return true;
+    } catch ( IllegalStateException ignore ) {
+      return false;
+    }
+  }
+
+  @Override
+  @NotNull
+  public TypeMirror getCollectionType() {
+    TypeMirror type = getType();
+    if ( !( type instanceof DeclaredType ) ) {
+      throw new IllegalStateException( "Invalid type: " + type );
+    }
+
+    TypeDeclaration declaredType = ( ( DeclaredType ) type ).getDeclaration();
+
+    if ( declaredType.getQualifiedName().equals( Collection.class.getName() ) ) {
+      return getFirstTypeParam( ( DeclaredType ) type );
+    }
+
+    for ( InterfaceType interfaceType : declaredType.getSuperinterfaces() ) {
+      if ( interfaceType.getDeclaration().getQualifiedName().equals( Collection.class.getName() ) ) {
+        return getFirstTypeParam( ( DeclaredType ) type );
+      }
+    }
+
+    throw new IllegalStateException( "Invalid type: " + type );
+  }
+
+  @NotNull
+  private static TypeMirror getFirstTypeParam( @NotNull DeclaredType type ) {
+    Collection<TypeMirror> typeArguments = type.getActualTypeArguments();
+    if ( typeArguments.size() != 1 ) {
+      throw new IllegalStateException( "Invalid type arguments: " + typeArguments );
+    }
+
+    return typeArguments.iterator().next();
   }
 }

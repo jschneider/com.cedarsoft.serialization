@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JClass;
@@ -50,19 +49,25 @@ public class SerializingEntryGenerator {
   @NotNull
   private final CodeGenerator<XmlDecisionCallback> codeGenerator;
 
+  @NotNull
+  private final SerializeToGenerator asElementGenerator;
+  @NotNull
+  private final SerializeToGenerator asAttributeGenerator;
+  @NotNull
+  private final SerializeToGenerator collectionGenerator;
+
   public SerializingEntryGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     this.codeGenerator = codeGenerator;
-    asAttribute = new AsAttributeGenerator( codeGenerator );
-    asElement = new AsElementGenerator( codeGenerator );
+    asAttributeGenerator = new AsAttributeGenerator( codeGenerator );
+    asElementGenerator = new AsElementGenerator( codeGenerator );
+    collectionGenerator = new CollectionElementGenerator( codeGenerator );
   }
 
   public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
-    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( object.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ), fieldInfo );
-
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
-    method.body().add( serializeToHandler.createAddToSerializeToExpression(serializerClass, serializeTo, objectAsString, fieldInfo ) );
+    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializerClass, serializeTo, fieldInfo, object ) );
   }
 
   @NotNull
@@ -70,28 +75,26 @@ public class SerializingEntryGenerator {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression(serializerClass, deserializeFrom, fieldInfo );
+    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
     JClass fieldType = codeGenerator.ref( fieldInfo.getType().toString() );
     return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
   }
 
   @NotNull
-  private SerializeToGenerator getStrategy( @NotNull FieldInfo fieldInfo ) {
+  private SerializeToGenerator getStrategy( @NotNull FieldDeclarationInfo fieldInfo ) {
+    if ( fieldInfo.isCollectionType() ) {
+      return collectionGenerator;
+    }
+
     XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
     switch ( target ) {
       case ELEMENT:
-        return asElement;
+        return asElementGenerator;
       case ATTRIBUTE:
-        return asAttribute;
+        return asAttributeGenerator;
     }
 
     throw new IllegalStateException( "Should not reach! " + fieldInfo );
   }
-
-  @NotNull
-  private final SerializeToGenerator asElement;
-  @NotNull
-  private final SerializeToGenerator asAttribute;
-
 }
