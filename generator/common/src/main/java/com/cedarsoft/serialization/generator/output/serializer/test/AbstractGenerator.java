@@ -52,8 +52,6 @@ import com.sun.mirror.declaration.ParameterDeclaration;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -126,11 +124,12 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   protected abstract void createGetSerializedMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType );
 
   @NotNull
-  public JDefinedClass generateSerializerTest( @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+  public JDefinedClass generateSerializerTest( @NotNull String serializerClassName, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeModel.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass serializerClass = codeModel.ref( serializerClassName );
 
     //the class
-    JDefinedClass testClass = codeModel._class( createSerializerTestName( serializerClass.fullName() ) )._extends( createExtendsClass( domainType, serializerClass ) );
+    JDefinedClass testClass = codeModel._class( createSerializerTestName( serializerClassName ) )._extends( createExtendsClass( domainType, serializerClass ) );
 
 
     //getSerializer

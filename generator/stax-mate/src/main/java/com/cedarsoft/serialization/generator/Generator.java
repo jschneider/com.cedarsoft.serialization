@@ -207,8 +207,8 @@ public class Generator {
       CodeGenerator<XmlDecisionCallback> testCodeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
 
       System.out.println( "Generating Serializer Tests" );
-      JDefinedClass serializerTest = new com.cedarsoft.serialization.generator.output.staxmate.serializer.test.StaxMateGenerator( testCodeGenerator ).generateSerializerTest( serializerClass, descriptor );
-      JDefinedClass serializerVersionTest = new com.cedarsoft.serialization.generator.output.staxmate.serializer.test.StaxMateGenerator( testCodeGenerator ).generateSerializerVersionTest( serializerClass, descriptor );
+      new com.cedarsoft.serialization.generator.output.staxmate.serializer.test.StaxMateGenerator( testCodeGenerator ).generateSerializerTest( serializerClass.fullName(), descriptor );
+      new com.cedarsoft.serialization.generator.output.staxmate.serializer.test.StaxMateGenerator( testCodeGenerator ).generateSerializerVersionTest( serializerClass, descriptor );
 
       testCodeGenerator.getModel().build( configuration.getTestDestination(), System.out );
     }
