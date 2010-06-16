@@ -43,12 +43,22 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class DelegateGenerator extends AbstractSerializeToGenerator {
+public class DelegateGenerator extends AbstractDelegateGenerator {
+  @NonNls
+  public static final String METHOD_NAME_DESERIALIZE = "deserialize";
+  @NonNls
+  public static final String METHOD_NAME_SERIALIZE = "serialize";
+  @NonNls
+  public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
+  @NonNls
+  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
+
   public DelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
@@ -60,22 +70,20 @@ public class DelegateGenerator extends AbstractSerializeToGenerator {
 
     JExpression getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
 
-    return JExpr.invoke( "serialize" )
+    return JExpr.invoke( METHOD_NAME_SERIALIZE )
       .arg( getterInvocation )
-      .arg( serializeTo.invoke( "addElement" ).arg( serializeTo.invoke( "getNamespace" ) ).arg( constant )
+      .arg( serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( constant )
       );
   }
 
   @NotNull
   @Override
   public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-
-    JInvocation nextTagExpression = JExpr.invoke( "nextTag" ).arg( deserializeFrom ).arg( constant );
-    JInvocation closeTagExpression = JExpr.invoke( "closeTag" ).arg( deserializeFrom );
+    JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
+    JInvocation closeTagExpression = createCloseTagInvocation( deserializeFrom );
 
     JClass type = codeGenerator.ref( fieldInfo.getType().toString() );
-    JInvocation expression = JExpr.invoke( "deserialize" ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
     return new Expressions( expression, nextTagExpression, closeTagExpression );
   }
 
