@@ -37,6 +37,9 @@ public class FooSerializer
     @NotNull
     @NonNls
     public final static String ELEMENT_BARS = "bars";
+    @NotNull
+    @NonNls
+    public final static String ELEMENT_BAR = "bar";
 
     public FooSerializer() {
         super("foo", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Foo/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
@@ -61,7 +64,9 @@ public class FooSerializer
         //floatField
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
         //bars
-        serializeCollection(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
+        serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
+        //bar
+        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR));
     }
 
     @Override
@@ -84,11 +89,19 @@ public class FooSerializer
         //floatField
         float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
         //bars
+        nextTag(deserializeFrom, ELEMENT_BARS);
         List<? extends Bar> bars = deserializeCollection(deserializeFrom, Bar.class, formatVersion);
+        closeTag(deserializeFrom);
+        //bar
+        nextTag(deserializeFrom, ELEMENT_BAR);
+        Bar bar = deserialize(Bar.class, formatVersion, deserializeFrom);
+        closeTag(deserializeFrom);
+        //Finally closing element
         closeTag(deserializeFrom);
         //Constructing the deserialized object
         Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);
+        object.setBar(bar);
         return object;
     }
 

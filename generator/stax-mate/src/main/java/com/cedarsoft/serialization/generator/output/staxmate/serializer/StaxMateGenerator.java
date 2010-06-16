@@ -78,7 +78,6 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     } finally {
       //Call closeTag( deserializeFrom ); on deserialize
       JVar deserializeFrom = deserializeMethod.listParams()[0];
-      deserializeMethod.body().directStatement( " " );
       deserializeMethod.body().directStatement( "//Finally closing element" );
       deserializeMethod.body().invoke( StaxMateGenerator.METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
     }
