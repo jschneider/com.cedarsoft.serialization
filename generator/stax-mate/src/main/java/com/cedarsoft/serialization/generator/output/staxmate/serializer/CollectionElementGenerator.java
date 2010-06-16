@@ -42,7 +42,6 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
-import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +52,7 @@ import java.util.List;
  */
 public class CollectionElementGenerator extends AbstractDelegateGenerator {
   @NonNls
-  public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollection";
+  public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollectionToElement";
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE_COLLECTION = "deserializeCollection";
 
@@ -69,23 +68,24 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
     JInvocation getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
     JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
-    JInvocation addElementExpression = createAddElementExpression( serializeTo, constant );
-
     return JExpr.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
       .arg( getterInvocation )
       .arg( JExpr.dotclass( collectionParamType ) )
-      .arg( collectionParamType.name().toLowerCase() )
-      .arg( addElementExpression )
+      .arg( constant )
+      .arg( serializeTo )
       ;
   }
 
   @Override
   @NotNull
   public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+    JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
-    //    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return new Expressions( JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionType ) ).arg( formatVersion ) );
+    JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
+    JInvocation closeTagExpression = createCloseTagInvocation( deserializeFrom );
+
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionParamType ) ).arg( formatVersion );
+    return new Expressions( expression, nextTagExpression, closeTagExpression );
   }
 
   @NotNull
