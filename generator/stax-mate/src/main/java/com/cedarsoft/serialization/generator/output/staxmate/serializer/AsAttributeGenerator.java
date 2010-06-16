@@ -76,6 +76,7 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
     return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
   }
 
+  /** @noinspection RefusedBequest*/
   @Override
   @NotNull
   @NonNls
