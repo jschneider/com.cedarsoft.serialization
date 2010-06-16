@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -79,9 +81,18 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @throws IOException
    */
   protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo ) throws XMLStreamException, IOException {
+    AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), elementName );
-      getSerializer( type ).serialize( doorElement, object );
+      serializer.serialize( doorElement, object );
+    }
+  }
+
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo ) throws XMLStreamException, IOException {
+    AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    for ( T object : objects ) {
+      SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), serializer.getDefaultElementName() );
+      serializer.serialize( doorElement, object );
     }
   }
 
@@ -99,6 +110,11 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
   protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo ) throws XMLStreamException, IOException {
     SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
     serializeCollection( objects, type, elementName, collectionElement );
+  }
+
+  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull SMOutputElement serializeTo ) throws XMLStreamException, IOException {
+    SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
+    serializeCollection( objects, type, collectionElement );
   }
 
   protected void serializeToElementWithCharacters( @NotNull @NonNls String elementName, @NotNull String characters, @NotNull SMOutputElement serializeTo ) throws XMLStreamException {

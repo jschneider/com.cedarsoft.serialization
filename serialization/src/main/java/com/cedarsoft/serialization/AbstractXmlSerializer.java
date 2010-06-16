@@ -38,6 +38,9 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 /**
  * Abstract base class for xml based serializers.
  * The version information is stored within the namespace declaration of the root element
@@ -99,7 +102,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    */
   @NotNull
   @NonNls
-  protected String getDefaultElementName() {
+  public String getDefaultElementName() {
     return defaultElementName;
   }
 
@@ -121,5 +124,11 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     String last = parts[parts.length - 1];
 
     return Version.parse( last );
+  }
+
+  @NotNull
+  @Override
+  public <T> AbstractXmlSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
+    return ( AbstractXmlSerializer<? super T, S, D, E> ) super.getSerializer( type );
   }
 }
