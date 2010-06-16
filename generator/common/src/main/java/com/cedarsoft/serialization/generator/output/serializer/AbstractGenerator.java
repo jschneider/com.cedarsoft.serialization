@@ -129,7 +129,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JDefinedClass serializerClass = codeModel._class( createSerializerClassName( domainType.fullName() ) )._extends( createSerializerExtendsExpression( domainType ) );
 
     //the constructor
-    createConstructor( serializerClass, domainObjectDescriptor );
+    JMethod constructor = createConstructor( serializerClass, domainObjectDescriptor );
 
     JMethod serializeMethod = createSerializeMethodStub( domainType, serializerClass );
     JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
@@ -140,7 +140,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     //Now construct the deserialized object
     constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
 
+    finishConstructor( serializerClass, constructor );
+
     return serializerClass;
+  }
+
+  protected void finishConstructor( @NotNull JDefinedClass serializerClass, @NotNull JMethod constructor ) {
+    constructor.body().directStatement( "assert getDelegatesMappings().verify()" );
   }
 
   protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
@@ -173,7 +179,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param serializerClass        the serialize class
    * @param domainObjectDescriptor the domain object descriptor
    */
-  protected abstract void createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor );
+  @NotNull
+  protected abstract JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor );
 
   @NotNull
   protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {

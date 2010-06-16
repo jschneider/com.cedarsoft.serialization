@@ -42,6 +42,7 @@ import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -78,10 +79,13 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   }
 
   @Override
-  protected void createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    serializerClass.constructor( JMod.PUBLIC ).body()
+  @NotNull
+  protected JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+    JMethod constructor = serializerClass.constructor( JMod.PUBLIC );
+    constructor.body()
       .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
       .arg( createDefaultVersionRangeInvocation( AbstractXmlGenerator.VERSION, AbstractXmlGenerator.VERSION ) );
+    return constructor;
   }
 
   /**
