@@ -81,11 +81,10 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @Override
   public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
-    JInvocation closeTagExpression = createCloseTagInvocation( deserializeFrom );
 
     JClass type = codeGenerator.ref( fieldInfo.getType().toString() );
     JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
-    return new Expressions( expression, nextTagExpression, closeTagExpression );
+    return new Expressions( expression, nextTagExpression );
   }
 
   @NotNull

@@ -57,6 +57,10 @@ public class Expressions {
     this( expression, Collections.<JStatement>emptyList(), Collections.<JStatement>emptyList() );
   }
 
+  public Expressions( @NotNull JExpression expression, @NotNull JStatement before ) {
+    this( expression, Collections.<JStatement>singletonList( before ), Collections.<JStatement>emptyList() );
+  }
+
   public Expressions( @NotNull JExpression expression, @NotNull JStatement before, @NotNull JStatement after ) {
     this( expression, Collections.<JStatement>singletonList( before ), Collections.<JStatement>singletonList( after ) );
   }

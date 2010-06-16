@@ -85,10 +85,9 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
     JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
-    JInvocation closeTagExpression = createCloseTagInvocation( deserializeFrom );
 
     JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionParamType ) ).arg( formatVersion );
-    return new Expressions( expression, nextTagExpression, closeTagExpression );
+    return new Expressions( expression, nextTagExpression );
   }
 
   @NotNull
