@@ -52,5 +52,4 @@ public interface FieldDeclarationInfo extends FieldTypeInformation, FieldInfo {
   @NotNull
   @NonNls
   MethodDeclaration getGetterDeclaration();
-
 }

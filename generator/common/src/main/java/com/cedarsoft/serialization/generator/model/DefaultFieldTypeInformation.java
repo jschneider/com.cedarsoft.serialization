@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.type.DeclaredType;
 import com.sun.mirror.type.InterfaceType;
@@ -79,7 +80,7 @@ public class DefaultFieldTypeInformation implements FieldTypeInformation {
   @Override
   public boolean isCollectionType() {
     try {
-      getCollectionType();
+      getCollectionParam();
       return true;
     } catch ( IllegalStateException ignore ) {
       return false;
@@ -88,7 +89,7 @@ public class DefaultFieldTypeInformation implements FieldTypeInformation {
 
   @Override
   @NotNull
-  public TypeMirror getCollectionType() {
+  public TypeMirror getCollectionParam() {
     TypeMirror type = getType();
     if ( !( type instanceof DeclaredType ) ) {
       throw new IllegalStateException( "Invalid type: " + type );

@@ -138,12 +138,12 @@ public class FactoryCollectionsTest {
     DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
 
     try {
-      factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionType();
+      factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionParam();
       fail( "Where is the Exception" );
     } catch ( Exception e ) {
     }
 
-    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Door" );
-    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Window" );
+    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).getCollectionParam().toString(), "com.cedarsoft.serialization.generator.parsing.test.Door" );
+    assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).getCollectionParam().toString(), "com.cedarsoft.serialization.generator.parsing.test.Window" );
   }
 }

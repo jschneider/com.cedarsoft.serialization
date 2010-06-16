@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.ClassRefSupport;
+import com.google.common.collect.ImmutableSet;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
@@ -40,6 +41,10 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Creates parse expressions for the different field types
@@ -95,5 +100,37 @@ public class ParseExpressionFactory {
       wrappedGetterInvocation = jClass.staticInvoke( STRING_VALUE_OF ).arg( getterInvocation );
     }
     return wrappedGetterInvocation;
+  }
+
+  @NotNull
+  public static Set<? extends Class<?>> getSupportedTypes() {
+    //noinspection ReturnOfCollectionOrArrayField
+    return SUPPORTED_TYPES;
+  }
+
+  @NotNull
+  public static Set<? extends String> getSupportedTypeNames() {
+    //noinspection ReturnOfCollectionOrArrayField
+    return SUPPORTED_TYPE_NAMES;
+  }
+
+  @NotNull
+  public static final Set<? extends Class<?>> SUPPORTED_TYPES = ImmutableSet.of(
+    String.class,
+    Integer.class, Integer.TYPE,
+    Float.class, Float.TYPE,
+    Double.class, Double.TYPE,
+    Boolean.class, Boolean.TYPE
+  );
+
+  @NotNull
+  public static final Set<? extends String> SUPPORTED_TYPE_NAMES;
+
+  static {
+    Set<String> names = new HashSet<String>();
+    for ( Class<?> supportedType : SUPPORTED_TYPES ) {
+      names.add( supportedType.getName() );
+    }
+    SUPPORTED_TYPE_NAMES = Collections.unmodifiableSet( names );
   }
 }
