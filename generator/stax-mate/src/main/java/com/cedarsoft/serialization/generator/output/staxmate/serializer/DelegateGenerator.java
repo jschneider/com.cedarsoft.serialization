@@ -89,4 +89,9 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
     return codeGenerator.ref( fieldInfo.getType().toString() );
   }
+
+  @Override
+  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+    return true;
+  }
 }

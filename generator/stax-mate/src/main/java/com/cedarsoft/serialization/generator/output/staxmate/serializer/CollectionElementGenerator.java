@@ -95,4 +95,9 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
     JClass list = codeGenerator.getModel().ref( List.class );
     return list.narrow( collectionType.wildcard() );
   }
+
+  @Override
+  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+    return fieldInfo.isCollectionType();
+  }
 }

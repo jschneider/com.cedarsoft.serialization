@@ -33,16 +33,14 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
+import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
+import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -78,5 +76,20 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
    */
   @NotNull
   public abstract JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+
+  @Override
+  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+    return isBuildInType( fieldInfo );
+  }
+
+  /**
+   * Returns whether the given field info is a build in type
+   *
+   * @param fieldInfo the field info
+   * @return true if the field is of the build in type, false otherwise
+   */
+  public static boolean isBuildInType( @NotNull FieldTypeInformation fieldInfo ) {
+    return ParseExpressionFactory.getSupportedTypeNames().contains( fieldInfo.getType().toString() );
+  }
 
 }

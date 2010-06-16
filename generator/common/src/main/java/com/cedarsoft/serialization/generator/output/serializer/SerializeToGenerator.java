@@ -70,4 +70,12 @@ public interface SerializeToGenerator {
 
   @NotNull
   JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo );
+
+  /**
+   * Whether this generator is able to handle the given field
+   *
+   * @param fieldInfo the field info
+   * @return true if this generator is able to handle that field, false otherwise
+   */
+  boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo );
 }

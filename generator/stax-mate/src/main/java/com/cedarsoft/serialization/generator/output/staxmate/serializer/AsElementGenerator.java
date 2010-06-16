@@ -77,4 +77,13 @@ public class AsElementGenerator extends AbstractStringConversionGenerator {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     return JExpr.invoke( METHOD_NAME_GET_CHILD_TEXT ).arg( deserializeFrom ).arg( constant );
   }
+
+  @Override
+  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+    if ( !super.canHandle( fieldInfo ) ) {
+      return false;
+    }
+
+    return codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ELEMENT;
+  }
 }

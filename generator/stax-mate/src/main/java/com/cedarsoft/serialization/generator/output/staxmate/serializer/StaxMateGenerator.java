@@ -34,11 +34,9 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
-import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.sun.codemodel.JClass;
@@ -52,6 +50,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,13 +62,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
   @NotNull
-  private final SerializeToGenerator asElementGenerator;
-  @NotNull
-  private final SerializeToGenerator asAttributeGenerator;
-  @NotNull
-  private final SerializeToGenerator delegateGenerator;
-  @NotNull
-  private final SerializeToGenerator collectionGenerator;
+  private final List<SerializeToGenerator> generators = new ArrayList<SerializeToGenerator>();
 
   /**
    * Creates a new generator
@@ -77,10 +71,10 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
    */
   public StaxMateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
-    asAttributeGenerator = new AsAttributeGenerator( codeGenerator );
-    asElementGenerator = new AsElementGenerator( codeGenerator );
-    collectionGenerator = new CollectionElementGenerator( codeGenerator );
-    delegateGenerator = new DelegateGenerator( codeGenerator );
+    generators.add( new AsAttributeGenerator( codeGenerator ) );
+    generators.add( new AsElementGenerator( codeGenerator ) );
+    generators.add( new CollectionElementGenerator( codeGenerator ) );
+    generators.add( new DelegateGenerator( codeGenerator ) );
   }
 
   @NotNull
@@ -162,32 +156,12 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
 
   @NotNull
   private SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
-    if ( fieldInfo.isCollectionType() ) {
-      return collectionGenerator;
-    }
-
-    if ( isBuildInType( fieldInfo ) ) {
-      XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
-      switch ( target ) {
-        case ELEMENT:
-          return asElementGenerator;
-        case ATTRIBUTE:
-          return asAttributeGenerator;
+    for ( SerializeToGenerator generator : generators ) {
+      if ( generator.canHandle( fieldInfo ) ) {
+        return generator;
       }
-
-      throw new IllegalStateException( "Should not reach! " + fieldInfo );
-    } else {
-      return delegateGenerator;
     }
-  }
 
-  /**
-   * Returns whether the given field info is a build in type
-   *
-   * @param fieldInfo the field info
-   * @return true if the field is of the build in type, false otherwise
-   */
-  private static boolean isBuildInType( @NotNull FieldTypeInformation fieldInfo ) {
-    return ParseExpressionFactory.getSupportedTypeNames().contains( fieldInfo.getType().toString() );
+    throw new IllegalStateException( "No generator found for " + fieldInfo );
   }
 }

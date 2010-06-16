@@ -76,11 +76,22 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
     return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
   }
 
-  /** @noinspection RefusedBequest*/
+  /**
+   * @noinspection RefusedBequest
+   */
   @Override
   @NotNull
   @NonNls
   protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
     return "ATTRIBUTE_" + fieldInfo.getSimpleName().toUpperCase();
+  }
+
+  @Override
+  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+    if ( !super.canHandle( fieldInfo ) ) {
+      return false;
+    }
+
+    return codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ATTRIBUTE;
   }
 }
