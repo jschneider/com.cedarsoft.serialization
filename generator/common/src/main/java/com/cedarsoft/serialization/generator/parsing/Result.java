@@ -76,11 +76,41 @@ public class Result {
 
   @NotNull
   public ClassDeclaration getClassDeclaration() {
-    if ( classDeclarations.size() != 1 ) {
-      throw new IllegalStateException( "Invalid class declarations count found: " + classDeclarations.size() + " (" + classDeclarations + ")" );
+    if ( classDeclarations.isEmpty() ) {
+      throw new IllegalStateException( "No class declaration found" );
     }
 
-    return classDeclarations.get( 0 );
+    if ( classDeclarations.size() == 1 ) {
+      return classDeclarations.get( 0 );
+    }
+
+    //Find the shortest
+    ClassDeclaration shortest = findClassDeclarationWithShortestFQName();
+
+    //Verify the other are just inner classes!
+    for ( ClassDeclaration classDeclaration : classDeclarations ) {
+      if ( !classDeclaration.getQualifiedName().startsWith( shortest.getQualifiedName() ) ) {
+        throw new IllegalStateException( "Invalid class declarations count found: " + classDeclarations.size() + " (" + classDeclarations + ")" );
+      }
+    }
+
+    return shortest;
+  }
+
+  @NotNull
+  public ClassDeclaration findClassDeclarationWithShortestFQName() {
+    ClassDeclaration shortest = null;
+    for ( ClassDeclaration classDeclaration : classDeclarations ) {
+      if ( shortest == null || shortest.getQualifiedName().length() > classDeclaration.getQualifiedName().length() ) {
+        shortest = classDeclaration;
+      }
+    }
+
+    if ( shortest == null ) {
+      throw new IllegalStateException( "No class declaration found" );
+    }
+
+    return shortest;
   }
 
   @NotNull
