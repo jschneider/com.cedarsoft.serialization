@@ -71,14 +71,14 @@ public class SerializingEntryGenerator {
   public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
-    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
+    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
     method.body().add( serializeToHandler.createAddToSerializeToExpression( serializerClass, serializeTo, fieldInfo, object ) );
   }
 
   @NotNull
   public JVar appendDeserializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
-    SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
+    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
 
     Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
@@ -98,7 +98,7 @@ public class SerializingEntryGenerator {
   }
 
   @NotNull
-  private SerializeToGenerator getStrategy( @NotNull FieldDeclarationInfo fieldInfo ) {
+  private SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
     if ( fieldInfo.isCollectionType() ) {
       return collectionGenerator;
     }
