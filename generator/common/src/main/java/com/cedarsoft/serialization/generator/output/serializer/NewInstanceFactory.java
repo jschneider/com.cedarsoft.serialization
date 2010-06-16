@@ -119,7 +119,7 @@ public class NewInstanceFactory {
       return classRefSupport.ref( Arrays.class ).staticInvoke( METHOD_NAME_AS_LIST ).arg( expression );
       //      return JExpr._new( classRefSupport.ref( ArrayList.class ).narrow( classRefSupport.ref( collectionParamType.toString() ) ) );
     } else {
-      return JExpr._new( classRefSupport.ref( type.toString() ) );
+      return JExpr._new( classRefSupport.ref( MirrorUtils.getErasure( type ).toString() ) );
     }
   }
 }

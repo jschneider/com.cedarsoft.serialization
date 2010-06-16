@@ -60,6 +60,10 @@ public class MirrorUtils {
     MirrorUtils.TYPES.set( types );
   }
 
+  public static TypeMirror getErasure( @NotNull TypeMirror type ) {
+    return getTypes().getErasure( type );
+  }
+
   public static TypeMirror getCollectionParam( @NotNull TypeMirror type ) {
     if ( !( type instanceof DeclaredType ) ) {
       throw new IllegalStateException( "Invalid type: " + type );

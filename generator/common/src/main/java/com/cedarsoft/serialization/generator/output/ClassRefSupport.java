@@ -54,6 +54,10 @@ public class ClassRefSupport {
 
   @NotNull
   public JClass ref( @NotNull @NonNls String qualifiedName ) {
+    if ( qualifiedName.contains( "?" ) || qualifiedName.contains( "<" ) || qualifiedName.contains( ">" ) ) {
+      throw new IllegalArgumentException( "Cannot create ref for <" + qualifiedName + ">" );
+    }
+
     JClass resolved = refs.get( qualifiedName );
     if ( resolved != null ) {
       return resolved;
