@@ -37,6 +37,7 @@ import com.cedarsoft.serialization.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.NamingSupport;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
@@ -104,7 +105,7 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @NotNull
   @NonNls
   protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return codeGenerator.getNamingSupport().createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
+    return NamingSupport.createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
   }
 
   /**

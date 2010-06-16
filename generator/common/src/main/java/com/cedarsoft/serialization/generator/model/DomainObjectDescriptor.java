@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.serialization.generator.output.NamingSupport;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
@@ -133,21 +134,21 @@ public class DomainObjectDescriptor {
   }
 
   @NotNull
-  public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    return findSetter( classDeclaration, simpleName, type );
+  public MethodDeclaration findSetter( @NotNull @NonNls String fieldName, @NotNull TypeMirror type ) {
+    return findSetter( classDeclaration, fieldName, type );
   }
 
   /**
    * @param classDeclaration the class declaration
-   * @param simpleName       the simple name
+   * @param fieldName       the simple name
    * @param type             the type
    * @return the method declaration for the setter
    *
    * @noinspection TypeMayBeWeakened
    */
   @NotNull
-  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
-    String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String fieldName, @NotNull TypeMirror type ) throws IllegalArgumentException {
+    String expectedName = NamingSupport.createSetter( fieldName );
 
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
       if ( !methodDeclaration.getSimpleName().equals( expectedName ) ) {

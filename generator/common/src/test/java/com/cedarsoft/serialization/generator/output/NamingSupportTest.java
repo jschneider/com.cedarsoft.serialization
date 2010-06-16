@@ -8,16 +8,13 @@ import static org.testng.Assert.*;
  *
  */
 public class NamingSupportTest {
-  private NamingSupport support;
-
   @BeforeMethod
   protected void setUp() throws Exception {
-    support = new NamingSupport();
   }
 
   @Test
   public void testIt() {
-    assertEquals( support.createXmlElementName( "String" ), "string" );
-    assertEquals( support.createXmlElementName( "ACamelCase" ), "acamelcase" );
+    assertEquals( NamingSupport.createXmlElementName( "String" ), "string" );
+    assertEquals( NamingSupport.createXmlElementName( "ACamelCase" ), "acamelcase" );
   }
 }
