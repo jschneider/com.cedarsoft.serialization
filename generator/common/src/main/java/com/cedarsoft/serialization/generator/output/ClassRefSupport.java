@@ -63,4 +63,9 @@ public class ClassRefSupport {
     refs.put( qualifiedName, newRef );
     return newRef;
   }
+
+  @NotNull
+  public JClass ref( @NotNull Class<?> type ) {
+    return model.ref( type );
+  }
 }
