@@ -136,7 +136,13 @@ public class FactoryCollectionsTest {
   @Test
   public void testIsCollType2() {
     DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
-    assertNull( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionType() );
+
+    try {
+      factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionType();
+      fail( "Where is the Exception" );
+    } catch ( Exception e ) {
+    }
+
     assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Door" );
     assertEquals( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).getCollectionType().toString(), "com.cedarsoft.serialization.generator.parsing.test.Window" );
   }
