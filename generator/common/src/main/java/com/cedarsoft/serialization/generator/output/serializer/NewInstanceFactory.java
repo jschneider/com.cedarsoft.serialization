@@ -47,14 +47,20 @@ import java.util.Arrays;
  *
  */
 public class NewInstanceFactory {
-  @NotNull
-  private final JCodeModel codeModel;
+  @NonNls
+  public static final String METHOD_NAME_VALUE_OF = "valueOf";
+  @NonNls
+  public static final String METHOD_NAME_AS_LIST = "asList";
+  @NonNls
+  public static final String CONSTANT_NAME_TRUE = "TRUE";
   public static final int DEFAULT_VALUE_INTEGER = 42;
   public static final float DEFAULT_VALUE_FLOAT = 44.0F;
   public static final long DEFAULT_VALUE_LONG = 43L;
   public static final double DEFAULT_VALUE_DOUBLE = 12.5;
   public static final char DEFAULT_VALUE_CHAR = 'c';
 
+  @NotNull
+  private final JCodeModel codeModel;
   @NotNull
   private final ClassRefSupport classRefSupport;
 
@@ -91,26 +97,26 @@ public class NewInstanceFactory {
 
     //Default types
     if ( DomainObjectDescriptor.isType( type, Integer.class ) ) {
-      return codeModel.ref( Integer.class ).staticInvoke( "valueOf" ).arg( JExpr.lit( DEFAULT_VALUE_INTEGER ) );
+      return codeModel.ref( Integer.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( DEFAULT_VALUE_INTEGER ) );
     }
     if ( DomainObjectDescriptor.isType( type, Double.class ) ) {
-      return codeModel.ref( Double.class ).staticInvoke( "valueOf" ).arg( JExpr.lit( DEFAULT_VALUE_DOUBLE ) );
+      return codeModel.ref( Double.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( DEFAULT_VALUE_DOUBLE ) );
     }
     if ( DomainObjectDescriptor.isType( type, Long.class ) ) {
-      return codeModel.ref( Long.class ).staticInvoke( "valueOf" ).arg( JExpr.lit( DEFAULT_VALUE_LONG ) );
+      return codeModel.ref( Long.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( DEFAULT_VALUE_LONG ) );
     }
     if ( DomainObjectDescriptor.isType( type, Float.class ) ) {
-      return codeModel.ref( Float.class ).staticInvoke( "valueOf" ).arg( JExpr.lit( DEFAULT_VALUE_FLOAT ) );
+      return codeModel.ref( Float.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( DEFAULT_VALUE_FLOAT ) );
     }
     if ( DomainObjectDescriptor.isType( type, Boolean.class ) ) {
-      return codeModel.ref( Boolean.class ).staticRef( "TRUE" );
+      return codeModel.ref( Boolean.class ).staticRef( CONSTANT_NAME_TRUE );
     }
 
     if ( MirrorUtils.isCollectionType( type ) ) {
       TypeMirror collectionParamType = MirrorUtils.getCollectionParam( type );
       JExpression expression = create( collectionParamType, simpleName );
 
-      return classRefSupport.ref( Arrays.class ).staticInvoke( "asList" ).arg( expression );
+      return classRefSupport.ref( Arrays.class ).staticInvoke( METHOD_NAME_AS_LIST ).arg( expression );
       //      return JExpr._new( classRefSupport.ref( ArrayList.class ).narrow( classRefSupport.ref( collectionParamType.toString() ) ) );
     } else {
       return JExpr._new( classRefSupport.ref( type.toString() ) );
