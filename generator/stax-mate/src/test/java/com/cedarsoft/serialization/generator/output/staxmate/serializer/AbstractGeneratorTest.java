@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.AssertUtils;
+import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
@@ -72,7 +73,8 @@ public class AbstractGeneratorTest {
     Result parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
 
-    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.staxmate.test.Foo" ), parsed.getEnvironment().getTypeUtils() );
+    MirrorUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.staxmate.test.Foo" ) );
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
