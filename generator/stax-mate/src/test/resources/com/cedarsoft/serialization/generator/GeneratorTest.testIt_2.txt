@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.generator.staxmate.test.Foo.Bar;
 
 public class FooSerializerTest
     extends AbstractXmlSerializerMultiTest<Foo>
@@ -21,7 +22,7 @@ public class FooSerializerTest
     protected Iterable<? extends Foo> createObjectsToSerialize()
         throws Exception
     {
-        return Arrays.asList(new Foo("description", 12.5D, 42, Integer.valueOf(42)), new Foo("description", 12.5D, 42, Integer.valueOf(42)), new Foo("description", 12.5D, 42, Integer.valueOf(42)));
+        return Arrays.asList(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())));
     }
 
     @Override

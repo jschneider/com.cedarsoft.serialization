@@ -36,6 +36,8 @@ public class FooSerializerVersionTest
         Assert.assertEquals(deserialized.getDescription(), "daValue");
         Assert.assertEquals(deserialized.getAnInt(), "daValue");
         Assert.assertEquals(deserialized.getFloatField(), "daValue");
+        Assert.assertEquals(deserialized.getBars(), "daValue");
+        Assert.assertEquals(deserialized.getBar(), "daValue");
     }
 
 }

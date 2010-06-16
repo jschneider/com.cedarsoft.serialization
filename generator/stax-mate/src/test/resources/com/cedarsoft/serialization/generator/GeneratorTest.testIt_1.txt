@@ -1,11 +1,14 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.io.IOException;
+import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.generator.staxmate.test.Foo.Bar;
+import com.cedarsoft.serialization.generator.staxmate.test.Foo.BarSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
@@ -18,9 +21,13 @@ public class FooSerializer
     public final static String ELEMENT_DESCRIPTION = "description";
     public final static String ELEMENT_ANINT = "anInt";
     public final static String ELEMENT_FLOATFIELD = "floatField";
+    public final static String ELEMENT_BARS = "bars";
+    public final static String ELEMENT_BAR = "bar";
 
-    public FooSerializer() {
+    public FooSerializer(BarSerializer barSerializer) {
         super("foo", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Foo/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
+        add(barSerializer).responsibleFor(Bar.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        assert getDelegatesMappings().verify();
     }
 
     @Override
@@ -37,6 +44,10 @@ public class FooSerializer
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));
         //floatField
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
+        //bars
+        serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
+        //bar
+        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR));
     }
 
     @Override
@@ -53,10 +64,20 @@ public class FooSerializer
         Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));
         //floatField
         float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
+        //bars
+        nextTag(deserializeFrom, ELEMENT_BARS);
+        List<? extends Bar> bars = deserializeCollection(deserializeFrom, Bar.class, formatVersion);
+        closeTag(deserializeFrom);
+        //bar
+        nextTag(deserializeFrom, ELEMENT_BAR);
+        Bar bar = deserialize(Bar.class, formatVersion, deserializeFrom);
+        closeTag(deserializeFrom);
+        //Finally closing element
         closeTag(deserializeFrom);
         //Constructing the deserialized object
-        Foo object = new Foo(description, width, height, anInt);
+        Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);
+        object.setBar(bar);
         return object;
     }
 
