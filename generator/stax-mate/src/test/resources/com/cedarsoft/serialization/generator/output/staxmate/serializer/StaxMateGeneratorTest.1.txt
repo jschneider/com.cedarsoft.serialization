@@ -1,4 +1,4 @@
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.FooSerializer.java-----------------------------------
 
 package com.cedarsoft.serialization.generator.staxmate.test;
 
@@ -9,13 +9,14 @@ import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.generator.staxmate.test.Foo.Bar;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-public class WindowSerializer
-    extends AbstractStaxMateSerializer<Window>
+public class FooSerializer
+    extends AbstractStaxMateSerializer<Foo>
 {
 
     @NotNull
@@ -35,10 +36,10 @@ public class WindowSerializer
     public final static String ELEMENT_FLOATFIELD = "floatField";
     @NotNull
     @NonNls
-    public final static String ELEMENT_DOUBLEVALUES = "doubleValues";
+    public final static String ELEMENT_BARS = "bars";
 
-    public WindowSerializer() {
-        super("window", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
+    public FooSerializer() {
+        super("foo", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Foo/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class WindowSerializer
         @NotNull
         SMOutputElement serializeTo,
         @NotNull
-        Window object)
+        Foo object)
         throws IOException, XMLStreamException
     {
         //width
@@ -59,13 +60,13 @@ public class WindowSerializer
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));
         //floatField
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
-        //doubleValues
-        serializeCollection(object.getDoubleValues(), Double.class, ELEMENT_DOUBLEVALUES, serializeTo);
+        //bars
+        serializeCollection(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
     }
 
     @Override
     @NotNull
-    public Window deserialize(
+    public Foo deserialize(
         @NotNull
         XMLStreamReader deserializeFrom,
         @NotNull
@@ -82,11 +83,11 @@ public class WindowSerializer
         Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));
         //floatField
         float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
-        //doubleValues
-        List<? extends Double> doubleValues = deserializeCollection(deserializeFrom, Double.class, formatVersion);
+        //bars
+        List<? extends Bar> bars = deserializeCollection(deserializeFrom, Bar.class, formatVersion);
         closeTag(deserializeFrom);
         //Constructing the deserialized object
-        Window object = new Window(description, width, height, anInt, doubleValues);
+        Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);
         return object;
     }

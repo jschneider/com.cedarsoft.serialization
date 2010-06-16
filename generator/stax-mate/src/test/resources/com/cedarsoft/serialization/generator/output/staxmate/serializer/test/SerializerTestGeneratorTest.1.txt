@@ -1,4 +1,4 @@
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.WindowSerializerVersionTest.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.FooSerializerVersionTest.java-----------------------------------
 
 package com.cedarsoft.serialization.generator.staxmate.test;
 
@@ -9,16 +9,16 @@ import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;
 import org.testng.Assert;
 
-public class WindowSerializerVersionTest
-    extends AbstractXmlVersionTest<Window>
+public class FooSerializerVersionTest
+    extends AbstractXmlVersionTest<Foo>
 {
 
 
     @Override
-    protected Serializer<Window> getSerializer()
+    protected Serializer<Foo> getSerializer()
         throws Exception
     {
-        return new WindowSerializer();
+        return new FooSerializer();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class WindowSerializerVersionTest
     }
 
     @Override
-    protected void verifyDeserialized(Window deserialized, Version version)
+    protected void verifyDeserialized(Foo deserialized, Version version)
         throws Exception
     {
         Assert.assertEquals(deserialized.getWidth(), "daValue");
@@ -37,6 +37,7 @@ public class WindowSerializerVersionTest
         Assert.assertEquals(deserialized.getDescription(), "daValue");
         Assert.assertEquals(deserialized.getAnInt(), "daValue");
         Assert.assertEquals(deserialized.getFloatField(), "daValue");
+        Assert.assertEquals(deserialized.getDoubleValues(), "daValue");
     }
 
 }

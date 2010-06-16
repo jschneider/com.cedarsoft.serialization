@@ -62,10 +62,10 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
 
   @Test
   public void testGenerateVersionsTest() throws JClassAlreadyExistsException, IOException {
-    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer" );
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.FooSerializer" );
     JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( serializerClass, domainObjectDescriptor );
 
-    assertEquals( serializerVersionTestClass.name(), "WindowSerializerVersionTest" );
+    assertEquals( serializerVersionTestClass.name(), "FooSerializerVersionTest" );
     assertEquals( serializerVersionTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
 
     assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.1.txt" ) );
@@ -73,16 +73,16 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
 
   @Test
   public void testIt() throws JClassAlreadyExistsException, IOException {
-    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.WindowSerializer" );
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.FooSerializer" );
 
     JDefinedClass serializerTestClass = generator.generateSerializerTest( serializerClass.fullName(), domainObjectDescriptor );
-    assertEquals( serializerTestClass.name(), "WindowSerializerTest" );
+    assertEquals( serializerTestClass.name(), "FooSerializerTest" );
     assertEquals( serializerTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
 
     JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
-    JDefinedClass definedClass = thePackage._getClass( "WindowSerializerTest" );
+    JDefinedClass definedClass = thePackage._getClass( "FooSerializerTest" );
     assertNotNull( definedClass );
-    assertEquals( definedClass.name(), "WindowSerializerTest" );
+    assertEquals( definedClass.name(), "FooSerializerTest" );
 
     assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.2.txt" ) );
   }

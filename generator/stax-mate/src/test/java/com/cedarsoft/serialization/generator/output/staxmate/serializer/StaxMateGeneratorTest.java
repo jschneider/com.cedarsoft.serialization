@@ -58,10 +58,10 @@ public class StaxMateGeneratorTest extends AbstractGeneratorTest {
     generator.generateSerializer( domainObjectDescriptor );
 
     JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
-    JDefinedClass definedClass = thePackage._getClass( "WindowSerializer" );
+    JDefinedClass definedClass = thePackage._getClass( "FooSerializer" );
     assertNotNull( definedClass );
 
-    assertEquals( definedClass.name(), "WindowSerializer" );
+    assertEquals( definedClass.name(), "FooSerializer" );
 
     assertGeneratedCode( getClass().getResource( "StaxMateGeneratorTest.1.txt" ) );
   }

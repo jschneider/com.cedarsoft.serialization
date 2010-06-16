@@ -51,7 +51,7 @@ import java.util.List;
 /**
  * Generates a new element
  */
-public class CollectionElementGenerator extends AbstractSerializeToGenerator implements SerializeToGenerator {
+public class CollectionElementGenerator extends AbstractSerializeToGenerator {
   @NonNls
   public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollection";
   @NonNls

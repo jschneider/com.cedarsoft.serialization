@@ -65,14 +65,14 @@ public class AbstractGeneratorTest {
 
   @BeforeMethod
   protected void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Window.java" );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" );
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
     Result parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
 
-    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclarations().get( 0 ), parsed.getEnvironment().getTypeUtils() );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.staxmate.test.Foo" ), parsed.getEnvironment().getTypeUtils() );
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 

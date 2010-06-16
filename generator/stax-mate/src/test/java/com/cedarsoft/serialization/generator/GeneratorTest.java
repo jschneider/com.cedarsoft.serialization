@@ -64,22 +64,22 @@ public class GeneratorTest {
 
   @Test
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Window.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( javaFile, destDir, testDestDir );
     Generator.GeneratorRunner.generate( configuration );
 
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/WindowSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
     AssertUtils.assertEquals( FileUtils.readFileToString( serializerFile ).trim(), getClass().getResource("GeneratorTest.testIt_1.txt" ));
 
-    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/WindowSerializerTest.java" );
+    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" );
     assertTrue( serializerTestFile.exists() );
     AssertUtils.assertEquals( FileUtils.readFileToString( serializerTestFile ).trim(), getClass().getResource("GeneratorTest.testIt_2.txt" ) );
 
-    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/WindowSerializerVersionTest.java" );
+    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java" );
     assertTrue( serializerVersionTestFile.exists() );
     AssertUtils.assertEquals( FileUtils.readFileToString( serializerVersionTestFile ).trim(),getClass().getResource("GeneratorTest.testIt_3.txt" ));
   }
