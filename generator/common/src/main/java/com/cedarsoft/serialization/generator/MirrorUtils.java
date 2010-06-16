@@ -70,6 +70,9 @@ public class MirrorUtils {
     }
 
     TypeDeclaration declaredType = ( ( DeclaredType ) type ).getDeclaration();
+    if ( declaredType == null ) {
+      throw new IllegalStateException( "No declaration found for <" + type + ">" );
+    }
 
     if ( declaredType.getQualifiedName().equals( Collection.class.getName() ) ) {
       return getFirstTypeParam( ( DeclaredType ) type );
