@@ -103,19 +103,19 @@ public class SerializingEntryGenerator {
       return collectionGenerator;
     }
 
-    if ( !isBuildInType( fieldInfo ) ) {
+    if ( isBuildInType( fieldInfo ) ) {
+      XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
+      switch ( target ) {
+        case ELEMENT:
+          return asElementGenerator;
+        case ATTRIBUTE:
+          return asAttributeGenerator;
+      }
+
+      throw new IllegalStateException( "Should not reach! " + fieldInfo );
+    } else {
       return delegateGenerator;
     }
-
-    XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
-    switch ( target ) {
-      case ELEMENT:
-        return asElementGenerator;
-      case ATTRIBUTE:
-        return asAttributeGenerator;
-    }
-
-    throw new IllegalStateException( "Should not reach! " + fieldInfo );
   }
 
   /**
