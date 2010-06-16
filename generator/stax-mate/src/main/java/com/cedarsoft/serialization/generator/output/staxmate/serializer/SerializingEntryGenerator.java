@@ -33,12 +33,14 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
+import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.Expressions;
+import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
-import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,6 +56,8 @@ public class SerializingEntryGenerator {
   @NotNull
   private final SerializeToGenerator asAttributeGenerator;
   @NotNull
+  private final SerializeToGenerator delegateGenerator;
+  @NotNull
   private final SerializeToGenerator collectionGenerator;
 
   public SerializingEntryGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
@@ -61,6 +65,7 @@ public class SerializingEntryGenerator {
     asAttributeGenerator = new AsAttributeGenerator( codeGenerator );
     asElementGenerator = new AsElementGenerator( codeGenerator );
     collectionGenerator = new CollectionElementGenerator( codeGenerator );
+    delegateGenerator = new DelegateGenerator( codeGenerator );
   }
 
   public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
@@ -75,16 +80,31 @@ public class SerializingEntryGenerator {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JExpression readExpression = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
-    JClass fieldType = serializeToHandler.generateFieldType( fieldInfo );
+    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
-    return method.body().decl( fieldType, fieldInfo.getSimpleName(), readExpression );
+    //Add the (optional) statements before
+    for ( JStatement expression : readExpressions.getBefore() ) {
+      method.body().add( expression );
+    }
+
+    //The field
+    JVar field = method.body().decl( serializeToHandler.generateFieldType( fieldInfo ), fieldInfo.getSimpleName(), readExpressions.getExpression() );
+
+    //Add the optional statements after
+    for ( JStatement expression : readExpressions.getAfter() ) {
+      method.body().add( expression );
+    }
+    return field;
   }
 
   @NotNull
   private SerializeToGenerator getStrategy( @NotNull FieldDeclarationInfo fieldInfo ) {
     if ( fieldInfo.isCollectionType() ) {
       return collectionGenerator;
+    }
+
+    if ( !isBuildInType( fieldInfo ) ) {
+      return delegateGenerator;
     }
 
     XmlDecisionCallback.Target target = codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo );
@@ -96,5 +116,15 @@ public class SerializingEntryGenerator {
     }
 
     throw new IllegalStateException( "Should not reach! " + fieldInfo );
+  }
+
+  /**
+   * Returns whether the given field info is a build in type
+   *
+   * @param fieldInfo the field info
+   * @return true if the field is of the build in type, false otherwise
+   */
+  private static boolean isBuildInType( @NotNull FieldTypeInformation fieldInfo ) {
+    return ParseExpressionFactory.getSupportedTypeNames().contains( fieldInfo.getType().toString() );
   }
 }

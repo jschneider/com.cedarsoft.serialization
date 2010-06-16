@@ -76,7 +76,7 @@ public class AbstractGeneratorTest {
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 6 );
+    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 7 );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator = codeGenerator;

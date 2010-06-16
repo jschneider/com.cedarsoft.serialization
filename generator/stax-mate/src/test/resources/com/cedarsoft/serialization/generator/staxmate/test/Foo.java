@@ -22,7 +22,9 @@ public class Foo {
 
   @NotNull
   private final List<Bar> bars = new ArrayList<Bar>();
- 
+
+  private Bar bar;
+
   /**
    * the constructor
    *
@@ -43,6 +45,14 @@ public class Foo {
   @NotNull
   public List<? extends Bar> getBars() {
     return Collections.unmodifiableList( bars );
+  }
+
+  public Bar getBar() {
+    return bar;
+  }
+
+  public void setBar( Bar bar ) {
+    this.bar = bar;
   }
 
   public double getWidth() {

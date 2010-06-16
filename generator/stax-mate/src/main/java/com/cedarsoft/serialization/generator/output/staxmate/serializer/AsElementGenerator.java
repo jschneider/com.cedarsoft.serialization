@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
@@ -77,12 +76,5 @@ public class AsElementGenerator extends AbstractStringConversionGenerator {
   public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     return JExpr.invoke( METHOD_NAME_GET_CHILD_TEXT ).arg( deserializeFrom ).arg( constant );
-  }
-
-  @Override
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
-    return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

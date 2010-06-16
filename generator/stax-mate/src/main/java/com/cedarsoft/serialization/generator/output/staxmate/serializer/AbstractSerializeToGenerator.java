@@ -32,9 +32,11 @@
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
+import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import org.jetbrains.annotations.NonNls;
@@ -54,5 +56,23 @@ public abstract class AbstractSerializeToGenerator implements SerializeToGenerat
   @NotNull
   protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull @NonNls String constantName, @NotNull JExpression value ) {
     return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
+  }
+
+  @NotNull
+  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
+    String constantName = getConstantName( fieldInfo );
+    JExpression value = JExpr.lit( fieldInfo.getSimpleName() );
+    return getConstant( serializerClass, constantName, value );
+  }
+
+  /**
+   * Returns the constant name
+   *
+   * @param fieldInfo the field info
+   * @return the constant name
+   */
+  @NotNull
+  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+    return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

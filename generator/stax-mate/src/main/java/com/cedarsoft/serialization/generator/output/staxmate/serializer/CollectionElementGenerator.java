@@ -33,9 +33,8 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
@@ -67,7 +66,7 @@ public class CollectionElementGenerator extends AbstractSerializeToGenerator {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JInvocation getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
-    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
+    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
     return JExpr.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
       .arg( getterInvocation )
@@ -79,29 +78,18 @@ public class CollectionElementGenerator extends AbstractSerializeToGenerator {
 
   @Override
   @NotNull
-  public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
+  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
-//    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionType ) ).arg( formatVersion );
+    //    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+    return new Expressions( JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionType ) ).arg( formatVersion ) );
   }
 
   @NotNull
   @Override
   public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
-    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
+    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
     JClass list = codeGenerator.getModel().ref( List.class );
     return list.narrow( collectionType.wildcard() );
-  }
-
-  @NotNull
-  private JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
-    return codeGenerator.getOrCreateConstant( serializerClass, String.class, getConstantName( fieldInfo ), JExpr.lit( fieldInfo.getSimpleName() ) );
-  }
-
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
-    return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

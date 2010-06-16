@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.sun.codemodel.JClass;
@@ -41,16 +40,43 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public abstract class AbstractStringConversionGenerator extends AbstractSerializeToGenerator {
-  protected AbstractStringConversionGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+public class DelegateGenerator extends AbstractSerializeToGenerator {
+  public DelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
+  }
+
+  @NotNull
+  @Override
+  public JStatement createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+
+    JExpression getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
+
+    return JExpr.invoke( "serialize" )
+      .arg( getterInvocation )
+      .arg( serializeTo.invoke( "addElement" ).arg( serializeTo.invoke( "getNamespace" ) ).arg( constant )
+      );
+  }
+
+  @NotNull
+  @Override
+  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+
+    JInvocation nextTagExpression = JExpr.invoke( "nextTag" ).arg( deserializeFrom ).arg( constant );
+    JInvocation closeTagExpression = JExpr.invoke( "closeTag" ).arg( deserializeFrom );
+
+    JClass type = codeGenerator.ref( fieldInfo.getType().toString() );
+    JInvocation expression = JExpr.invoke( "deserialize" ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
+    return new Expressions( expression, nextTagExpression, closeTagExpression );
   }
 
   @NotNull
@@ -58,25 +84,4 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
   public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
     return codeGenerator.ref( fieldInfo.getType().toString() );
   }
-
-  @NotNull
-  @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
-
-    return new Expressions( codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo ) );
-  }
-
-  /**
-   * Creates the read expression (without conversion to string)
-   *
-   * @param serializerClass the serializer class
-   * @param deserializeFrom the deserialize from
-   * @param formatVersion   the format version
-   * @param fieldInfo       the field info
-   * @return the expression to read the value
-   */
-  @NotNull
-  public abstract JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
-
 }
