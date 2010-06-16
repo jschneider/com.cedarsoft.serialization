@@ -144,6 +144,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
+    deserializeMethod.body().directStatement( " " );
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
     //Now create the constructor for the deserializeMethod

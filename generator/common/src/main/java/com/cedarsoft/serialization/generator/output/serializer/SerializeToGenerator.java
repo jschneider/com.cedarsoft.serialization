@@ -66,7 +66,7 @@ public interface SerializeToGenerator {
    * @return the created expression
    */
   @NotNull
-  JExpression createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
 
   @NotNull
   JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo );
