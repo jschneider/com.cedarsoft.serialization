@@ -93,12 +93,32 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @Override
   @NotNull
   protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    return appendDeserializing( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo );
+    deserializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
+    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
+
+    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+
+    //Add the (optional) statements before
+    for ( JStatement expression : readExpressions.getBefore() ) {
+      deserializeMethod.body().add( expression );
+    }
+
+    //The field
+    JVar field = deserializeMethod.body().decl( serializeToHandler.generateFieldType( fieldInfo ), fieldInfo.getSimpleName(), readExpressions.getExpression() );
+
+    //Add the optional statements after
+    for ( JStatement expression : readExpressions.getAfter() ) {
+      deserializeMethod.body().add( expression );
+    }
+    return field;
   }
 
   @Override
   protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
-    appendSerializing( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
+    serializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
+
+    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
+    serializeMethod.body().add( serializeToHandler.createAddToSerializeToExpression( serializerClass, serializeTo, fieldInfo, object ) );
   }
 
   @NotNull
@@ -125,37 +145,8 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     return SMOutputElement.class;
   }
 
-  public void appendSerializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo ) {
-    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
-
-    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
-    method.body().add( serializeToHandler.createAddToSerializeToExpression( serializerClass, serializeTo, fieldInfo, object ) );
-  }
-
   @NotNull
-  public JVar appendDeserializing( @NotNull JDefinedClass serializerClass, @NotNull JMethod method, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    method.body().directStatement( "//" + fieldInfo.getSimpleName() );
-    SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
-
-    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
-
-    //Add the (optional) statements before
-    for ( JStatement expression : readExpressions.getBefore() ) {
-      method.body().add( expression );
-    }
-
-    //The field
-    JVar field = method.body().decl( serializeToHandler.generateFieldType( fieldInfo ), fieldInfo.getSimpleName(), readExpressions.getExpression() );
-
-    //Add the optional statements after
-    for ( JStatement expression : readExpressions.getAfter() ) {
-      method.body().add( expression );
-    }
-    return field;
-  }
-
-  @NotNull
-  private SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
+  protected SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
     for ( SerializeToGenerator generator : generators ) {
       if ( generator.canHandle( fieldInfo ) ) {
         return generator;
