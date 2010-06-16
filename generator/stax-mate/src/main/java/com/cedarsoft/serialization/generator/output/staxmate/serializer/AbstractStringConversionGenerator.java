@@ -35,6 +35,7 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.cedarsoft.serialization.generator.output.serializer.ParseExpressionFactory;
 import com.sun.codemodel.JClass;
@@ -59,7 +60,7 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
 
   @NotNull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
     return new Expressions( codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo ) );

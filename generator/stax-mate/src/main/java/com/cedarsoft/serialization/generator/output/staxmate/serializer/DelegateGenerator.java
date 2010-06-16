@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -61,9 +62,9 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
   @NotNull
   @Override
-  public JStatement createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+  public JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
     //Add serializer to constructor
-    addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( fieldInfo.getType().toString() ) );
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( fieldInfo.getType().toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
@@ -78,7 +79,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
   @NotNull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
     JInvocation closeTagExpression = createCloseTagInvocation( deserializeFrom );
 

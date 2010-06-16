@@ -96,7 +96,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     deserializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
 
-    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( this, serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
     //Add the (optional) statements before
     for ( JStatement expression : readExpressions.getBefore() ) {
@@ -118,7 +118,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     serializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
-    serializeMethod.body().add( serializeToHandler.createAddToSerializeToExpression( serializerClass, serializeTo, fieldInfo, object ) );
+    serializeMethod.body().add( serializeToHandler.createAddToSerializeToExpression( this, serializerClass, serializeTo, fieldInfo, object ) );
   }
 
   @NotNull

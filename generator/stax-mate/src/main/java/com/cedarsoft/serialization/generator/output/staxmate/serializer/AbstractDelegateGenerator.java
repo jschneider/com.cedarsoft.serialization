@@ -46,32 +46,4 @@ public abstract class AbstractDelegateGenerator extends AbstractSerializeToGener
   protected JInvocation createAddElementExpression( @NotNull JExpression serializeTo, @NotNull JExpression elementName ) {
     return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( elementName );
   }
-
-  protected void addDelegatingSerializerToConstructor( @NotNull JDefinedClass serializerClass, @NotNull JClass fieldType ) {
-    JType fieldSerializerType = getSerializerRefFor( fieldType );
-
-    JMethod constructor = ( JMethod ) serializerClass.constructors().next();
-    String paramName = NamingSupport.createVarName( fieldSerializerType.name() );
-
-    //Check whether the serializer still exists
-    for ( JVar param : constructor.listParams() ) {
-      if ( param.type().equals( fieldSerializerType ) ) {
-        return;
-      }
-    }
-
-    //It does not exist, therefore let us add the serializer and map it
-    JVar param = constructor.param( fieldSerializerType, paramName );
-
-    constructor.body().add( JExpr.invoke( "add" ).arg( param ).invoke( "responsibleFor" ).arg( JExpr.dotclass( fieldType ) )
-      .invoke( "map" )
-      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) )
-      .invoke( "toDelegateVersion" )
-      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) );
-  }
-
-  @NotNull
-  protected JClass getSerializerRefFor( @NotNull JType type ) {
-    return codeGenerator.ref( type.fullName() + "Serializer" );
-  }
 }

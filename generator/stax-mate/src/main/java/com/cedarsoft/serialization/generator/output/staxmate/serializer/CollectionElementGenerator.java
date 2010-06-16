@@ -35,6 +35,7 @@ import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -63,8 +64,8 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
 
   @Override
   @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
-    addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( MirrorUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
+  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( MirrorUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
@@ -80,7 +81,7 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
 
   @Override
   @NotNull
-  public Expressions createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
 
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );

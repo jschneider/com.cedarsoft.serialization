@@ -40,6 +40,7 @@ import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructor
 import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
+import com.cedarsoft.serialization.generator.output.NamingSupport;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -233,6 +234,34 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     }
 
     return fieldToVar;
+  }
+
+  public void addDelegatingSerializerToConstructor( @NotNull JDefinedClass serializerClass, @NotNull JClass fieldType ) {
+    JType fieldSerializerType = getSerializerRefFor( fieldType );
+
+    JMethod constructor = ( JMethod ) serializerClass.constructors().next();
+    String paramName = NamingSupport.createVarName( fieldSerializerType.name() );
+
+    //Check whether the serializer still exists
+    for ( JVar param : constructor.listParams() ) {
+      if ( param.type().equals( fieldSerializerType ) ) {
+        return;
+      }
+    }
+
+    //It does not exist, therefore let us add the serializer and map it
+    JVar param = constructor.param( fieldSerializerType, paramName );
+
+    constructor.body().add( JExpr.invoke( "add" ).arg( param ).invoke( "responsibleFor" ).arg( JExpr.dotclass( fieldType ) )
+      .invoke( "map" )
+      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) )
+      .invoke( "toDelegateVersion" )
+      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) );
+  }
+
+  @NotNull
+  protected JClass getSerializerRefFor( @NotNull JType type ) {
+    return codeGenerator.ref( type.fullName() + "Serializer" );
   }
 
   /**
