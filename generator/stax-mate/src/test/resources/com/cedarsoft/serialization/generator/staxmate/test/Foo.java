@@ -23,7 +23,7 @@ public class Foo {
   @NotNull
   private final List<Bar> bars = new ArrayList<Bar>();
 
-  private Bar bar;
+  private Bar bar = new Bar( 1 );
 
   /**
    * the constructor
