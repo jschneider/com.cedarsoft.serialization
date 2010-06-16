@@ -96,7 +96,9 @@ public class Parser {
 
     @NotNull
     public Result getResult() {
-      assert result != null;
+      if ( result == null ) {
+        throw new IllegalStateException( "No result found!" );
+      }
       return result;
     }
   }
