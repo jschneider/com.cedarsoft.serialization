@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
+import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.output.ClassRefSupport;
 import com.sun.codemodel.JCodeModel;
@@ -39,6 +40,8 @@ import com.sun.codemodel.JExpression;
 import com.sun.mirror.type.TypeMirror;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  *
@@ -103,7 +106,14 @@ public class NewInstanceFactory {
       return codeModel.ref( Boolean.class ).staticRef( "TRUE" );
     }
 
+    if ( MirrorUtils.isCollectionType( type ) ) {
+      TypeMirror collectionParamType = MirrorUtils.getCollectionParam( type );
+      JExpression expression = create( collectionParamType, simpleName );
 
-    return JExpr._new( classRefSupport.ref( type.toString() ) );
+      return classRefSupport.ref( Arrays.class ).staticInvoke( "asList" ).arg( expression );
+      //      return JExpr._new( classRefSupport.ref( ArrayList.class ).narrow( classRefSupport.ref( collectionParamType.toString() ) ) );
+    } else {
+      return JExpr._new( classRefSupport.ref( type.toString() ) );
+    }
   }
 }
