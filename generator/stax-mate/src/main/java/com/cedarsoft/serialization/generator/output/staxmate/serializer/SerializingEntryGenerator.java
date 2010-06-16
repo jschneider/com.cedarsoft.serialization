@@ -75,10 +75,10 @@ public class SerializingEntryGenerator {
     method.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getStrategy( fieldInfo );
 
-    JExpression readToStringExpression = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+    JExpression readExpression = serializeToHandler.createReadFromDeserializeFromExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+    JClass fieldType = serializeToHandler.generateFieldType( fieldInfo );
 
-    JClass fieldType = codeGenerator.ref( fieldInfo.getType().toString() );
-    return method.body().decl( fieldType, fieldInfo.getSimpleName(), codeGenerator.getParseExpressionFactory().createParseExpression( readToStringExpression, fieldInfo ) );
+    return method.body().decl( fieldType, fieldInfo.getSimpleName(), readExpression );
   }
 
   @NotNull

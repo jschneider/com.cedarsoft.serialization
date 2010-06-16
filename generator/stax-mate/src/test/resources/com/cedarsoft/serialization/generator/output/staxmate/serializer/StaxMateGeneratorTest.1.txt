@@ -3,6 +3,7 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.io.IOException;
+import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
@@ -32,6 +33,9 @@ public class WindowSerializer
     @NotNull
     @NonNls
     public final static String ELEMENT_FLOATFIELD = "floatField";
+    @NotNull
+    @NonNls
+    public final static String ELEMENT_DOUBLEVALUES = "doubleValues";
 
     public WindowSerializer() {
         super("window", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Window/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
@@ -55,6 +59,8 @@ public class WindowSerializer
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));
         //floatField
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
+        //doubleValues
+        serializeCollection(object.getDoubleValues(), Double.class, ELEMENT_DOUBLEVALUES, serializeTo);
     }
 
     @Override
@@ -76,9 +82,11 @@ public class WindowSerializer
         Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));
         //floatField
         float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
+        //doubleValues
+        List<? extends Double> doubleValues = deserializeCollection(deserializeFrom, Double.class, formatVersion);
         closeTag(deserializeFrom);
         //Constructing the deserialized object
-        Window object = new Window(description, width, height, anInt);
+        Window object = new Window(description, width, height, anInt, doubleValues);
         object.setFloatField(floatField);
         return object;
     }

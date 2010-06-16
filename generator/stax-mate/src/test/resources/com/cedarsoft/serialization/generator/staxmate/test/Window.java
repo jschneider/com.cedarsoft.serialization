@@ -31,7 +31,7 @@ public class Window {
    * @param anInt        the int
    * @param doubleValues the double values
    */
-  public Window( String description, double width, int height, Integer anInt, List<Double> doubleValues ) {
+  public Window( String description, double width, int height, Integer anInt, List<? extends Double> doubleValues ) {
     this.width = width;
     this.height = height;
     this.description = description;

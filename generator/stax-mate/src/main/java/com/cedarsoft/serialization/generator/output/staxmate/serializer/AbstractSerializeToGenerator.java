@@ -32,54 +32,27 @@
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
-import com.sun.codemodel.JInvocation;
-import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Generates an attribute
+ *
  */
-public class AsAttributeGenerator extends AbstractStringConversionGenerator {
-  @NonNls
-  public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
-  @NonNls
-  public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
-
-
-  public AsAttributeGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
-    super( codeGenerator );
-  }
-
-  @Override
+public abstract class AbstractSerializeToGenerator implements SerializeToGenerator {
   @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+  protected final CodeGenerator<XmlDecisionCallback> codeGenerator;
 
-    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
-    return serializeTo.invoke( METHOD_NAME_ADD_ATTRIBUTE )
-      .arg( constant )
-      .arg( objectAsString );
+  protected AbstractSerializeToGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+    this.codeGenerator = codeGenerator;
   }
 
   @NotNull
-  @Override
-  public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
-  }
-
-  @Override
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
-    return "ATTRIBUTE_" + fieldInfo.getSimpleName().toUpperCase();
+  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull @NonNls String constantName, @NotNull JExpression value ) {
+    return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
   }
 }

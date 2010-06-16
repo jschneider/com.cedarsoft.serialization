@@ -35,51 +35,63 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Generates an attribute
+ *
  */
-public class AsAttributeGenerator extends AbstractStringConversionGenerator {
-  @NonNls
-  public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
-  @NonNls
-  public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
-
-
-  public AsAttributeGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+public abstract class AbstractStringConversionGenerator extends AbstractSerializeToGenerator {
+  protected AbstractStringConversionGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
 
-  @Override
   @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+  @Override
+  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+    return codeGenerator.ref( fieldInfo.getType().toString() );
+  }
 
-    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
-    return serializeTo.invoke( METHOD_NAME_ADD_ATTRIBUTE )
-      .arg( constant )
-      .arg( objectAsString );
+  @NotNull
+  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
+    String constantName = getConstantName( fieldInfo );
+    JExpression value = JExpr.lit( fieldInfo.getSimpleName() );
+    return getConstant( serializerClass, constantName, value );
   }
 
   @NotNull
   @Override
-  public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
+  public JExpression createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+    JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+
+    return codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo );
   }
 
-  @Override
+  /**
+   * Creates the read expression (without conversion to string)
+   *
+   * @param serializerClass the serializer class
+   * @param deserializeFrom the deserialize from
+   * @param formatVersion   the format version
+   * @param fieldInfo       the field info
+   * @return the expression to read the value
+   */
+  @NotNull
+  public abstract JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+
+  /**
+   * Returns the constant name
+   *
+   * @param fieldInfo the field info
+   * @return the constant name
+   */
   @NotNull
   @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
-    return "ATTRIBUTE_" + fieldInfo.getSimpleName().toUpperCase();
-  }
+  protected abstract String getConstantName( @NotNull FieldInfo fieldInfo );
 }

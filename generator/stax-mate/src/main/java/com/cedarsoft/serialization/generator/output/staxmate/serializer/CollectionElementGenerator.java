@@ -46,19 +46,19 @@ import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * Generates a new element
  */
-public class CollectionElementGenerator implements SerializeToGenerator {
+public class CollectionElementGenerator extends AbstractSerializeToGenerator implements SerializeToGenerator {
   @NonNls
   public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollection";
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE_COLLECTION = "deserializeCollection";
-  @NotNull
-  private final CodeGenerator<XmlDecisionCallback> codeGenerator;
 
   public CollectionElementGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
-    this.codeGenerator = codeGenerator;
+    super( codeGenerator );
   }
 
   @Override
@@ -69,7 +69,7 @@ public class CollectionElementGenerator implements SerializeToGenerator {
     JInvocation getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
     JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
 
-    return serializeTo.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
+    return JExpr.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
       .arg( getterInvocation )
       .arg( JExpr.dotclass( collectionType ) )
       .arg( constant )
@@ -82,8 +82,16 @@ public class CollectionElementGenerator implements SerializeToGenerator {
   public JInvocation createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
 
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( constant ).arg( JExpr.dotclass( collectionType ) ).arg( formatVersion );
+//    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+    return JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionType ) ).arg( formatVersion );
+  }
+
+  @NotNull
+  @Override
+  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionType().toString() );
+    JClass list = codeGenerator.getModel().ref( List.class );
+    return list.narrow( collectionType.wildcard() );
   }
 
   @NotNull

@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JStatement;
@@ -62,7 +63,11 @@ public interface SerializeToGenerator {
    * @param deserializeFrom the object that shall be used to deserialize from
    * @param formatVersion   the format version
    * @param fieldInfo       the field info   @return the expression that returns the object as string  @return the created statement
+   * @return the created expression
    */
   @NotNull
   JExpression createReadFromDeserializeFromExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+
+  @NotNull
+  JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo );
 }
