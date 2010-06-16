@@ -15,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractDelegateGenerator extends AbstractSerializeToGenerator {
   @NonNls
+  public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
+  @NonNls
+  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
+  @NonNls
   public static final String METHOD_NAME_NEXT_TAG = "nextTag";
   @NonNls
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
@@ -31,5 +35,10 @@ public abstract class AbstractDelegateGenerator extends AbstractSerializeToGener
   @NotNull
   protected JInvocation createNextTagInvocation( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
     return JExpr.invoke( METHOD_NAME_NEXT_TAG ).arg( deserializeFrom ).arg( getConstant( serializerClass, fieldInfo ) );
+  }
+
+  @NotNull
+  protected JInvocation createAddElementExpression( @NotNull JExpression serializeTo, @NotNull JExpression elementName ) {
+    return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( elementName );
   }
 }

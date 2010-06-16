@@ -54,10 +54,6 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   public static final String METHOD_NAME_DESERIALIZE = "deserialize";
   @NonNls
   public static final String METHOD_NAME_SERIALIZE = "serialize";
-  @NonNls
-  public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
-  @NonNls
-  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
 
   public DelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
@@ -72,7 +68,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
     return JExpr.invoke( METHOD_NAME_SERIALIZE )
       .arg( getterInvocation )
-      .arg( serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( constant )
+      .arg( createAddElementExpression( serializeTo, constant )
       );
   }
 

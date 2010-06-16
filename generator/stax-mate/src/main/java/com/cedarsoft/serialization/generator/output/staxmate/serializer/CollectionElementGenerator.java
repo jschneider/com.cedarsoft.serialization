@@ -42,6 +42,7 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
+import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +51,7 @@ import java.util.List;
 /**
  * Generates a new element
  */
-public class CollectionElementGenerator extends AbstractSerializeToGenerator {
+public class CollectionElementGenerator extends AbstractDelegateGenerator {
   @NonNls
   public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollection";
   @NonNls
@@ -66,13 +67,15 @@ public class CollectionElementGenerator extends AbstractSerializeToGenerator {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JInvocation getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
-    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+    JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+
+    JInvocation addElementExpression = createAddElementExpression( serializeTo, constant );
 
     return JExpr.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
       .arg( getterInvocation )
-      .arg( JExpr.dotclass( collectionType ) )
-      .arg( constant )
-      .arg( serializeTo )
+      .arg( JExpr.dotclass( collectionParamType ) )
+      .arg( collectionParamType.name().toLowerCase() )
+      .arg( addElementExpression )
       ;
   }
 
