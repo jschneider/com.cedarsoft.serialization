@@ -62,6 +62,9 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @NotNull
   @Override
   public JStatement createAddToSerializeToExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+    //Add serializer to constructor
+    addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( fieldInfo.getType().toString() ) );
+
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JExpression getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );

@@ -10,6 +10,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.generator.staxmate.test.Foo.Bar;
+import com.cedarsoft.serialization.generator.staxmate.test.Foo.BarSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -41,8 +42,10 @@ public class FooSerializer
     @NonNls
     public final static String ELEMENT_BAR = "bar";
 
-    public FooSerializer() {
+    public FooSerializer(BarSerializer barSerializer) {
         super("foo", "http://www.cedarsoft.com/serialization/generator/staxmate/test/Foo/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
+        add(barSerializer).responsibleFor(Bar.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        assert getDelegatesMappings().verify()
     }
 
     @Override
