@@ -147,7 +147,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void finishConstructor( @NotNull JDefinedClass serializerClass, @NotNull JMethod constructor ) {
-    constructor.body().directStatement( "assert getDelegatesMappings().verify()" );
+    constructor.body().directStatement( "assert getDelegatesMappings().verify();" );
   }
 
   protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
