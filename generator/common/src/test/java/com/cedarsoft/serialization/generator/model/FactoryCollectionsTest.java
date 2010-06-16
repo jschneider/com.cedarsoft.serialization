@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.google.common.collect.ImmutableList;
@@ -39,7 +40,6 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import com.sun.mirror.util.Types;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -54,7 +54,6 @@ public class FactoryCollectionsTest {
   private DomainObjectDescriptorFactory factory;
   private ClassDeclaration classDeclaration;
   private Result parsed;
-  private Types types;
 
   @BeforeMethod
   protected void setUp() throws Exception {
@@ -68,13 +67,13 @@ public class FactoryCollectionsTest {
     assertEquals( parsed.getClassDeclarations().size(), 1 );
 
     classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Room" );
-    factory = new DomainObjectDescriptorFactory( classDeclaration, parsed.getEnvironment().getTypeUtils() );
-    types = factory.getTypes();
+    MirrorUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    factory = new DomainObjectDescriptorFactory( classDeclaration );
   }
 
   @Test
   public void testAssignCall() {
-    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration );
     FieldDeclaration fieldDeclaration = descriptor.findFieldDeclaration( "windows" );
     assertNotNull( fieldDeclaration );
     assertEquals( fieldDeclaration.getType().toString(), "java.util.List<com.cedarsoft.serialization.generator.parsing.test.Window>" );
@@ -89,13 +88,13 @@ public class FactoryCollectionsTest {
     assertEquals( fieldDeclaration.getType().toString(), "java.util.List<com.cedarsoft.serialization.generator.parsing.test.Window>" );
     assertEquals( param.getType().toString(), "java.util.Collection<? extends com.cedarsoft.serialization.generator.parsing.test.Window>" );
 
-    assertTrue( types.isAssignable( fieldDeclaration.getType(), param.getType() ) );
-    assertFalse( types.isAssignable( param.getType(), fieldDeclaration.getType() ) );
+    assertTrue( MirrorUtils.isAssignable( fieldDeclaration.getType(), param.getType() ) );
+    assertFalse( MirrorUtils.isAssignable( param.getType(), fieldDeclaration.getType() ) );
   }
 
   @Test
   public void testFindConstructorArgs() {
-    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration );
     FieldDeclaration fieldDeclaration = descriptor.findFieldDeclaration( "windows" );
 
     ConstructorCallInfo infoForField = factory.findConstructorCallInfoForField( fieldDeclaration );
@@ -107,11 +106,11 @@ public class FactoryCollectionsTest {
 
   @Test
   public void testFindDoorsSetter() {
-    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration );
     FieldDeclaration fieldDeclaration = descriptor.findFieldDeclaration( "doors" );
     assertEquals( fieldDeclaration.getType().toString(), "java.util.List<com.cedarsoft.serialization.generator.parsing.test.Door>" );
 
-    MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration, types );
+    MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration );
     assertEquals( setter.getSimpleName(), "setDoors" );
     assertEquals( setter.getReturnType().toString(), "void" );
     assertEquals( setter.getParameters().size(), 1 );
@@ -127,7 +126,7 @@ public class FactoryCollectionsTest {
 
   @Test
   public void testIsCollType() {
-    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration );
     assertFalse( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).isCollectionType() );
     assertTrue( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "doors" ) ).isCollectionType() );
     assertTrue( factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "windows" ) ).isCollectionType() );
@@ -135,7 +134,7 @@ public class FactoryCollectionsTest {
 
   @Test
   public void testIsCollType2() {
-    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor descriptor = new DomainObjectDescriptor( classDeclaration );
 
     try {
       factory.getFieldInitializeInConstructorInfo( descriptor.findFieldDeclaration( "description" ) ).getCollectionParam();

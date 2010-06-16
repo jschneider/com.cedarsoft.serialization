@@ -51,8 +51,8 @@ public class FieldInitializedInConstructorInfo extends DefaultFieldDeclarationIn
   @NotNull
   private final ConstructorCallInfo constructorCallInfo;
 
-  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo, @NotNull Types types ) {
-    super( getterDeclaration, fieldDeclaration, types );
+  public FieldInitializedInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration, @NotNull MethodDeclaration getterDeclaration, @NotNull ConstructorCallInfo constructorCallInfo ) {
+    super( getterDeclaration, fieldDeclaration );
     this.constructorCallInfo = constructorCallInfo;
   }
 

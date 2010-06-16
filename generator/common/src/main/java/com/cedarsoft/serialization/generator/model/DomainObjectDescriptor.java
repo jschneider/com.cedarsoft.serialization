@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
@@ -38,7 +39,6 @@ import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,12 +57,8 @@ public class DomainObjectDescriptor {
   @NotNull
   private final ClassDeclaration classDeclaration;
 
-  @NotNull
-  private final Types types;
-
-  public DomainObjectDescriptor( @NotNull @NonNls ClassDeclaration classDeclaration, @NotNull Types types ) {
+  public DomainObjectDescriptor( @NotNull @NonNls ClassDeclaration classDeclaration ) {
     this.classDeclaration = classDeclaration;
-    this.types = types;
   }
 
   @NotNull
@@ -78,11 +74,6 @@ public class DomainObjectDescriptor {
 
   public void addField( @NotNull FieldWithInitializationInfo fieldToSerialize ) {
     this.fieldsToSerialize.add( fieldToSerialize );
-  }
-
-  @NotNull
-  public Types getTypes() {
-    return types;
   }
 
   @NotNull
@@ -143,20 +134,19 @@ public class DomainObjectDescriptor {
 
   @NotNull
   public MethodDeclaration findSetter( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    return findSetter( classDeclaration, simpleName, type, types );
+    return findSetter( classDeclaration, simpleName, type );
   }
 
   /**
    * @param classDeclaration the class declaration
    * @param simpleName       the simple name
    * @param type             the type
-   * @param types            the types utility method
    * @return the method declaration for the setter
    *
    * @noinspection TypeMayBeWeakened
    */
   @NotNull
-  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type, @NotNull Types types ) throws IllegalArgumentException {
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) throws IllegalArgumentException {
     String expectedName = "set" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
 
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
@@ -169,7 +159,7 @@ public class DomainObjectDescriptor {
       }
 
       ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
-      if ( !types.isAssignable( type, parameterDeclaration.getType() ) ) {
+      if ( !MirrorUtils.isAssignable( type, parameterDeclaration.getType() ) ) {
         throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
       }
 
@@ -181,26 +171,26 @@ public class DomainObjectDescriptor {
 
   @NotNull
   public MethodDeclaration findSetter( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findSetter( classDeclaration, fieldDeclaration, types );
+    return findSetter( classDeclaration, fieldDeclaration );
   }
 
   @NotNull
-  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration, @NotNull Types types ) {
-    return findSetter( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType(), types );
+  public static MethodDeclaration findSetter( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
+    return findSetter( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
   @NotNull
   public MethodDeclaration findGetterForField( @NotNull FieldDeclaration fieldDeclaration ) {
-    return findGetterForField( classDeclaration, fieldDeclaration, types );
+    return findGetterForField( classDeclaration, fieldDeclaration );
   }
 
-  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration, @NotNull Types types ) {
-    return findGetterForField( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType(), types );
+  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull FieldDeclaration fieldDeclaration ) {
+    return findGetterForField( classDeclaration, fieldDeclaration.getSimpleName(), fieldDeclaration.getType() );
   }
 
   @NotNull
   public MethodDeclaration findGetterForField( @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
-    return findGetterForField( classDeclaration, simpleName, type, types );
+    return findGetterForField( classDeclaration, simpleName, type );
   }
 
   /**
@@ -212,13 +202,13 @@ public class DomainObjectDescriptor {
    *
    * @noinspection TypeMayBeWeakened
    */
-  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type, @NotNull Types types ) {
+  public static MethodDeclaration findGetterForField( @NotNull ClassDeclaration classDeclaration, @NotNull @NonNls String simpleName, @NotNull TypeMirror type ) {
     String expectedName = "get" + simpleName.substring( 0, 1 ).toUpperCase() + simpleName.substring( 1 );
 
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
       if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
         TypeMirror returnType = methodDeclaration.getReturnType();
-        if ( types.isAssignable( type, returnType ) ) {
+        if ( MirrorUtils.isAssignable( type, returnType ) ) {
           return methodDeclaration;
         } else {
           throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + returnType + "> but expected <" + type + ">" );

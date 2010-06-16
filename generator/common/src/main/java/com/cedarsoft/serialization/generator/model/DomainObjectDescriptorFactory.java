@@ -31,13 +31,13 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.serialization.generator.MirrorUtils;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,17 +47,14 @@ import org.jetbrains.annotations.NotNull;
 public class DomainObjectDescriptorFactory {
   @NotNull
   private final ClassDeclaration classDeclaration;
-  @NotNull
-  private final Types types;
 
-  public DomainObjectDescriptorFactory( @NotNull ClassDeclaration classDeclaration, @NotNull Types types ) {
+  public DomainObjectDescriptorFactory( @NotNull ClassDeclaration classDeclaration ) {
     this.classDeclaration = classDeclaration;
-    this.types = types;
   }
 
   @NotNull
   public DomainObjectDescriptor create() {
-    DomainObjectDescriptor domainObjectDescriptor = new DomainObjectDescriptor( classDeclaration, types );
+    DomainObjectDescriptor domainObjectDescriptor = new DomainObjectDescriptor( classDeclaration );
 
     for ( FieldDeclaration fieldDeclaration : classDeclaration.getFields() ) {
       FieldWithInitializationInfo info = getFieldWithInitializationInfo( fieldDeclaration );
@@ -69,13 +66,13 @@ public class DomainObjectDescriptorFactory {
 
   @NotNull
   public FieldWithInitializationInfo getFieldWithInitializationInfo( @NotNull FieldDeclaration fieldDeclaration ) {
-    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration, types );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration );
     try {
       ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
-      return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo, types );
+      return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
     } catch ( IllegalArgumentException ignore ) {
-      MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration, types );
-      return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter, types );
+      MethodDeclaration setter = DomainObjectDescriptor.findSetter( classDeclaration, fieldDeclaration );
+      return new FieldInitializedInSetterInfo( fieldDeclaration, getterDeclaration, setter );
     }
   }
 
@@ -93,7 +90,7 @@ public class DomainObjectDescriptorFactory {
     for ( ParameterDeclaration parameterDeclaration : constructorDeclaration.getParameters() ) {
       if ( parameterDeclaration.getSimpleName().equals( simpleName ) ) {
         //Found a fitting type
-        if ( types.isAssignable( type, parameterDeclaration.getType() ) || types.isAssignable( parameterDeclaration.getType(), type ) ) {
+        if ( MirrorUtils.mightBeConstructorCallFor( parameterDeclaration.getType(), type ) ) {
           return new ConstructorCallInfo( constructorDeclaration, index, parameterDeclaration );
         } else {
           throw new IllegalArgumentException( "Type mismatch for <" + simpleName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
@@ -114,17 +111,12 @@ public class DomainObjectDescriptorFactory {
   @NotNull
   public FieldInitializedInConstructorInfo getFieldInitializeInConstructorInfo( @NotNull FieldDeclaration fieldDeclaration ) {
     ConstructorCallInfo constructorCallInfo = findConstructorCallInfoForField( fieldDeclaration );
-    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration, types );
-    return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo, types );
+    MethodDeclaration getterDeclaration = DomainObjectDescriptor.findGetterForField( classDeclaration, fieldDeclaration );
+    return new FieldInitializedInConstructorInfo( fieldDeclaration, getterDeclaration, constructorCallInfo );
   }
 
   @NotNull
   public ClassDeclaration getClassDeclaration() {
     return classDeclaration;
-  }
-
-  @NotNull
-  public Types getTypes() {
-    return types;
   }
 }

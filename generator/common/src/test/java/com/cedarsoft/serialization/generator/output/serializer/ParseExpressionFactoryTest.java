@@ -37,23 +37,11 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFormatter;
-import com.sun.mirror.declaration.TypeDeclaration;
-import com.sun.mirror.declaration.TypeParameterDeclaration;
-import com.sun.mirror.type.ArrayType;
-import com.sun.mirror.type.DeclaredType;
-import com.sun.mirror.type.PrimitiveType;
-import com.sun.mirror.type.ReferenceType;
-import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.type.TypeVariable;
-import com.sun.mirror.type.VoidType;
-import com.sun.mirror.type.WildcardType;
-import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
 import java.io.StringWriter;
-import java.util.Collection;
 
 import static org.testng.Assert.*;
 
@@ -88,7 +76,7 @@ public class ParseExpressionFactoryTest {
   }
 
   private void checkForType( @NotNull Class<?> type, @NotNull @NonNls String expected ) {
-    JExpression parseExpression = factory.createParseExpression( JExpr.invoke( "aCall" ), new DefaultFieldTypeInformation( new TypeMirrorMock( type ), new TypesMock() ) );
+    JExpression parseExpression = factory.createParseExpression( JExpr.invoke( "aCall" ), new DefaultFieldTypeInformation( new TypeMirrorMock( type ) ) );
 
     StringWriter out = new StringWriter();
     parseExpression.generate( new JFormatter( out ) );
