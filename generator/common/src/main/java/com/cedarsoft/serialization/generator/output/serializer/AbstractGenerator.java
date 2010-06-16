@@ -178,6 +178,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    *
    * @param serializerClass        the serialize class
    * @param domainObjectDescriptor the domain object descriptor
+   * @return the created constructor
    */
   @NotNull
   protected abstract JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor );
