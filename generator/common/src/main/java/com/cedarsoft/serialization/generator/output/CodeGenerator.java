@@ -64,6 +64,8 @@ public class CodeGenerator<T extends DecisionCallback> {
   @NotNull
   private final ClassRefSupport classRefSupport;
   @NotNull
+  private final NamingSupport namingSupport;
+  @NotNull
   private final T decisionCallback;
 
   @NotNull
@@ -79,11 +81,17 @@ public class CodeGenerator<T extends DecisionCallback> {
     this.parseExpressionFactory = new ParseExpressionFactory( model, classRefSupport );
     this.newInstanceFactory = new NewInstanceFactory( model, classRefSupport );
     this.decisionCallback = decisionCallback;
+    this.namingSupport = new NamingSupport();
   }
 
   @NotNull
   public ParseExpressionFactory getParseExpressionFactory() {
     return parseExpressionFactory;
+  }
+
+  @NotNull
+  public NamingSupport getNamingSupport() {
+    return namingSupport;
   }
 
   @NotNull

@@ -104,7 +104,7 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @NotNull
   @NonNls
   protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return domainObjectDescriptor.getClassDeclaration().getSimpleName().toLowerCase();
+    return codeGenerator.getNamingSupport().createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
   }
 
   /**
