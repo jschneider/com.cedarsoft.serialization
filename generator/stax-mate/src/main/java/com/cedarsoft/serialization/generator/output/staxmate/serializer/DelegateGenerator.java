@@ -68,6 +68,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
     return JExpr.invoke( METHOD_NAME_SERIALIZE )
       .arg( getterInvocation )
+      .arg( JExpr.dotclass( codeGenerator.ref( fieldInfo.getType().toString() ) ) )
       .arg( createAddElementExpression( serializeTo, constant )
       );
   }
