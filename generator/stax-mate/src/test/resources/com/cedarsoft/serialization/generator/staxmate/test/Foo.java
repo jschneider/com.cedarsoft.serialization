@@ -105,7 +105,4 @@ public class Foo {
     return result;
   }
 
-  public static class Bar{
-
-  }
 }
