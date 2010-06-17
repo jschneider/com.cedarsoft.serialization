@@ -36,11 +36,12 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.DecisionCallback;
 import com.cedarsoft.codegen.Decorator;
-import com.cedarsoft.codegen.FieldDeclarationInfo;
+import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.NamingSupport;
+import com.cedarsoft.codegen.model.FieldInitializedInConstructorInfo;
+import com.cedarsoft.codegen.model.FieldInitializedInSetterInfo;
+import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
-import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
@@ -137,7 +138,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JMethod deserializeMethod = createDeserializeMethodStub( domainType, serializerClass );
 
     //Add the serialize stuff
-    Map<FieldDeclarationInfo, JVar> fieldToVar = fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
+    Map<FieldWithInitializationInfo, JVar> fieldToVar = fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
 
     //Now construct the deserialized object
     constructDeserializedObject( domainObjectDescriptor, deserializeMethod, fieldToVar );
@@ -153,7 +154,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     }
   }
 
-  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldDeclarationInfo, JVar> fieldToVar ) {
+  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldWithInitializationInfo, JVar> fieldToVar ) {
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
     //Now create the constructor for the deserializeMethod
@@ -222,8 +223,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   @NotNull
-  protected Map<FieldDeclarationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
-    Map<FieldDeclarationInfo, JVar> fieldToVar = Maps.newHashMap();
+  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+    Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
     JVar serializeTo = serializeMethod.listParams()[0];
@@ -234,7 +235,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar formatVersion = deserializeMethod.listParams()[1];
 
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
-    for ( FieldDeclarationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
+    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
 
       fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
@@ -306,7 +307,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @return the var holding the deserialized value
    */
   @NotNull
-  protected abstract JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  protected abstract JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
 
   /**
    * Appends the serialize statement
@@ -317,5 +318,5 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param object          the object that is serialized
    * @param fieldInfo       the field info
    */
-  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldDeclarationInfo fieldInfo );
+  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
 }

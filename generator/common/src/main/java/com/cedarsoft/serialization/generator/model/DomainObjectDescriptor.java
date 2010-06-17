@@ -32,6 +32,9 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.cedarsoft.codegen.NamingSupport;
+import com.cedarsoft.codegen.model.FieldInitializedInConstructorInfo;
+import com.cedarsoft.codegen.model.FieldInitializedInSetterInfo;
+import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
 import com.cedarsoft.codegen.TypeUtils;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;

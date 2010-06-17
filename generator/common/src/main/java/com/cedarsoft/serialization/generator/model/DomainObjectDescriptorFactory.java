@@ -33,6 +33,9 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.cedarsoft.codegen.ConstructorCallInfo;
 import com.cedarsoft.codegen.TypeUtils;
+import com.cedarsoft.codegen.model.FieldInitializedInConstructorInfo;
+import com.cedarsoft.codegen.model.FieldInitializedInSetterInfo;
+import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;

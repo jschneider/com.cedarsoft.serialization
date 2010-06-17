@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.codegen.FieldDeclarationInfo;
+import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
