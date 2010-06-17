@@ -67,8 +67,6 @@ public abstract class Generator {
   @NonNls
   public static final String HELP_OPTION = "h";
   @NonNls
-  public static final String VERSION_OPTION = "v";
-  @NonNls
   public static final String OPTION_DESTINATION = "d";
   @NonNls
   public static final String OPTION_TEST_DESTINATION = "t";
@@ -96,9 +94,6 @@ public abstract class Generator {
     if ( commandLine.hasOption( HELP_OPTION ) ) {
       printHelp( options );
       return;
-    }
-    if ( commandLine.hasOption( VERSION_OPTION ) ) {
-      printVersion();
     }
 
     List<? extends String> domainObjectNames = commandLine.getArgList();
@@ -199,10 +194,6 @@ public abstract class Generator {
     printHelp( options );
   }
 
-  protected void printVersion() {
-    System.out.println( Messages.VERSION.format() );
-  }
-
   protected void printHelp( @NotNull Options options ) {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp( "gen-ser -d <serializer dest dir> -t <test dest dir> path-to-class", options );
@@ -222,7 +213,6 @@ public abstract class Generator {
       option.setRequired( true );
       options.addOption( option );
     }
-    options.addOption( VERSION_OPTION, "version", false, "display version information" );
     options.addOption( HELP_OPTION, "help", false, "display this use message" );
 
     return options;
