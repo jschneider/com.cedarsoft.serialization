@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.generator.model;
 
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.ConstructorCallInfo;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.google.common.collect.ImmutableList;
@@ -67,7 +68,7 @@ public class FactoryCollectionsTest {
     assertEquals( parsed.getClassDeclarations().size(), 1 );
 
     classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Room" );
-    MirrorUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
     factory = new DomainObjectDescriptorFactory( classDeclaration );
   }
 
@@ -88,8 +89,8 @@ public class FactoryCollectionsTest {
     assertEquals( fieldDeclaration.getType().toString(), "java.util.List<com.cedarsoft.serialization.generator.parsing.test.Window>" );
     assertEquals( param.getType().toString(), "java.util.Collection<? extends com.cedarsoft.serialization.generator.parsing.test.Window>" );
 
-    assertTrue( MirrorUtils.isAssignable( fieldDeclaration.getType(), param.getType() ) );
-    assertFalse( MirrorUtils.isAssignable( param.getType(), fieldDeclaration.getType() ) );
+    assertTrue( TypeUtils.isAssignable( fieldDeclaration.getType(), param.getType() ) );
+    assertFalse( TypeUtils.isAssignable( param.getType(), fieldDeclaration.getType() ) );
   }
 
   @Test

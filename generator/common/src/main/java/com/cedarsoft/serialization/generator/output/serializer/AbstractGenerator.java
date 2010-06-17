@@ -33,13 +33,14 @@ package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.DecisionCallback;
+import com.cedarsoft.codegen.Decorator;
+import com.cedarsoft.codegen.FieldDeclarationInfo;
 import com.cedarsoft.codegen.NamingSupport;
-import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructorInfo;
 import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
@@ -195,7 +196,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
 
     for ( Decorator decorator : codeGenerator.getMethodDecorators() ) {
-      decorator.decorateSerializeMethod( codeGenerator, domainType, serializerClass, serializeMethod );
+      if ( decorator instanceof GeneratorDecorator ) {
+        ( ( GeneratorDecorator ) decorator ).decorateSerializeMethod( codeGenerator, domainType, serializerClass, serializeMethod );
+      }
     }
 
     return serializeMethod;
@@ -210,7 +213,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
 
     for ( Decorator decorator : codeGenerator.getMethodDecorators() ) {
-      decorator.decorateDeserializeMethod( codeGenerator, domainType, serializerClass, deserializeMethod );
+      if ( decorator instanceof GeneratorDecorator ) {
+        ( ( GeneratorDecorator ) decorator ).decorateDeserializeMethod( codeGenerator, domainType, serializerClass, deserializeMethod );
+      }
     }
 
     return deserializeMethod;

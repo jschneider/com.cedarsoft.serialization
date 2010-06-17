@@ -31,10 +31,9 @@
 
 package com.cedarsoft.serialization.generator.model;
 
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
-import com.sun.jdi.Mirror;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
@@ -63,7 +62,7 @@ public class ParsingFieldInitTypesTest {
     assertEquals( parsed.getClassDeclarations().size(), 1 );
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.FieldTypesInit" );
 
-    MirrorUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
     factory = new DomainObjectDescriptorFactory( classDeclaration );
   }
 

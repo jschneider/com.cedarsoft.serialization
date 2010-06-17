@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.Decorator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
@@ -41,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Decorators can be used to generate additional code (e.g. annotations, comments etc.)
  */
-public interface Decorator {
+public interface GeneratorDecorator extends Decorator {
   /**
    * Decorates the serialize method
    *

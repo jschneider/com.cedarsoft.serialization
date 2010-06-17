@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.FieldDeclarationInfo;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.Expressions;
 import com.sun.codemodel.JClass;
@@ -65,7 +65,7 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
   @Override
   @NotNull
   public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
-    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( MirrorUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 

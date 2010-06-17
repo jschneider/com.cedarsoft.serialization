@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.codegen.DefaultFieldDeclarationInfo;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import org.jetbrains.annotations.NotNull;

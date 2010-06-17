@@ -31,8 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.Decorator;
+import com.cedarsoft.codegen.CodeGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
@@ -44,7 +43,7 @@ import java.lang.annotation.Annotation;
 /**
  *
  */
-public class I18nAnnotationsDecorator implements Decorator {
+public class I18nAnnotationsDecorator implements GeneratorDecorator {
   @NotNull
   private final Class<? extends Annotation> annotation;
 

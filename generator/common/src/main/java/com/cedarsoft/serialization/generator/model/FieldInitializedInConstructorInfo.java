@@ -31,18 +31,11 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.codegen.ConstructorCallInfo;
+import com.cedarsoft.codegen.DefaultFieldDeclarationInfo;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
-import com.sun.mirror.declaration.TypeDeclaration;
-import com.sun.mirror.type.DeclaredType;
-import com.sun.mirror.type.InterfaceType;
-import com.sun.mirror.type.ReferenceType;
-import com.sun.mirror.type.TypeMirror;
-import com.sun.mirror.util.Types;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
 
 /**
  *

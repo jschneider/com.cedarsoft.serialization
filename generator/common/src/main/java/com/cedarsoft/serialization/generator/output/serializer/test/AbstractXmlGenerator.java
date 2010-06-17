@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;

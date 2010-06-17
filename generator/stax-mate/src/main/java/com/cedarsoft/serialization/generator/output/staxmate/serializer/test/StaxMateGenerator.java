@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer.test;
 
+import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.AbstractXmlGenerator;
 import com.sun.codemodel.JClass;
 import org.jetbrains.annotations.NotNull;

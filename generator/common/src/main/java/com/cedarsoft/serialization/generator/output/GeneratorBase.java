@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.generator.output;
 
-import com.cedarsoft.serialization.generator.decision.DecisionCallback;
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.DecisionCallback;
 import com.sun.codemodel.JCodeModel;
 import org.jetbrains.annotations.NotNull;
 

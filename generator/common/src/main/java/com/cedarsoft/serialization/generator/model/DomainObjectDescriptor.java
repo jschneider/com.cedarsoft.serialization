@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.generator.model;
 
 import com.cedarsoft.codegen.NamingSupport;
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.TypeUtils;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
@@ -160,7 +160,7 @@ public class DomainObjectDescriptor {
       }
 
       ParameterDeclaration parameterDeclaration = methodDeclaration.getParameters().iterator().next();
-      if ( !MirrorUtils.isAssignable( type, parameterDeclaration.getType() ) ) {
+      if ( !TypeUtils.isAssignable( type, parameterDeclaration.getType() ) ) {
         throw new IllegalArgumentException( "Invalid parameter type for <" + expectedName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );
       }
 
@@ -209,7 +209,7 @@ public class DomainObjectDescriptor {
     for ( MethodDeclaration methodDeclaration : classDeclaration.getMethods() ) {
       if ( methodDeclaration.getSimpleName().equals( expectedName ) ) {
         TypeMirror returnType = methodDeclaration.getReturnType();
-        if ( MirrorUtils.isAssignable( type, returnType ) ) {
+        if ( TypeUtils.isAssignable( type, returnType ) ) {
           return methodDeclaration;
         } else {
           throw new IllegalArgumentException( "Invalid return types for <" + expectedName + ">. Was <" + returnType + "> but expected <" + type + ">" );

@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.generator.model;
 
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.ConstructorCallInfo;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
 import com.sun.mirror.declaration.ClassDeclaration;
@@ -64,7 +65,7 @@ public class DomainObjectDescriptorFactoryTest {
     assertEquals( parsed.getClassDeclarations().size(), 1 );
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Window" );
 
-    MirrorUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
     factory = new DomainObjectDescriptorFactory( classDeclaration );
   }
 

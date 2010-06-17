@@ -31,6 +31,8 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.codegen.FieldDeclarationInfo;
+
 /**
  *
  */

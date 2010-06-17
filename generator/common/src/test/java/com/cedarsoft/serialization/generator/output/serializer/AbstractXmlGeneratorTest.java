@@ -32,12 +32,11 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.FieldDeclarationInfo;
+import com.cedarsoft.codegen.FieldInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFormatter;

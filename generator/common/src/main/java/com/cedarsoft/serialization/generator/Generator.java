@@ -31,11 +31,12 @@
 
 package com.cedarsoft.serialization.generator;
 
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.DecisionCallback;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.exec.Executer;
-import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.parsing.Parser;
 import com.cedarsoft.serialization.generator.parsing.Result;
@@ -235,7 +236,7 @@ public abstract class Generator {
     public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       Result result = Parser.parse( configuration.getDomainSourceFile() );
 
-      MirrorUtils.setTypes( result.getEnvironment().getTypeUtils() );
+      TypeUtils.setTypes( result.getEnvironment().getTypeUtils() );
       DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration() ).create();
 
       T decisionCallback = createDecisionCallback();

@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.generator.model;
 
-import com.cedarsoft.serialization.generator.MirrorUtils;
+import com.cedarsoft.codegen.ConstructorCallInfo;
+import com.cedarsoft.codegen.TypeUtils;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
@@ -90,7 +91,7 @@ public class DomainObjectDescriptorFactory {
     for ( ParameterDeclaration parameterDeclaration : constructorDeclaration.getParameters() ) {
       if ( parameterDeclaration.getSimpleName().equals( simpleName ) ) {
         //Found a fitting type
-        if ( MirrorUtils.mightBeConstructorCallFor( parameterDeclaration.getType(), type ) ) {
+        if ( TypeUtils.mightBeConstructorCallFor( parameterDeclaration.getType(), type ) ) {
           return new ConstructorCallInfo( constructorDeclaration, index, parameterDeclaration );
         } else {
           throw new IllegalArgumentException( "Type mismatch for <" + simpleName + ">. Was <" + parameterDeclaration.getType() + "> but expected <" + type + ">" );

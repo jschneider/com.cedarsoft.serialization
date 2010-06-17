@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.FieldInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.model.FieldInfo;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;

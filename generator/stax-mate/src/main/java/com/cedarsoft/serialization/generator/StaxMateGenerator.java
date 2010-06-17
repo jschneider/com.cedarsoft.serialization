@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.generator;
 
+import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import org.jetbrains.annotations.NotNull;
 
