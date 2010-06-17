@@ -163,10 +163,6 @@ public class Generator {
     return options;
   }
 
-  private static void printUsage() {
-    System.out.println( Messages.USAGE.format() );
-  }
-
   @NotNull
   @NonNls
   private static final String[] PACKAGE_PREFIXES = {
