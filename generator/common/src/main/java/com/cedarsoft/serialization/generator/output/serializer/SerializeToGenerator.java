@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
+import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
