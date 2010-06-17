@@ -67,7 +67,7 @@ public class GeneratorTest {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( javaFile, destDir, testDestDir );
-    Generator.AbstractGeneratorRunner<?> runner = new StaxGenerator.StaxGeneratorRunner();
+    Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 
 

@@ -35,21 +35,20 @@ import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
-import com.cedarsoft.serialization.generator.output.staxmate.serializer.StaxMateGenerator;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class StaxGenerator extends Generator {
+public class StaxMateGenerator extends Generator {
   public static void main( String[] args ) throws Exception {
-    new StaxGenerator().run( args );
+    new StaxMateGenerator().run( args );
   }
 
   @NotNull
   @Override
   protected String getRunnerClassName() {
-    return "com.cedarsoft.serialization.generator.StaxGenerator$StaxGeneratorRunner";
+    return "com.cedarsoft.serialization.generator.StaxMateGenerator$StaxGeneratorRunner";
   }
 
   public static class StaxGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
@@ -68,7 +67,7 @@ public class StaxGenerator extends Generator {
     @NotNull
     @Override
     protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> serializerCodeGenerator ) {
-      return new StaxMateGenerator( serializerCodeGenerator );
+      return new com.cedarsoft.serialization.generator.output.staxmate.serializer.StaxMateGenerator( serializerCodeGenerator );
     }
   }
 }
