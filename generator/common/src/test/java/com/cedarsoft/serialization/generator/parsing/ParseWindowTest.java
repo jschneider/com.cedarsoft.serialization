@@ -31,6 +31,8 @@
 
 package com.cedarsoft.serialization.generator.parsing;
 
+import com.cedarsoft.codegen.parser.Parser;
+import com.cedarsoft.codegen.parser.Result;
 import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;

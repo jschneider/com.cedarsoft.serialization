@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.generator.model;
 
 import com.cedarsoft.codegen.ConstructorCallInfo;
 import com.cedarsoft.codegen.TypeUtils;
-import com.cedarsoft.serialization.generator.parsing.Parser;
-import com.cedarsoft.serialization.generator.parsing.Result;
+import com.cedarsoft.codegen.parser.Parser;
+import com.cedarsoft.codegen.parser.Result;
 import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
