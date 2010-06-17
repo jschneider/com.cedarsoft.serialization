@@ -112,6 +112,11 @@
       </dependency>
       <dependency>
         <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>id</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
         <artifactId>test-utils</artifactId>
         <version>${commons.version}</version>
         <scope>test</scope>

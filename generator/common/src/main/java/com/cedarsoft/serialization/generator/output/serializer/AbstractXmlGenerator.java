@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.NamingSupport;
-import com.cedarsoft.serialization.NameSpaceSupport;
+import com.cedarsoft.id.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.sun.codemodel.JClass;

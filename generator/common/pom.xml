@@ -33,6 +33,10 @@
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>codegen</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>id</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>commons-cli</groupId>
