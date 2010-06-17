@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.codegen.NamingSupport;
 import com.cedarsoft.serialization.generator.decision.DecisionCallback;
 import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.model.FieldDeclarationInfo;
@@ -40,7 +41,6 @@ import com.cedarsoft.serialization.generator.model.FieldInitializedInConstructor
 import com.cedarsoft.serialization.generator.model.FieldInitializedInSetterInfo;
 import com.cedarsoft.serialization.generator.output.CodeGenerator;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
-import com.cedarsoft.serialization.generator.output.NamingSupport;
 import com.google.common.collect.Maps;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;

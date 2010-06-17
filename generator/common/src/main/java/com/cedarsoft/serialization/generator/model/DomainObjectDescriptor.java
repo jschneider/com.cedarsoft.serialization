@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.generator.model;
 
+import com.cedarsoft.codegen.NamingSupport;
 import com.cedarsoft.serialization.generator.MirrorUtils;
-import com.cedarsoft.serialization.generator.output.NamingSupport;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;

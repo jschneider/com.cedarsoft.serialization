@@ -42,7 +42,7 @@ public class TypeMirrorMock implements ReferenceType {
   @NotNull
   private final Class<?> type;
 
-  TypeMirrorMock( @NotNull Class<?> type ) {
+  public TypeMirrorMock( @NotNull Class<?> type ) {
     this.type = type;
   }
 

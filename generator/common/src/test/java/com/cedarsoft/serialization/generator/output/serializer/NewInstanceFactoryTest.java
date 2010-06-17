@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.cedarsoft.serialization.generator.output.ClassRefSupport;
+import com.cedarsoft.serialization.generator.output.NewInstanceFactory;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JFormatter;
 import org.jetbrains.annotations.NonNls;

@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.serializer;
+package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.model.FieldTypeInformation;
 import com.cedarsoft.serialization.generator.output.ClassRefSupport;

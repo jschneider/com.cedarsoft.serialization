@@ -29,10 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.serializer;
+package com.cedarsoft.serialization.generator.output;
 
 import com.cedarsoft.serialization.generator.model.DefaultFieldTypeInformation;
-import com.cedarsoft.serialization.generator.output.ClassRefSupport;
+import com.cedarsoft.serialization.generator.output.serializer.TypeMirrorMock;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
