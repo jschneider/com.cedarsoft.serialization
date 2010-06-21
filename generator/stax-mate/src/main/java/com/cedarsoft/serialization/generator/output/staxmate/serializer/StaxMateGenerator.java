@@ -33,10 +33,10 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
+import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;

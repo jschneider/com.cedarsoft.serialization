@@ -51,7 +51,6 @@
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>execution</artifactId>
-      <version>2.0.4</version>
     </dependency>
 
     <dependency>

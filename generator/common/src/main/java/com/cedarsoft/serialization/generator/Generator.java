@@ -33,200 +33,40 @@ package com.cedarsoft.serialization.generator;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.DecisionCallback;
-import com.cedarsoft.codegen.TypeUtils;
+import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.cedarsoft.codegen.model.DomainObjectDescriptor;
+import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
-import com.cedarsoft.exec.Executer;
-import com.cedarsoft.serialization.generator.model.DomainObjectDescriptor;
-import com.cedarsoft.serialization.generator.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
-import com.google.common.io.Files;
+import com.google.common.collect.Lists;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.tools.xjc.api.util.APTClassLoader;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.MissingOptionException;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
-import org.fest.reflect.core.Reflection;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 /**
  *
  */
-public abstract class Generator {
-  @NonNls
-  public static final String HELP_OPTION = "h";
-  @NonNls
-  public static final String OPTION_DESTINATION = "d";
-  @NonNls
-  public static final String OPTION_TEST_DESTINATION = "t";
+public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator {
   @NotNull
-  @NonNls
-  protected static final String[] PACKAGE_PREFIXES = {
-    "com.cedarsoft.serialization.",
-    "com.sun.istack.tools.",
-    "com.sun.tools.apt.",
-    "com.sun.tools.javac.",
-    "com.sun.tools.javadoc.",
-    "com.sun.mirror."
-  };
-
-  public void run( @NotNull @NonNls String[] args ) throws Exception {
-    Options options = buildOptions();
-    CommandLine commandLine;
-    try {
-      commandLine = new GnuParser().parse( options, args );
-    } catch ( MissingOptionException e ) {
-      printError( options, e.getMessage() );
-      return;
-    }
-
-    if ( commandLine.hasOption( HELP_OPTION ) ) {
-      printHelp( options );
-      return;
-    }
-
-    List<? extends String> domainObjectNames = commandLine.getArgList();
-    if ( domainObjectNames.size() != 1 ) {
-      printError( options, "Missing class" );
-      return;
-    }
-
-    File domainSourceFile = new File( domainObjectNames.get( 0 ) );
-    if ( !domainSourceFile.isFile() ) {
-      printError( options, "No source file found at <" + domainSourceFile.getAbsolutePath() + ">" );
-      return;
-    }
-    File destination = new File( commandLine.getOptionValue( OPTION_DESTINATION ) );
-    if ( !destination.isDirectory() ) {
-      printError( options, "Destination <" + destination.getAbsolutePath() + "> is not a directory" );
-      return;
-    }
-
-    File testDestination = new File( commandLine.getOptionValue( OPTION_TEST_DESTINATION ) );
-    if ( !testDestination.isDirectory() ) {
-      printError( options, "Test destination <" + testDestination.getAbsolutePath() + "> is not a directory" );
-      return;
-    }
-    GeneratorConfiguration configuration = new GeneratorConfiguration( domainSourceFile, destination, testDestination );
-
-
-    File tmpDestination = createEmptyTmpDir();
-    File tmpTestDestination = createEmptyTmpDir();
-
-    GeneratorConfiguration tmpConfiguration = new GeneratorConfiguration( domainSourceFile, tmpDestination, tmpTestDestination );
-
-    System.out.println( "Generating serializer for <" + domainSourceFile.getAbsolutePath() + ">" );
-    System.out.println( "\tSerializer is created in <" + destination.getAbsolutePath() + ">" );
-    System.out.println( "\tSerializer tests are created in <" + testDestination.getAbsolutePath() + ">" );
-
-
-    //Now start the generator
-    ClassLoader defaultClassLoader = getClass().getClassLoader();
-    if ( defaultClassLoader == null ) {
-      defaultClassLoader = ClassLoader.getSystemClassLoader();
-    }
-
-    ClassLoader aptClassLoader = new APTClassLoader( defaultClassLoader, PACKAGE_PREFIXES );
-    Thread.currentThread().setContextClassLoader( aptClassLoader );
-
-    Class<?> runnerType = aptClassLoader.loadClass( getRunnerClassName() );
-
-    Object runner = Reflection.constructor().in( runnerType ).newInstance();
-    Reflection.method( "generate" ).withParameterTypes( GeneratorConfiguration.class ).in( runner ).invoke( tmpConfiguration );
-
-    System.out.println( "Generation finished!" );
-
-    transferFiles( tmpConfiguration.getDestination(), configuration.getDestination() );
-    transferFiles( tmpConfiguration.getTestDestination(), configuration.getTestDestination() );
-
-    System.out.println( "Cleaning up..." );
-    FileUtils.deleteDirectory( tmpDestination );
-    FileUtils.deleteDirectory( tmpTestDestination );
-  }
-
-  private void transferFiles( @NotNull File sourceDir, @NotNull File destination ) throws IOException, InterruptedException {
-    Collection<? extends File> serializerFiles;
-    serializerFiles = FileUtils.listFiles( sourceDir, new String[]{"java"}, true );
-    for ( File serializerFile : serializerFiles ) {
-      String relativePath = calculateRelativePath( sourceDir, serializerFile );
-      System.out.println( "--> " + relativePath );
-
-      File targetFile = new File( destination, relativePath );
-      System.out.println( "exists: " + targetFile.exists() );
-      if ( targetFile.exists() ) {
-        Executer executer = new Executer( new ProcessBuilder( "meld", targetFile.getAbsolutePath(), serializerFile.getAbsolutePath() ) );
-        executer.execute();
-      } else {
-        Files.move( serializerFile, targetFile );
-      }
-    }
-  }
-
-  @NotNull
-  @NonNls
-  private static String calculateRelativePath( @NotNull File dir, @NotNull File serializerFile ) throws IOException {
-    return serializerFile.getCanonicalPath().substring( dir.getCanonicalPath().length() + 1 );
-  }
-
-  @NotNull
-  public static File createEmptyTmpDir() {
-    return com.google.common.io.Files.createTempDir();
-  }
-
-  @NotNull
-  @NonNls
-  protected abstract String getRunnerClassName();
-
-
-  protected void printError( Options options, String errorMessage ) {
-    System.out.println( errorMessage );
-    printHelp( options );
-  }
-
-  protected void printHelp( @NotNull Options options ) {
-    HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "gen-ser -d <serializer dest dir> -t <test dest dir> path-to-class", options );
-  }
-
-  @NotNull
-  protected Options buildOptions() {
-    Options options = new Options();
-    {
-      Option option = new Option( OPTION_DESTINATION, "destination", true, "the output directory for the created serializers" );
-      option.setRequired( true );
-      options.addOption( option );
-    }
-
-    {
-      Option option = new Option( OPTION_TEST_DESTINATION, "test-destination", true, "the output directory for the created serializer tests" );
-      option.setRequired( true );
-      options.addOption( option );
-    }
-    options.addOption( HELP_OPTION, "help", false, "display this use message" );
-
-    return options;
+  @Override
+  protected List<? extends String> getPackagePrefixes() {
+    List<String> list = Lists.newArrayList( super.getPackagePrefixes() );
+    list.add( "com.cedarsoft.serialization." );
+    return list;
   }
 
   /**
    * Static inner class that is necessary due to ClassLoader issues.
    * We want to be sure that everything works in the context off the APTClassLoader
    */
-  public abstract static class AbstractGeneratorRunner<T extends DecisionCallback> {
+  public abstract static class AbstractGeneratorRunner<T extends DecisionCallback> implements Runner {
     public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       Result result = Parser.parse( configuration.getDomainSourceFile() );
 
-      TypeUtils.setTypes( result.getEnvironment().getTypeUtils() );
       DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration() ).create();
 
       T decisionCallback = createDecisionCallback();

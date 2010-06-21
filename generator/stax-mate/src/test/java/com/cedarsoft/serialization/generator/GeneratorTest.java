@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator;
 
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.TestUtils;
+import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.*;
