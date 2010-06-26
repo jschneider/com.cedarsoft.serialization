@@ -38,7 +38,9 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -124,8 +126,28 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param streamReader the stream reader
    * @param tagName      the tag name
    */
-  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName ) {
-    String current = streamReader.getName().getLocalPart();
+  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName ) throws IllegalStateException {
+    ensureTag( streamReader, tagName, null );
+  }
+
+  /**
+   * Ensures that the current tag equals the given tag name and namespace
+   *
+   * @param streamReader the stream reader
+   * @param tagName      the tag name
+   * @param namespace    the (optional) namespace (if the ns is null, no check will be performed)
+   */
+  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws IllegalStateException {
+    QName qName = streamReader.getName();
+
+    if ( namespace != null ) {
+      String nsUri = qName.getNamespaceURI();
+      if ( !nsUri.equals( namespace ) ) {
+        throw new IllegalStateException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + nsUri + "> but expected <" + namespace + ">" );
+      }
+    }
+
+    String current = qName.getLocalPart();
     if ( !current.equals( tagName ) ) {
       throw new IllegalStateException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
     }
