@@ -140,17 +140,24 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws IllegalStateException {
     QName qName = streamReader.getName();
 
-    if ( namespace != null ) {
-      String nsUri = qName.getNamespaceURI();
-      if ( !nsUri.equals( namespace ) ) {
-        throw new IllegalStateException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + nsUri + "> but expected <" + namespace + ">" );
-      }
+    if ( !doesNamespaceFit( streamReader, namespace ) ) {
+      throw new IllegalStateException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + qName.getNamespaceURI() + "> but expected <" + namespace + ">" );
     }
 
     String current = qName.getLocalPart();
     if ( !current.equals( tagName ) ) {
       throw new IllegalStateException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
     }
+  }
+
+  protected boolean doesNamespaceFit( @NotNull XMLStreamReader streamReader, @Nullable @NonNls String namespace ) {
+    if ( namespace == null ) {
+      return true;
+    }
+
+    QName qName = streamReader.getName();
+    String nsUri = qName.getNamespaceURI();
+    return nsUri.equals( namespace );
   }
 
   /**
@@ -240,11 +247,49 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws XMLStreamException
    */
   protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws XMLStreamException {
+    nextTag( reader, tagName, namespace, true );
+  }
+
+  /**
+   * Opens the next tag
+   *
+   * @param reader              the reader
+   * @param tagName             the tag name
+   * @param namespace           the (optional) namespace (if the ns is null, no check will be performed)
+   * @param skipOtherNamespaces whether to skip unknown namespaces
+   * @throws XMLStreamException
+   */
+  protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace, boolean skipOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
       throw new IllegalStateException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
+
+    if ( !doesNamespaceFit( reader, namespace ) ) {
+      skipCurrentTag( reader );
+    }
+
     ensureTag( reader, tagName, namespace );
+  }
+
+  /**
+   * Skips the current tag (will skip all children and close the tag itself)
+   *
+   * @param reader the reader
+   * @throws XMLStreamException
+   */
+  protected void skipCurrentTag( @NotNull XMLStreamReader reader ) throws XMLStreamException {
+    int counter = 1;
+
+    while ( counter > 0 ) {
+      int result = reader.next();
+
+      if ( result == XMLStreamReader.END_ELEMENT ) {
+        counter--;
+      } else if ( result == XMLStreamReader.START_ELEMENT ) {
+        counter++;
+      }
+    }
   }
 
   /**
