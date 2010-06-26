@@ -175,7 +175,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     int result;
     while ( ( result = reader.next() ) != XMLStreamReader.END_ELEMENT ) {
       if ( result != XMLStreamReader.CHARACTERS ) {
-        throw new IllegalStateException( "Invalid state: " + result );
+        throw new IllegalStateException( "Invalid result: " + result );
       }
       content.append( reader.getText() );
     }
