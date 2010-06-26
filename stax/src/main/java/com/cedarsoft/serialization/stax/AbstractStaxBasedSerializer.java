@@ -253,23 +253,25 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   /**
    * Opens the next tag
    *
-   * @param reader              the reader
-   * @param tagName             the tag name
-   * @param namespace           the (optional) namespace (if the ns is null, no check will be performed)
-   * @param skipOtherNamespaces whether to skip unknown namespaces
+   * @param reader    the reader
+   * @param tagName   the tag name
+   * @param namespace the (optional) namespace (if the ns is null, no check will be performed)
+   * @param skipElementsWithOtherNamespaces
+   *                  whether to skip unknown namespaces
    * @throws XMLStreamException
    */
-  protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace, boolean skipOtherNamespaces ) throws XMLStreamException {
+  protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
       throw new IllegalStateException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
-    if ( !doesNamespaceFit( reader, namespace ) ) {
+    if ( skipElementsWithOtherNamespaces && !doesNamespaceFit( reader, namespace ) ) {
       skipCurrentTag( reader );
+      nextTag( reader, tagName, namespace, skipElementsWithOtherNamespaces );
+    } else {
+      ensureTag( reader, tagName, namespace );
     }
-
-    ensureTag( reader, tagName, namespace );
   }
 
   /**

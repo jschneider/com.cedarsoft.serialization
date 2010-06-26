@@ -60,8 +60,8 @@ public class WindowSerializerNamespaceSkipTest {
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
 
       //Skip it
-      nextTag( deserializeFrom, "other" );
-      skipCurrentTag( deserializeFrom );
+//      nextTag( deserializeFrom, "other" );
+//      skipCurrentTag( deserializeFrom );
 
       //yeah
       nextTag( deserializeFrom, "description", getNameSpaceUri() );
