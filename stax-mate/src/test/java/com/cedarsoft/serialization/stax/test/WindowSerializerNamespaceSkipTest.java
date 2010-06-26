@@ -32,7 +32,11 @@ public class WindowSerializerNamespaceSkipTest {
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
         "<window xmlns=\"window/0.9.0\" width=\"123.3\" height=\"444.4\">\n" +
         "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
+        "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
+        "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
         "  <description>the window</description>\n" +
+        "  <other xmlns=\"asdf\"/>" +
+        "  <other xmlns=\"asdf2\"/>" +
         "</window>" ).getBytes() ) );
 
     assertEquals( deserialized.getDescription(), "the window" );
@@ -60,8 +64,8 @@ public class WindowSerializerNamespaceSkipTest {
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
 
       //Skip it
-//      nextTag( deserializeFrom, "other" );
-//      skipCurrentTag( deserializeFrom );
+      //      nextTag( deserializeFrom, "other" );
+      //      skipCurrentTag( deserializeFrom );
 
       //yeah
       nextTag( deserializeFrom, "description", getNameSpaceUri() );

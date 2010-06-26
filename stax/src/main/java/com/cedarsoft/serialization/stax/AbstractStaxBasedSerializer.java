@@ -221,10 +221,25 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws XMLStreamException
    */
   protected void closeTag( @NotNull XMLStreamReader reader ) throws XMLStreamException {
+    closeTag( reader, true );
+  }
+
+  protected void closeTag( @NotNull XMLStreamReader reader, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
-    if ( result != XMLStreamReader.END_ELEMENT ) {
+    if ( result == XMLStreamReader.END_ELEMENT ) {
+      return;
+    }
+
+    if ( !skipElementsWithOtherNamespaces || result != XMLStreamReader.START_ELEMENT ) {
       throw new IllegalStateException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
+
+    if ( doesNamespaceFit( reader, getNameSpaceUri() ) ) {
+      throw new IllegalStateException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+    }
+
+    skipCurrentTag( reader );
+    closeTag( reader );
   }
 
   /**
