@@ -202,7 +202,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    */
   @NotNull
   protected String getChildText( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws XMLStreamException {
-    reader.nextTag();
+    nextTag( reader, tagName );
     ensureTag( reader, tagName, namespace );
     return getText( reader );
   }
