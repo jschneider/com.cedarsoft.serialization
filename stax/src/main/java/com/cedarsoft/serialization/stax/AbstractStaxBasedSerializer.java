@@ -187,8 +187,23 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    */
   @NotNull
   protected String getChildText( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName ) throws XMLStreamException {
+    return getChildText( reader, tagName, null );
+  }
+
+  /**
+   * Returns the child text
+   *
+   * @param reader    the reader
+   * @param tagName   the tag name
+   * @param namespace the (optional) namespace that is only verified, if it is not null
+   * @return the text of the child with the given tag name
+   *
+   * @throws XMLStreamException
+   */
+  @NotNull
+  protected String getChildText( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws XMLStreamException {
     reader.nextTag();
-    ensureTag( reader, tagName );
+    ensureTag( reader, tagName, namespace );
     return getText( reader );
   }
 
