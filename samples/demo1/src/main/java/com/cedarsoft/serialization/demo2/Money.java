@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.demo1;
+package com.cedarsoft.serialization.demo2;
 
 /**
  *
