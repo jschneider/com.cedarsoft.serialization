@@ -46,6 +46,10 @@ public class Money {
     this.cents = cents;
   }
 
+  public Money( int euros, int cents ) {
+    this( euros * 100L + cents );
+  }
+
   public long getCents() {
     return cents;
   }

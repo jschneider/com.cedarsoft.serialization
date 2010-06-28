@@ -53,7 +53,10 @@ public class MoneyTest {
 
   @Test
   public void testXStream() {
-    assertEquals( xStream.toXML( new Money( 11351 ) ), "<money cents=\"11351\"/>" );
+    assertEquals( xStream.toXML( new Money( 7, 1 ) ), "<money cents=\"701\"/>" );
+    assertEquals( xStream.toXML( new Money( 701 ) ), "<money cents=\"701\"/>" );
+    assertEquals( ( ( Money ) xStream.fromXML( "<money cents=\"701\"/>" ) ).getAmount(), 7.01 );
+    assertEquals( ( ( Money ) xStream.fromXML( "<money cents=\"701\"/>" ) ).getCents(), 701 );
   }
 
   @Test
@@ -63,7 +66,8 @@ public class MoneyTest {
 
   @Test
   public void testSimple() {
-    assertEquals( serialize( new Money( 11351 ) ), "<money cents=\"11351\"/>" );
+    assertEquals( serialize( new Money( 7, 1 ) ), "<money cents=\"701\"/>" );
+    assertEquals( serialize( new Money( 701 ) ), "<money cents=\"701\"/>" );
   }
 
   private static String serialize( @NotNull Money money ) {
