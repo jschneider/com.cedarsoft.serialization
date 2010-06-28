@@ -43,6 +43,7 @@ import static org.testng.Assert.*;
 public class MoneyTest {
   public static final int COUNT = 1000;
   private XStream xStream;
+
   @BeforeMethod
   protected void setUp() throws Exception {
     xStream = new XStream();
@@ -56,35 +57,16 @@ public class MoneyTest {
   }
 
   @Test
+  public void testPrecision() {
+    assertEquals( xStream.toXML( new Money( ( float ) 1.01 ) ), "<money cents=\"101\"/>" );
+  }
+
+  @Test
   public void testSimple() {
     assertEquals( serialize( new Money( 11351 ) ), "<money cents=\"11351\"/>" );
   }
 
   private static String serialize( @NotNull Money money ) {
     return "<money cents=\"" + money.getCents() + "\"/>";
-  }
-
-  public static void main( String[] args ) throws Exception {
-    System.out.println( "---------" );
-
-//    {
-//      MoneyTest test = new MoneyTest();
-//      long start = System.currentTimeMillis();
-//      for ( int i = 0; i < COUNT; i++ ) {
-//        test.testSimple();
-//      }
-//      System.out.println( "Simple took: " + ( System.currentTimeMillis() - start ) + "ms" );
-//    }
-
-    {
-      MoneyTest test = new MoneyTest();
-      test.setUp();
-      long start = System.currentTimeMillis();
-      for ( int i = 0; i < COUNT; i++ ) {
-        test.testXStream();
-      }
-      System.out.println( "XStream took: " + ( System.currentTimeMillis() - start ) + "ms" );
-    }
-
   }
 }

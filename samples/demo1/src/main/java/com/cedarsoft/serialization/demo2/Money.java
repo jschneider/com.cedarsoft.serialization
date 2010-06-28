@@ -35,13 +35,23 @@ package com.cedarsoft.serialization.demo2;
  *
  */
 public class Money {
-  private final int cents;
+  private final long cents;
 
-  public Money( int cents ) {
+  @Deprecated
+  public Money( double amount ) {
+    this( Math.round( amount * 100 ) );
+  }
+
+  public Money( long cents ) {
     this.cents = cents;
   }
 
-  public int getCents() {
+  public long getCents() {
     return cents;
+  }
+
+  @Deprecated
+  public double getAmount() {
+    return cents / 100.0;
   }
 }
