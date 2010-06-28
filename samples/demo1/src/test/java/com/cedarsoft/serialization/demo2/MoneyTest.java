@@ -32,27 +32,53 @@
 package com.cedarsoft.serialization.demo2;
 
 import com.thoughtworks.xstream.XStream;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static com.cedarsoft.AssertUtils.assertXMLEqual;
 import static org.testng.Assert.*;
 
 /**
  *
  */
 public class MoneyTest {
-  public static final int COUNT = 1000;
+  @NonNls
+  public static final String EXPECTED_XML = "<money>\n" +
+    "  <cents>701</cents>\n" +
+    "</money>";
+
   private XStream xStream;
 
   @BeforeMethod
   protected void setUp() throws Exception {
     xStream = new XStream();
     xStream.alias( "money", Money.class );
-    xStream.useAttributeFor( Money.class, "cents" );
   }
 
   @Test
   public void testXStream() {
+    assertEquals( xStream.toXML( new Money( 7, 1 ) ), EXPECTED_XML );
+    assertEquals( xStream.toXML( new Money( 701 ) ), EXPECTED_XML );
+    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED_XML ) ).getAmount(), 7.01 );
+    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED_XML ) ).getCents(), 701 );
+  }
+
+  @Test
+  public void testXStreamAttribute() {
+    xStream.useAttributeFor( Money.class, "cents" );
+
     assertEquals( xStream.toXML( new Money( 7, 1 ) ), "<money cents=\"701\"/>" );
     assertEquals( xStream.toXML( new Money( 701 ) ), "<money cents=\"701\"/>" );
     assertEquals( ( ( Money ) xStream.fromXML( "<money cents=\"701\"/>" ) ).getAmount(), 7.01 );
@@ -60,17 +86,43 @@ public class MoneyTest {
   }
 
   @Test
-  public void testPrecision() {
-    assertEquals( xStream.toXML( new Money( ( float ) 1.01 ) ), "<money cents=\"101\"/>" );
+  public void testSimple() throws XMLStreamException, IOException, SAXException {
+    assertXMLEqual( serialize( new Money( 7, 1 ) ), EXPECTED_XML );
+    assertXMLEqual( serialize( new Money( 701 ) ), EXPECTED_XML );
+
+    assertEquals( deserialize( new ByteArrayInputStream( EXPECTED_XML.getBytes() ) ).getCents(), 701 );
   }
 
-  @Test
-  public void testSimple() {
-    assertEquals( serialize( new Money( 7, 1 ) ), "<money cents=\"701\"/>" );
-    assertEquals( serialize( new Money( 701 ) ), "<money cents=\"701\"/>" );
+  protected static String serialize( @NotNull Money money ) throws XMLStreamException {
+    //Boilerplate
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter( out );
+    //    writer.writeStartDocument();
+
+    //That is the actual code
+    writer.writeStartElement( "money" );
+    writer.writeStartElement( "cents" );
+    writer.writeCharacters( String.valueOf( money.getCents() ) );
+    writer.writeEndElement();
+    writer.writeEndElement();
+
+    //Boiler plate
+    writer.close();
+    return out.toString();
   }
 
-  private static String serialize( @NotNull Money money ) {
-    return "<money cents=\"" + money.getCents() + "\"/>";
+  private static Money deserialize( @NotNull InputStream serialized ) throws XMLStreamException {
+    //Boilerplate
+    XMLInputFactory factory = XMLInputFactory.newInstance();
+    XMLStreamReader reader = factory.createXMLStreamReader( serialized );
+    //    writer.writeStartDocument();
+
+    //That is the actual code
+    reader.nextTag();//money
+    reader.nextTag();//cents
+    reader.next();//the content
+    long cents = Long.parseLong( reader.getText() );
+
+    return new Money( cents );
   }
 }

@@ -37,9 +37,12 @@ package com.cedarsoft.serialization.demo2;
 public class Money {
   private final long cents;
 
+  //Supports the old format
+//  private double amount;
+
   @Deprecated
   public Money( double amount ) {
-    this( Math.round( amount * 100 ) );
+    this( convertValueTOCents( amount ) );
   }
 
   public Money( long cents ) {
@@ -51,11 +54,27 @@ public class Money {
   }
 
   public long getCents() {
+//    if ( amount != 0 ) {
+//      return convertValueTOCents( amount );
+//    }
     return cents;
+  }
+
+  private Object readResolve() {
+//    System.out.println( "Money.readResolve" );
+//    if ( amount != 0 ) {
+//      System.out.println( "special: " + amount );
+//      return new Money( convertValueTOCents( amount ) );
+//    }
+    return this;
   }
 
   @Deprecated
   public double getAmount() {
-    return cents / 100.0;
+    return getCents() / 100.0;
+  }
+
+  static long convertValueTOCents( double amount ) {
+    return Math.round( amount * 100 );
   }
 }
