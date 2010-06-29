@@ -37,9 +37,6 @@ package com.cedarsoft.serialization.demo2;
 public class Money {
   private final long cents;
 
-  //Supports the old format
-//  private double amount;
-
   @Deprecated
   public Money( double amount ) {
     this( convertValueTOCents( amount ) );
