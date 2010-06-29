@@ -24,6 +24,8 @@ import static org.testng.Assert.*;
 public class MoneyTest {
   @NotNull
   public static final URL EXPECTED = MoneyTest.class.getResource( "money.xml" );
+  @NotNull
+  public static final URL EXPECTED_ATTRIBUTE = MoneyTest.class.getResource( "money_attribute.xml" );
 
   private XStream xStream;
 
@@ -40,11 +42,11 @@ public class MoneyTest {
   }
 
   @Test
-  public void testXStreamAttribute() {
+  public void testXStreamAttribute() throws IOException, SAXException {
     xStream.useAttributeFor( Money.class, "amount" );
 
-    assertEquals( xStream.toXML( new Money( 7.01 ) ), "<money amount=\"7.01\"/>" );
-    assertEquals( ( ( Money ) xStream.fromXML( "<money amount=\"7.01\"/>" ) ).getAmount(), 7.01 );
+    assertXMLEqual( xStream.toXML( new Money( 7.01 ) ), EXPECTED_ATTRIBUTE );
+    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED_ATTRIBUTE.openStream() ) ).getAmount(), 7.01 );
   }
 
   @Test
