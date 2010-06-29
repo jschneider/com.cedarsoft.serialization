@@ -32,7 +32,6 @@
 package com.cedarsoft.serialization.demo2;
 
 import com.thoughtworks.xstream.XStream;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 import org.xml.sax.SAXException;
@@ -42,10 +41,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import static com.cedarsoft.AssertUtils.assertXMLEqual;
 import static org.testng.Assert.*;
@@ -54,10 +53,8 @@ import static org.testng.Assert.*;
  *
  */
 public class MoneyTest {
-  @NonNls
-  public static final String EXPECTED_XML = "<money>\n" +
-    "  <cents>701</cents>\n" +
-    "</money>";
+  @NotNull
+  public static final URL EXPECTED = MoneyTest.class.getResource( "money.xml" );
 
   private XStream xStream;
 
@@ -68,11 +65,11 @@ public class MoneyTest {
   }
 
   @Test
-  public void testXStream() {
-    assertEquals( xStream.toXML( new Money( 7, 1 ) ), EXPECTED_XML );
-    assertEquals( xStream.toXML( new Money( 701 ) ), EXPECTED_XML );
-    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED_XML ) ).getAmount(), 7.01 );
-    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED_XML ) ).getCents(), 701 );
+  public void testXStream() throws IOException, SAXException {
+    assertXMLEqual( xStream.toXML( new Money( 7, 1 ) ), EXPECTED );
+    assertXMLEqual( xStream.toXML( new Money( 701 ) ), EXPECTED );
+    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getAmount(), 7.01 );
+    assertEquals( ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getCents(), 701 );
   }
 
   @Test
@@ -87,10 +84,10 @@ public class MoneyTest {
 
   @Test
   public void testSimple() throws XMLStreamException, IOException, SAXException {
-    assertXMLEqual( serialize( new Money( 7, 1 ) ), EXPECTED_XML );
-    assertXMLEqual( serialize( new Money( 701 ) ), EXPECTED_XML );
+    assertXMLEqual( serialize( new Money( 7, 1 ) ), EXPECTED );
+    assertXMLEqual( serialize( new Money( 701 ) ), EXPECTED );
 
-    assertEquals( deserialize( new ByteArrayInputStream( EXPECTED_XML.getBytes() ) ).getCents(), 701 );
+    assertEquals( deserialize( EXPECTED.openStream() ).getCents(), 701 );
   }
 
   protected static String serialize( @NotNull Money money ) throws XMLStreamException {

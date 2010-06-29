@@ -15,7 +15,6 @@ import org.xml.sax.SAXException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -35,15 +34,15 @@ public class MoneyXstreamLegacyTest {
   }
 
   @Test
-  public void testFromXml() {
-    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED_XML ) ).getCents(), 701 );
-    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED_XML ) ).getAmount(), 7.01 );
+  public void testFromXml() throws IOException {
+    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED.openStream() ) ).getCents(), 701 );
+    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED.openStream() ) ).getAmount(), 7.01 );
   }
 
   @Test
-  public void testFromXmlLegacyFormat() {
+  public void testFromXmlLegacyFormat() throws IOException {
     try {
-      xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED_XML );
+      xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream() );
       fail( "Where is the Exception" );
     } catch ( ConversionException e ) {
       assertEquals( e.getMessage(), "amount : amount : amount : amount\n" +
@@ -54,7 +53,7 @@ public class MoneyXstreamLegacyTest {
         "class               : com.cedarsoft.serialization.demo2.Money\n" +
         "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
         "path                : /money/amount\n" +
-        "line number         : 2\n" +
+        "line number         : 3\n" +
         "-------------------------------" );
     }
   }
@@ -63,11 +62,11 @@ public class MoneyXstreamLegacyTest {
   public void testCustomConverter() throws IOException, SAXException {
     xStream.registerConverter( new MoneyConverter() );
     //writing
-    assertXMLEqual( xStream.toXML( new Money( 701 ) ), com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED_XML );
+    assertXMLEqual( xStream.toXML( new Money( 701 ) ), com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED );
     //current format
-    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED_XML ) ).getCents(), 701 );
+    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED.openStream() ) ).getCents(), 701 );
     //old format
-    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED_XML ) ).getCents(), 701 );
+    assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream() ) ).getCents(), 701 );
   }
 
   public static class MoneyConverter implements Converter {
@@ -103,8 +102,8 @@ public class MoneyXstreamLegacyTest {
 
   @Test
   public void testManual() throws XMLStreamException, IOException, SAXException {
-    assertEquals( deserialize( new ByteArrayInputStream( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED_XML.getBytes() ), Version.CURRENT ).getCents(), 701 );
-    assertEquals( deserialize( new ByteArrayInputStream( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED_XML.getBytes() ), Version.LEGACY ).getCents(), 701 );
+    assertEquals( deserialize( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED.openStream(), Version.CURRENT ).getCents(), 701 );
+    assertEquals( deserialize( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream(), Version.LEGACY ).getCents(), 701 );
   }
 
   private static Money deserialize( @NotNull InputStream serialized, Version version ) throws XMLStreamException {

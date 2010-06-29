@@ -54,19 +54,7 @@ public class Money {
   }
 
   public long getCents() {
-//    if ( amount != 0 ) {
-//      return convertValueTOCents( amount );
-//    }
     return cents;
-  }
-
-  private Object readResolve() {
-//    System.out.println( "Money.readResolve" );
-//    if ( amount != 0 ) {
-//      System.out.println( "special: " + amount );
-//      return new Money( convertValueTOCents( amount ) );
-//    }
-    return this;
   }
 
   @Deprecated
