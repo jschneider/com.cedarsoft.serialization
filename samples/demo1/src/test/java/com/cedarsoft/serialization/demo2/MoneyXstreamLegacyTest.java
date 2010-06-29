@@ -84,7 +84,7 @@ public class MoneyXstreamLegacyTest {
       long cents;
       if ( reader.getNodeName().equals( "amount" ) ) {
         //Legacy!
-        cents = Money.convertValueTOCents( Double.parseDouble( reader.getValue() ) );
+        cents = Money.convertValueToCents( Double.parseDouble( reader.getValue() ) );
       } else {
         cents = Long.parseLong( reader.getValue() );
       }
@@ -119,7 +119,7 @@ public class MoneyXstreamLegacyTest {
 
     long cents;
     if ( version == Version.LEGACY ) {
-      cents = Money.convertValueTOCents( Double.parseDouble( reader.getText() ) );
+      cents = Money.convertValueToCents( Double.parseDouble( reader.getText() ) );
     } else {
       cents = Long.parseLong( reader.getText() );
     }

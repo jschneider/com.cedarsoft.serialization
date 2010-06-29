@@ -39,7 +39,7 @@ public class Money {
 
   @Deprecated
   public Money( double amount ) {
-    this( convertValueTOCents( amount ) );
+    this( convertValueToCents( amount ) );
   }
 
   public Money( long cents ) {
@@ -59,7 +59,7 @@ public class Money {
     return getCents() / 100.0;
   }
 
-  static long convertValueTOCents( double amount ) {
+  static long convertValueToCents( double amount ) {
     return Math.round( amount * 100 );
   }
 }
