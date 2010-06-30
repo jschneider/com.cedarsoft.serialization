@@ -79,7 +79,6 @@ public class MoneyXstreamLegacyTest {
 
     @Override
     public Object unmarshal( HierarchicalStreamReader reader, UnmarshallingContext context ) {
-
       reader.moveDown();
       long cents;
       if ( reader.getNodeName().equals( "amount" ) ) {
