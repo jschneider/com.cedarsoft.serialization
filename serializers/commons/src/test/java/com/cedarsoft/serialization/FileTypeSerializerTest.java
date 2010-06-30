@@ -59,7 +59,7 @@ public class FileTypeSerializerTest extends AbstractXmlSerializerMultiTest<FileT
 
   @NotNull
   @Override
-  protected List<? extends String> getExpectedSerialized() {
+  protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(
       "<fileType dependent=\"true\">\n" +
         "  <id>TheId</id>\n" +

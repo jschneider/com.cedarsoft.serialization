@@ -68,5 +68,5 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
    */
   @NotNull
   @NonNls
-  protected abstract List<? extends String> getExpectedSerialized();
+  protected abstract List<? extends String> getExpectedSerialized() throws Exception;
 }

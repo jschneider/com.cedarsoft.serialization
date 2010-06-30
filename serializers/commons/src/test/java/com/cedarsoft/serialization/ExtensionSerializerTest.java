@@ -61,7 +61,7 @@ public class ExtensionSerializerTest extends AbstractXmlSerializerMultiTest<Exte
 
   @NotNull
   @Override
-  protected List<? extends String> getExpectedSerialized() {
+  protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(
       "<extension delimiter=\",\">jpg</extension>",
       "<extension delimiter=\".\">jpg</extension>",
