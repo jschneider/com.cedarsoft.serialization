@@ -64,7 +64,7 @@ public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
 
   @NotNull
   @Override
-  protected List<? extends String> getExpectedSerialized() {
+  protected List<? extends String> getExpectedSerialized() throws Exception {
     //We just return the sole part of the xml that should be compared.
     //For comparison XML-Unit is used, so there is no need to take care of formatting etc.
 

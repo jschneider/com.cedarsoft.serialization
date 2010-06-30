@@ -38,6 +38,7 @@ import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.*;
 
@@ -71,26 +72,11 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
 
   @NotNull
   @Override
-  protected List<? extends String> getExpectedSerialized() {
+  protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(
-      "<car>\n" +
-        "  <color red=\"0\" blue=\"0\" green=\"0\" />\n" +
-        "  <model>Toyota</model>\n" +
-        "  <basePrice>4900000</basePrice>\n" +
-        "</car>",
-      "<car>\n" +
-        "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
-        "  <model>Ford</model>\n" +
-        "  <basePrice>1900000</basePrice>\n" +
-        "  <extra>\n" +
-        "    <description>Whoo effect</description>\n" +
-        "    <price>9998</price>\n" +
-        "  </extra>" +
-        " <extra>\n" +
-        "    <description>Better Whoo effect</description>\n" +
-        "    <price>19900</price>\n" +
-        "  </extra>" +
-        "</car>" );
+      IOUtils.toString( getClass().getResourceAsStream( "car1.xml" ) ),
+      IOUtils.toString( getClass().getResourceAsStream( "car2.xml" ) )
+    );
   }
 
   @Override

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<car xmlns="http://thecompany.com/test/car/1.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://thecompany.com/test/car/1.0.0 file://./car.xsd">
+  <color red="255" blue="0" green="200" />
+  <model>Ford</model>
+  <basePrice>1900000</basePrice>
+  <extra>
+    <description>Whoo effect</description>
+    <price>9998</price>
+  </extra>
+  <extra>
+    <description>Better Whoo effect</description>
+    <price>19900</price>
+  </extra>
+</car>
+  

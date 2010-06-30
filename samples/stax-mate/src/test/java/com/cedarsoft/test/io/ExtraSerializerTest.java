@@ -62,7 +62,7 @@ public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
 
   @NotNull
   @Override
-  protected List<? extends String> getExpectedSerialized() {
+  protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(
       "<extra>\n" +
         "  <description>Metallic</description>\n" +
