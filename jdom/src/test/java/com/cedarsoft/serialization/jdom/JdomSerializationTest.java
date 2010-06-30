@@ -63,7 +63,7 @@ public class JdomSerializationTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
 
-    AssertUtils.assertXMLEqual( out.toString().trim(), "<my  xmlns=\"http://my/1.2.3\">7</my>" );
+    AssertUtils.assertXMLEquals( out.toString().trim(), "<my  xmlns=\"http://my/1.2.3\">7</my>" );
 
 
     ByteArrayInputStream in = new ByteArrayInputStream( ( "<my  xmlns=\"http://my/1.2.3\">7</my>" ).getBytes() );

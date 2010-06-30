@@ -97,7 +97,7 @@ public class DelegatesTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     roomSerializer.serialize( hall, out );
 
-    AssertUtils.assertXMLEqual( out.toString(),
+    AssertUtils.assertXMLEquals( out.toString(),
                                 "<room xmlns=\"room/2.0.0\">\n" +
                                   "  <description>hall</description>\n" +
                                   "  <doors>\n" +

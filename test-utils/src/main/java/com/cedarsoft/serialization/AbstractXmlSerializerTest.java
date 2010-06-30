@@ -54,7 +54,7 @@ public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTes
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
     String expectedWithNamespace = addNameSpace( getExpectedSerialized(), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
-    AssertUtils.assertXMLEqual( new String( serialized ), expectedWithNamespace );
+    AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
   }
 
   @NotNull

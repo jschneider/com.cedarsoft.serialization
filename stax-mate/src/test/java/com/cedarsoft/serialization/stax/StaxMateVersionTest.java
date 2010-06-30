@@ -59,7 +59,7 @@ public class StaxMateVersionTest {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
-    AssertUtils.assertXMLEqual( out.toString(), "<integer xmlns=\"http://integer/1.0.0\" value=\"7\" />" );
+    AssertUtils.assertXMLEquals( out.toString(), "<integer xmlns=\"http://integer/1.0.0\" value=\"7\" />" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
   }
@@ -70,7 +70,7 @@ public class StaxMateVersionTest {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
-    AssertUtils.assertXMLEqual( out.toString(), "<integer xmlns=\"http://integer/2.0.0\">7</integer>" );
+    AssertUtils.assertXMLEquals( out.toString(), "<integer xmlns=\"http://integer/2.0.0\">7</integer>" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
   }

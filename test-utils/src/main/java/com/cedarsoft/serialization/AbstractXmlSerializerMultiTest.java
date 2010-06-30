@@ -51,7 +51,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
     for ( byte[] current : serialized ) {
       String expectedWithNamespace = AbstractXmlSerializerTest.addNameSpace( expected.get( index ), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
       try {
-        AssertUtils.assertXMLEqual( new String( current ), expectedWithNamespace );
+        AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
       } catch ( AssertionError e ) {
         AssertionError newError = new AssertionError( "Failed for index <" + index + ">: " + e.getMessage() );
         newError.setStackTrace( e.getStackTrace() );

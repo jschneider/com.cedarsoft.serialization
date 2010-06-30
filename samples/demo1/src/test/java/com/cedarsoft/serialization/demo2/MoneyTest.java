@@ -46,7 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import static com.cedarsoft.AssertUtils.assertXMLEqual;
+import static com.cedarsoft.AssertUtils.assertXMLEquals;
 import static org.testng.Assert.*;
 
 /**
@@ -66,8 +66,8 @@ public class MoneyTest {
 
   @Test
   public void testXStream() throws IOException, SAXException {
-    assertXMLEqual( xStream.toXML( new Money( 7, 1 ) ), EXPECTED );
-    assertXMLEqual( xStream.toXML( new Money( 701 ) ), EXPECTED );
+    assertXMLEquals( xStream.toXML( new Money( 7, 1 ) ), EXPECTED );
+    assertXMLEquals( xStream.toXML( new Money( 701 ) ), EXPECTED );
     assertEquals( ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getAmount(), 7.01 );
     assertEquals( ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getCents(), 701 );
   }
@@ -84,8 +84,8 @@ public class MoneyTest {
 
   @Test
   public void testSimple() throws XMLStreamException, IOException, SAXException {
-    assertXMLEqual( serialize( new Money( 7, 1 ) ), EXPECTED );
-    assertXMLEqual( serialize( new Money( 701 ) ), EXPECTED );
+    assertXMLEquals( serialize( new Money( 7, 1 ) ), EXPECTED );
+    assertXMLEquals( serialize( new Money( 701 ) ), EXPECTED );
 
     assertEquals( deserialize( EXPECTED.openStream() ).getCents(), 701 );
   }

@@ -54,7 +54,7 @@ public class SimpleXmlTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.write( fileType, out );
 
-    AssertUtils.assertXMLEqual( out.toString(), XmlParserPerformance.CONTENT_SAMPLE_XSTREAM );
+    AssertUtils.assertXMLEquals( out.toString(), XmlParserPerformance.CONTENT_SAMPLE_XSTREAM );
   }
 
   @Test

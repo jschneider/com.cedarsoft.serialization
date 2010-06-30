@@ -63,7 +63,7 @@ public class JibxTest {
     StringWriter out = new StringWriter();
     context.marshalDocument( type, "UTF-8", null, out );
 
-    AssertUtils.assertXMLEqual( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    AssertUtils.assertXMLEquals( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
       "<fileType xmlns=\"http://cedarsoft.com/serialization/bench/jaxb\" dependent=\"false\">\n" +
       " <id>jpg</id>\n" +
       " <extension isDefault=\"true\">\n" +

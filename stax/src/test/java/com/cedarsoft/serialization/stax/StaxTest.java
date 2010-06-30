@@ -91,7 +91,7 @@ public class StaxTest {
     writer.writeEndDocument();
     writer.close();
 
-    AssertUtils.assertXMLEqual( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    AssertUtils.assertXMLEquals( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
       "<fileType xmlns=\"http://namespace\" dependent=\"false\">\n" +
       "  <id>Canon Raw</id>\n" +
       "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
@@ -135,7 +135,7 @@ public class StaxTest {
     writer.writeEndDocument();
     writer.close();
 
-    AssertUtils.assertXMLEqual( out.toString(), CONTENT_SAMPLE, true );
+    AssertUtils.assertXMLEquals( out.toString(), CONTENT_SAMPLE, true );
   }
 
   @Test

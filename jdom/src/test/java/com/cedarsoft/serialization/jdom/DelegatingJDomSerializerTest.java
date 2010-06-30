@@ -107,8 +107,8 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   public void testIt() throws IOException, SAXException {
     assertEquals( serializer.getStrategies().size(), 2 );
 
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"int\">1</number>" );
-    AssertUtils.assertXMLEqual( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"double\">2.0</number>" );
+    AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"int\">1</number>" );
+    AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"double\">2.0</number>" );
   }
 
   public static class MySerializer extends AbstractDelegatingJDomSerializer<Number> {

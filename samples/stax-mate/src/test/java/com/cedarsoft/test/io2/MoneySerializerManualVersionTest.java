@@ -53,7 +53,7 @@ public class MoneySerializerManualVersionTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( new Money( 7, 99 ), out );
 
-    AssertUtils.assertXMLEqual( out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" );
+    AssertUtils.assertXMLEquals( out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" );
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), new Money( 7, 99 ) );
   }

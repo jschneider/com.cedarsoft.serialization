@@ -89,7 +89,7 @@ public class StaxMateTest {
 
     doc.closeRoot();
 
-    AssertUtils.assertXMLEqual( out.toString(), CONTENT_SAMPLE, false );
+    AssertUtils.assertXMLEquals( out.toString(), CONTENT_SAMPLE, false );
     assertTrue( out.toString().contains( "<?format version=\"1.0\"?>" ), out.toString() );
 
 
@@ -131,7 +131,7 @@ public class StaxMateTest {
 
     doc.closeRoot();
 
-    AssertUtils.assertXMLEqual( out.toString(), CONTENT_SAMPLE, false );
+    AssertUtils.assertXMLEquals( out.toString(), CONTENT_SAMPLE, false );
   }
 
   @Test

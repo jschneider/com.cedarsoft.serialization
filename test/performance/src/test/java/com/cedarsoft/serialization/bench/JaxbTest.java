@@ -68,7 +68,7 @@ public class JaxbTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     marshaller.marshal( type, out );
 
-    AssertUtils.assertXMLEqual( out.toString(),
+    AssertUtils.assertXMLEquals( out.toString(),
                                 "<ns2:fileType xmlns:ns2=\"http://test.cedarsoft.com/fileType\">\n" +
                                   "    <dependent>false</dependent>\n" +
                                   "    <extension>\n" +

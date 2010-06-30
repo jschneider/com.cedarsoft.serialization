@@ -44,7 +44,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.cedarsoft.AssertUtils.assertXMLEqual;
+import static com.cedarsoft.AssertUtils.assertXMLEquals;
 import static org.testng.Assert.*;
 
 /**
@@ -88,7 +88,7 @@ public class MoneyXstreamLegacyTest {
   public void testCustomConverter() throws IOException, SAXException {
     xStream.registerConverter( new MoneyConverter() );
     //writing
-    assertXMLEqual( xStream.toXML( new Money( 701 ) ), com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED );
+    assertXMLEquals( xStream.toXML( new Money( 701 ) ), com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED );
     //current format
     assertEquals( ( ( Money ) xStream.fromXML( com.cedarsoft.serialization.demo2.MoneyTest.EXPECTED.openStream() ) ).getCents(), 701 );
     //old format
