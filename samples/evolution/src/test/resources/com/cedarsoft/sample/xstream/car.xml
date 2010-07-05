@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- START SNIPPET: all -->
+<car>
+  <model>
+    <name>Ford</name>
+  </model>
+  <basePrice>
+    <amount>19000.0</amount>
+  </basePrice>
+  <extras>
+    <extra>
+      <description>Whoo effect</description>
+      <price>
+        <amount>99.98</amount>
+      </price>
+    </extra>
+    <extra>
+      <description>Better Whoo effect</description>
+      <price>
+        <amount>199.0</amount>
+      </price>
+    </extra>
+  </extras>
+</car>
+  <!-- END SNIPPET: all -->

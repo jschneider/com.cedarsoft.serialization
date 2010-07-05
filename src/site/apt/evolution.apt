@@ -1,0 +1,107 @@
+{Evolution of a file format}
+
+  This sample shows how a typical serialization format may be evolve.
+  It shows which problems might occure and how to solve/avoid them.
+
+%{toc|fromDepth=1}
+
+* Part 1: The Model
+
+  The {{{samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} javadocs}} for the model can be found
+  {{{samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} here}}.
+  The {{{samples/evolution/xref/index.html} source code }} is also available.
+
+** Domain Objects:
+
+  There are four domain classes:
+
+[./samples/evolution/apidocs/com/cedarsoft/sample/com.cedarsoft.sample.png] Domain Objects
+
+
+*** {{{./samples/evolution/xref/com/cedarsoft/sample/Car.html}<Car>}}
+
+  This class represents a car. Each car has a price and several extras.
+
+*** {{{./samples/evolution/xref/com/cedarsoft/sample/Model.html}<Model>}}
+
+  Describes the model of the car.
+
+*** {{{./samples/evolution/xref/com/cedarsoft/sample/Extra.html}<Extra>}}
+
+  Each extra has a description and a price.
+
+*** {{{./samples/evolution/xref/com/cedarsoft/sample/Money.html}<Money>}}
+
+  The money object is used by the Car and the Extra to represent the price.
+
+
+* Part 2: Serializing using XStream
+
+  In the typical project, those objects have to be serialized in one or another way.
+  And of course it is a good idea to choose a simple way.
+
+  Therefore many people start to serialize their objects using {{{XStream}http://xstream.codehaus.org/}}.
+
+---
+XStream xStream = new XStream();
+//We define some aliases to get a nicer xml output without fqns
+xStream.alias( "car", Car.class );
+xStream.alias( "extra", Extra.class );
+xStream.alias( "money", Money.class );
+
+Car sampleCar = ...
+String xml = xStream.toXML( sampleCar );
+---
+
+** Resulting XML
+
+  The resulting XML looks quite ok:
+
+%{snippet|id=all|file=samples/evolution/src/test/resources/com/cedarsoft/sample/xstream/car.xml}
+
+  The only (minor?) issue is the missing namespace. It is always a good idea to have a namespace...
+
+** Everything ok?
+
+  Now many people cheer:
+  "Wow XStream is such a great tool! It just took me three lines to get a great XML!"
+
+  And they will start to use XStream everywhere possible...
+
+  And yes - everything works great.
+
+
+*** Performance?
+
+  The performance isn't great compared to hand written code. But it isn't too bad either. So the small performance penalty
+  seems to be an acceptable tradeoff.
+
+
+
+* Part 3: Shipping the application
+
+  Now it is time to ship the application...
+  Time to be happy. XStream saved us a lot of time. So maybe we have been able to release a little bit earlier than expected...
+
+
+* Part 4: UUps. Made a small mistake?
+
+  After a while the users start to complain about some random(?) rounding errors within our application.
+
+  The reason is simple: The money object stores the amount as double. So calculations result in a loss of precision:
+
+%{snippet|id=main|file=samples/evolution/src/main/java/com/cedarsoft/sample/Money.java}
+
+
+** The fix
+
+  Fixing this issue is simple. We just have to store the amount as integer.  
+
+
+
+
+
+
+
+
+

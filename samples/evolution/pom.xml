@@ -30,6 +30,10 @@
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>xml-commons</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
@@ -41,6 +45,62 @@
       <artifactId>test-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+          <links>
+            <link>http://java.sun.com/j2se/6/docs/api/</link>
+          </links>
+          <show>private</show>
+          <author>true</author>
+
+          <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+          <docletArtifact>
+            <groupId>org.umlgraph</groupId>
+            <artifactId>doclet</artifactId>
+            <version>5.1</version>
+          </docletArtifact>
+          <additionalparam>
+            -edgefontname Arial-bold
+            -nodefontname Arial
+            -nodefontsize 9
+            -nodefontabstractname Arial-italic
+            -nodefontclassname Arial-bold
+            -nodefontclassabstractname Arial-bold-italic
+            -nodefonttagsize 6
+            -nodefonttagname Arial-italic
+            -nodefontpackagesize 8
+
+            -views
+
+            -operations
+            -attributes
+            -types
+            -visibility
+
+            -enumerations
+            -enumconstants
+
+            -inferrel
+            -inferdep
+            -collpackages java.util.*
+            -qualify
+            -postfixpackage
+            -hide java.*
+
+            -outputencoding UTF-8
+            <!---quiet-->
+          </additionalparam>
+
+          <useStandardDocletOptions>true</useStandardDocletOptions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
