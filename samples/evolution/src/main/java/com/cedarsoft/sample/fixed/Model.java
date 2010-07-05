@@ -1,4 +1,4 @@
-/**
+package com.cedarsoft.sample.fixed; /**
  * Copyright (C) cedarsoft GmbH.
  *
  * Licensed under the GNU General Public License version 3 (the "License")
@@ -29,46 +29,34 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.demo2;
-
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-
 /**
-*
-*/
-public class MoneyConverter implements Converter {
-  @Override
-  public void marshal( Object source, HierarchicalStreamWriter writer, MarshallingContext context ) {
-    writer.startNode( "cents" );
-    writer.setValue( String.valueOf( ( ( Money ) source ).getCents() ) );
-    writer.endNode();
+ * Represents a model
+ */
+public class Model {
+  private final String name;
+
+  public Model( String name ) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override
-  public Object unmarshal( HierarchicalStreamReader reader, UnmarshallingContext context ) {
-    reader.moveDown();
-    long cents;
+  public boolean equals( Object o ) {
+    if ( this == o ) return true;
+    if ( !( o instanceof Model ) ) return false;
 
-    //We have to guess which kind of XML we have
-    //This might become very difficult and complicated for complex scenarios
-    if ( reader.getNodeName().equals( "amount" ) ) {
-      //Legacy!
-      cents = Money.convertValueToCents( Double.parseDouble( reader.getValue() ) );
-    } else {
-      cents = Long.parseLong( reader.getValue() );
-    }
-    reader.getValue();
-    reader.moveUp();
+    Model model = ( Model ) o;
 
-    return new Money( cents );
+    if ( name != null ? !name.equals( model.name ) : model.name != null ) return false;
+
+    return true;
   }
 
   @Override
-  public boolean canConvert( Class type ) {
-    return type.equals( Money.class );
+  public int hashCode() {
+    return name != null ? name.hashCode() : 0;
   }
 }

@@ -1,4 +1,4 @@
-/**
+package com.cedarsoft.sample.fixed; /**
  * Copyright (C) cedarsoft GmbH.
  *
  * Licensed under the GNU General Public License version 3 (the "License")
@@ -29,46 +29,43 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.demo2;
-
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-
 /**
-*
-*/
-public class MoneyConverter implements Converter {
-  @Override
-  public void marshal( Object source, HierarchicalStreamWriter writer, MarshallingContext context ) {
-    writer.startNode( "cents" );
-    writer.setValue( String.valueOf( ( ( Money ) source ).getCents() ) );
-    writer.endNode();
+ * Represents an extra
+ */
+public class Extra {
+  private final String description;
+  private final Money price;
+
+  public Extra( String description, Money price ) {
+    this.description = description;
+    this.price = price;
+  }
+
+  public Money getPrice() {
+    return price;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   @Override
-  public Object unmarshal( HierarchicalStreamReader reader, UnmarshallingContext context ) {
-    reader.moveDown();
-    long cents;
+  public boolean equals( Object o ) {
+    if ( this == o ) return true;
+    if ( !( o instanceof Extra ) ) return false;
 
-    //We have to guess which kind of XML we have
-    //This might become very difficult and complicated for complex scenarios
-    if ( reader.getNodeName().equals( "amount" ) ) {
-      //Legacy!
-      cents = Money.convertValueToCents( Double.parseDouble( reader.getValue() ) );
-    } else {
-      cents = Long.parseLong( reader.getValue() );
-    }
-    reader.getValue();
-    reader.moveUp();
+    Extra extra = ( Extra ) o;
 
-    return new Money( cents );
+    if ( description != null ? !description.equals( extra.description ) : extra.description != null ) return false;
+    if ( price != null ? !price.equals( extra.price ) : extra.price != null ) return false;
+
+    return true;
   }
 
   @Override
-  public boolean canConvert( Class type ) {
-    return type.equals( Money.class );
+  public int hashCode() {
+    int result = description != null ? description.hashCode() : 0;
+    result = 31 * result + ( price != null ? price.hashCode() : 0 );
+    return result;
   }
 }

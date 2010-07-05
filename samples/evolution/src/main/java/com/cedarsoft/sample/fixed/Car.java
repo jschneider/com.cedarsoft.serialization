@@ -1,4 +1,4 @@
-/**
+package com.cedarsoft.sample.fixed; /**
  * Copyright (C) cedarsoft GmbH.
  *
  * Licensed under the GNU General Public License version 3 (the "License")
@@ -29,46 +29,46 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.demo2;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
-*
-*/
-public class MoneyConverter implements Converter {
-  @Override
-  public void marshal( Object source, HierarchicalStreamWriter writer, MarshallingContext context ) {
-    writer.startNode( "cents" );
-    writer.setValue( String.valueOf( ( ( Money ) source ).getCents() ) );
-    writer.endNode();
+ * Represents a car
+ */
+public class Car {
+  private final Model model;
+  private final Money basePrice;
+  private final List<Extra> extras = new ArrayList<Extra>();
+
+  public Car( Model model, Money basePrice ) {
+    this( model, basePrice, null );
   }
 
-  @Override
-  public Object unmarshal( HierarchicalStreamReader reader, UnmarshallingContext context ) {
-    reader.moveDown();
-    long cents;
+  public Car( Model model, Money basePrice, Collection<? extends Extra> extras ) {
+    this.model = model;
+    this.basePrice = basePrice;
 
-    //We have to guess which kind of XML we have
-    //This might become very difficult and complicated for complex scenarios
-    if ( reader.getNodeName().equals( "amount" ) ) {
-      //Legacy!
-      cents = Money.convertValueToCents( Double.parseDouble( reader.getValue() ) );
-    } else {
-      cents = Long.parseLong( reader.getValue() );
+    if ( extras != null ) {
+      this.extras.addAll( extras );
     }
-    reader.getValue();
-    reader.moveUp();
-
-    return new Money( cents );
   }
 
-  @Override
-  public boolean canConvert( Class type ) {
-    return type.equals( Money.class );
+  public Money getBasePrice() {
+    return basePrice;
+  }
+
+  public void addExtra( Extra extra ) {
+    this.extras.add( extra );
+  }
+
+  public List<? extends Extra> getExtras() {
+    return Collections.unmodifiableList( extras );
+  }
+
+  public Model getModel() {
+    return model;
   }
 }

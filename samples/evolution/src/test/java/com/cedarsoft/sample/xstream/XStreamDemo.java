@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 /**
  *
  */
@@ -38,5 +40,17 @@ public class XStreamDemo {
 
     String xml = xStream.toXML( createSampleCar() );
     AssertUtils.assertXMLEquals( xml, getClass().getResource( "car.xml" ) );
+  }
+
+  @Test
+  public void testDeserialize() {
+    XStream xStream = new XStream();
+    //We define some aliases to get a nicer xml output without fqns
+    xStream.alias( "car", com.cedarsoft.sample.fixed.Car.class );
+    xStream.alias( "extra", com.cedarsoft.sample.fixed.Extra.class );
+    xStream.alias( "money", com.cedarsoft.sample.fixed.Money.class );
+
+    com.cedarsoft.sample.fixed.Car deserialized = ( com.cedarsoft.sample.fixed.Car ) xStream.fromXML( getClass().getResourceAsStream( "car.xml" ) );
+    assertEquals( deserialized.getBasePrice(), createSampleCar().getBasePrice() );
   }
 }

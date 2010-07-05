@@ -1,7 +1,13 @@
 {Evolution of a file format}
 
-  This sample shows how a typical serialization format may be evolve.
-  It shows which problems might occure and how to solve/avoid them.
+  This sample shows how the evolution of a typical file format might happen.
+  In this example XStream is used as primary serialization framework.
+
+  It has been designed to highlight the typical faults developers make. It is not
+  a rant about XStream (or similar tools). Instead it is a rant about choosing the
+  wrong tools for the jobs.
+
+  This sample shows which problems might occure and how to solve/avoid them.
 
 %{toc|fromDepth=1}
 
@@ -74,8 +80,7 @@ String xml = xStream.toXML( sampleCar );
 *** Performance?
 
   The performance isn't great compared to hand written code. But it isn't too bad either. So the small performance penalty
-  seems to be an acceptable tradeoff.
-
+  is an acceptable tradeoff in most of the cases.
 
 
 * Part 3: Shipping the application
@@ -88,6 +93,8 @@ String xml = xStream.toXML( sampleCar );
 
   After a while the users start to complain about some random(?) rounding errors within our application.
 
+** The problem
+
   The reason is simple: The money object stores the amount as double. So calculations result in a loss of precision:
 
 %{snippet|id=main|file=samples/evolution/src/main/java/com/cedarsoft/sample/Money.java}
@@ -95,12 +102,135 @@ String xml = xStream.toXML( sampleCar );
 
 ** The fix
 
-  Fixing this issue is simple. We just have to store the amount as integer.  
+  Fixing this issue is simple. We just have to store the amount as integer:
+
+%{snippet|id=main|file=samples/evolution/src/main/java/com/cedarsoft/sample/fixed/Money.java}
+
+  To stay compatible we keep the old constructor and getter. Marking them as @Deprecated is enough.
 
 
+* Part 5: Serialization?
+
+  What about the serialization using XStream? If we have just created roundtrip tests and never checked the generated XMLs everything
+  seemed to be well.
+  But hopefully we created some good tests and recognized the differences in the XML output.
+
+  The new XML looks like that:
+
+%{snippet|id=all|file=samples/evolution/src/test/resources/com/cedarsoft/sample/fixed/xstream/car.xml}
+  
+
+** The difference!
+
+  It is just a small difference - but it is an important difference. Every time a Money object is serialized, the XML has changed from
+  something like
+
+---
+<basePrice>
+  <amount>19000.00</amount>
+</basePrice>
+---
+
+  to
+
+---
+<basePrice>
+  <cents>1900000</cents>
+</basePrice>
+---
+
+** The consequence!
+
+  We are no longer able to read XML files created with the old version of our software. And of course the deployed installations of the
+  old software are not able to read the changed XML formats.
+
+*** Even worse:
+
+  Deserialization fails with a com.thoughtworks.xstream.converters.ConversionException.
+
+  This extends RuntimeException so propably we forgot to catch that Exception and provide nice feedback to the user.
+  But even if we did, we just know that the XML format is "invalid". We can't provide a reason for that behaviour.
+
+  So there are two common scenarios: Either our application just fails with a strange stack trace. Or (if we are really foresighted
+  developers) we have to tell our user that the file is "corrputed".
+
+  Propably this will result in angry customers and a lot of work for our support team...
 
 
+* What to do? How can we solve that problem?
 
+  XStream has one powerful fallback for all kind of troubles that can't be solved automatically.
+  The solution is to implement own converters for problematic classes.
+
+  So we implement an MoneyConverter:
+
+** Marshalling
+
+  Marshalling the XML is down in that method. The API is simple (very similar to STAX):
+
+%{snippet|id=marshal|file=samples/evolution/src/main/java/com/cedarsoft/sample/fixed/xstream/MoneyConverter.java}
+
+  We chose to write the new format. (In that particular case we might succeed in writing the old format, but in
+  many cases this is not possible. So please kindly oversight that shortcomming of this sample).
+
+  Since we can't change our old application (that has been deployed several times) we have to live with missing/inadequate error messages there...
+
+** Unmarshalling
+
+  Unmarshalling is a little bit more complicated. Since we want to still be able to read the old format, we have to
+  be able to guess which kind of XML we have.
+
+  Good luck: We just have to compare the node names to be able to decide which version we have:
+
+%{snippet|id=unmarshal|file=samples/evolution/src/main/java/com/cedarsoft/sample/fixed/xstream/MoneyConverter.java}
+
+
+** "Wow! I like XStream: It worked like a charm"
+
+  Yes. Nice work done. We solved our problem. And with custom converters we should be able to solve nearly all kind of problems.
+
+  By the way: Did you notice that you did write XML writing/parsing code on your own? So as soon as you have to tweak the XML, you
+  are forced to write your own converters...
+
+  Why did we choose XStream in the first place? Yes - we wanted to avoid writing the (un)marshalling code ourselves...
+
+* Part 6: Intermediate Result
+
+** Old application
+
+  The old application can't read the new format (of course!). No framework could help about that...
+
+*** Error messages
+
+  Unfortunately we fail late. We have to parse the XML file and wait until an error occures. There is no way to recognize the
+  file version before.
+
+  And we can't differentiate between an invalid XML (maybe the result of a nasty bug when creating the XML?) and new(er) file formats.
+  So in the best case we can tell our users that parsing the XML has failed due to some reason we don't know anything about...
+
+  In the worst case our application doesn't handle the Exception properly and the user gets some unspecific message ("Internal Application Error")
+  or some stack traces on the console...
+
+** New application
+
+  The new application is able to parse the new and the old XML files. Unfortunately we had to write a lot of the (un)marshalling code ourselves...
+  But hey: It works.
+
+*** The converter
+
+  It has been a little work to write the converter. So XStream couldn't save us from writing that code at the end. But well, at least
+  it isn't worse than writing that code in the beginning, isn't it?
+
+  Okay it is a little bit disturbing that we have to guess about the version of the XML using some weird heuristics (node names etc).
+  But it works. Isn't that the most important thing?
+
+
+** The file format
+
+  The file format looks nice. While it isn't perfect in every place (maybe some fine tuning could help), it is definitely good enough.
+  And if I *really* want to improve some aspects, I could write a converter...
+
+  Okay, maybe we should add some version information or namespace declaration... But at the moment this isn't absolutely necessary.
 
 
 
