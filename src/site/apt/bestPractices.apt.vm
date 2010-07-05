@@ -35,6 +35,18 @@ Best Practices
 
 %{toc|fromDepth=1}
 
+* Common
+
+  This are best practicies for *all* kind of serialization frameworks.
+
+** Every XML file should have a namespace!
+
+  Every XML file should have a namespace declaration. A XML file without a namespace is like
+  a class file without a package...
+
+  It is not possible to be sure about the context of a xml file with a namespace declaration.
+
+
 * Serializing strategy
 
   At first it seems to be the simplest solution to just create a single serializer class that does all the work.
@@ -99,3 +111,4 @@ Best Practices
 
 ** Verify the mappings
   --> assert
+
