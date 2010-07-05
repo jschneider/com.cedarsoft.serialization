@@ -32,10 +32,12 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -75,6 +77,34 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
       writer.close();
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
+    }
+  }
+
+  /**
+   * Serializes the elements of a collection
+   *
+   * @param objects     the objects that are serialized
+   * @param type        the type
+   * @param elementName the element name
+   * @param serializeTo the object the elements are serialized to
+   * @throws XMLStreamException
+   * @throws IOException
+   */
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull XMLStreamWriter serializeTo ) throws XMLStreamException, IOException {
+    AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    for ( T object : objects ) {
+      serializeTo.writeStartElement( elementName );
+      serializer.serialize( serializeTo, object );
+      serializeTo.writeEndElement();
+    }
+  }
+
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull XMLStreamWriter serializeTo ) throws XMLStreamException, IOException {
+    AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    for ( T object : objects ) {
+      serializeTo.writeStartElement( serializer.getDefaultElementName() );
+      serializer.serialize( serializeTo, object );
+      serializeTo.writeEndElement();
     }
   }
 }

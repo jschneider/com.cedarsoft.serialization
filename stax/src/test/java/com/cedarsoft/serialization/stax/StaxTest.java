@@ -99,6 +99,33 @@ public class StaxTest {
   }
 
   @Test
+  public void testCurrentNamespace() throws XMLStreamException, IOException, SAXException {
+    XMLOutputFactory factory = XMLOutputFactory.newFactory();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    XMLStreamWriter writer = factory.createXMLStreamWriter( out );
+
+    writer.writeStartDocument();
+
+    writer.setDefaultNamespace( "http://namespace" );
+    writer.writeStartElement( "http://namespace", "fileType" );
+    writer.writeDefaultNamespace( "http://namespace" );
+
+    writer.writeAttribute( "dependent", "false" );
+
+    writer.writeStartElement( "id" );
+    writer.writeEndElement();
+
+    writer.writeEndElement();
+    writer.close();
+
+    AssertUtils.assertXMLEquals( out.toString(),
+                                 "<fileType xmlns=\"http://namespace\" dependent=\"false\">\n" +
+                                   "  <id />\n" +
+                                   "</fileType>", true );
+  }
+
+  @Test
   public void testBug() throws XMLStreamException {
     XMLOutputFactory factory = XMLOutputFactory.newInstance();
     assertEquals( factory.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ), false );
