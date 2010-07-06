@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.cedarsoft.serialization.generator</groupId>
+        <artifactId>generator-maven-plugin</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+
+        <configuration>
+          <outputDirectory>${basedir}/target/test/unit/basic/target/out</outputDirectory>
+          <testOutputDirectory>${basedir}/target/test/unit/basic/target/test-out</testOutputDirectory>
+          <domainClassSourceFile>${basedir}/src/test/resources/unit/basic/TestDomainObject.java</domainClassSourceFile>
+          <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
+        </configuration>
+      </plugin>
+
+      <!--<plugin>-->
+      <!--<artifactId>maven-compiler-plugin</artifactId>-->
+      <!--<configuration>-->
+      <!--<compileSourceRoots>-->
+      <!--<compileSourceRoot>${basedir}/target/test-classes/unit/basic-test/src/main/java</compileSourceRoot>-->
+      <!--</compileSourceRoots>-->
+      <!--<compilerId>javac</compilerId>-->
+      <!--<debug>true</debug>-->
+      <!--<outputDirectory>${basedir}/target/test/unit/basic-test/target/classes</outputDirectory>-->
+      <!--<buildDirectory>${basedir}/target/test/unit/basic-test/target</buildDirectory>-->
+      <!--<projectArtifact implementation="org.apache.maven.plugins.testing.stubs.StubArtifact" />-->
+      <!--</configuration>-->
+      <!--</plugin>-->
+    </plugins>
+  </build>
+</project>
