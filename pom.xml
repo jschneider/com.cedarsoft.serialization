@@ -117,6 +117,11 @@
       </dependency>
       <dependency>
         <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>io</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
         <artifactId>execution</artifactId>
         <version>${commons.version}</version>
       </dependency>

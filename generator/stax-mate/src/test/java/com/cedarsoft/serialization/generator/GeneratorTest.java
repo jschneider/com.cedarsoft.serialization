@@ -38,8 +38,10 @@ import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 
 import static org.testng.Assert.*;
@@ -67,7 +69,7 @@ public class GeneratorTest {
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
-    GeneratorConfiguration configuration = new GeneratorConfiguration( javaFile, destDir, testDestDir );
+    GeneratorConfiguration configuration = new GeneratorConfiguration( javaFile, destDir, testDestDir, new PrintWriter( new ByteArrayOutputStream() ) );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 

@@ -38,6 +38,7 @@ import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
+import com.cedarsoft.io.WriterOutputStream;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.google.common.collect.Lists;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -45,6 +46,7 @@ import com.sun.codemodel.JDefinedClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -64,6 +66,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
    * We want to be sure that everything works in the context off the APTClassLoader
    */
   public abstract static class AbstractGeneratorRunner<T extends DecisionCallback> implements Runner {
+    @Override
     public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       Result result = Parser.parse( configuration.getDomainSourceFile() );
 
@@ -71,19 +74,21 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
 
       T decisionCallback = createDecisionCallback();
 
-      System.out.println( "Generating Serializer" );
+      configuration.getLogOut().println( "Generating Serializer:" );
       CodeGenerator<T> serializerCodeGenerator = new CodeGenerator<T>( decisionCallback );
 
       JDefinedClass serializerClass = instantiateGenerator( serializerCodeGenerator ).generateSerializer( descriptor );
-      serializerCodeGenerator.getModel().build( configuration.getDestination(), System.out );
+
+      PrintStream statusPrinter = new PrintStream( new WriterOutputStream( configuration.getLogOut() ) );
+      serializerCodeGenerator.getModel().build( configuration.getDestination(), statusPrinter );
 
       CodeGenerator<T> testCodeGenerator = new CodeGenerator<T>( decisionCallback );
 
-      System.out.println( "Generating Serializer Tests" );
+      configuration.getLogOut().println( "Generating Serializer Tests:" );
       instantiateTestGenerator( testCodeGenerator ).generateSerializerTest( serializerClass.fullName(), descriptor );
       instantiateTestGenerator( testCodeGenerator ).generateSerializerVersionTest( serializerClass, descriptor );
 
-      testCodeGenerator.getModel().build( configuration.getTestDestination(), System.out );
+      testCodeGenerator.getModel().build( configuration.getTestDestination(), statusPrinter );
     }
 
     @NotNull

@@ -37,9 +37,9 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.PrintWriter;
 
 /**
  * Generate it
@@ -86,13 +86,12 @@ public class SerializerGeneratorMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    getLog().info( "Executing Generator" );
+    getLog().info( "Serializer Generator Mojo" );
+    getLog().info( "-------------------------" );
 
     if ( domainClassSourceFile == null ) {
       throw new MojoExecutionException( "domain class source file is missing" );
     }
-
-    getLog().info( "Output Dir: " + outputDirectory.getAbsolutePath() );
 
     if ( outputDirectory == null ) {
       throw new MojoExecutionException( "output directory not set" );
@@ -104,18 +103,19 @@ public class SerializerGeneratorMojo extends AbstractMojo {
     }
     testOutputDirectory.mkdirs();
 
-    getLog().info( "Starting..." );
+    getLog().debug( "Output Dir: " + outputDirectory.getAbsolutePath() );
+    getLog().debug( "Test output Dir: " + testOutputDirectory.getAbsolutePath() );
 
-    StaxMateGenerator generator = new StaxMateGenerator();
+    PrintWriter printWriter = new PrintWriter( new LogWriter( getLog() ) );
     try {
-      getLog().info( "Generating for " + domainClassSourceFile.getAbsolutePath() );
+      getLog().info( "Running Generator for " + domainClassSourceFile.getAbsolutePath() );
 
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFile, outputDirectory, testOutputDirectory );
-      generator.run( configuration );
-
-      getLog().info( "Created file for <" + domainClassSourceFile.getAbsolutePath() + ">" );
+      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFile, outputDirectory, testOutputDirectory, printWriter );
+      new StaxMateGenerator().run( configuration );
     } catch ( Exception e ) {
       throw new MojoExecutionException( "Generation failed due to " + e.getMessage(), e );
+    } finally {
+      printWriter.close();
     }
   }
 }
