@@ -78,7 +78,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       int result = reader.nextTag();
       if ( result != XMLStreamReader.START_ELEMENT ) {
-        throw new IllegalStateException( "Expected START_ELEMENT but was <" + result + ">" );
+        throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + ">" );
       }
 
       //Now get the namespace and verify the version
@@ -100,11 +100,11 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
 
       if ( !reader.isEndElement() ) {
-        throw new IllegalStateException( "Not consumed everything in <" + getClass().getName() + ">" );
+        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
       }
 
       if ( reader.next() != XMLStreamReader.END_DOCUMENT ) {
-        throw new IllegalStateException( "Not consumed everything in <" + getClass().getName() + ">" );
+        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
       }
 
       return deserialized;
@@ -113,10 +113,10 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
   }
 
-  private void verifyNamespaceUri( @NotNull @NonNls String namespaceURI ) {
+  private void verifyNamespaceUri( @NotNull @NonNls String namespaceURI ) throws XMLStreamException {
     String expectedBase = getNameSpaceUriBase();
     if ( !namespaceURI.startsWith( expectedBase ) ) {
-      throw new IllegalArgumentException( "Invalid namespace. Was <" + namespaceURI + "> but expected <" + expectedBase + "/$VERSION>" );
+      throw new XMLStreamException( "Invalid namespace. Was <" + namespaceURI + "> but expected <" + expectedBase + "/$VERSION>" );
     }
   }
 
@@ -126,7 +126,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param streamReader the stream reader
    * @param tagName      the tag name
    */
-  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName ) throws IllegalStateException {
+  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName ) throws XMLStreamException {
     ensureTag( streamReader, tagName, null );
   }
 
@@ -137,16 +137,16 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param tagName      the tag name
    * @param namespace    the (optional) namespace (if the ns is null, no check will be performed)
    */
-  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws IllegalStateException {
+  protected void ensureTag( @NotNull XMLStreamReader streamReader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace ) throws XMLStreamException {
     QName qName = streamReader.getName();
 
     if ( !doesNamespaceFit( streamReader, namespace ) ) {
-      throw new IllegalStateException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + qName.getNamespaceURI() + "> but expected <" + namespace + ">" );
+      throw new XMLStreamException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + qName.getNamespaceURI() + "> but expected <" + namespace + ">" );
     }
 
     String current = qName.getLocalPart();
     if ( !current.equals( tagName ) ) {
-      throw new IllegalStateException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
+      throw new XMLStreamException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
     }
   }
 
@@ -175,7 +175,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     int result;
     while ( ( result = reader.next() ) != XMLStreamReader.END_ELEMENT ) {
       if ( result != XMLStreamReader.CHARACTERS ) {
-        throw new IllegalStateException( "Invalid result: " + result );
+        throw new XMLStreamException( "Invalid result: " + result );
       }
       content.append( reader.getText() );
     }
@@ -231,11 +231,11 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
 
     if ( !skipElementsWithOtherNamespaces || result != XMLStreamReader.START_ELEMENT ) {
-      throw new IllegalStateException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
     if ( doesNamespaceFit( reader, getNameSpaceUri() ) ) {
-      throw new IllegalStateException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
     skipCurrentTag( reader );
@@ -278,7 +278,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected void nextTag( @NotNull XMLStreamReader reader, @NotNull @NonNls String tagName, @Nullable @NonNls String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
-      throw new IllegalStateException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
     if ( skipElementsWithOtherNamespaces && !doesNamespaceFit( reader, namespace ) ) {
