@@ -69,7 +69,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NonNls
   public static final String METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE = "createObjectsToSerialize";
 
-  public static final int NUMBER_OF_OBJECTS = 3;
+  public static final int NUMBER_OF_OBJECTS = 1;
   @NonNls
   public static final String METHOD_NAME_VERIFY_DESERIALIZED = "verifyDeserialized";
   @NonNls

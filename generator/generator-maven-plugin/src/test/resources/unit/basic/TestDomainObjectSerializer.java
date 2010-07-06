@@ -18,7 +18,7 @@ public class TestDomainObjectSerializer
     public final static String ATTRIBUTE_ID = "id";
 
     public TestDomainObjectSerializer() {
-        super("testdomainobject", "http://www.basic.unit/TestDomainObject/1.0.0", VersionRange.from(1, 0, 0).to(1, 0, 0));
+        super("testdomainobject", "http://basic.unit/test-domain-object", VersionRange.from(1, 0, 0).to(1, 0, 0));
     }
 
     @Override

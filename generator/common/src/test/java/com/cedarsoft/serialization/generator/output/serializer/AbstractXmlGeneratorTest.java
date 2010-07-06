@@ -123,6 +123,6 @@ public class AbstractXmlGeneratorTest {
 
   @Test
   public void testNameSpace() {
-    assertEquals( generator.getNamespace( "com.cedarsoft.serialization.generator.test.Window" ), "http://www.cedarsoft.com/serialization/generator/test/Window/1.0.0" );
+    assertEquals( generator.getNamespace( "com.cedarsoft.serialization.generator.test.Window" ), "http://cedarsoft.com/serialization/generator/test/window" );
   }
 }

@@ -21,12 +21,12 @@ public class FooSerializerTest
     protected Iterable<? extends Foo> createObjectsToSerialize()
         throws Exception
     {
-        return Arrays.asList(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())));
+        return Arrays.asList(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())));
     }
 
     @Override
     protected List<? extends String> getExpectedSerialized() {
-        return Arrays.asList("<implementMe/>", "<implementMe/>", "<implementMe/>");
+        return Arrays.asList("<implementMe/>");
     }
 
 }
