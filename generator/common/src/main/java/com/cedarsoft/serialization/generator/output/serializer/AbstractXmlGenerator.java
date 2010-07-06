@@ -52,12 +52,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   /**
-   * The default namespace suffix
-   */
-  @NonNls
-  @NotNull
-  public static final String DEFAULT_NAMESPACE_SUFFIX = "1.0.0";
-  /**
    * The version the serializer supports
    */
   @NotNull
@@ -97,7 +91,7 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @NotNull
   @NonNls
   protected String getNamespace( @NotNull @NonNls final String domainObjectType ) {
-    return NameSpaceSupport.createNameSpaceUriBase( domainObjectType ) + "/" + DEFAULT_NAMESPACE_SUFFIX;
+    return NameSpaceSupport.createNameSpaceUriBase( domainObjectType );
   }
 
   /**
