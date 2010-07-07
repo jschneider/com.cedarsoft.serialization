@@ -44,7 +44,7 @@
         </dependencies>
 
         <configuration>
-          <descriptorId>all.xml</descriptorId>
+          <descriptor>all.xml</descriptor>
         </configuration>
         
         <executions>
