@@ -214,7 +214,7 @@
   </dependencies>
 
   <properties>
-    <commons.version>2.0.6-SNAPSHOT</commons.version>
+    <commons.version>2.0.6</commons.version>
     <currentStableVersion>1.0.2</currentStableVersion>
     <currentDevelopmentVersion>1.0.3-SNAPSHOT</currentDevelopmentVersion>
   </properties>
