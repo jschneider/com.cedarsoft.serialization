@@ -39,10 +39,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.cedarsoft.maven</groupId>
+            <artifactId>assemblies</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+        </dependencies>
+
         <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
+          <finalName>generator</finalName>
+          <appendAssemblyId>true</appendAssemblyId>
+          <descriptors>
+            <descriptor>all.xml</descriptor>
+          </descriptors>
           <archive>
             <manifest>
               <mainClass>com.cedarsoft.serialization.generator.StaxMateGenerator</mainClass>
