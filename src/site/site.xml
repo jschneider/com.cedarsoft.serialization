@@ -69,6 +69,11 @@
       <item name="Backends" href="backends.html" />
     </menu>
 
+    <menu name="Code Generation">
+      <item name="Generator" href="generator.html" />
+      <item name="Maven Plugin" href="generator/serializer-generator-maven-plugin/index.html" />
+    </menu>
+
     <menu name="Comparing with...">
       <item name="Serialization" href="comparing/serialization.html" />
       <item name="XStream" href="comparing/xstream.html" />
