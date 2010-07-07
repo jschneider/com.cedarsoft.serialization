@@ -34,7 +34,7 @@ Usage
  Using the plugin is very easy. It has just to be called within the Maven project:
 
 +---
-mvn com.cedarsoft.serialization.generator:generator-maven-plugin:generate \
+mvn com.cedarsoft.serialization.generator:serializer-generator-maven-plugin:generate \
   -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
@@ -50,9 +50,9 @@ mvn com.cedarsoft.serialization.generator:generator-maven-plugin:generate \
 
   Then it is possible to just call the plugin using 
 
----
-mvn generator:generate  -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
----
++---
+mvn serializer-generator:generate -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
++---
 
 
 Generation process

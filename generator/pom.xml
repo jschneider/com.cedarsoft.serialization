@@ -16,7 +16,7 @@
   <modules>
     <module>common</module>
     <module>stax-mate</module>
-    <module>generator-maven-plugin</module>
+    <module>serializer-generator-maven-plugin</module>
   </modules>
 
   <dependencyManagement>
