@@ -28,8 +28,17 @@
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+
+        <dependencies>
+          <dependency>
+            <groupId>com.cedarsoft.maven</groupId>
+            <artifactId>assemblies</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+        </dependencies>
+
         <configuration>
-          <descriptorId>jar-with-dependencies</descriptorId>
+          <descriptorId>all.xml</descriptorId>
         </configuration>
 
         <executions>
