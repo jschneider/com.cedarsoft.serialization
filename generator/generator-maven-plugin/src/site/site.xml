@@ -38,7 +38,7 @@
 
   <bannerLeft>
     <name>${project.name}</name>
-    <src>serialization.jpg</src>
+    <src>../../serialization.jpg</src>
     <href>index.html</href>
   </bannerLeft>
 

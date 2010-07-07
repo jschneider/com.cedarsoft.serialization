@@ -42,7 +42,7 @@ import java.io.File;
 import java.io.PrintWriter;
 
 /**
- * Generate it
+ * Generate a Serializer and the corresponding unit tests
  *
  * @goal generate
  */
@@ -62,11 +62,6 @@ public class SerializerGeneratorMojo extends AbstractMojo {
   protected File testOutputDirectory;
 
   /**
-   * @parameter expression="${basedir}"
-   */
-  protected File basedir;
-
-  /**
    * Project artifacts.
    *
    * @parameter default-value="${project.artifact}"
@@ -76,7 +71,7 @@ public class SerializerGeneratorMojo extends AbstractMojo {
   protected Artifact projectArtifact;
 
   /**
-   * Domain class.
+   * The path to the domain class the Serializer is generated for.
    *
    * @parameter expression="${domain.class}"
    * @required
