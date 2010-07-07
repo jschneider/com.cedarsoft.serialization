@@ -11,7 +11,7 @@
   <groupId>com.cedarsoft.serialization.generator</groupId>
   <artifactId>generator-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>Stax Mate Generator Plugin</name>
+  <name>Generator Maven Plugin</name>
 
   <inceptionYear>2010</inceptionYear>
 

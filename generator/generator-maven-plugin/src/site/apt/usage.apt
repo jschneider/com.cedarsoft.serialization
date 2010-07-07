@@ -29,3 +29,59 @@
 ~~ have any questions.
 ~~
 
+Usage
+
+ Using the plugin is very easy. It has just to be called within the Maven project:
+
++---
+mvn com.cedarsoft.serialization.generator:generator-maven-plugin:generate \
+  -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
++---
+
+* Shortening the command line
+
+  It might be a good idea to add that entry to your <<<${user.home}/.m2/settings.xml>>>
+
++---
+<pluginGroups>
+  <pluginGroup>com.cedarsoft.serialization.generator</pluginGroup>
+</pluginGroups>
++---
+
+  Then it is possible to just call the plugin using 
+
+---
+mvn generator:generate  -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
+---
+
+
+Generation process
+
+ This plugin analyzes the source code of the domain object source file. It then creates a serializer and corresponding unit tests using some simple heuristics.
+
+* Serializer
+
+ This serializer is placed in <<<target/generated-sources/cedarsoft-serialization-main>>>
+
+  The serializer is compilable and can be used immediately.
+
+
+* Unit Tests
+
+ There are two unit tests generated for each serializer. They are placed in <<<target/generated-sources/cedarsoft-serialization-test>>>
+
+
+  Those unit tests need some manual work to get them up running. But most of the work is done.
+  Necessary steps are marked within the generated source code.
+
+** Roundtrip Test
+
+  The first generated test is a round trip test.
+
+
+** Versions Test
+
+  This test case is used to ensure that the current serializer is able to deserialize all (old) XML formats.
+  This test will become important as soon as the format changes.
+
+  To avoid unnecessary manual work and encourage the creation of this test, this stub is created immediately.

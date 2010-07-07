@@ -29,3 +29,10 @@
 ~~ have any questions.
 ~~
 
+Generator Maven Plugin
+
+  This is a Maven Plugin that is able to generate Serializers (and corresponding unit tests) for your domain objects.
+
+
+  The {{{./usage.html}sample usage}} is described {{{./usage.html}here}}.
+           
