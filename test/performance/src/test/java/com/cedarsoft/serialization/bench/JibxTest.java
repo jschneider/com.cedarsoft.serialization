@@ -50,7 +50,7 @@ import static org.testng.Assert.*;
  *
  */
 public class JibxTest {
-  @Test
+  @Test( enabled = false )
   public void testIt() throws JiBXException, IOException, SAXException {
     IBindingFactory bindingFactory = BindingDirectory.getFactory( Extension.class );
     assertNotNull( bindingFactory );
