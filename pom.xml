@@ -215,7 +215,7 @@
 
   <properties>
     <commons.version>2.0.6</commons.version>
-    <currentStableVersion>1.0.2</currentStableVersion>
-    <currentDevelopmentVersion>1.0.3-SNAPSHOT</currentDevelopmentVersion>
+    <currentStableVersion>1.0.3</currentStableVersion>
+    <currentDevelopmentVersion>1.0.4-SNAPSHOT</currentDevelopmentVersion>
   </properties>
 </project>
