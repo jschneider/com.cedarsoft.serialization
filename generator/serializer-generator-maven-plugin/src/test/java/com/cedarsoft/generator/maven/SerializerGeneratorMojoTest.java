@@ -84,9 +84,9 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
       Iterator<File> iter = FileUtils.iterateFiles( mojo.outputDirectory, new String[]{"java"}, true );
       assertTrue( iter.hasNext() );
       File file = iter.next();
-      assertEquals( "TestDomainObjectSerializer.java", file.getName() );
+      assertEquals( "DaDomainObjectSerializer.java", file.getName() );
 
-      AssertUtils.assertEquals( getClass().getResource( "/unit/basic/TestDomainObjectSerializer.java" ), FileUtils.readFileToString( file ) );
+      AssertUtils.assertEquals( getClass().getResource( "/unit/basic/DaDomainObjectSerializer.java" ), FileUtils.readFileToString( file ) );
     }
   }
 

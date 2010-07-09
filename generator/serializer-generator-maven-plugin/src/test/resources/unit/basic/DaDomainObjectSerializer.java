@@ -10,19 +10,19 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
-public class TestDomainObjectSerializer
-    extends AbstractStaxMateSerializer<TestDomainObject>
+public class DaDomainObjectSerializer
+    extends AbstractStaxMateSerializer<DaDomainObject>
 {
 
     public final static String ELEMENT_DESCRIPTION = "description";
     public final static String ATTRIBUTE_ID = "id";
 
-    public TestDomainObjectSerializer() {
-        super("testdomainobject", "http://basic.unit/test-domain-object", VersionRange.from(1, 0, 0).to(1, 0, 0));
+    public DaDomainObjectSerializer() {
+        super("dadomainobject", "http://basic.unit/da-domain-object", VersionRange.from(1, 0, 0).to(1, 0, 0));
     }
 
     @Override
-    public void serialize(SMOutputElement serializeTo, TestDomainObject object)
+    public void serialize(SMOutputElement serializeTo, DaDomainObject object)
         throws IOException, XMLStreamException
     {
         //description
@@ -32,7 +32,7 @@ public class TestDomainObjectSerializer
     }
 
     @Override
-    public TestDomainObject deserialize(XMLStreamReader deserializeFrom, Version formatVersion)
+    public DaDomainObject deserialize(XMLStreamReader deserializeFrom, Version formatVersion)
         throws VersionException, IOException, XMLStreamException
     {
         //description
@@ -42,7 +42,7 @@ public class TestDomainObjectSerializer
         //Finally closing element
         closeTag(deserializeFrom);
         //Constructing the deserialized object
-        TestDomainObject object = new TestDomainObject(description, id);
+        DaDomainObject object = new DaDomainObject(description, id);
         return object;
     }
 

@@ -10,7 +10,7 @@
         <configuration>
           <outputDirectory>${basedir}/target/test/unit/basic/target/out</outputDirectory>
           <testOutputDirectory>${basedir}/target/test/unit/basic/target/test-out</testOutputDirectory>
-          <domainClassSourceFile>${basedir}/src/test/resources/unit/basic/TestDomainObject.java</domainClassSourceFile>
+          <domainClassSourceFile>${basedir}/src/test/resources/unit/basic/DaDomainObject.java</domainClassSourceFile>
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
         </configuration>
       </plugin>
