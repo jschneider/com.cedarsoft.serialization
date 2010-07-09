@@ -43,12 +43,12 @@ import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.StringWriter;
 import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -56,7 +56,7 @@ import static org.testng.Assert.*;
 public class AbstractXmlGeneratorTest {
   private AbstractXmlGenerator generator;
 
-  @BeforeMethod
+  @Before
   public void setup() {
     generator = new AbstractXmlGenerator( new CodeGenerator<XmlDecisionCallback>( new XmlDecisionCallback() {
       @NotNull
@@ -110,19 +110,19 @@ public class AbstractXmlGeneratorTest {
 
   @Test
   public void testName() {
-    assertEquals( generator.createSerializerClassName( "com.cedarsoft.serialization.generator.staxmate.StaxMateGenerator" ), "com.cedarsoft.serialization.generator.staxmate.StaxMateGeneratorSerializer" );
-    assertEquals( generator.createSerializerClassName( "java.lang.String" ), "java.lang.StringSerializer" );
+    assertEquals( "com.cedarsoft.serialization.generator.staxmate.StaxMateGeneratorSerializer", generator.createSerializerClassName( "com.cedarsoft.serialization.generator.staxmate.StaxMateGenerator" ) );
+    assertEquals( "java.lang.StringSerializer", generator.createSerializerClassName( "java.lang.String" ) );
   }
 
   @Test
   public void testVersionRangeInvo() {
     StringWriter out = new StringWriter();
     generator.createDefaultVersionRangeInvocation( Version.valueOf( 1, 0, 0 ), Version.valueOf( 1, 0, 0 ) ).state( new JFormatter( out ) );
-    assertEquals( out.toString().trim(), "com.cedarsoft.VersionRange.from(1, 0, 0).to(1, 0, 0);" );
+    assertEquals( "com.cedarsoft.VersionRange.from(1, 0, 0).to(1, 0, 0);", out.toString().trim() );
   }
 
   @Test
   public void testNameSpace() {
-    assertEquals( generator.getNamespace( "com.cedarsoft.serialization.generator.test.Window" ), "http://cedarsoft.com/serialization/generator/test/window" );
+    assertEquals( "http://cedarsoft.com/serialization/generator/test/window", generator.getNamespace( "com.cedarsoft.serialization.generator.test.Window" ) );
   }
 }

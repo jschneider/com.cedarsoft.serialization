@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;

@@ -36,7 +36,7 @@ import org.codehaus.staxmate.SMOutputFactory;
 import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -44,7 +44,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -86,15 +86,15 @@ public class StaxMateNameSpaceTest {
     inputFactory.setProperty( XMLInputFactory.IS_COALESCING, true );
     XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( out.toString() ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getNamespaceURI(), "http://www.cedarsoft.com/serialization/filetype/1.0.1" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "fileType", parser.getLocalName() );
+    assertEquals( "http://www.cedarsoft.com/serialization/filetype/1.0.1", parser.getNamespaceURI() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( "false", parser.getAttributeValue( null, "dependent" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "id" );
-    assertEquals( parser.getNamespaceURI(), "http://www.cedarsoft.com/serialization/filetype/1.0.1" );
-    assertEquals( parser.getName().getLocalPart(), "id" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "id", parser.getLocalName() );
+    assertEquals( "http://www.cedarsoft.com/serialization/filetype/1.0.1", parser.getNamespaceURI() );
+    assertEquals( "id", parser.getName().getLocalPart() );
   }
 }

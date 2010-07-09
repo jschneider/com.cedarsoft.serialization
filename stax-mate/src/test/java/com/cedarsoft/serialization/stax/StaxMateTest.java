@@ -38,7 +38,7 @@ import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLInputFactory;
@@ -50,7 +50,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.NoSuchElementException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -90,21 +90,21 @@ public class StaxMateTest {
     doc.closeRoot();
 
     AssertUtils.assertXMLEquals( out.toString(), CONTENT_SAMPLE, false );
-    assertTrue( out.toString().contains( "<?format version=\"1.0\"?>" ), out.toString() );
+    assertTrue( out.toString(), out.toString().contains( "<?format version=\"1.0\"?>" ) );
 
 
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     inputFactory.setProperty( XMLInputFactory.IS_COALESCING, true );
     XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( out.toString() ) );
 
-    assertEquals( parser.next(), XMLStreamReader.PROCESSING_INSTRUCTION );
-    assertEquals( parser.getPITarget(), "format" );
-    assertEquals( parser.getPIData(), "version=\"1.0\"" );
+    assertEquals( XMLStreamReader.PROCESSING_INSTRUCTION, parser.next() );
+    assertEquals( "format", parser.getPITarget() );
+    assertEquals( "version=\"1.0\"", parser.getPIData() );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "fileType", parser.getLocalName() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( "false", parser.getAttributeValue( null, "dependent" ) );
   }
 
   @Test
@@ -140,30 +140,30 @@ public class StaxMateTest {
     //    XMLStreamReader reader = smInputFactory.createStax2Reader( new StringReader( CONTENT_SAMPLE ) );
     XMLStreamReader reader = smInputFactory.getStaxFactory().createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
 
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getLocalName(), "fileType" );
-    assertEquals( reader.getName().getLocalPart(), "fileType" );
-    assertEquals( reader.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, reader.nextTag() );
+    assertEquals( "fileType", reader.getLocalName() );
+    assertEquals( "fileType", reader.getName().getLocalPart() );
+    assertEquals( "false", reader.getAttributeValue( null, "dependent" ) );
 
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "id" );
-    assertEquals( reader.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( reader.getText(), "Canon Raw" );
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "id" );
+    assertEquals( XMLStreamReader.START_ELEMENT, reader.nextTag() );
+    assertEquals( "id", reader.getName().getLocalPart() );
+    assertEquals( XMLStreamReader.CHARACTERS, reader.next() );
+    assertEquals( "Canon Raw", reader.getText() );
+    assertEquals( XMLStreamReader.END_ELEMENT, reader.nextTag() );
+    assertEquals( "id", reader.getName().getLocalPart() );
 
-    assertEquals( reader.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "extension" );
-    assertEquals( reader.getAttributeValue( null, "default" ), "true" );
-    assertEquals( reader.getAttributeValue( null, "delimiter" ), "." );
-    assertEquals( reader.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( reader.getText(), "cr2" );
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "extension" );
+    assertEquals( XMLStreamReader.START_ELEMENT, reader.nextTag() );
+    assertEquals( "extension", reader.getName().getLocalPart() );
+    assertEquals( "true", reader.getAttributeValue( null, "default" ) );
+    assertEquals( ".", reader.getAttributeValue( null, "delimiter" ) );
+    assertEquals( XMLStreamReader.CHARACTERS, reader.next() );
+    assertEquals( "cr2", reader.getText() );
+    assertEquals( XMLStreamReader.END_ELEMENT, reader.nextTag() );
+    assertEquals( "extension", reader.getName().getLocalPart() );
 
-    assertEquals( reader.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( reader.getName().getLocalPart(), "fileType" );
-    assertEquals( reader.next(), XMLStreamReader.END_DOCUMENT );
+    assertEquals( XMLStreamReader.END_ELEMENT, reader.nextTag() );
+    assertEquals( "fileType", reader.getName().getLocalPart() );
+    assertEquals( XMLStreamReader.END_DOCUMENT, reader.next() );
 
     try {
       reader.next();

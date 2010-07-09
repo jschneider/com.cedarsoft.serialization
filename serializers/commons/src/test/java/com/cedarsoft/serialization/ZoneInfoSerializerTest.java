@@ -34,9 +34,9 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.serialization.ZoneInfoSerializer;
 import org.joda.time.DateTimeZone;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
-import org.testng.annotations.*;
+import org.junit.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;

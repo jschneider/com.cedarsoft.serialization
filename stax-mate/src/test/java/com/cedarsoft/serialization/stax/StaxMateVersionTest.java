@@ -38,7 +38,7 @@ import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
@@ -47,7 +47,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *

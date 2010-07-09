@@ -39,12 +39,12 @@ import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * Testing the new version.
@@ -76,7 +76,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
 
   @Override
   protected void verifyDeserialized( @NotNull Extra deserialized, @NotNull Version version ) throws Exception {
-    assertEquals( deserialized.getDescription(), "Metallic" );
+    assertEquals( "Metallic", deserialized.getDescription() );
     assertEquals( deserialized.getPrice(), new Money( 400, 01 ) );
   }
 

@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.AssertUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
@@ -49,7 +49,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -128,13 +128,13 @@ public class StaxTest {
   @Test
   public void testBug() throws XMLStreamException {
     XMLOutputFactory factory = XMLOutputFactory.newInstance();
-    assertEquals( factory.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ), false );
+    assertEquals( false, factory.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ) );
     factory.setProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES, false );
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     XMLStreamWriter writer = factory.createXMLStreamWriter( out );
 
-    assertEquals( writer.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ), false );
+    assertEquals( false, writer.getProperty( XMLOutputFactory.IS_REPAIRING_NAMESPACES ) );
   }
 
   @Test
@@ -171,52 +171,52 @@ public class StaxTest {
     inputFactory.setProperty( XMLInputFactory.IS_COALESCING, true );
     XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "fileType", parser.getLocalName() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( "false", parser.getAttributeValue( null, "dependent" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getName().getLocalPart(), "id" );
-    assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( parser.getText(), "Canon Raw" );
-    assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( parser.getName().getLocalPart(), "id" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "id", parser.getName().getLocalPart() );
+    assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
+    assertEquals( "Canon Raw", parser.getText() );
+    assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+    assertEquals( "id", parser.getName().getLocalPart() );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getName().getLocalPart(), "extension" );
-    assertEquals( parser.getAttributeValue( null, "default" ), "true" );
-    assertEquals( parser.getAttributeValue( null, "delimiter" ), "." );
-    assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
-    assertEquals( parser.getText(), "cr2" );
-    assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( parser.getName().getLocalPart(), "extension" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "extension", parser.getName().getLocalPart() );
+    assertEquals( "true", parser.getAttributeValue( null, "default" ) );
+    assertEquals( ".", parser.getAttributeValue( null, "delimiter" ) );
+    assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
+    assertEquals( "cr2", parser.getText() );
+    assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+    assertEquals( "extension", parser.getName().getLocalPart() );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.next(), XMLStreamReader.END_DOCUMENT );
+    assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( XMLStreamReader.END_DOCUMENT, parser.next() );
   }
 
   @Test
   public void testIterator() throws XMLStreamException {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    assertEquals( inputFactory.getProperty( XMLInputFactory.IS_COALESCING ), false );
+    assertEquals( false, inputFactory.getProperty( XMLInputFactory.IS_COALESCING ) );
     inputFactory.setProperty( XMLInputFactory.IS_COALESCING, true );
-    assertEquals( inputFactory.getProperty( XMLInputFactory.IS_COALESCING ), true );
+    assertEquals( true, inputFactory.getProperty( XMLInputFactory.IS_COALESCING ) );
     //    inputFactory.setProperty(  );
 
     XMLEventReader parser = inputFactory.createXMLEventReader( new StringReader( CONTENT_SAMPLE ) );
 
     {
       XMLEvent event = parser.nextEvent();
-      assertEquals( event.getEventType(), XMLEvent.START_DOCUMENT );
+      assertEquals( XMLEvent.START_DOCUMENT, event.getEventType() );
     }
 
     {
       XMLEvent event = parser.nextEvent();
-      assertEquals( event.getEventType(), XMLEvent.START_ELEMENT );
-      assertEquals( event.asStartElement().getName().getLocalPart(), "fileType" );
-      assertEquals( event.asStartElement().getAttributeByName( new QName( null, "dependent" ) ).getValue(), "false" );
+      assertEquals( XMLEvent.START_ELEMENT, event.getEventType() );
+      assertEquals( "fileType", event.asStartElement().getName().getLocalPart() );
+      assertEquals( "false", event.asStartElement().getAttributeByName( new QName( null, "dependent" ) ).getValue() );
     }
   }
 }

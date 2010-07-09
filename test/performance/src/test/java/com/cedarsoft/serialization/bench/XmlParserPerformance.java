@@ -44,7 +44,7 @@ import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -60,7 +60,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -111,7 +111,7 @@ public class XmlParserPerformance {
     XStream xStream = createConfiguredXStream();
 
     FileType fileType = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
-    assertEquals( xStream.toXML( fileType ), CONTENT_SAMPLE_XSTREAM );
+    assertEquals( CONTENT_SAMPLE_XSTREAM, xStream.toXML( fileType ) );
   }
 
   @NotNull
@@ -452,36 +452,36 @@ public class XmlParserPerformance {
       javolution.xml.stream.XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
 
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "fileType" );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "fileType", parser.getLocalName().toString() );
 
       boolean dependent = Boolean.parseBoolean( parser.getAttributeValue( null, "dependent" ).toString() );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "id" );
-      assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "id", parser.getLocalName().toString() );
+      assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
 
       String id = parser.getText().toString();
 
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "id" );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+      assertEquals( "id", parser.getLocalName().toString() );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "extension" );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "extension", parser.getLocalName().toString() );
 
       boolean isDefault = Boolean.parseBoolean( parser.getAttributeValue( null, "default" ).toString() );
       String delimiter = parser.getAttributeValue( null, "delimiter" ).toString();
 
-      assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
+      assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
 
       String extension = parser.getText().toString();
 
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "extension" );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+      assertEquals( "extension", parser.getLocalName().toString() );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-      assertEquals( parser.getLocalName().toString(), "fileType" );
-      assertEquals( parser.next(), XMLStreamReader.END_DOCUMENT );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+      assertEquals( "fileType", parser.getLocalName().toString() );
+      assertEquals( XMLStreamReader.END_DOCUMENT, parser.next() );
 
       parser.close();
 
@@ -494,35 +494,35 @@ public class XmlParserPerformance {
     for ( int i = 0; i < BIG; i++ ) {
       XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getLocalName(), "fileType" );
-      assertEquals( parser.getName().getLocalPart(), "fileType" );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "fileType", parser.getLocalName() );
+      assertEquals( "fileType", parser.getName().getLocalPart() );
 
       boolean dependent = Boolean.parseBoolean( parser.getAttributeValue( null, "dependent" ) );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getName().getLocalPart(), "id" );
-      assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "id", parser.getName().getLocalPart() );
+      assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
 
       String id = parser.getText();
 
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-      assertEquals( parser.getName().getLocalPart(), "extension" );
+      assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+      assertEquals( "extension", parser.getName().getLocalPart() );
 
       boolean isDefault = Boolean.parseBoolean( parser.getAttributeValue( null, "default" ) );
       String delimiter = parser.getAttributeValue( null, "delimiter" );
 
-      assertEquals( parser.next(), XMLStreamReader.CHARACTERS );
+      assertEquals( XMLStreamReader.CHARACTERS, parser.next() );
 
       String extension = parser.getText();
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-      assertEquals( parser.getName().getLocalPart(), "extension" );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+      assertEquals( "extension", parser.getName().getLocalPart() );
 
-      assertEquals( parser.nextTag(), XMLStreamReader.END_ELEMENT );
-      assertEquals( parser.getName().getLocalPart(), "fileType" );
-      assertEquals( parser.next(), XMLStreamReader.END_DOCUMENT );
+      assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
+      assertEquals( "fileType", parser.getName().getLocalPart() );
+      assertEquals( XMLStreamReader.END_DOCUMENT, parser.next() );
 
       parser.close();
 

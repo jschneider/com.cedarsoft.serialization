@@ -34,12 +34,12 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.AssertUtils;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *

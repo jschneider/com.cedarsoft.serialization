@@ -34,7 +34,7 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.AssertUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.File;
 import java.util.Iterator;
@@ -43,15 +43,15 @@ import java.util.Iterator;
  *
  */
 public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
-  @BeforeMethod
+  @Before
   @Override
-  protected void setUp() throws Exception {
+  public void setUp() throws Exception {
     super.setUp();
   }
 
-  @AfterMethod
+  @After
   @Override
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     super.tearDown();
   }
 
@@ -86,7 +86,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
       File file = iter.next();
       assertEquals( "TestDomainObjectSerializer.java", file.getName() );
 
-      AssertUtils.assertEquals( FileUtils.readFileToString( file ), getClass().getResource( "/unit/basic/TestDomainObjectSerializer.java" ) );
+      AssertUtils.assertEquals( getClass().getResource( "/unit/basic/TestDomainObjectSerializer.java" ), FileUtils.readFileToString( file ) );
     }
   }
 

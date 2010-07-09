@@ -34,11 +34,11 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -46,9 +46,9 @@ import static org.testng.Assert.*;
 public class StaxMateGeneratorTest extends AbstractGeneratorTest {
   protected StaxMateGenerator generator;
 
-  @BeforeMethod
+  @Before
   @Override
-  protected void setUp() throws Exception {
+  public void setUp() throws Exception {
     super.setUp();
     generator = new StaxMateGenerator( codeGenerator );
   }
@@ -61,7 +61,7 @@ public class StaxMateGeneratorTest extends AbstractGeneratorTest {
     JDefinedClass definedClass = thePackage._getClass( "FooSerializer" );
     assertNotNull( definedClass );
 
-    assertEquals( definedClass.name(), "FooSerializer" );
+    assertEquals( "FooSerializer", definedClass.name() );
 
     assertGeneratedCode( getClass().getResource( "StaxMateGeneratorTest.1.txt" ) );
   }

@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.stax;
 
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLStreamReader;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -43,9 +43,9 @@ import static org.testng.Assert.*;
 public class StaxSupportTest {
   @Test
   public void testEventNames() {
-    assertEquals( StaxSupport.getEventName( XMLStreamReader.START_ELEMENT ), "START_ELEMENT" );
-    assertEquals( StaxSupport.getEventName( XMLStreamReader.DTD ), "DTD" );
-    assertEquals( StaxSupport.getEventName( XMLStreamReader.END_ELEMENT ), "END_ELEMENT" );
-    assertEquals( StaxSupport.getEventName( 6151351 ), "6151351" );
+    assertEquals( "START_ELEMENT", StaxSupport.getEventName( XMLStreamReader.START_ELEMENT ) );
+    assertEquals( "DTD", StaxSupport.getEventName( XMLStreamReader.DTD ) );
+    assertEquals( "END_ELEMENT", StaxSupport.getEventName( XMLStreamReader.END_ELEMENT ) );
+    assertEquals( "6151351", StaxSupport.getEventName( 6151351 ) );
   }
 }

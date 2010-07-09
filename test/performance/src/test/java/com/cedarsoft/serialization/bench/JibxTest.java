@@ -38,19 +38,20 @@ import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
  */
 public class JibxTest {
-  @Test( enabled = false )
+  @Ignore
+  @Test
   public void testIt() throws JiBXException, IOException, SAXException {
     IBindingFactory bindingFactory = BindingDirectory.getFactory( Extension.class );
     assertNotNull( bindingFactory );

@@ -46,26 +46,26 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
  */
-public class AbstractGeneratorTest {
+public abstract class AbstractGeneratorTest {
   protected DomainObjectDescriptor domainObjectDescriptor;
   protected CodeGenerator<XmlDecisionCallback> codeGenerator;
 
   protected JCodeModel model;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" );
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
@@ -78,7 +78,7 @@ public class AbstractGeneratorTest {
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( domainObjectDescriptor.getFieldsToSerialize().size(), 7 );
+    assertEquals( 7, domainObjectDescriptor.getFieldsToSerialize().size() );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator = codeGenerator;
@@ -91,7 +91,7 @@ public class AbstractGeneratorTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
-    AssertUtils.assertEquals( out.toString().trim(), expected );
+    AssertUtils.assertEquals( expected, out.toString().trim() );
   }
 
   protected void assertGeneratedCode( @NotNull @NonNls String expected ) throws IOException {

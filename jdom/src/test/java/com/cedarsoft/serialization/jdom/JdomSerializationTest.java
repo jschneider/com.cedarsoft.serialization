@@ -38,14 +38,14 @@ import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -53,8 +53,8 @@ import static org.testng.Assert.*;
 public class JdomSerializationTest {
   private MySerializer serializer;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     serializer = new MySerializer();
   }
 

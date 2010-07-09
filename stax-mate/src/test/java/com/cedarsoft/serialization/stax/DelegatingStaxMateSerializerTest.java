@@ -37,8 +37,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.testng.*;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
@@ -46,7 +45,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.util.Collection;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -54,8 +53,8 @@ import static org.testng.Assert.*;
 public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<Number> {
   private MySerializer serializer;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
@@ -116,7 +115,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
   @Test
   public void testIt() throws IOException, SAXException {
-    Assert.assertEquals( serializer.getStrategies().size(), 2 );
+    Assert.assertEquals( 2, serializer.getStrategies().size() );
 
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>" );
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );

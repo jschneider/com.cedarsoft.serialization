@@ -38,14 +38,14 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -70,9 +70,9 @@ public class WindowSerializerNamespaceSkipTest {
         "  <other xmlns=\"asdf2\"/>" +
         "</window>" ).getBytes() ) );
 
-    assertEquals( deserialized.getDescription(), "the window" );
-    assertEquals( deserialized.getHeight(), 444.4 );
-    assertEquals( deserialized.getWidth(), 123.3 );
+    assertEquals( "the window", deserialized.getDescription() );
+    assertEquals( 444.4, deserialized.getHeight(), 0.0 );
+    assertEquals( 123.3, deserialized.getWidth(), 0.0 );
   }
 
   public static class DaSkippingSerializer extends AbstractStaxMateSerializer<Window> {

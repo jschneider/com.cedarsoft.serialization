@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -73,6 +73,6 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest<FileName> 
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
     super.verifySerialized( serialized );
-    assertTrue( new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ), XmlCommons.format( new String( serialized ) ) );
+    assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
   }
 }

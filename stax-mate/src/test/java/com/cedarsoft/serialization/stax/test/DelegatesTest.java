@@ -39,7 +39,7 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
@@ -49,7 +49,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -60,8 +60,8 @@ public class DelegatesTest {
   private Room hall;
   private Room kitchen;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     house = new House( new Door( "Front door" ) );
     door1 = new Door( "door1" );
     hall = new Room( "hall" );

@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.bench.jaxb.Extension;
 import com.cedarsoft.serialization.bench.jaxb.FileType;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
@@ -45,7 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -53,8 +53,8 @@ import static org.testng.Assert.*;
 public class JaxbTest {
   private JAXBContext context;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     context = JAXBContext.newInstance( FileType.class );
   }
 

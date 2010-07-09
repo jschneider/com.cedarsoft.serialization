@@ -35,11 +35,11 @@ import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -49,7 +49,7 @@ public class DelegatesMappingsTest {
   private DelegateMappingTest.MySerializer serializer;
   private DelegatesMappings<Object, Object, IOException> delegatesMappings;
 
-  @BeforeMethod
+  @Before
   public void setup() {
     serializer = new DelegateMappingTest.MySerializer( VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 ) );
     delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
@@ -67,7 +67,7 @@ public class DelegatesMappingsTest {
       delegatesMappings.verify();
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
-      assertEquals( e.getMessage(), "Invalid mapping for <java.lang.Object>: Upper border of source range not mapped: Expected <2.0.0> but was <1.5.0>" );
+      assertEquals( "Invalid mapping for <java.lang.Object>: Upper border of source range not mapped: Expected <2.0.0> but was <1.5.0>", e.getMessage() );
     }
   }
 
@@ -82,7 +82,7 @@ public class DelegatesMappingsTest {
         mappings.verify();
         fail( "Where is the Exception" );
       } catch ( VersionMismatchException e ) {
-        assertEquals( e.getMessage(), "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.0.0>" );
+        assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.0.0>", e.getMessage() );
       }
     }
 
@@ -114,7 +114,7 @@ public class DelegatesMappingsTest {
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
       assertEquals( delegatesMappings.getMapping( String.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 10 ) );
-      assertEquals( e.getMessage().trim(), "Invalid serialization/output version for <java.lang.String>. Expected <7.5.9> but was <7.1.10>" );
+      assertEquals( "Invalid serialization/output version for <java.lang.String>. Expected <7.5.9> but was <7.1.10>", e.getMessage().trim() );
     }
   }
 
@@ -132,7 +132,7 @@ public class DelegatesMappingsTest {
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
       assertEquals( delegatesMappings.getMapping( Object.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 1 ) );
-      assertEquals( e.getMessage().trim(), "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.1.1>" );
+      assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.1.1>", e.getMessage().trim() );
     }
   }
 
@@ -168,7 +168,7 @@ public class DelegatesMappingsTest {
       delegatesMappings.add( serializer ).responsibleFor( String.class );
       fail( "Where is the Exception" );
     } catch ( IllegalArgumentException e ) {
-      assertEquals( e.getMessage(), "A serializer for the key <class java.lang.String> has still been added" );
+      assertEquals( "A serializer for the key <class java.lang.String> has still been added", e.getMessage() );
     }
   }
 
@@ -180,7 +180,7 @@ public class DelegatesMappingsTest {
         .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
       fail( "Where is the Exception" );
     } catch ( UnsupportedVersionRangeException e ) {
-      assertEquals( e.getMessage(), "The version range has still been mapped: Was <[1.0.0-1.0.0]>" );
+      assertEquals( "The version range has still been mapped: Was <[1.0.0-1.0.0]>", e.getMessage() );
     }
   }
 }

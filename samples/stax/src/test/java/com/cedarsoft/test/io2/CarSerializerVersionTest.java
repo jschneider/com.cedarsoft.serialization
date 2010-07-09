@@ -40,13 +40,13 @@ import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -96,7 +96,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
 
   @Override
   protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Version version ) throws Exception {
-    assertEquals( deserialized.getColor(), Color.ORANGE );
+    assertEquals( Color.ORANGE, deserialized.getColor() );
     assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
     //.... (and much more)
   }

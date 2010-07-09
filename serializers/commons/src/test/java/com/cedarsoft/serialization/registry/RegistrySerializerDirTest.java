@@ -41,7 +41,7 @@ import com.cedarsoft.serialization.registry.RegistrySerializer;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +49,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 
 /**
@@ -60,7 +60,7 @@ public class RegistrySerializerDirTest {
   private DirBasedObjectsAccess access;
   private File baseDir;
 
-  @BeforeMethod
+  @Before
   public void setup() {
     baseDir = TestUtils.createEmptyTmpDir();
 
@@ -86,31 +86,31 @@ public class RegistrySerializerDirTest {
     } );
   }
 
-  @AfterMethod
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     FileUtils.deleteDirectory( baseDir );
   }
 
   @Test
   public void testDuplicates() throws IOException {
     Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
-    assertEquals( registry.getStoredObjects().size(), 0 );
+    assertEquals( 0, registry.getStoredObjects().size() );
     registry.store( "asdf" );
-    assertEquals( registry.getStoredObjects().size(), 1 );
+    assertEquals( 1, registry.getStoredObjects().size() );
     try {
       registry.store( "asdf" );
       fail( "Where is the Exception" );
     } catch ( StillContainedException ignore ) {
     }
-    assertEquals( registry.getStoredObjects().size(), 1 );
+    assertEquals( 1, registry.getStoredObjects().size() );
   }
 
   @Test
   public void testDeserialize() throws IOException {
     serializer.serialize( "1" );
 
-    assertEquals( serializer.deserialize().size(), 1 );
-    assertEquals( serializer.deserialize().get( 0 ), "1" );
+    assertEquals( 1, serializer.deserialize().size() );
+    assertEquals( "1", serializer.deserialize().get( 0 ) );
   }
 
   @Test
@@ -118,28 +118,28 @@ public class RegistrySerializerDirTest {
     serializer.serialize( "1" );
 
     Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
-    assertEquals( registry.getStoredObjects().size(), 1 );
-    assertEquals( registry.getStoredObjects().get( 0 ), "1" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+    assertEquals( "1", registry.getStoredObjects().get( 0 ) );
 
     registry.store( "2" );
-    assertEquals( registry.getStoredObjects().size(), 2 );
+    assertEquals( 2, registry.getStoredObjects().size() );
 
-    assertEquals( access.getIds().size(), 2 );
+    assertEquals( 2, access.getIds().size() );
   }
 
   @Test
   public void testEmptyConstrucot() throws IOException {
     Registry<String> registry = new DefaultRegistry<String>( serializer.deserialize() );
-    assertEquals( registry.getStoredObjects().size(), 0 );
+    assertEquals( 0, registry.getStoredObjects().size() );
   }
 
   @Test
   public void testMulti() throws IOException {
-    assertEquals( access.getIds().size(), 0 );
+    assertEquals( 0, access.getIds().size() );
 
     serializer.serialize( "1" );
 
-    assertEquals( access.getIds().size(), 1 );
+    assertEquals( 1, access.getIds().size() );
     try {
       serializer.serialize( "1" );
       fail( "Where is the Exception" );
@@ -147,7 +147,7 @@ public class RegistrySerializerDirTest {
     }
 
     Set<? extends String> ids = access.getIds();
-    assertEquals( ids.size(), 1 );
+    assertEquals( 1, ids.size() );
     assertTrue( ids.contains( "1" ) );
   }
 

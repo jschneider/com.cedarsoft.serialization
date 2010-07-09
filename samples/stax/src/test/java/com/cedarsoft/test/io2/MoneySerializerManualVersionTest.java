@@ -33,14 +33,14 @@ package com.cedarsoft.test.io2;
 
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.test.Money;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * Test class that tests the old versions manually

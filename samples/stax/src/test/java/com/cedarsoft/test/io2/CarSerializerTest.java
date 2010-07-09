@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.Color;
 import java.util.Arrays;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -83,7 +83,7 @@ public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
 
   @Override
   protected void verifyDeserialized( @NotNull Car deserialized ) throws Exception {
-    assertEquals( deserialized.getColor(), Color.ORANGE );
+    assertEquals( Color.ORANGE, deserialized.getColor() );
     assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
     //.... (and much more)
   }

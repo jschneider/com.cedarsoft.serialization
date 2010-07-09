@@ -49,17 +49,17 @@ import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.type.WildcardType;
 import com.sun.mirror.util.TypeVisitor;
 import com.sun.tools.apt.mirror.type.WildcardTypeImpl;
+import org.junit.*;
 import org.mockito.Mock;
-import org.testng.annotations.*;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 /**
  *
@@ -67,8 +67,8 @@ import static org.testng.Assert.*;
 public class ParserTest {
   private Result parsed;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/JavaClassToParse.java" );
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
@@ -84,44 +84,44 @@ public class ParserTest {
 
     {
       FieldDeclaration field = fields.get( 0 );
-      assertEquals( field.getSimpleName(), "stringList" );
+      assertEquals( "stringList", field.getSimpleName() );
 
       TypeMirror type = field.getType();
-      assertEquals( type.toString(), "java.util.List<java.lang.String>" );
+      assertEquals( "java.util.List<java.lang.String>", type.toString() );
       assertTrue( type instanceof DeclaredType );
 
       DeclaredType declaredType = ( DeclaredType ) type;
-      assertEquals( declaredType.getActualTypeArguments().size(), 1 );
+      assertEquals( 1, declaredType.getActualTypeArguments().size() );
 
       List<TypeMirror> arguments = ImmutableList.copyOf( declaredType.getActualTypeArguments() );
-      assertEquals( arguments.size(), 1 );
-      assertEquals( arguments.get( 0 ).toString(), "java.lang.String" );
+      assertEquals( 1, arguments.size() );
+      assertEquals( "java.lang.String", arguments.get( 0 ).toString() );
       assertTrue( arguments.get( 0 ) instanceof DeclaredType );
     }
 
     {
       FieldDeclaration field = fields.get( 1 );
-      assertEquals( field.getSimpleName(), "wildStringList" );
+      assertEquals( "wildStringList", field.getSimpleName() );
 
       TypeMirror type = field.getType();
-      assertEquals( type.toString(), "java.util.List<? extends java.lang.String>" );
+      assertEquals( "java.util.List<? extends java.lang.String>", type.toString() );
       assertTrue( type instanceof DeclaredType );
 
       DeclaredType declaredType = ( DeclaredType ) type;
-      assertEquals( declaredType.getActualTypeArguments().size(), 1 );
+      assertEquals( 1, declaredType.getActualTypeArguments().size() );
 
       List<TypeMirror> arguments = ImmutableList.copyOf( declaredType.getActualTypeArguments() );
-      assertEquals( arguments.size(), 1 );
-      assertEquals( arguments.get( 0 ).toString(), "? extends java.lang.String" );
-      assertTrue( arguments.get( 0 ) instanceof WildcardTypeImpl, arguments.get( 0 ).getClass().getName() );
-      assertTrue( arguments.get( 0 ) instanceof WildcardType, arguments.get( 0 ).getClass().getName() );
+      assertEquals( 1, arguments.size() );
+      assertEquals( "? extends java.lang.String", arguments.get( 0 ).toString() );
+      assertTrue( arguments.get( 0 ).getClass().getName(), arguments.get( 0 ) instanceof WildcardTypeImpl );
+      assertTrue( arguments.get( 0 ).getClass().getName(), arguments.get( 0 ) instanceof WildcardType );
 
       WildcardType wildcardType = ( WildcardType ) arguments.get( 0 );
-      assertEquals( wildcardType.getUpperBounds().size(), 1 );
-      assertEquals( wildcardType.getLowerBounds().size(), 0 );
+      assertEquals( 1, wildcardType.getUpperBounds().size() );
+      assertEquals( 0, wildcardType.getLowerBounds().size() );
 
       ReferenceType lowerBoundType = wildcardType.getUpperBounds().iterator().next();
-      assertEquals( lowerBoundType.toString(), "java.lang.String" );
+      assertEquals( "java.lang.String", lowerBoundType.toString() );
       assertTrue( lowerBoundType instanceof DeclaredType );
     }
   }
@@ -131,8 +131,8 @@ public class ParserTest {
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
 
     final ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
-    assertEquals( fields.get( 1 ).getSimpleName(), "wildStringList" );
-    assertEquals( fields.get( 2 ).getSimpleName(), "a" );
+    assertEquals( "wildStringList", fields.get( 1 ).getSimpleName() );
+    assertEquals( "a", fields.get( 2 ).getSimpleName() );
 
     new MockitoTemplate() {
       @Mock
@@ -163,67 +163,67 @@ public class ParserTest {
 
     ImmutableList<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
     FieldDeclaration field = fields.get( 0 );
-    assertEquals( field.getSimpleName(), "stringList" );
+    assertEquals( "stringList", field.getSimpleName() );
 
     TypeMirror type = field.getType();
-    assertEquals( type.toString(), "java.util.List<java.lang.String>" );
-    assertEquals( type.getClass().getName(), "com.sun.tools.apt.mirror.type.InterfaceTypeImpl" );
+    assertEquals( "java.util.List<java.lang.String>", type.toString() );
+    assertEquals( "com.sun.tools.apt.mirror.type.InterfaceTypeImpl", type.getClass().getName() );
 
     {
       InterfaceType interfaceType = ( InterfaceType ) type;
-      assertEquals( interfaceType.getSuperinterfaces().size(), 1 );
-      assertEquals( interfaceType.getSuperinterfaces().iterator().next().toString(), "java.util.Collection<java.lang.String>" );
+      assertEquals( 1, interfaceType.getSuperinterfaces().size() );
+      assertEquals( "java.util.Collection<java.lang.String>", interfaceType.getSuperinterfaces().iterator().next().toString() );
 
       //Checking the declaration (the java.util.List class itself!
       {
-        assertEquals( interfaceType.getDeclaration().toString(), "java.util.List<E>" );
-        assertEquals( interfaceType.getDeclaration().getQualifiedName(), "java.util.List" );
-        assertEquals( interfaceType.getDeclaration().getSimpleName(), "List" );
-        assertEquals( interfaceType.getDeclaration().getPackage().getQualifiedName(), "java.util" );
-        assertEquals( interfaceType.getDeclaration().getFormalTypeParameters().size(), 1 );
+        assertEquals( "java.util.List<E>", interfaceType.getDeclaration().toString() );
+        assertEquals( "java.util.List", interfaceType.getDeclaration().getQualifiedName() );
+        assertEquals( "List", interfaceType.getDeclaration().getSimpleName() );
+        assertEquals( "java.util", interfaceType.getDeclaration().getPackage().getQualifiedName() );
+        assertEquals( 1, interfaceType.getDeclaration().getFormalTypeParameters().size() );
         TypeParameterDeclaration typeParameter = interfaceType.getDeclaration().getFormalTypeParameters().iterator().next();
-        assertEquals( typeParameter.getSimpleName(), "E" );
+        assertEquals( "E", typeParameter.getSimpleName() );
         assertEquals( typeParameter.getOwner(), interfaceType.getDeclaration() );
-        assertEquals( typeParameter.getOwner().toString(), "java.util.List<E>" );
-        assertEquals( typeParameter.getBounds().size(), 1 );
-        assertEquals( typeParameter.getBounds().iterator().next().toString(), "java.lang.Object" );
+        assertEquals( "java.util.List<E>", typeParameter.getOwner().toString() );
+        assertEquals( 1, typeParameter.getBounds().size() );
+        assertEquals( "java.lang.Object", typeParameter.getBounds().iterator().next().toString() );
       }
 
       //Check the interface itself
       List<TypeMirror> actualTypeArgs = ImmutableList.copyOf( interfaceType.getActualTypeArguments() );
-      assertEquals( actualTypeArgs.size(), 1 );
-      assertEquals( actualTypeArgs.get( 0 ).toString(), "java.lang.String" );
-      assertEquals( actualTypeArgs.get( 0 ).getClass().getName(), "com.sun.tools.apt.mirror.type.ClassTypeImpl" );
-      assertEquals( ( ( ClassType ) actualTypeArgs.get( 0 ) ).getDeclaration().getSimpleName(), "String" );
-      assertEquals( ( ( ClassType ) actualTypeArgs.get( 0 ) ).getSuperclass().toString(), "java.lang.Object" );
-      assertEquals( ( ( DeclaredType ) actualTypeArgs.get( 0 ) ).getDeclaration().getMethods().size(), 69 );
+      assertEquals( 1, actualTypeArgs.size() );
+      assertEquals( "java.lang.String", actualTypeArgs.get( 0 ).toString() );
+      assertEquals( "com.sun.tools.apt.mirror.type.ClassTypeImpl", actualTypeArgs.get( 0 ).getClass().getName() );
+      assertEquals( "String", ( ( ClassType ) actualTypeArgs.get( 0 ) ).getDeclaration().getSimpleName() );
+      assertEquals( "java.lang.Object", ( ( ClassType ) actualTypeArgs.get( 0 ) ).getSuperclass().toString() );
+      assertEquals( 69, ( ( DeclaredType ) actualTypeArgs.get( 0 ) ).getDeclaration().getMethods().size() );
     }
   }
 
   @Test
   public void testParsing() throws ClassNotFoundException, NoSuchMethodException {
-    assertEquals( parsed.getClassDeclarations().size(), 4 );
+    assertEquals( 4, parsed.getClassDeclarations().size() );
 
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.JavaClassToParse.InnerStaticClass" );
     {
-      assertEquals( classDeclaration.getConstructors().size(), 1 );
-      assertEquals( classDeclaration.getConstructors().iterator().next().getParameters().size(), 1 );
+      assertEquals( 1, classDeclaration.getConstructors().size() );
+      assertEquals( 1, classDeclaration.getConstructors().iterator().next().getParameters().size() );
       ParameterDeclaration parameterDeclaration = classDeclaration.getConstructors().iterator().next().getParameters().iterator().next();
-      assertEquals( parameterDeclaration.getType().toString(), "int" );
+      assertEquals( "int", parameterDeclaration.getType().toString() );
     }
 
     {
-      assertEquals( classDeclaration.getMethods().size(), 4 );
+      assertEquals( 4, classDeclaration.getMethods().size() );
       Iterator<MethodDeclaration> methodIter = classDeclaration.getMethods().iterator();
       MethodDeclaration method0 = methodIter.next();
       MethodDeclaration method1 = methodIter.next();
       MethodDeclaration method2 = methodIter.next();
       MethodDeclaration method3 = methodIter.next();
 
-      assertEquals( method0.getSimpleName(), "getStringList" );
-      assertEquals( method1.getSimpleName(), "getWildStringList" );
-      assertEquals( method2.getSimpleName(), "doIt" );
-      assertEquals( method3.getSimpleName(), "compareTo" );
+      assertEquals( "getStringList", method0.getSimpleName() );
+      assertEquals( "getWildStringList", method1.getSimpleName() );
+      assertEquals( "doIt", method2.getSimpleName() );
+      assertEquals( "compareTo", method3.getSimpleName() );
     }
   }
 }

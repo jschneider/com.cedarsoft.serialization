@@ -35,7 +35,7 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.MockitoTemplate;
 import org.apache.maven.plugin.logging.Log;
 import org.mockito.Mock;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import static org.mockito.Mockito.*;
 

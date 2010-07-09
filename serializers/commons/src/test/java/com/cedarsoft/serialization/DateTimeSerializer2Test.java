@@ -35,7 +35,7 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.testng.annotations.*;
+import org.junit.*;
 
 /**
  *
@@ -46,14 +46,14 @@ public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime>
 
   private DateTimeZone oldTimeZone;
 
-  @BeforeMethod
-  protected void setUpDateTimeZone() throws Exception {
+  @Before
+  public void setUpDateTimeZone() throws Exception {
     oldTimeZone = DateTimeZone.getDefault();
     DateTimeZone.setDefault( zone );
   }
 
-  @AfterMethod
-  protected void tearDownDateTimeZone() {
+  @After
+  public void tearDownDateTimeZone() {
     DateTimeZone.setDefault( oldTimeZone );
   }
 

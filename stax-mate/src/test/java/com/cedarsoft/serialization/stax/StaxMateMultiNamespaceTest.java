@@ -31,13 +31,13 @@
 
 package com.cedarsoft.serialization.stax;
 
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -54,23 +54,23 @@ public class StaxMateMultiNamespaceTest {
         "  <extension xmlns=\"dans2\" default=\"true\" delimiter=\".\">cr2</extension>\n" +
         "</fileType>" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getNamespaceURI(), "dans1" );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "dans1", parser.getNamespaceURI() );
+    assertEquals( "fileType", parser.getLocalName() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( "false", parser.getAttributeValue( null, "dependent" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "id" );
-    assertEquals( parser.getElementText(), "Canon Raw" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "id", parser.getLocalName() );
+    assertEquals( "Canon Raw", parser.getElementText() );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getNamespaceURI(), "dans2" );
-    assertEquals( parser.getLocalName(), "extension" );
-    assertEquals( parser.getName().getLocalPart(), "extension" );
-    assertEquals( parser.getAttributeValue( null, "default" ), "true" );
-    assertEquals( parser.getAttributeValue( null, "delimiter" ), "." );
-    assertEquals( parser.getElementText(), "cr2" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "dans2", parser.getNamespaceURI() );
+    assertEquals( "extension", parser.getLocalName() );
+    assertEquals( "extension", parser.getName().getLocalPart() );
+    assertEquals( "true", parser.getAttributeValue( null, "default" ) );
+    assertEquals( ".", parser.getAttributeValue( null, "delimiter" ) );
+    assertEquals( "cr2", parser.getElementText() );
   }
 
   @Test
@@ -86,25 +86,25 @@ public class StaxMateMultiNamespaceTest {
         " </extension>\n" +
         "</fileType>" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getNamespaceURI(), "dans1" );
-    assertEquals( parser.getLocalName(), "fileType" );
-    assertEquals( parser.getName().getLocalPart(), "fileType" );
-    assertEquals( parser.getAttributeValue( null, "dependent" ), "false" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "dans1", parser.getNamespaceURI() );
+    assertEquals( "fileType", parser.getLocalName() );
+    assertEquals( "fileType", parser.getName().getLocalPart() );
+    assertEquals( "false", parser.getAttributeValue( null, "dependent" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getLocalName(), "id" );
-    assertEquals( parser.getElementText(), "Canon Raw" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "id", parser.getLocalName() );
+    assertEquals( "Canon Raw", parser.getElementText() );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getNamespaceURI(), "dans2" );
-    assertEquals( parser.getLocalName(), "extension" );
-    assertEquals( parser.getName().getLocalPart(), "extension" );
-    assertEquals( parser.getAttributeValue( null, "default" ), "true" );
-    assertEquals( parser.getAttributeValue( null, "delimiter" ), "." );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "dans2", parser.getNamespaceURI() );
+    assertEquals( "extension", parser.getLocalName() );
+    assertEquals( "extension", parser.getName().getLocalPart() );
+    assertEquals( "true", parser.getAttributeValue( null, "default" ) );
+    assertEquals( ".", parser.getAttributeValue( null, "delimiter" ) );
 
-    assertEquals( parser.nextTag(), XMLStreamReader.START_ELEMENT );
-    assertEquals( parser.getNamespaceURI(), "dans2" );
-    assertEquals( parser.getLocalName(), "asdf" );
+    assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
+    assertEquals( "dans2", parser.getNamespaceURI() );
+    assertEquals( "asdf", parser.getLocalName() );
   }
 }

@@ -34,8 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
-import org.testng.*;
-import org.testng.annotations.*;
+import org.junit.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
@@ -47,7 +47,7 @@ import java.io.IOException;
 public class HashSerializer2Test {
   private HashSerializer serializer;
 
-  @BeforeMethod
+  @Before
   public void setup() {
     serializer = new HashSerializer();
   }

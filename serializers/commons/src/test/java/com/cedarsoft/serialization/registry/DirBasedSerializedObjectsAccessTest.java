@@ -35,12 +35,12 @@ import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
 import com.cedarsoft.serialization.registry.DirBasedObjectsAccess;
 import org.apache.commons.io.FileUtils;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -49,20 +49,20 @@ public class DirBasedSerializedObjectsAccessTest {
   private DirBasedObjectsAccess access;
   private File baseDir;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     baseDir = TestUtils.createEmptyTmpDir();
     access = new DirBasedObjectsAccess( baseDir );
   }
 
-  @AfterMethod
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     FileUtils.deleteDirectory( baseDir );
   }
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.getIds().size(), 0 );
+    assertEquals( 0, access.getIds().size() );
     {
       new File( baseDir, "id" ).mkdir();
     }
@@ -71,13 +71,13 @@ public class DirBasedSerializedObjectsAccessTest {
     assertTrue( new File( baseDir, "id" ).exists() );
     assertTrue( new File( baseDir, "id" ).isDirectory() );
 
-    assertEquals( access.getIds().size(), 1 );
+    assertEquals( 1, access.getIds().size() );
     assertTrue( access.getIds().contains( "id" ) );
   }
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.getIds().size(), 0 );
+    assertEquals( 0, access.getIds().size() );
     {
       new File( baseDir, "id" ).mkdir();
     }

@@ -36,7 +36,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -44,7 +44,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -70,8 +70,8 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
 
   @Test
   public void testIt() {
-    assertEquals( XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName(), "com.sun.xml.internal.stream.XMLInputFactoryImpl" );
-    assertEquals( XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName(), "com.sun.xml.internal.stream.XMLInputFactoryImpl" );
+    assertEquals( "com.sun.xml.internal.stream.XMLInputFactoryImpl", XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName() );
+    assertEquals( "com.sun.xml.internal.stream.XMLInputFactoryImpl", XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName() );
   }
 
 

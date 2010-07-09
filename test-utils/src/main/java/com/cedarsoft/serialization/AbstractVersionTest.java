@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;

@@ -32,12 +32,12 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.Extension;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -47,16 +47,16 @@ public class ExtensionSerializer2Test {
   public void testDelimiter() throws IOException {
     Extension extension = deserialize( "<extension xmlns=\"http://www.cedarsoft.com/file/extension/1.0.0\" delimiter=\".\">jpg</extension>\n" );
 
-    assertEquals( extension.getDelimiter(), "." );
-    assertEquals( extension.getExtension(), "jpg" );
+    assertEquals( ".", extension.getDelimiter() );
+    assertEquals( "jpg", extension.getExtension() );
   }
 
   @Test
   public void testMissingDelimiter() throws IOException {
     Extension extension = deserialize( "<extension xmlns=\"http://www.cedarsoft.com/file/extension/1.0.0\">jpg</extension>\n" );
 
-    assertEquals( extension.getDelimiter(), "." );
-    assertEquals( extension.getExtension(), "jpg" );
+    assertEquals( ".", extension.getDelimiter() );
+    assertEquals( "jpg", extension.getExtension() );
   }
 
   private Extension deserialize( String xml ) throws IOException {

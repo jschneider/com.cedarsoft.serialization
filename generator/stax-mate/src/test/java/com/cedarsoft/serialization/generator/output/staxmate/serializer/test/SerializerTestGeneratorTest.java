@@ -36,11 +36,11 @@ import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -48,16 +48,16 @@ import static org.testng.Assert.*;
 public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
   private StaxMateGenerator generator;
 
-  @BeforeMethod
+  @Before
   @Override
-  protected void setUp() throws Exception {
+  public void setUp() throws Exception {
     super.setUp();
     generator = new StaxMateGenerator( codeGenerator );
   }
 
   @Test
   public void testNames() {
-    assertEquals( generator.createSerializerTestName( "com.test.Serializer" ), "com.test.SerializerTest" );
+    assertEquals( "com.test.SerializerTest", generator.createSerializerTestName( "com.test.Serializer" ) );
   }
 
   @Test
@@ -65,8 +65,8 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.FooSerializer" );
     JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( serializerClass, domainObjectDescriptor );
 
-    assertEquals( serializerVersionTestClass.name(), "FooSerializerVersionTest" );
-    assertEquals( serializerVersionTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
+    assertEquals( "FooSerializerVersionTest", serializerVersionTestClass.name() );
+    assertEquals( "com.cedarsoft.serialization.generator.staxmate.test", serializerVersionTestClass.getPackage().name() );
 
     assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.1.txt" ) );
   }
@@ -76,13 +76,13 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
     JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.staxmate.test.FooSerializer" );
 
     JDefinedClass serializerTestClass = generator.generateSerializerTest( serializerClass.fullName(), domainObjectDescriptor );
-    assertEquals( serializerTestClass.name(), "FooSerializerTest" );
-    assertEquals( serializerTestClass.getPackage().name(), "com.cedarsoft.serialization.generator.staxmate.test" );
+    assertEquals( "FooSerializerTest", serializerTestClass.name() );
+    assertEquals( "com.cedarsoft.serialization.generator.staxmate.test", serializerTestClass.getPackage().name() );
 
     JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
     JDefinedClass definedClass = thePackage._getClass( "FooSerializerTest" );
     assertNotNull( definedClass );
-    assertEquals( definedClass.name(), "FooSerializerTest" );
+    assertEquals( "FooSerializerTest", definedClass.name() );
 
     assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.2.txt" ) );
   }

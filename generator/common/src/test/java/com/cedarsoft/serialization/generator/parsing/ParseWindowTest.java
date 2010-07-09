@@ -39,13 +39,13 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -53,8 +53,8 @@ import static org.testng.Assert.*;
 public class ParseWindowTest {
   private File javaFile;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/Window.java" );
     assertNotNull( resource );
     javaFile = new File( resource.toURI() );
@@ -66,13 +66,13 @@ public class ParseWindowTest {
     Result parsed = Parser.parse( javaFile );
     assertNotNull( parsed );
 
-    assertEquals( parsed.getClassDeclarations().size(), 1 );
+    assertEquals( 1, parsed.getClassDeclarations().size() );
 
     ClassDeclaration classDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Window" );
     {
-      assertEquals( classDeclaration.getConstructors().size(), 1 );
+      assertEquals( 1, classDeclaration.getConstructors().size() );
       ConstructorDeclaration constructor = classDeclaration.getConstructors().iterator().next();
-      assertEquals( constructor.getParameters().size(), 3 );
+      assertEquals( 3, constructor.getParameters().size() );
 
       assertEquals( constructor.getDocComment(), " the constructor\n" +
         "\n" +
@@ -82,59 +82,59 @@ public class ParseWindowTest {
 
       List<ParameterDeclaration> params = ImmutableList.copyOf( constructor.getParameters() );
 
-      assertEquals( params.get( 0 ).getType().toString(), "java.lang.String" );
-      assertEquals( params.get( 0 ).getSimpleName(), "description" );
-      assertEquals( params.get( 0 ).getDocComment(), null );
-      assertEquals( params.get( 0 ).getPosition().line(), 53 );
-      assertEquals( params.get( 0 ).getPosition().column(), 25 );
+      assertEquals( "java.lang.String", params.get( 0 ).getType().toString() );
+      assertEquals( "description", params.get( 0 ).getSimpleName() );
+      assertEquals( null, params.get( 0 ).getDocComment() );
+      assertEquals( 53, params.get( 0 ).getPosition().line() );
+      assertEquals( 25, params.get( 0 ).getPosition().column() );
 
-      assertEquals( params.get( 1 ).getType().toString(), "double" );
-      assertEquals( params.get( 1 ).getSimpleName(), "width" );
-      assertEquals( params.get( 2 ).getType().toString(), "double" );
-      assertEquals( params.get( 2 ).getSimpleName(), "height" );
+      assertEquals( "double", params.get( 1 ).getType().toString() );
+      assertEquals( "width", params.get( 1 ).getSimpleName() );
+      assertEquals( "double", params.get( 2 ).getType().toString() );
+      assertEquals( "height", params.get( 2 ).getSimpleName() );
     }
 
     {
       List<FieldDeclaration> fields = ImmutableList.copyOf( classDeclaration.getFields() );
-      assertEquals( fields.size(), 3 );
-      assertEquals( fields.get( 0 ).getType().toString(), "double" );
-      assertEquals( fields.get( 1 ).getType().toString(), "double" );
-      assertEquals( fields.get( 2 ).getType().toString(), "java.lang.String" );
+      assertEquals( 3, fields.size() );
+      assertEquals( "double", fields.get( 0 ).getType().toString() );
+      assertEquals( "double", fields.get( 1 ).getType().toString() );
+      assertEquals( "java.lang.String", fields.get( 2 ).getType().toString() );
 
-      assertEquals( fields.get( 0 ).getSimpleName(), "width" );
-      assertEquals( fields.get( 1 ).getSimpleName(), "height" );
-      assertEquals( fields.get( 2 ).getSimpleName(), "description" );
+      assertEquals( "width", fields.get( 0 ).getSimpleName() );
+      assertEquals( "height", fields.get( 1 ).getSimpleName() );
+      assertEquals( "description", fields.get( 2 ).getSimpleName() );
 
-      assertEquals( fields.get( 0 ).getDocComment().trim(), "the comment for field width" );
-      assertEquals( fields.get( 0 ).getModifiers().toString(), "[private, final]" );
+      assertEquals( "the comment for field width", fields.get( 0 ).getDocComment().trim() );
+      assertEquals( "[private, final]", fields.get( 0 ).getModifiers().toString() );
     }
 
     {
       ImmutableList<MethodDeclaration> methods = ImmutableList.copyOf( classDeclaration.getMethods() );
-      assertEquals( methods.size(), 5 );
+      assertEquals( 5, methods.size() );
 
-      assertEquals( methods.get( 0 ).getSimpleName(), "getWidth" );
-      assertEquals( methods.get( 1 ).getSimpleName(), "getHeight" );
-      assertEquals( methods.get( 2 ).getSimpleName(), "getDescription" );
-      assertEquals( methods.get( 3 ).getSimpleName(), "equals" );
-      assertEquals( methods.get( 4 ).getSimpleName(), "hashCode" );
+      assertEquals( "getWidth", methods.get( 0 ).getSimpleName() );
+      assertEquals( "getHeight", methods.get( 1 ).getSimpleName() );
+      assertEquals( "getDescription", methods.get( 2 ).getSimpleName() );
+      assertEquals( "equals", methods.get( 3 ).getSimpleName() );
+      assertEquals( "hashCode", methods.get( 4 ).getSimpleName() );
 
 
-      assertEquals( methods.get( 0 ).getModifiers().toString(), "[public]" );
-      assertEquals( methods.get( 0 ).getReturnType().toString(), "double" );
-      assertEquals( methods.get( 0 ).getThrownTypes().size(), 0 );
-      assertEquals( methods.get( 0 ).getFormalTypeParameters().size(), 0 );
-      assertEquals( methods.get( 0 ).getParameters().size(), 0 );
+      assertEquals( "[public]", methods.get( 0 ).getModifiers().toString() );
+      assertEquals( "double", methods.get( 0 ).getReturnType().toString() );
+      assertEquals( 0, methods.get( 0 ).getThrownTypes().size() );
+      assertEquals( 0, methods.get( 0 ).getFormalTypeParameters().size() );
+      assertEquals( 0, methods.get( 0 ).getParameters().size() );
 
-      assertEquals( methods.get( 3 ).getModifiers().toString(), "[public]" );
-      assertEquals( methods.get( 3 ).getReturnType().toString(), "boolean" );
-      assertEquals( methods.get( 3 ).getThrownTypes().size(), 0 );
-      assertEquals( methods.get( 3 ).getFormalTypeParameters().size(), 0 );
-      assertEquals( methods.get( 3 ).getParameters().size(), 1 );
+      assertEquals( "[public]", methods.get( 3 ).getModifiers().toString() );
+      assertEquals( "boolean", methods.get( 3 ).getReturnType().toString() );
+      assertEquals( 0, methods.get( 3 ).getThrownTypes().size() );
+      assertEquals( 0, methods.get( 3 ).getFormalTypeParameters().size() );
+      assertEquals( 1, methods.get( 3 ).getParameters().size() );
       List<ParameterDeclaration> params = ImmutableList.copyOf( methods.get( 3 ).getParameters() );
-      assertEquals( params.size(), 1 );
-      assertEquals( params.get( 0 ).getType().toString(), "java.lang.Object" );
-      assertEquals( params.get( 0 ).getSimpleName(), "o" );
+      assertEquals( 1, params.size() );
+      assertEquals( "java.lang.Object", params.get( 0 ).getType().toString() );
+      assertEquals( "o", params.get( 0 ).getSimpleName() );
     }
   }
 }

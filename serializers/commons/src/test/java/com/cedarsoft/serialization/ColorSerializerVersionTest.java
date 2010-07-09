@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import org.jetbrains.annotations.NotNull;
-import org.testng.*;
+import org.junit.*;
 
 import java.awt.Color;
 import java.util.HashMap;

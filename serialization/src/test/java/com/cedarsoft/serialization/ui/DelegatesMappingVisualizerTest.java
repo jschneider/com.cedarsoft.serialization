@@ -35,11 +35,11 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.DelegateMappingTest;
 import com.cedarsoft.serialization.DelegatesMappings;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -49,8 +49,8 @@ public class DelegatesMappingVisualizerTest {
   private DelegatesMappings<Object, Object, IOException> delegatesMappings;
   private DelegateMappingTest.MySerializer serializer;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
     delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
     serializer = new DelegateMappingTest.MySerializer( new VersionRange( new Version( 7, 0, 0 ), new Version( 7, 5, 9 ) ) );

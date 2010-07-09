@@ -40,14 +40,14 @@ import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -84,10 +84,10 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
     //We don't implement equals in the car, therefore compare manually
     //    super.verifyDeserialized( deserialized );
 
-    assertEquals( deserialized.size(), 2 );
+    assertEquals( 2, deserialized.size() );
 
     Car first = deserialized.get( 0 );
-    assertEquals( first.getColor(), Color.BLACK );
+    assertEquals( Color.BLACK, first.getColor() );
     assertEquals( first.getBasePrice(), new Money( 49000, 0 ) );
 
     //....

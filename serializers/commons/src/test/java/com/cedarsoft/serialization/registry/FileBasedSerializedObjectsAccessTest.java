@@ -36,13 +36,13 @@ import com.cedarsoft.TestUtils;
 import com.cedarsoft.serialization.registry.FileBasedObjectsAccess;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -50,41 +50,41 @@ import static org.testng.Assert.*;
 public class FileBasedSerializedObjectsAccessTest {
   private FileBasedObjectsAccess access;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     access = new FileBasedObjectsAccess( TestUtils.createEmptyTmpDir(), "xml" );
   }
 
-  @AfterMethod
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     FileUtils.deleteDirectory( access.getBaseDir() );
   }
 
   @Test
   public void testIt() throws IOException {
-    assertEquals( access.getIds().size(), 0 );
+    assertEquals( 0, access.getIds().size() );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );
       out.close();
     }
 
-    assertEquals( access.getIds().size(), 1 );
+    assertEquals( 1, access.getIds().size() );
     assertTrue( access.getIds().contains( "id" ) );
 
     {
       InputStream in = access.getInputStream( "id" );
-      assertEquals( IOUtils.toString( in ), "asdf" );
+      assertEquals( "asdf", IOUtils.toString( in ) );
       in.close();
     }
     InputStream in = new FileBasedObjectsAccess( access.getBaseDir(), "xml" ).getInputStream( "id" );
-    assertEquals( IOUtils.toString( in ), "asdf" );
+    assertEquals( "asdf", IOUtils.toString( in ) );
     in.close();
   }
 
   @Test
   public void testExists() throws IOException {
-    assertEquals( access.getIds().size(), 0 );
+    assertEquals( 0, access.getIds().size() );
     {
       OutputStream out = access.openOut( "id" );
       IOUtils.write( "asdf".getBytes(), out );

@@ -39,14 +39,14 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -75,7 +75,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
     super.verifySerialized( serialized );
-    assertTrue( new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ), XmlCommons.format( new String( serialized ) ) );
+    assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ) );
   }
 
   @NotNull
@@ -92,7 +92,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
 
   @Override
   protected void verifyDeserialized( @NotNull String deserialized ) {
-    assertEquals( deserialized, "asdf" );
+    assertEquals( "asdf", deserialized );
   }
 
   @Test
@@ -119,7 +119,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
       getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
       fail( "Where is the Exception" );
     } catch ( IOException e ) {
-      assertEquals( e.getCause().getMessage(), "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>" );
+      assertEquals( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>", e.getCause().getMessage() );
     }
   }
 }

@@ -38,12 +38,12 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.jdom.Element;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -51,8 +51,8 @@ import static org.testng.Assert.*;
 public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Number> {
   private MySerializer serializer;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", "http://int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
       @Override
       public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException {
@@ -105,7 +105,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
 
   @Test
   public void testIt() throws IOException, SAXException {
-    assertEquals( serializer.getStrategies().size(), 2 );
+    assertEquals( 2, serializer.getStrategies().size() );
 
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"int\">1</number>" );
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.2.3\" type=\"double\">2.0</number>" );

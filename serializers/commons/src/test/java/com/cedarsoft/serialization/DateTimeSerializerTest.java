@@ -40,14 +40,13 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.testng.*;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -56,7 +55,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
   @Inject
   private DateTimeSerializer serializer;
 
-  @BeforeMethod
+  @Before
   public void setup() {
     serializer = new DateTimeSerializer();
   }
@@ -77,8 +76,8 @@ public class DateTimeSerializerTest extends DateTimeTest {
     DateTime deserialized = serializer.deserialize( new ByteArrayInputStream( "<dateTime xmlns=\"http://www.joda.org/time/dateTime/1.0.0\">20010101T010101.001-0500</dateTime>".getBytes() ) );
     assertEquals( deserialized.getMillis(), new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ).getMillis() );
 
-    assertEquals( zone.getID(), "America/New_York" );
-    assertEquals( deserialized.getZone().getID(), "-05:00" );
+    assertEquals( "America/New_York", zone.getID() );
+    assertEquals( "-05:00", deserialized.getZone().getID() );
   }
 
   @Test
@@ -89,8 +88,8 @@ public class DateTimeSerializerTest extends DateTimeTest {
     DateTime deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
     assertEqualsDateTime( deserialized, new DateTime( 2001, 1, 1, 1, 1, 1, 1, zone ) );
 
-    assertEquals( zone.getID(), "America/New_York" );
-    assertEquals( deserialized.getZone().getID(), "-05:00" );
+    assertEquals( "America/New_York", zone.getID() );
+    assertEquals( "-05:00", deserialized.getZone().getID() );
   }
 
   @Test
@@ -102,8 +101,8 @@ public class DateTimeSerializerTest extends DateTimeTest {
     DateTime deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
     assertEqualsDateTime( deserialized, new DateTime( 2001, 1, 1, 1, 1, 1, 1, DateTimeZone.forID( "Europe/Berlin" ) ) );
 
-    assertEquals( dateTime.getZone().getID(), "Europe/Berlin" );
-    assertEquals( deserialized.getZone().getID(), "+01:00" );
+    assertEquals( "Europe/Berlin", dateTime.getZone().getID() );
+    assertEquals( "+01:00", deserialized.getZone().getID() );
   }
 
   @Test
@@ -117,7 +116,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
     verifyZone( "WET" );
   }
 
-  private byte[] verifyZone(@NotNull @NonNls  String id ) throws IOException {
+  private byte[] verifyZone( @NotNull @NonNls String id ) throws IOException {
     DateTimeZone zone = DateTimeZone.forID( id );
     assertEquals( zone.getID(), id );
 
@@ -130,11 +129,12 @@ public class DateTimeSerializerTest extends DateTimeTest {
   }
 
   static void assertEqualsDateTime( @NotNull DateTime dateTime, @NotNull DateTime deserialized ) {
-    assertEquals( deserialized.getMillis(), dateTime.getMillis(), deserialized + " vs " + dateTime );
+    assertEquals( deserialized + " vs " + dateTime, deserialized.getMillis(), dateTime.getMillis() );
     assertEquals( deserialized.getZone().getOffset( deserialized.getMillis() ), dateTime.getZone().getOffset( deserialized.getMillis() ) );
   }
 
-  @Test( enabled = false )
+  @Ignore
+  @Test
   public void testLoosingTwoSecondsTest() {
     DateTimeZone oldDefault = DateTimeZone.getDefault();
     try {
@@ -145,7 +145,7 @@ public class DateTimeSerializerTest extends DateTimeTest {
       DateTimeFormatter format = ISODateTimeFormat.basicDateTime();
 
       //Compare string pbased
-      Assert.assertEquals( format.print( dateTime ), "00010101T010101.001-0456" );
+      Assert.assertEquals( "00010101T010101.001-0456", format.print( dateTime ) );
 
       //Round
       Assert.assertEquals( format.parseDateTime( format.print( dateTime ) ), dateTime );

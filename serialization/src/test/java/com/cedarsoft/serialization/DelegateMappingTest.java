@@ -37,13 +37,13 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 
 /**
@@ -59,7 +59,7 @@ public class DelegateMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "No mappings available" );
+      assertEquals( "No mappings available", e.getMessage() );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 0, 5, 0 ) ), new Version( 1, 0, 0 ) );
@@ -68,7 +68,7 @@ public class DelegateMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "Upper border of source range not mapped: Expected <2.2.7> but was <0.5.0>" );
+      assertEquals( "Upper border of source range not mapped: Expected <2.2.7> but was <0.5.0>", e.getMessage() );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 1 ), new Version( 1, 0, 0 ) ), new Version( 1, 0, 1 ) );
@@ -102,7 +102,7 @@ public class DelegateMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "Upper border of source range not mapped: Expected <1.0.1> but was <1.0.0>" );
+      assertEquals( "Upper border of source range not mapped: Expected <1.0.1> but was <1.0.0>", e.getMessage() );
     }
 
     mapping.map( 1, 0, 1 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 1 );
@@ -141,7 +141,7 @@ public class DelegateMappingTest {
       mapping.addMapping( VersionRange.from( 0, 5, 0 ).to(), new Version( 1, 0, 0 ) );
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( e.getMessage(), "The version range has still been mapped: Was <[0.5.0-0.5.0]>" );
+      assertEquals( "The version range has still been mapped: Was <[0.5.0-0.5.0]>", e.getMessage() );
     }
   }
 
@@ -156,7 +156,7 @@ public class DelegateMappingTest {
     } catch ( UnsupportedVersionException e ) {
       assertEquals( e.getActual(), new Version( 0, 0, 1 ) );
       assertEquals( e.getSupportedRange(), delegate.getFormatVersionRange() );
-      assertEquals( e.getMessage(), "Invalid delegate version: Was <0.0.1>. Supported range <[1.0.0-2.0.0]>" );
+      assertEquals( "Invalid delegate version: Was <0.0.1>. Supported range <[1.0.0-2.0.0]>", e.getMessage() );
     }
 
     try {
@@ -165,7 +165,7 @@ public class DelegateMappingTest {
     } catch ( UnsupportedVersionException e ) {
       assertEquals( e.getActual(), new Version( 3, 0, 1 ) );
       assertEquals( e.getSupportedRange(), delegate.getFormatVersionRange() );
-      assertEquals( e.getMessage(), "Invalid delegate version: Was <3.0.1>. Supported range <[1.0.0-2.0.0]>" );
+      assertEquals( "Invalid delegate version: Was <3.0.1>. Supported range <[1.0.0-2.0.0]>", e.getMessage() );
     }
   }
 
@@ -179,7 +179,7 @@ public class DelegateMappingTest {
     } catch ( UnsupportedVersionRangeException e ) {
       assertEquals( e.getActual(), new VersionRange( new Version( 0, 4, 0 ), new Version( 0, 5, 0 ) ) );
       assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
-      assertEquals( e.getMessage(), "Invalid source range: Was <[0.4.0-0.5.0]> but expected <[0.5.0-2.2.7]>" );
+      assertEquals( "Invalid source range: Was <[0.4.0-0.5.0]> but expected <[0.5.0-2.2.7]>", e.getMessage() );
     }
 
     try {
@@ -188,7 +188,7 @@ public class DelegateMappingTest {
     } catch ( UnsupportedVersionRangeException e ) {
       assertEquals( e.getActual(), new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 2, 8 ) ) );
       assertEquals( e.getSupportedRange(), mapping.getSourceVersionRange() );
-      assertEquals( e.getMessage(), "Invalid source range: Was <[1.0.0-2.2.8]> but expected <[0.5.0-2.2.7]>" );
+      assertEquals( "Invalid source range: Was <[1.0.0-2.2.8]> but expected <[0.5.0-2.2.7]>", e.getMessage() );
     }
   }
 

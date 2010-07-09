@@ -32,12 +32,12 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.FileName;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -51,9 +51,9 @@ public class FileNameSerializer2Test {
         "  <extension delimiter=\".\">jpg</extension>\n" +
         "</fileName>" );
 
-    assertEquals( fileName.getBaseName().getName(), "baseName" );
-    assertEquals( fileName.getExtension().getDelimiter(), "." );
-    assertEquals( fileName.getExtension().getExtension(), "jpg" );
+    assertEquals( "baseName", fileName.getBaseName().getName() );
+    assertEquals( ".", fileName.getExtension().getDelimiter() );
+    assertEquals( "jpg", fileName.getExtension().getExtension() );
   }
 
   @Test
@@ -64,9 +64,9 @@ public class FileNameSerializer2Test {
         "  <extension>jpg</extension>\n" +
         "</fileName>" );
 
-    assertEquals( fileName.getBaseName().getName(), "baseName" );
-    assertEquals( fileName.getExtension().getDelimiter(), "." );
-    assertEquals( fileName.getExtension().getExtension(), "jpg" );
+    assertEquals( "baseName", fileName.getBaseName().getName() );
+    assertEquals( ".", fileName.getExtension().getDelimiter() );
+    assertEquals( "jpg", fileName.getExtension().getExtension() );
   }
 
   private FileName deserialize( String xml ) throws IOException {

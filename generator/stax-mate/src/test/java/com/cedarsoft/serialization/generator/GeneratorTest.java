@@ -36,7 +36,7 @@ import com.cedarsoft.TestUtils;
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
-import org.testng.annotations.*;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -53,13 +53,13 @@ public class GeneratorTest {
   private File destDir;
   private File testDestDir;
 
-  @BeforeMethod
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     destDir = TestUtils.createEmptyTmpDir();
     testDestDir = TestUtils.createEmptyTmpDir();
   }
 
-  @AfterMethod
+  @After
   public void tearDown() throws IOException {
     FileUtils.deleteDirectory( destDir );
     FileUtils.deleteDirectory( testDestDir );
@@ -77,14 +77,14 @@ public class GeneratorTest {
     File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
-    AssertUtils.assertEquals( FileUtils.readFileToString( serializerFile ).trim(), getClass().getResource( "GeneratorTest.testIt_1.txt" ) );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
 
     File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" );
     assertTrue( serializerTestFile.exists() );
-    AssertUtils.assertEquals( FileUtils.readFileToString( serializerTestFile ).trim(), getClass().getResource( "GeneratorTest.testIt_2.txt" ) );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_2.txt" ), FileUtils.readFileToString( serializerTestFile ).trim() );
 
     File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java" );
     assertTrue( serializerVersionTestFile.exists() );
-    AssertUtils.assertEquals( FileUtils.readFileToString( serializerVersionTestFile ).trim(), getClass().getResource( "GeneratorTest.testIt_3.txt" ) );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
   }
 }

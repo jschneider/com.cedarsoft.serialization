@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.Dimension;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -62,7 +62,7 @@ public class DimensionSerializerTest extends AbstractXmlSerializerTest<Dimension
 
   @Override
   protected void verifyDeserialized( @NotNull Dimension deserialized ) {
-    assertEquals( deserialized.width, 1600 );
-    assertEquals( deserialized.height, 600 );
+    assertEquals( 1600, deserialized.width );
+    assertEquals( 600, deserialized.height );
   }
 }
