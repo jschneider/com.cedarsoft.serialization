@@ -45,12 +45,17 @@
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
-      <item name="Sample" href="sample.html" />
       <item name="Versioning" href="versioning.html" />
-      <item name="Usage" href="usage.html" />
       <item name="Performance" href="performance.html" />
       <item name="Download" href="download.html" />
       <item name="License" href="license.html" />
+    </menu>
+
+    <menu name="Documentation">
+      <item name="Usage" href="usage.html" />
+      <item name="Sample" href="sample.html" />
+      <item name="Best Practices" href="bestPractices.html" />
+      <item name="Golden Rules" href="goldenRules.html" />
     </menu>
 
     <menu name="Tutorial">
@@ -63,15 +68,17 @@
       <item name="Support" href="support.html" />
     </menu>
 
-    <menu name="Documentation">
-      <item name="Best Practices" href="bestPractices.html" />
-      <item name="Golden Rules" href="goldenRules.html" />
-      <item name="Backends" href="backends.html" />
-    </menu>
-
     <menu name="Code Generation">
       <item name="Generator" href="generator.html" />
       <item name="Maven Plugin" href="generator/serializer-generator-maven-plugin/index.html" />
+    </menu>
+
+    <menu name="Backends">
+      <item name="Overview" href="backends.html" />
+      <item name="Stax based" href="stax/" />
+      <item name="Stax Mate based" href="stax-mate/" />
+      <item name="JDom" href="jdom/" />
+      <item name="Custom" href="customBackend.html" />
     </menu>
 
     <menu name="Comparing with...">
@@ -79,13 +86,6 @@
       <item name="XStream" href="comparing/xstream.html" />
       <item name="Simple XML Serialization" href="comparing/simpleXml.html" />
       <item name="Manually written code" href="comparing/manually.html" />
-    </menu>
-
-    <menu name="Backends">
-      <item name="Stax based" href="stax/" />
-      <item name="Stax Mate based" href="stax-mate/" />
-      <item name="JDom" href="jdom/" />
-      <item name="Custom" href="customBackend.html" />
     </menu>
 
     <menu name="Modules">
