@@ -74,11 +74,19 @@ cedarsoft Serialization
   isn't a problem, you will run into problems sooner or later.
 
   As soon as you rename/add a field or (even worse) change the type, you will run into big problems.
-  Working around those problems require a ugly workarounds or - even worse - can't be done at all. So finally you
+  Working around those problems requires ugly workarounds or - even worse - can't be done at all. So finally you
   will end up writing the critical code by hand.
 
   cedarsoft Serialization makes the best of it. If offers first class support for format changes, hides the boiler plate code
   and offers a simple and fast way to (de)serialize your objects using hand optimized code.
+
+** The alternative: Code Generation
+
+  XStream/JAXB are based on some good heuristics that translate an object tree to an XML file. The same heuristics can be used
+  to generate the source code for serializers.
+
+  {{{./generator.html}Code generation}} saves a lot of time for the default cases. At the same time if offers the flexibility to modify/optimize
+  the code when and where needed. 
 
 * Features
 
