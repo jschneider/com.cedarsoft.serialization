@@ -31,7 +31,7 @@
 
 News
 
-* 2010-07-09: Released 1.0.4
+* 2010-07-09: Released 1.0.3
 
   A new version has been released. The most important new feature is the availability of the {{{./generator.html}Generator}}.
   This is a huge time saver! So give it a try.
@@ -39,9 +39,9 @@ News
 
   Any feedback (especially concerning the generator) is welcome: {{{mailto:js@cedarsoft.com}js@cedarsoft.com}}.
 
-* 2010-06-02: Released 1.0.3
+* 2010-06-02: Released 1.0.2
 
-  Version 1.0.3 has been released.
+  Version 1.0.2 has been released.
 
   It just contains minor bug fixes and slightly improved samples.
   Especially the exceptions thrown on validation (by DelegatesMappings)
