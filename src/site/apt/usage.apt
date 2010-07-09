@@ -38,7 +38,7 @@ Usage
 
   A typical call to serialize the objects will look like this:
 
----
++---
 BusinessObject businessObject = ...;
 
 //The stream the serialized object is written to (e.g. a FileOutputStream)
@@ -49,14 +49,13 @@ BusinessObjectSerializer serializer = new BusinessObjectSerializer(...);
 serializer.serialize( businessObject, out);
 
 out.close();
-
----
++---
 
 * Deserializing
 
   Deserializing an object might look like that:
 
----
++---
 //The stream that provides the serialized object (e.g. a FileInputStream)
 InputStream in = ...
 
@@ -64,5 +63,4 @@ InputStream in = ...
 BusinessObjectSerializer serializer = new BusinessObjectSerializer(...);
 BusinessObject businessObject = serializer.deserialize( in);
 in.close();
-
----
++---

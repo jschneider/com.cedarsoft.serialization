@@ -64,66 +64,66 @@ Download
 
 **  Stax:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
   Optional Woodstox dependency:
 
----
++---
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
   <version>4.0.6</version>
 </dependency>
----
++---
 
 
 **  Stax Mate:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax-mate</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
   Optional Woodstox dependency:
 
----
++---
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
   <version>4.0.6</version>
 </dependency>
----
++---
 
 
 **  JDom:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>jdom</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
 
 **  Custom implementation:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>serialization</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
 
 
@@ -134,7 +134,7 @@ Download
   The snapshots are stored at {{http://nexus.cedarsoft.com/content/repositories/public-snapshots/}}. Just add a repository
   entry to your pom.xml:
   
----
++---
 <repositories>
   <repository>
     <id>cedarsoftSnapshotRepository</id>
@@ -145,5 +145,5 @@ Download
     </snapshots>
   </repository>
 </repositories>
----
++---
 

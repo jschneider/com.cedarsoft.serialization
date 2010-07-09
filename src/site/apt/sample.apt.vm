@@ -37,10 +37,10 @@ Sample
 
   This is a sample XML that is created by a very simple serializer:
 
----
++---
 <?xml version="1.0" encoding="UTF-8"?>
 <money xmlns=""http://www.cedarsoft.com/test/money/1.0.0">>1199</money>
----
++---
 
   The second line defines a namespace that contains the format version. If the XML format has to be changed,
   the version number is increased.

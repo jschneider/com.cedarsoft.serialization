@@ -50,23 +50,23 @@ Backends
 
 **  Maven dependency:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
   Optional Woodstox dependency:
 
----
++---
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
   <version>4.0.6</version>
 </dependency>
----
++---
 
 * Stax Mate
 
@@ -79,23 +79,23 @@ Backends
 
 **  Maven dependency:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>stax-mate</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
   Optional Woodstox dependency:
 
----
++---
 <dependency>
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
   <version>4.0.6</version>
 </dependency>
----
++---
 
 * JDom
 
@@ -106,13 +106,13 @@ Backends
 
 **  Maven dependency:
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>jdom</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---
 
 
 * Custom Backend
@@ -122,10 +122,10 @@ Backends
 
   Custom backend implementations should extend {{{./xref/com/cedarsoft/serialization/AbstractSerializer.html}AbstractSerializer}}.
 
----
++---
 <dependency>
   <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>serialization</artifactId>
   <version>${currentStableVersion}</version>
 </dependency>
----
++---

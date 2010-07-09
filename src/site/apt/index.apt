@@ -48,20 +48,20 @@ cedarsoft Serialization
 
   The resulting XML may be look like that:
 
----
++---
 <?xml version="1.0" encoding="UTF-8"?>
 <businessObject xmlns="http://yourcompany.com/path/2.0.1">
   <name>theName</name>
   ...
 </businessObject>
----
++---
 
   The second line contains a XML namespace declaration. Within this declaration the format version is encoded.
   If the XML format has to be changed, the version number is increased:
 
----
++---
 <businessObject xmlns="http://yourcompany.com/path/2.0.2">
----
++---
 
   The design of cedarsoft Serialization offers a very easy way to handle the old formats, too.
 

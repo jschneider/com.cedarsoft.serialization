@@ -48,11 +48,11 @@ Versioning
 
   A serialized xml containing the format version might look like that:
   
-----------------------------------------
++----------------------------------------
 <?xml version="1.0"?>
 <car xmlns="http://www.cedarsoft.com/test/car/1.0.1">
 ...
-----------------------------------------
++----------------------------------------
 
 * Alternative storage of format version in XML files
 
