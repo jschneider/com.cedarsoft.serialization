@@ -45,6 +45,7 @@
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
+      <item name="News" href="news.html" />
       <item name="Versioning" href="versioning.html" />
       <item name="Performance" href="performance.html" />
       <item name="Download" href="download.html" />

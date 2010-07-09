@@ -1,0 +1,50 @@
+#*
+ * Copyright (C) cedarsoft GmbH.
+ *
+ * Licensed under the GNU General Public License version 3 (the "License")
+ * with Classpath Exception; you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *         http://www.cedarsoft.org/gpl3ce
+ *         (GPL 3 with Classpath Exception)
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 3 only, as
+ * published by the Free Software Foundation. cedarsoft GmbH designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by cedarsoft GmbH in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 3 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 3 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact cedarsoft GmbH, 72810 Gomaringen, Germany,
+ * or visit www.cedarsoft.com if you need additional information or
+ * have any questions.
+ *#
+
+News
+
+* 2010-07-09: Released 1.0.4
+
+  A new version has been released. The most important new feature is the availability of the {{{./generator.html}Generator}}.
+  This is a huge time saver! So give it a try.
+  It is strongly suggested to use the {{{./generator/serializer-generator-maven-plugin/index.html}Generator Maven Plugin}}
+
+  Any feedback (especially concerning the generator) is welcome: {{{mailto:js@cedarsoft.com}js@cedarsoft.com}}.
+
+* 2010-06-02: Released 1.0.3
+
+  Version 1.0.3 has been released.
+
+  It just contains minor bug fixes and slightly improved samples.
+  Especially the exceptions thrown on validation (by DelegatesMappings)
+  have much better error messages now.
+
+
