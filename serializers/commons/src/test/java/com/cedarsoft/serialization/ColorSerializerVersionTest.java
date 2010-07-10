@@ -34,35 +34,30 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+import org.junit.experimental.theories.*;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
-public class ColorSerializerVersionTest extends AbstractXmlVersionTest<Color> {
+public class ColorSerializerVersionTest extends AbstractXmlVersionTest2<Color> {
   @NotNull
   @Override
   protected Serializer<Color> getSerializer() throws Exception {
     return new ColorSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Map<? extends Version, ? extends String> getSerializedXml() {
-    Map<Version, String> map = new HashMap<Version, String>();
-    map.put( Version.valueOf( 1, 0, 0 ),
-             "<color>\n" +
-               "  <red>100</red>\n" +
-               "  <green>42</green>\n" +
-               "  <blue>130</blue>\n" +
-               "</color>" );
-    return map;
-  }
+  @DataPoint
+  public static final Entry entry1 = create(
+    Version.valueOf( 1, 0, 0 ),
+    "<color>\n" +
+      "  <red>100</red>\n" +
+      "  <green>42</green>\n" +
+      "  <blue>130</blue>\n" +
+      "</color>" );
 
   @Override
   protected void verifyDeserialized( @NotNull Color deserialized, @NotNull Version version ) throws Exception {
-    Assert.assertEquals( deserialized.getRed(), 100 );
-    Assert.assertEquals( deserialized.getGreen(), 42 );
-    Assert.assertEquals( deserialized.getBlue(), 130 );
+    Assert.assertEquals( 100, deserialized.getRed() );
+    Assert.assertEquals( 42, deserialized.getGreen() );
+    Assert.assertEquals( 130, deserialized.getBlue() );
   }
 }

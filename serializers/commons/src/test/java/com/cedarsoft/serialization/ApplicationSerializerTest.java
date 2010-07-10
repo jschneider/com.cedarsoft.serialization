@@ -34,30 +34,24 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.app.Application;
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class ApplicationSerializerTest extends AbstractXmlSerializerTest<Application> {
+public class ApplicationSerializerTest extends AbstractXmlSerializerTest2<Application> {
   @NotNull
   @Override
   protected ApplicationSerializer getSerializer() {
     return new ApplicationSerializer( new VersionSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Application createObjectToSerialize() {
-    return new Application( "gimp", new Version( 1, 2, 3 ) );
-  }
+  @DataPoint
+  public static final Entry<Application> entry1 = create(
+    new Application( "gimp", new Version( 1, 2, 3 ) ),
+    "<application >\n" +
+      "  <name>gimp</name>\n" +
+      "  <version>1.2.3</version>\n" +
+      "</application>" );
 
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return
-      "<application >\n" +
-        "  <name>gimp</name>\n" +
-        "  <version>1.2.3</version>\n" +
-        "</application>";
-  }
 }

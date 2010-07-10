@@ -32,32 +32,24 @@
 package com.cedarsoft.serialization;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
 
-public class ColorSerializerTest extends AbstractXmlSerializerMultiTest<Color> {
+public class ColorSerializerTest extends AbstractXmlSerializerTest2<Color> {
   @NotNull
   @Override
   protected Serializer<Color> getSerializer() throws Exception {
     return new ColorSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends Color> createObjectsToSerialize() throws Exception {
-    return Arrays.asList( new Color( 100, 42, 130 ) );
-  }
+  @DataPoint
+  public static final Entry<Color> entry1 = create(
+    new Color( 100, 42, 130 ),
+    "<color>\n" +
+      "  <red>100</red>\n" +
+      "  <green>42</green>\n" +
+      "  <blue>130</blue>\n" +
+      "</color>" );
 
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() {
-    return Arrays.asList(
-      "<color>\n" +
-        "  <red>100</red>\n" +
-        "  <green>42</green>\n" +
-        "  <blue>130</blue>\n" +
-        "</color>" );
-  }
 }
