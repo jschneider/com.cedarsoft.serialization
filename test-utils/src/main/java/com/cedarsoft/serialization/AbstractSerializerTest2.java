@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization;
 
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
@@ -40,12 +41,15 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
  * Abstract base class for serializer tests.
+ *
  * @param <T> the type of domain object
  */
 @RunWith( Theories.class )
@@ -93,6 +97,22 @@ public abstract class AbstractSerializerTest2<T> {
 
   protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls String expected ) {
     return new Entry<T>( object, expected );
+  }
+
+  protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls URL expected ) {
+    try {
+      return new Entry<T>( object, IOUtils.toString( expected.openStream() ) );
+    } catch ( IOException e ) {
+      throw new RuntimeException( e );
+    }
+  }
+
+  protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls InputStream expected ) {
+    try {
+      return new Entry<T>( object, IOUtils.toString( expected ) );
+    } catch ( IOException e ) {
+      throw new RuntimeException( e );
+    }
   }
 
   public static class Entry<T> {
