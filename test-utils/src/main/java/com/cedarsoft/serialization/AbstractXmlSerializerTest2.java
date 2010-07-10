@@ -32,11 +32,18 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.AssertUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * Abstract base class for XML based serializers.
@@ -50,8 +57,8 @@ import java.util.List;
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NotNull @NonNls final String expected, @NotNull byte[] current ) throws Exception {
-    String expectedWithNamespace = AbstractXmlSerializerTest.addNameSpace( expected, ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
-    AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
+    String expectedWithNamespace = addNameSpace( expected, ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+    AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
   }
 
   @Override
@@ -59,15 +66,29 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
     verify( entry.getExpected(), serialized );
   }
 
-  /**
-   * Returns the expected serialized string
-   *
-   * @return the expected serialized string
-   */
   @NotNull
   @NonNls
-  @Deprecated
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    return Collections.emptyList();
+  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
+    return addNameSpace( xml, serializer.createNameSpaceUri( serializer.getFormatVersion() ) );
+  }
+
+  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpaceUri ) throws JDOMException, IOException {
+    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml.getBytes() ) );
+
+    Element root = doc.getRootElement();
+    if ( root.getNamespaceURI().length() == 0 ) {
+      Namespace namespace = Namespace.getNamespace( nameSpaceUri );
+
+      addNameSpaceRecursively( root, namespace );
+    }
+
+    return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc );
+  }
+
+  public static void addNameSpaceRecursively( @NotNull Element element, @NotNull Namespace namespace ) {
+    element.setNamespace( namespace );
+    for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
+      addNameSpaceRecursively( child, namespace );
+    }
   }
 }

@@ -40,7 +40,7 @@ import java.io.IOException;
 
 /**
  * It is necessary to define at least one DataPoint
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;T&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
+ * <pre>&#064;DataPoint<br/>public static final Entry entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
  *
  * @param <T> the type
  */
@@ -61,7 +61,7 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
 
   @NotNull
   protected static byte[] processXml( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpace ) throws JDOMException, IOException {
-    return AbstractXmlSerializerTest.addNameSpace( xml, nameSpace ).getBytes();
+    return AbstractXmlSerializerTest2.addNameSpace( xml, nameSpace ).getBytes();
   }
 
   @NotNull

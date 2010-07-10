@@ -55,34 +55,8 @@ import java.io.IOException;
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
-    String expectedWithNamespace = addNameSpace( getExpectedSerialized(), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( getExpectedSerialized(), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
     AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
-  }
-
-  @NotNull
-  @NonNls
-  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
-    return addNameSpace( xml, serializer.createNameSpaceUri( serializer.getFormatVersion() ) );
-  }
-
-  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpaceUri ) throws JDOMException, IOException {
-    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml.getBytes() ) );
-
-    Element root = doc.getRootElement();
-    if ( root.getNamespaceURI().length() == 0 ) {
-      Namespace namespace = Namespace.getNamespace( nameSpaceUri );
-
-      addNameSpaceRecursively( root, namespace );
-    }
-
-    return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc );
-  }
-
-  public static void addNameSpaceRecursively( @NotNull Element element, @NotNull Namespace namespace ) {
-    element.setNamespace( namespace );
-    for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
-      addNameSpaceRecursively( child, namespace );
-    }
   }
 
   /**
