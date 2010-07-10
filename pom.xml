@@ -203,6 +203,7 @@
       <groupId>com.intellij</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>
+      <version>7.0.3</version>
     </dependency>
 
     <dependency>
