@@ -31,19 +31,17 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
+public class ExtraSerializerTest extends AbstractXmlSerializerTest2<Extra> {
   @NotNull
   @Override
   protected Serializer<Extra> getSerializer() {
@@ -51,26 +49,19 @@ public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
     return new ExtraSerializer( new MoneySerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends Extra> createObjectsToSerialize() {
-    return Arrays.asList(
-      new Extra( "Metallic", new Money( 400, 00 ) ),
-      new Extra( "Great Radio", new Money( 700, 00 ) )
-    );
-  }
+  @DataPoint
+  public static final Entry<Extra> ENTRY1 = create(
+    new Extra( "Metallic", new Money( 400, 00 ) ),
+    "<extra>\n" +
+      "  <description>Metallic</description>\n" +
+      "  <price>40000</price>\n" +
+      "</extra>" );
 
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    return Arrays.asList(
-      "<extra>\n" +
-        "  <description>Metallic</description>\n" +
-        "  <price>40000</price>\n" +
-        "</extra>",
-      "<extra>\n" +
-        "  <description>Great Radio</description>\n" +
-        "  <price>70000</price>\n" +
-        "</extra>" );
-  }
+  @DataPoint
+  public static final Entry<Extra> ENTRY2 = create(
+    new Extra( "Great Radio", new Money( 700, 00 ) ),
+    "<extra>\n" +
+      "  <description>Great Radio</description>\n" +
+      "  <price>70000</price>\n" +
+      "</extra>" );
 }

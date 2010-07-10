@@ -31,31 +31,24 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class MoneySerializerTest extends AbstractXmlSerializerTest<Money>{
+public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
   //We don't need a multi test for such an easy class...
+
   @NotNull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<money>1199</money>";
-  }
-
-  @NotNull
-  @Override
-  protected Money createObjectToSerialize() {
-    return new Money( 1199 );
-  }
+  @DataPoint
+  public static final Entry<Money> ENTRY1 = create( new Money( 1199 ), "<money>1199</money>" );
 }

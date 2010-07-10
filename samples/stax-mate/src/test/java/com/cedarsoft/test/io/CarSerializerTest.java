@@ -31,28 +31,27 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+import org.junit.experimental.theories.*;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
  *
  */
-public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
+public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
   @NotNull
   @Override
   protected Serializer<Car> getSerializer() {
@@ -61,37 +60,23 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends Car> createObjectsToSerialize() {
-    return Arrays.asList(
-      new Car( new Model( "Toyota" ), Color.BLACK, new Money( 49000, 00 ) ),
-      new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) )
-    );
-  }
+  @DataPoint
+  public static final Entry<Car> ENTRY1 = create( new Car( new Model( "Toyota" ), Color.BLACK, new Money( 49000, 00 ) ), CarSerializerTest.class.getResourceAsStream( "car1.xml" ) );
 
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    return Arrays.asList(
-      IOUtils.toString( getClass().getResourceAsStream( "car1.xml" ) ),
-      IOUtils.toString( getClass().getResourceAsStream( "car2.xml" ) )
-    );
-  }
+  @DataPoint
+  public static final Entry<Car> ENTRY2 = create(
+    new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) ),
+    CarSerializerTest.class.getResourceAsStream( "car2.xml" ) );
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Car> deserialized ) {
+  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Car original ) {
     //We don't implement equals in the car, therefore compare manually
     //    super.verifyDeserialized( deserialized );
 
-    assertEquals( 2, deserialized.size() );
-
-    Car first = deserialized.get( 0 );
-    assertEquals( Color.BLACK, first.getColor() );
-    assertEquals( first.getBasePrice(), new Money( 49000, 0 ) );
+    assertEquals( original.getColor(), deserialized.getColor() );
+    assertEquals( original.getBasePrice(), deserialized.getBasePrice() );
 
     //....
-
   }
 
   @Test

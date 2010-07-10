@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<car xmlns="http://thecompany.com/test/car/1.0.1">
+  <color red="255" blue="0" green="200" />
+  <model>Ford</model>
+  <basePrice cents="1900000" />
+  <extra>
+    <description>Whoo effect</description>
+    <price cents="9998" />
+  </extra>
+  <extra>
+    <description>Better Whoo effect</description>
+    <price cents="19900" />
+  </extra>
+</car>

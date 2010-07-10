@@ -31,7 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
@@ -39,6 +39,7 @@ import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
+public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
   @NotNull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
@@ -56,35 +57,15 @@ public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return
-      "<car>\n" +
-        "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
-        "  <model>Ford</model>\n" +
-        "  <basePrice cents=\"1900000\" />\n" +
-        "  <extra>\n" +
-        "    <description>Whoo effect</description>\n" +
-        "    <price cents=\"9998\" />\n" +
-        "  </extra>\n" +
-        "  <extra>\n" +
-        "    <description>Better Whoo effect</description>\n" +
-        "    <price cents=\"19900\" />\n" +
-        "  </extra>\n" +
-        "</car>";
-  }
-
-  @NotNull
-  @Override
-  protected Car createObjectToSerialize() throws Exception {
-    return new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) );
-  }
+  @DataPoint
+  public static final Entry<Car> ENTRY2 = create(
+    new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) ),
+    CarSerializerTest.class.getResourceAsStream( "car3.xml" ) );
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized ) throws Exception {
-    assertEquals( Color.ORANGE, deserialized.getColor() );
-    assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
+  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Car original ) {
+    assertEquals( original.getColor(), deserialized.getColor() );
+    assertEquals( original.getBasePrice(), deserialized.getBasePrice() );
     //.... (and much more)
   }
 }

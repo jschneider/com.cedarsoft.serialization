@@ -31,18 +31,16 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Model;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
+public class ModelSerializerTest extends AbstractXmlSerializerTest2<Model> {
   @NotNull
   @Override
   protected Serializer<Model> getSerializer() {
@@ -50,37 +48,24 @@ public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
     return new ModelSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends Model> createObjectsToSerialize() {
-    //Just create a few examples of objects that shall be serialized
-    return Arrays.asList(
-      new Model( "Toyota" ),
-      new Model( "GM" ),
-      new Model( "Volkswagen" ),
-      new Model( "Renault" )
-    );
-  }
+  //We just return the sole part of the xml that should be compared.
+  //For comparison XML-Unit is used, so there is no need to take care of formatting etc.
 
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    //We just return the sole part of the xml that should be compared.
-    //For comparison XML-Unit is used, so there is no need to take care of formatting etc.
+  //Note: The xml serializers write a version information to the xml. This has been left out here!
 
-    //Note: The xml serializers write a version information to the xml. This has been left out here!
-    return Arrays.asList(
-      "<model>Toyota</model>",
-      "<model>GM</model>",
-      "<model>Volkswagen</model>",
-      "<model>Renault</model>"
-    );
-  }
+  @DataPoint
+  public static final Entry<Model> ENTRY1 = create( new Model( "Toyota" ), "<model>Toyota</model>" );
+  @DataPoint
+  public static final Entry<Model> ENTRY2 = create( new Model( "GM" ), "<model>GM</model>" );
+  @DataPoint
+  public static final Entry<Model> ENTRY3 = create( new Model( "Volkswagen" ), "<model>Volkswagen</model>" );
+  @DataPoint
+  public static final Entry<Model> ENTRY4 = create( new Model( "Renault" ), "<model>Renault</model>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Model> deserialized ) throws Exception {
+  protected void verifyDeserialized( @NotNull Model deserialized, @NotNull Model original ) {
     //We *might* override this method and verify the deserialized objects on our own
     //The default implementation simply calls "equals" for each single object.
-    super.verifyDeserialized( deserialized );
+    super.verifyDeserialized( deserialized, original );
   }
 }

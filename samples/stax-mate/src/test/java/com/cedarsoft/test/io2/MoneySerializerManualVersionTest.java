@@ -34,7 +34,6 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.test.Money;
 import org.junit.*;
-import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +46,7 @@ import static org.junit.Assert.*;
  */
 public class MoneySerializerManualVersionTest {
   @Test
-  public void testCurrent() throws IOException, SAXException {
+  public void testCurrent() throws Exception {
     MoneySerializer serializer = new MoneySerializer();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();

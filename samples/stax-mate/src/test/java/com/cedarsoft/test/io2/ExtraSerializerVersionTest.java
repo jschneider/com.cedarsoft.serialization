@@ -33,46 +33,42 @@ package com.cedarsoft.test.io2;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
 
 /**
  * Testing the new version.
  */
-public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
+public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
   @NotNull
   @Override
   protected Serializer<Extra> getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Map<? extends Version, ? extends String> getSerializedXml() {
-    Map<Version, String> map = new HashMap<Version, String>();
-
-    map.put( Version.valueOf( 1, 5, 0 ), "<extra>\n" +
+  @DataPoint
+  public static final Entry ENTRY1 = create(
+    Version.valueOf( 1, 5, 0 ),
+    "<extra>\n" +
       "  <description>Metallic</description>\n" +
       "  <price>40001</price>\n" +
       "</extra>" );
 
-    map.put( Version.valueOf( 1, 5, 1 ), "<extra>\n" +
+  @DataPoint
+  public static final Entry ENTRY2 = create(
+    Version.valueOf( 1, 5, 1 ),
+    "<extra>\n" +
       "  <description>Metallic</description>\n" +
       "  <price cents=\"40001\"/>\n" +
       "</extra>" );
-
-    return map;
-  }
 
   @Override
   protected void verifyDeserialized( @NotNull Extra deserialized, @NotNull Version version ) throws Exception {

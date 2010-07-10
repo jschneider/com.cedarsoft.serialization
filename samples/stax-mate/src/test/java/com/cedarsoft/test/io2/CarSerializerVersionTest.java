@@ -33,7 +33,7 @@ package com.cedarsoft.test.io2;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
@@ -41,6 +41,7 @@ import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+import org.junit.experimental.theories.*;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
+public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
   @NotNull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
@@ -59,12 +60,8 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Map<? extends Version, ? extends String> getSerializedXml() {
-    Map<Version, String> map = new HashMap<Version, String>();
-
-    map.put( Version.valueOf( 1, 0, 0 ), "<car>\n" +
+  @DataPoint
+  public static final Entry ENTRY1 = create(  Version.valueOf( 1, 0, 0 ),  "<car>\n" +
       "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
       "  <model>Ford</model>\n" +
       "  <basePrice>1900000</basePrice>\n" +
@@ -77,7 +74,9 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
       "    <price>19900</price>\n" +
       "  </extra>" +
       "</car>" );
-    map.put( Version.valueOf( 1, 0, 1 ), "<car>\n" +
+
+  @DataPoint
+  public static final Entry ENTRY2 = create(  Version.valueOf( 1, 0, 1 ),  "<car>\n" +
       "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
       "  <model>Ford</model>\n" +
       "  <basePrice cents=\"1900000\" />\n" +
@@ -90,9 +89,6 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
       "    <price cents=\"19900\" />\n" +
       "  </extra>\n" +
       "</car>" );
-
-    return map;
-  }
 
   @Override
   protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Version version ) throws Exception {
@@ -111,5 +107,4 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
                     "   1.0.1 -->     1.5.1       |       1.0.1\n" +
                     "------------------------------------------\n" );
   }
-
 }

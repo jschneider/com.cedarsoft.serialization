@@ -34,13 +34,13 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
-import org.junit.*;
+import org.junit.experimental.theories.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -49,31 +49,19 @@ import java.io.IOException;
 /**
  *
  */
-public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObject> {
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return
-      "<myObject>\n" +
-        "  <money cents=\"203499\" />\n" +
-        "</myObject>";
-  }
+public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObject> {
+
+  @DataPoint
+  public static final Entry<MoneyApiTest.MyObject> ENTRY1 = create(
+    new MyObject( new Money( 2034, 99 ) ),
+    "<myObject>\n" +
+      "  <money cents=\"203499\" />\n" +
+      "</myObject>" );
 
   @NotNull
   @Override
   protected Serializer<MyObject> getSerializer() throws Exception {
     return new MyObjectSerializer( new com.cedarsoft.test.io2.MoneySerializer() );
-  }
-
-  @NotNull
-  @Override
-  protected MyObject createObjectToSerialize() throws Exception {
-    return new MyObject( new Money( 2034, 99 ) );
-  }
-
-  @Test
-  public void testWrongMapping() {
-
   }
 
   public static class MyObjectSerializer extends AbstractStaxMateSerializer<MyObject> {
