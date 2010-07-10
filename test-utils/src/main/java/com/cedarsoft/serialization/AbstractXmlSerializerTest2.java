@@ -31,28 +31,43 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.file.BaseName;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.AssertUtils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.junit.experimental.theories.*;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
+ * Abstract base class for XML based serializers.
+ * <p/>
+ * <p/>
+ * Attention: it is necessary to define at least one DataPoint:
+ * <p/>
+ * <pre>&#064;DataPoint<br/>public static final Entry&lt;BaseName&gt; entry1 = create(<br/> new DomainObject(),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
  *
+ * @param <T> the type of the serialized object
  */
-public class BaseNameSerializerTest extends AbstractXmlSerializerTest2<BaseName> {
-  @NotNull
-  @Override
-  protected AbstractStaxMateSerializer<BaseName> getSerializer() {
-    return new BaseNameSerializer();
+public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
+  protected void verify( @NotNull @NonNls final String expected, @NotNull byte[] current ) throws Exception {
+    String expectedWithNamespace = AbstractXmlSerializerTest.addNameSpace( expected, ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+    AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
   }
 
-  @DataPoint
-  public static final Entry<BaseName> entry1 = create(
-    new BaseName( "asdf" ),
-    "<baseName>asdf</baseName>" );
+  @Override
+  protected void verifySerialized( @NotNull AbstractSerializerTest2.Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
+    verify( entry.getExpected(), serialized );
+  }
 
-  @DataPoint
-  public static final Entry<BaseName> entry2 = create(
-    new BaseName( "asdf2" ),
-    "<baseName>asdf2</baseName>" );
+  /**
+   * Returns the expected serialized string
+   *
+   * @return the expected serialized string
+   */
+  @NotNull
+  @NonNls
+  @Deprecated
+  protected List<? extends String> getExpectedSerialized() throws Exception {
+    return Collections.emptyList();
+  }
 }

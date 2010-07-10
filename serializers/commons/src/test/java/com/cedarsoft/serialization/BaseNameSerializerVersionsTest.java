@@ -31,28 +31,34 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+
 /**
  *
  */
-public class BaseNameSerializerTest extends AbstractXmlSerializerTest2<BaseName> {
+public class BaseNameSerializerVersionsTest extends AbstractXmlVersionTest2<BaseName> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<BaseName> getSerializer() {
     return new BaseNameSerializer();
   }
 
-  @DataPoint
-  public static final Entry<BaseName> entry1 = create(
-    new BaseName( "asdf" ),
-    "<baseName>asdf</baseName>" );
+  @Override
+  protected void verifyDeserialized( @NotNull BaseName deserialized, @NotNull Version version ) throws Exception {
+    assertThat( deserialized.getName(), is( "asdf" ) );
+  }
 
   @DataPoint
-  public static final Entry<BaseName> entry2 = create(
-    new BaseName( "asdf2" ),
-    "<baseName>asdf2</baseName>" );
+  public static final Entry entry1 = create(
+    Version.valueOf( 1, 0, 0 ),
+    "<baseName>asdf</baseName>" );
 }
