@@ -34,39 +34,24 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class ExtensionSerializerTest extends AbstractXmlSerializerMultiTest<Extension> {
+public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extension> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<Extension> getSerializer() {
     return new ExtensionSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends Extension> createObjectsToSerialize() {
-    return Arrays.asList(
-      new Extension( ",", "jpg" ),
-      new Extension( ".", "jpg" ),
-      new Extension( "-", "jpg" ),
-      new Extension( ",", "cr2" )
-    );
-  }
-
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    return Arrays.asList(
-      "<extension delimiter=\",\">jpg</extension>",
-      "<extension delimiter=\".\">jpg</extension>",
-      "<extension delimiter=\"-\">jpg</extension>",
-      "<extension delimiter=\",\">cr2</extension>"
-    );
-  }
+  @DataPoint
+  public static final Entry<Extension> entry1 = create( new Extension( ",", "jpg" ), "<extension delimiter=\",\">jpg</extension>" );
+  @DataPoint
+  public static final Entry<Extension> entry2 = create( new Extension( ".", "jpg" ), "<extension delimiter=\".\">jpg</extension>" );
+  @DataPoint
+  public static final Entry<Extension> entry3 = create( new Extension( "-", "jpg" ), "<extension delimiter=\"-\">jpg</extension>" );
+  @DataPoint
+  public static final Entry<Extension> entry4 = create( new Extension( ",", "cr2" ), "<extension delimiter=\",\">cr2</extension>" );
 }

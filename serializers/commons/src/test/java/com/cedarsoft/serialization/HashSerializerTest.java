@@ -31,30 +31,22 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
+import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class HashSerializerTest extends AbstractXmlSerializerTest<Hash> {
+public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<Hash> getSerializer() {
     return new HashSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Hash createObjectToSerialize() {
-    return Hash.fromHex( Algorithm.SHA256, "11223344" );
-  }
-
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<hash algorithm=\"SHA256\">11223344</hash>";
-  }
+  @DataPoint
+  public static final Entry<Hash> entry1 = create( Hash.fromHex( Algorithm.SHA256, "11223344" ), "<hash algorithm=\"SHA256\">11223344</hash>" );
 }

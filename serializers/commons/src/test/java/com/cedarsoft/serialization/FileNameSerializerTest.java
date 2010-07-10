@@ -35,44 +35,29 @@ import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.xml.XmlCommons;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
+import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
 
 /**
  *
  */
-public class FileNameSerializerTest extends AbstractXmlSerializerTest<FileName> {
+public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<FileName> getSerializer() {
     return new FileNameSerializer( new BaseNameSerializer(), new ExtensionSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected FileName createObjectToSerialize() {
-    return new FileName( "a", ",", "pdf" );
-  }
-
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<fileName>\n" +
-      "  <baseName>a</baseName>\n" +
-      "  <extension delimiter=\",\">pdf</extension>\n" +
-      "</fileName>";
-  }
+  @DataPoint
+  public static final Entry<FileName> entry1 = create( new FileName( "a", ",", "pdf" ), "<fileName>\n" +
+    "  <baseName>a</baseName>\n" +
+    "  <extension delimiter=\",\">pdf</extension>\n" +
+    "</fileName>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull FileName fileName ) {
-    assertEquals( fileName, createObjectToSerialize() );
-  }
-
-  @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
-    super.verifySerialized( serialized );
+  protected void verifySerialized( @NotNull Entry<FileName> entry, @NotNull byte[] serialized ) throws Exception {
+    super.verifySerialized( entry, serialized );
     assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
   }
 }

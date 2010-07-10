@@ -34,29 +34,36 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.license.License;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class LicenseSerializerTest extends AbstractXmlSerializerTest<License> {
+public class LicenseSerializerTest extends AbstractXmlSerializerTest2<License> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<License> getSerializer() {
     return new LicenseSerializer();
   }
 
-  @NotNull
-  @Override
-  protected License createObjectToSerialize() {
-    return License.PUBLIC_DOMAIN;
-  }
+  @DataPoint
+  public static final Entry<License> entry1 = create(
+    License.PUBLIC_DOMAIN,
+    "<license id=\"PUBLIC_DOMAIN\">\n" +
+      "  <name>Public Domain</name>\n" +
+      "</license>" );
 
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return
-      "<license id=\"PUBLIC_DOMAIN\">\n" +
-        "  <name>Public Domain</name>\n" +
-        "</license>";
-  }
+  @DataPoint
+  public static final Entry<License> entry2 = create(
+    License.ALL_RIGHTS_RESERVED,
+    "<license id=\"ALL_RIGHTS_RESERVED\">\n" +
+      "  <name>All rights reserved</name>\n" +
+      "</license>" );
+
+  @DataPoint
+  public static final Entry<License> entry3 = create(
+    License.UNKNOWN,
+    "<license id=\"UNKNOWN\">\n" +
+      "  <name>Unknown</name>\n" +
+      "</license>" );
 }

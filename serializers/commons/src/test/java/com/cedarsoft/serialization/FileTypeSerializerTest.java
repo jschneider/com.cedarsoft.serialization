@@ -35,36 +35,24 @@ import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class FileTypeSerializerTest extends AbstractXmlSerializerMultiTest<FileType> {
+public class FileTypeSerializerTest extends AbstractXmlSerializerTest2<FileType> {
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<FileType> getSerializer() {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 
-  @NotNull
-  @Override
-  protected Iterable<? extends FileType> createObjectsToSerialize() throws Exception {
-    return Arrays.asList(
-      new FileType( "TheId", true, new Extension( ",", "ext" ), new Extension( ".", "_ext2" ) )
-    );
-  }
-
-  @NotNull
-  @Override
-  protected List<? extends String> getExpectedSerialized() throws Exception {
-    return Arrays.asList(
-      "<fileType dependent=\"true\">\n" +
-        "  <id>TheId</id>\n" +
-        "  <extension default=\"true\" delimiter=\",\">ext</extension>\n" +
-        "  <extension delimiter=\".\">_ext2</extension>\n" +
-        "</fileType>" );
-  }
+  @DataPoint
+  public static final Entry<FileType> entry1 = create(
+    new FileType( "TheId", true, new Extension( ",", "ext" ), new Extension( ".", "_ext2" ) ),
+    "<fileType dependent=\"true\">\n" +
+      "  <id>TheId</id>\n" +
+      "  <extension default=\"true\" delimiter=\",\">ext</extension>\n" +
+      "  <extension delimiter=\".\">_ext2</extension>\n" +
+      "</fileType>" );
 }

@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.experimental.theories.*;
 
 import java.awt.Dimension;
 
@@ -40,28 +41,18 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class DimensionSerializerTest extends AbstractXmlSerializerTest<Dimension> {
+public class DimensionSerializerTest extends AbstractXmlSerializerTest2<Dimension> {
   @NotNull
   @Override
   protected DimensionSerializer getSerializer() {
     return new DimensionSerializer();
   }
 
-  @NotNull
-  @Override
-  protected Dimension createObjectToSerialize() {
-    return new Dimension( 1600, 600 );
-  }
-
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-      "<dimension>1600x600</dimension>";
-  }
+  @DataPoint
+  public static final Entry<Dimension> entry1 = create( new Dimension( 1600, 600 ), "<dimension>1600x600</dimension>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Dimension deserialized ) {
+  protected void verifyDeserialized( @NotNull Dimension deserialized, @NotNull Dimension original ) {
     assertEquals( 1600, deserialized.width );
     assertEquals( 600, deserialized.height );
   }
