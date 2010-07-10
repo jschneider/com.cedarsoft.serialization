@@ -35,7 +35,11 @@ import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.xml.XmlCommons;
 import org.jetbrains.annotations.NotNull;
+import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -59,5 +63,36 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName>
   protected void verifySerialized( @NotNull Entry<FileName> entry, @NotNull byte[] serialized ) throws Exception {
     super.verifySerialized( entry, serialized );
     assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
+  }
+
+  @Test
+  public void testDelimiter() throws IOException {
+    FileName fileName = deserialize(
+      "<fileName xmlns=\"http://www.cedarsoft.com/file/fileName/1.0.0\">\n" +
+        "  <baseName>baseName</baseName>\n" +
+        "  <extension delimiter=\".\">jpg</extension>\n" +
+        "</fileName>" );
+
+    assertEquals( "baseName", fileName.getBaseName().getName() );
+    assertEquals( ".", fileName.getExtension().getDelimiter() );
+    assertEquals( "jpg", fileName.getExtension().getExtension() );
+  }
+
+  @Test
+  public void testMissingDelimiter() throws IOException {
+    FileName fileName = deserialize(
+      "<fileName xmlns=\"http://www.cedarsoft.com/file/fileName/1.0.0\">\n" +
+        "  <baseName>baseName</baseName>\n" +
+        "  <extension>jpg</extension>\n" +
+        "</fileName>" );
+
+    assertEquals( "baseName", fileName.getBaseName().getName() );
+    assertEquals( ".", fileName.getExtension().getDelimiter() );
+    assertEquals( "jpg", fileName.getExtension().getExtension() );
+  }
+
+  private FileName deserialize( String xml ) throws IOException {
+    FileNameSerializer serializer = new FileNameSerializer( new BaseNameSerializer(), new ExtensionSerializer() );
+    return serializer.deserialize( new ByteArrayInputStream( xml.getBytes() ) );
   }
 }

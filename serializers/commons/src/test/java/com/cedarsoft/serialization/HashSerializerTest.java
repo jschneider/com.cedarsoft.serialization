@@ -31,11 +31,17 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.*;
 import org.junit.experimental.theories.*;
+import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  *
@@ -49,4 +55,13 @@ public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
 
   @DataPoint
   public static final Entry<Hash> entry1 = create( Hash.fromHex( Algorithm.SHA256, "11223344" ), "<hash algorithm=\"SHA256\">11223344</hash>" );
+
+  @Test
+  public void testIt() throws Exception {
+    byte[] serialized = getSerializer().serializeToByteArray( Hash.fromHex( Algorithm.MD5, "121212" ) );
+    AssertUtils.assertXMLEquals( new String( serialized ).trim(), "<hash xmlns=\"http://www.cedarsoft.com/crypt/hash/1.0.0\" algorithm=\"MD5\">121212</hash>" );
+
+    Hash deserialized = getSerializer().deserialize( new ByteArrayInputStream( serialized ) );
+    Assert.assertEquals( deserialized, Hash.fromHex( Algorithm.MD5, "121212" ) );
+  }
 }

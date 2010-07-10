@@ -34,7 +34,13 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -54,4 +60,24 @@ public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extensio
   public static final Entry<Extension> entry3 = create( new Extension( "-", "jpg" ), "<extension delimiter=\"-\">jpg</extension>" );
   @DataPoint
   public static final Entry<Extension> entry4 = create( new Extension( ",", "cr2" ), "<extension delimiter=\",\">cr2</extension>" );
+  
+  @Test
+  public void testDelimiter() throws IOException {
+    Extension extension = deserialize( "<extension xmlns=\"http://www.cedarsoft.com/file/extension/1.0.0\" delimiter=\".\">jpg</extension>\n" );
+
+    assertEquals( ".", extension.getDelimiter() );
+    assertEquals( "jpg", extension.getExtension() );
+  }
+
+  @Test
+  public void testMissingDelimiter() throws IOException {
+    Extension extension = deserialize( "<extension xmlns=\"http://www.cedarsoft.com/file/extension/1.0.0\">jpg</extension>\n" );
+
+    assertEquals( ".", extension.getDelimiter() );
+    assertEquals( "jpg", extension.getExtension() );
+  }
+
+  private Extension deserialize( String xml ) throws IOException {
+    return new ExtensionSerializer().deserialize( new ByteArrayInputStream( xml.getBytes() ) );
+  }
 }
