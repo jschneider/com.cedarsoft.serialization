@@ -77,16 +77,20 @@ public abstract class AbstractSerializerMultiTest<T> {
     int index = 0;
     for ( T objectToSerialize : objectsToSerialize ) {
       try {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        serializer.serialize( objectToSerialize, out );
-
-        serialized.add( out.toByteArray() );
+        serialized.add( serialize( serializer, objectToSerialize ) );
         index++;
       } catch ( IOException e ) {
         throw new IOException( "Serialization failed for (" + index + ") <" + objectsToSerialize + ">", e );
       }
     }
     return serialized;
+  }
+
+  @NotNull
+  protected byte[] serialize( @NotNull Serializer<T> serializer, @NotNull T objectToSerialize ) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serializer.serialize( objectToSerialize, out );
+    return out.toByteArray();
   }
 
   /**
