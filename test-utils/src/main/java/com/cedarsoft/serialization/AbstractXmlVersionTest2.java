@@ -40,7 +40,7 @@ import java.io.IOException;
 
 /**
  * It is necessary to define at least one DataPoint
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;BaseName&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
+ * <pre>&#064;DataPoint<br/>public static final Entry&lt;T&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
  *
  * @param <T> the type
  */

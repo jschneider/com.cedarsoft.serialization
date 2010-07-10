@@ -44,7 +44,7 @@ import java.util.List;
  * <p/>
  * Attention: it is necessary to define at least one DataPoint:
  * <p/>
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;BaseName&gt; entry1 = create(<br/> new DomainObject(),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
+ * <pre>&#064;DataPoint<br/>public static final Entry&lt;T&gt; entry1 = create(<br/> new DomainObject(),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
  *
  * @param <T> the type of the serialized object
  */
