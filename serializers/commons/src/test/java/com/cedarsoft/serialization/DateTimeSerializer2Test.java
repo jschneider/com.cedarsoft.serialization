@@ -35,27 +35,14 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.*;
+import org.junit.experimental.theories.*;
 
 /**
  *
  */
-public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime> {
+public class DateTimeSerializer2Test extends AbstractXmlSerializerTest2<DateTime> {
   @NotNull
-  protected final DateTimeZone zone = DateTimeZone.forID( "America/New_York" );
-
-  private DateTimeZone oldTimeZone;
-
-  @Before
-  public void setUpDateTimeZone() throws Exception {
-    oldTimeZone = DateTimeZone.getDefault();
-    DateTimeZone.setDefault( zone );
-  }
-
-  @After
-  public void tearDownDateTimeZone() {
-    DateTimeZone.setDefault( oldTimeZone );
-  }
+  protected static final DateTimeZone ZONE = DateTimeZone.forID( "America/New_York" );
 
   @NotNull
   @Override
@@ -63,20 +50,11 @@ public class DateTimeSerializer2Test extends AbstractXmlSerializerTest<DateTime>
     return new DateTimeSerializer();
   }
 
-  @NotNull
-  @Override
-  protected DateTime createObjectToSerialize() {
-    return new DateTime( 2009, 5, 1, 2, 2, 5, 4 );
-  }
-
-  @NotNull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<dateTime>20090501T020205.004-0400</dateTime>";
-  }
+  @DataPoint
+  public static final Entry<DateTime> entry1 = create( new DateTime( 2009, 5, 1, 2, 2, 5, 4, ZONE ), "<dateTime>20090501T020205.004-0400</dateTime>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull DateTime dateTime ) {
-    DateTimeSerializerTest.assertEqualsDateTime( dateTime, createObjectToSerialize() );
+  protected void verifyDeserialized( @NotNull DateTime deserialized, @NotNull DateTime original ) {
+    DateTimeSerializerTest.assertEqualsDateTime( deserialized, original );
   }
 }
