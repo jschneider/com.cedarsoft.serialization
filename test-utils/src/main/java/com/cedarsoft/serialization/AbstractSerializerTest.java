@@ -45,7 +45,9 @@ import static org.junit.Assert.*;
  * Abstract class for serializer tests
  *
  * @param <T> the type of the serialized object
+ * @deprecated use {@link AbstractSerializerTest2} instead
  */
+@Deprecated
 public abstract class AbstractSerializerTest<T> {
   /**
    * Default test method that checks the serialization and deserialization using the latest format

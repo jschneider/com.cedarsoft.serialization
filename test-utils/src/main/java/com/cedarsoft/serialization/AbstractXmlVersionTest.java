@@ -40,7 +40,9 @@ import java.util.Map;
 
 /**
  * @param <T> the type
+ * @deprecated use {@link AbstractXmlVersionTest2} instead
  */
+@Deprecated
 public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
   @NotNull
   @Override

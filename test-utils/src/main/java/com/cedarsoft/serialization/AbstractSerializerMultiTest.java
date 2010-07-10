@@ -47,7 +47,9 @@ import static org.junit.Assert.*;
  * Abstract class for serializer tests
  *
  * @param <T> the type of the serialized object
+ * @deprecated use {@link AbstractSerializerTest2} instead
  */
+@Deprecated
 public abstract class AbstractSerializerMultiTest<T> {
   @Test
   public void testSerializer() throws Exception {
