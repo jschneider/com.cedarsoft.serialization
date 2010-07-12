@@ -90,7 +90,7 @@ public class SerializerGeneratorMojo extends AbstractMojo {
   /**
    * Whether to create the tests
    *
-   * @parameter expression="${createSerializer}"
+   * @parameter expression="${createTests}"
    * @readonly
    */
   protected boolean createTests = true;
