@@ -31,6 +31,9 @@
 
 package com.cedarsoft.serialization.generator.output.staxmate.serializer.test;
 
+import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
+import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
 import com.cedarsoft.serialization.generator.output.staxmate.serializer.AbstractGeneratorTest;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -46,13 +49,14 @@ import static org.junit.Assert.*;
  *
  */
 public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
-  private StaxMateGenerator generator;
+  private XmlGenerator generator;
 
   @Before
   @Override
   public void setUp() throws Exception {
     super.setUp();
-    generator = new StaxMateGenerator( codeGenerator );
+    final CodeGenerator<XmlDecisionCallback> codeGenerator1 = codeGenerator;
+    generator = new XmlGenerator( codeGenerator1 );
   }
 
   @Test

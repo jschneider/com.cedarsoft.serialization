@@ -33,6 +33,8 @@ package com.cedarsoft.serialization.generator.output.serializer.test;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -52,14 +54,26 @@ import java.util.Map;
 /**
  *
  */
-public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
+public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NonNls
   public static final String METHOD_NAME_GET_EXPECTED_SERIALIZED = "getExpectedSerialized";
   @NonNls
   public static final String METHOD_NAME_GET_SERIALIZED_XML = "getSerializedXml";
 
-  protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public XmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
+  }
+
+  @NotNull
+  @Override
+  protected JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
+    return codeGenerator.ref( AbstractXmlSerializerMultiTest.class ).narrow( domainType );
+  }
+
+  @NotNull
+  @Override
+  protected JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
+    return codeGenerator.ref( AbstractXmlVersionTest.class ).narrow( domainType );
   }
 
   @Override
