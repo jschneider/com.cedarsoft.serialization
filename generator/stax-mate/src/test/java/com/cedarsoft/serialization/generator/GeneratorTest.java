@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.TestUtils;
 import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
@@ -69,7 +70,7 @@ public class GeneratorTest {
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
-    GeneratorConfiguration configuration = new GeneratorConfiguration( javaFile, destDir, testDestDir, new PrintWriter( new ByteArrayOutputStream() ) );
+    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, testDestDir, new PrintWriter( new ByteArrayOutputStream() ) );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 

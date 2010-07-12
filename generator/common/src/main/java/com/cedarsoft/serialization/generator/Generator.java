@@ -68,7 +68,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
   public abstract static class AbstractGeneratorRunner<T extends DecisionCallback> implements Runner {
     @Override
     public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
-      Result result = Parser.parse( configuration.getDomainSourceFile() );
+      Result result = Parser.parse( configuration.getDomainSourceFiles() );
 
       DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration() ).create();
 

@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.generator;
 
 import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.GeneratorCliSupport;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
@@ -42,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class StaxMateGenerator extends Generator {
   public static void main( String[] args ) throws Exception {
-    new StaxMateGenerator().run( args );
+    new GeneratorCliSupport( new StaxMateGenerator(), "ser-gen" ).run( args );
   }
 
   @NotNull
