@@ -5,7 +5,6 @@ import java.util.Map;
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.generator.staxmate.test.FooSerializer;
 import org.testng.Assert;
 
 public class FooSerializerVersionTest

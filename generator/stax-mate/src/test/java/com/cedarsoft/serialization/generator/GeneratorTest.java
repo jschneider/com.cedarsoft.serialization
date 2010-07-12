@@ -88,4 +88,24 @@ public class GeneratorTest {
     assertTrue( serializerVersionTestFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
   }
+
+  @Test
+  public void testOnlyTests() throws Exception {
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
+
+    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, testDestDir, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
+    Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
+    runner.generate( configuration );
+
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
+    assertFalse( serializerFile.exists() );
+
+    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" );
+    assertTrue( serializerTestFile.exists() );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_2.txt" ), FileUtils.readFileToString( serializerTestFile ).trim() );
+
+    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java" );
+    assertTrue( serializerVersionTestFile.exists() );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
+  }
 }

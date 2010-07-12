@@ -85,8 +85,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   public JDefinedClass generateSerializerVersionTest( @NotNull String serializerClassName, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
-    JClass serializerClass = codeGenerator.ref( serializerClassName );
     JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
+    JClass serializerClass = codeGenerator.ref( serializerClassName );
 
     //the class
     JDefinedClass testClass = codeModel._class( createSerializerVersionTestName( serializerClass.fullName() ) )._extends( createVersionExtendsClass( domainType, serializerClass ) );
