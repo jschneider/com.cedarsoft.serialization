@@ -34,8 +34,6 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
 import com.google.common.collect.ImmutableList;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -47,29 +45,7 @@ import java.io.PrintWriter;
  *
  * @goal generate
  */
-public class SerializerGeneratorMojo extends AbstractMojo {
-  /**
-   * Location of the output directory for the placeholder poms
-   *
-   * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-main"
-   */
-  protected File outputDirectory;
-
-  /**
-   * Location of the output directory for the placeholder poms
-   *
-   * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-test"
-   */
-  protected File testOutputDirectory;
-
-  /**
-   * Project artifacts.
-   *
-   * @parameter default-value="${project.artifact}"
-   * @required
-   * @readonly
-   */
-  protected Artifact projectArtifact;
+public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
 
   /**
    * The path to the domain class the Serializer is generated for.
@@ -104,15 +80,7 @@ public class SerializerGeneratorMojo extends AbstractMojo {
       throw new MojoExecutionException( "domain class source file is missing" );
     }
 
-    if ( outputDirectory == null ) {
-      throw new MojoExecutionException( "output directory not set" );
-    }
-    outputDirectory.mkdirs();
-
-    if ( testOutputDirectory == null ) {
-      throw new MojoExecutionException( "test output directory not set" );
-    }
-    testOutputDirectory.mkdirs();
+    prepareOutputDirectories();
 
     getLog().debug( "Output Dir: " + outputDirectory.getAbsolutePath() );
     getLog().debug( "Test output Dir: " + testOutputDirectory.getAbsolutePath() );
