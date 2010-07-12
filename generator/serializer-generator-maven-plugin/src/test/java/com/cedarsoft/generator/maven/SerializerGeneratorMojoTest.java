@@ -31,13 +31,18 @@
 
 package com.cedarsoft.generator.maven;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.matchers.ContainsFileMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
 import java.io.File;
-import java.util.Iterator;
+
+import static com.cedarsoft.matchers.ContainsFileMatcher.containsFiles;
+import static com.cedarsoft.matchers.ContainsFileMatcher.empty;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -56,9 +61,41 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   }
 
   @Test
-  public void testIt() throws Exception {
-    File testPom = new File( getBasedir(), "src/test/resources/unit/basic/basic-plugin-config.xml" );
+  public void testBasic() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "basic" );
 
+    assertTrue( mojo.outputDirectory.getAbsolutePath(), mojo.outputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/out" ) );
+    assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
+    mojo.execute();
+
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
+                                                                                                                    "unit/basic/DaDomainObjectSerializerTest.java" ) );
+  }
+
+  @Test
+  public void testOnlyTests() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "only-tests" );
+    mojo.execute();
+
+
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
+                                                                                                                    "unit/basic/DaDomainObjectSerializerTest.java" ) );
+  }
+
+  @Test
+  public void testNoTests() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "no-tests" );
+    mojo.execute();
+
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+  }
+
+  @NotNull
+  private SerializerGeneratorMojo createMojo( @NotNull @NonNls String name ) throws Exception {
+    File testPom = new File( getBasedir(), "src/test/resources/unit/" + name + "/basic-plugin-config.xml" );
     SerializerGeneratorMojo mojo = ( SerializerGeneratorMojo ) lookupMojo( "generate", testPom );
     assertNotNull( mojo );
 
@@ -73,21 +110,6 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertFalse( mojo.outputDirectory.exists() );
     assertFalse( mojo.testOutputDirectory.exists() );
 
-    assertTrue( mojo.outputDirectory.getAbsolutePath(), mojo.outputDirectory.getAbsolutePath().endsWith( "target/test/unit/basic/target/out" ) );
-    assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/basic/target/test-out" ) );
-    mojo.execute();
-
-    assertEquals( 1, mojo.outputDirectory.list().length );
-    assertEquals( 1, mojo.testOutputDirectory.list().length );
-
-    {
-      Iterator<File> iter = FileUtils.iterateFiles( mojo.outputDirectory, new String[]{"java"}, true );
-      assertTrue( iter.hasNext() );
-      File file = iter.next();
-      assertEquals( "DaDomainObjectSerializer.java", file.getName() );
-
-      AssertUtils.assertEquals( getClass().getResource( "/unit/basic/DaDomainObjectSerializer.java" ), FileUtils.readFileToString( file ) );
-    }
+    return mojo;
   }
-
 }

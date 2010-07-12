@@ -33,6 +33,7 @@ package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
+import com.google.common.collect.ImmutableList;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -79,6 +80,21 @@ public class SerializerGeneratorMojo extends AbstractMojo {
    */
   protected File domainClassSourceFile;
 
+  /**
+   * Whether to create the serializer
+   *
+   * @parameter expression="${createSerializer}"
+   * @readonly
+   */
+  protected boolean createSerializer = true;
+  /**
+   * Whether to create the tests
+   *
+   * @parameter expression="${createSerializer}"
+   * @readonly
+   */
+  protected boolean createTests = true;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info( "Serializer Generator Mojo" );
@@ -105,7 +121,7 @@ public class SerializerGeneratorMojo extends AbstractMojo {
     try {
       getLog().info( "Running Generator for " + domainClassSourceFile.getAbsolutePath() );
 
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFile, outputDirectory, testOutputDirectory, printWriter );
+      GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( domainClassSourceFile ), outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializer, createTests ) );
       new StaxMateGenerator().run( configuration );
     } catch ( Exception e ) {
       throw new MojoExecutionException( "Generation failed due to " + e.getMessage(), e );
