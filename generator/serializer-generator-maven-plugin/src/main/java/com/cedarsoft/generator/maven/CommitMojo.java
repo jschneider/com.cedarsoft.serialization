@@ -34,11 +34,11 @@ package com.cedarsoft.generator.maven;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 import org.codehaus.plexus.util.FileUtils;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,86 +100,74 @@ public class CommitMojo extends AbstractGeneratorMojo {
    */
   private Prompter prompter;
 
-  public void setPrompter( Prompter prompter ) {
-    this.prompter = prompter;
-  }
-
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     if ( commitSerializer ) {
+      if ( sourceRoots.isEmpty() ) {
+        throw new MojoExecutionException( "No compile source roots available" );
+      }
+      File sourceRoot = new File( sourceRoots.get( 0 ) );
+
       try {
-        commitSerializers();
+        commit( outputDirectory, sourceRoot );
       } catch ( IOException e ) {
         throw new MojoFailureException( "Commiting serializer failed due to " + e.getMessage(), e );
       }
     }
 
-    if ( commitTests && !testOutputDirectory.exists() || testOutputDirectory.list().length == 0 ) {
-      getLog().info( "No tests have been created in " + testOutputDirectory.getPath() );
-      getLog().info( "Call serializer-generator:generate first." );
+
+    if ( commitTests ) {
+      if ( testSourceRoots.isEmpty() ) {
+        throw new MojoExecutionException( "No test compile source roots available" );
+      }
+      File testSourceRoot = new File( testSourceRoots.get( 0 ) );
+
+      try {
+        commit( testOutputDirectory, testSourceRoot );
+      } catch ( IOException e ) {
+        throw new MojoFailureException( "Commiting serializer failed due to " + e.getMessage(), e );
+      }
     }
-
-
-    //    if ( testSourceRoots.isEmpty() ) {
-    //      throw new MojoExecutionException( "No compile source roots available" );
-    //    }
-    //    String testSourceRootRelative = testSourceRoots.get( 0 );
-    //    File testSourceRoot = new File( project.getBasedir(), testSourceRootRelative );
-    //
-    //
-    //    getLog().info( "Committing serializers to " + sourceRoot.getPath() );
-    //    getLog().info( "Committing serializer tests to " + testSourceRootRelative );
-    //    getLog().info( "Committing serializer tests to " + testSourceRoot.getPath() );
-
-
-    //    FileUtils.copyDirectory( outputDirectory, );
-
-
   }
 
-  private void commitSerializers() throws MojoExecutionException, IOException {
-    if ( !outputDirectory.exists() || outputDirectory.list().length == 0 ) {
-      getLog().warn( "No serializers have been created in " + outputDirectory.getPath() );
+  protected void commit( @NotNull File sourceDirectory, @NotNull File targetDir ) throws MojoExecutionException, IOException {
+    if ( !sourceDirectory.exists() || sourceDirectory.list().length == 0 ) {
+      getLog().warn( "No generated files found in " + sourceDirectory.getPath() );
       getLog().warn( "Call serializer-generator:generate first." );
       return;
     }
 
-    MavenProject project = context.getCurrentProject();
+    getLog().info( "Committing generated files to " + targetDir.getPath() );
 
-    if ( sourceRoots.isEmpty() ) {
-      throw new MojoExecutionException( "No compile source roots available" );
-    }
-
-    File sourceRoot = new File( sourceRoots.get( 0 ) );
-    getLog().info( "Committing serializers to " + sourceRoot.getPath() );
-
-    List<? extends String> serializerFileNames = FileUtils.getFileNames( outputDirectory, "**", null, true );
-    for ( String serializerFileName : serializerFileNames ) {
-      String relative = serializerFileName.substring( outputDirectory.getPath().length() + 1 );
+    List<? extends String> filesNames = FileUtils.getFileNames( sourceDirectory, "**", null, true );
+    for ( String serializerFileName : filesNames ) {
+      String relative = serializerFileName.substring( sourceDirectory.getPath().length() + 1 );
 
       getLog().info( "Committing: " + relative );
 
-      File target = new File( sourceRoot, relative );
+      File target = new File( targetDir, relative );
       if ( target.exists() ) {
         try {
           @NonNls
-          String answer = prompter.prompt( "Serializer " + relative + " still exists. Really overwrite?", "no" );
-          getLog().info( "Answer: " + answer );
+          String answer = prompter.prompt( relative + " still exists. Really overwrite?", "no" );
 
-          if ( !answer.equalsIgnoreCase( "yes" ) ) {
-            throw new MojoExecutionException( "Cannot commit serializer: Still exists at " + target.getPath() );
+          if ( answer.equalsIgnoreCase( "yes" ) ) {
+            getLog().info( "Overwriting " + relative );
+          } else {
+            getLog().info( "Skipping " + relative );
+            continue;
           }
         } catch ( PrompterException e ) {
-          throw new MojoExecutionException( "Cannot commit serializer: Still exists at " + target.getPath(), e );
+          throw new MojoExecutionException( e.getMessage(), e );
         }
       }
-      File source = new File( outputDirectory, relative );
+      File source = new File( sourceDirectory, relative );
 
-      getLog().info( "Moving serializer" );
+      getLog().info( "Moving generated file" );
       getLog().info( "\tfrom: " + source.getPath() );
       getLog().info( "\tto: " + target.getPath() );
 
-      FileUtils.copyFile( source, target );
+      FileUtils.rename( source, target );
     }
   }
 }
