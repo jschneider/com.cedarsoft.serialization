@@ -50,12 +50,12 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   @Override
   protected JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
-    return codeModel.ref( AbstractXmlSerializerMultiTest.class ).narrow( domainType );
+    return codeGenerator.ref( AbstractXmlSerializerMultiTest.class ).narrow( domainType );
   }
 
   @NotNull
   @Override
   protected JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
-    return codeModel.ref( AbstractXmlVersionTest.class ).narrow( domainType );
+    return codeGenerator.ref( AbstractXmlVersionTest.class ).narrow( domainType );
   }
 }

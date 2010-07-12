@@ -147,12 +147,12 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   protected JMethod createCreateObjectsToSerializeMethod( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JClass returnType = codeModel.ref( Iterable.class ).narrow( domainType.wildcard() );
+    JClass returnType = codeGenerator.ref( Iterable.class ).narrow( domainType.wildcard() );
 
     JMethod method = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE )._throws( Exception.class );
     method.annotate( Override.class );
 
-    JInvocation asListInvocation = codeModel.ref( Arrays.class ).staticInvoke( "asList" );
+    JInvocation asListInvocation = codeGenerator.ref( Arrays.class ).staticInvoke( "asList" );
     for ( int i = 0; i < NUMBER_OF_OBJECTS; i++ ) {
       asListInvocation.arg( createDomainObjectCreationExpression( domainObjectDescriptor ) );
     }
@@ -175,7 +175,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @NotNull
   protected JMethod createGetSerializerMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JType returnType = codeModel.ref( Serializer.class ).narrow( domainType );
+    JType returnType = codeGenerator.ref( Serializer.class ).narrow( domainType );
     JMethod createSerializerMethod = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_SERIALIZER )._throws( Exception.class );
     createSerializerMethod.annotate( Override.class );
 

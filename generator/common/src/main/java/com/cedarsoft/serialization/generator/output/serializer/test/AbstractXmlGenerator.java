@@ -64,15 +64,15 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
 
   @Override
   protected void createGetSerializedMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JClass versionRef = codeModel.ref( Version.class );
+    JClass versionRef = codeGenerator.ref( Version.class );
 
-    JClass returnType = codeModel.ref( Map.class ).narrow( versionRef.wildcard(), codeModel.ref( String.class ).wildcard() );
+    JClass returnType = codeGenerator.ref( Map.class ).narrow( versionRef.wildcard(), codeModel.ref( String.class ).wildcard() );
 
     JMethod method = testClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_SERIALIZED_XML );
     method.annotate( Override.class );
 
-    JClass mapType = codeModel.ref( Map.class ).narrow( Version.class, String.class );
-    JClass hashMapType = codeModel.ref( HashMap.class ).narrow( Version.class, String.class );
+    JClass mapType = codeGenerator.ref( Map.class ).narrow( Version.class, String.class );
+    JClass hashMapType = codeGenerator.ref( HashMap.class ).narrow( Version.class, String.class );
 
     JVar map = method.body().decl( mapType, "map", JExpr._new( hashMapType ) );
 
@@ -85,12 +85,12 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
   @Override
   @NotNull
   protected JMethod createVerifyMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JClass returnType = codeModel.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() );
+    JClass returnType = codeGenerator.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() );
     JMethod method = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_EXPECTED_SERIALIZED );
     method.annotate( Override.class );
 
 
-    JInvocation asListInvocation = codeModel.ref( Arrays.class ).staticInvoke( "asList" );
+    JInvocation asListInvocation = codeGenerator.ref( Arrays.class ).staticInvoke( "asList" );
     for ( int i = 0; i < NUMBER_OF_OBJECTS; i++ ) {
       asListInvocation.arg( JExpr.lit( "<implementMe/>" ) );
     }

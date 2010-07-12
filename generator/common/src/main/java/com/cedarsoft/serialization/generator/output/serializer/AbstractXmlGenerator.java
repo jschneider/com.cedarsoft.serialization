@@ -115,7 +115,7 @@ public abstract class AbstractXmlGenerator extends AbstractGenerator<XmlDecision
    */
   @NotNull
   protected JInvocation createDefaultVersionRangeInvocation( @NotNull Version from, @NotNull Version to ) {
-    JClass versionRangeType = codeModel.ref( VersionRange.class );
+    JClass versionRangeType = codeGenerator.ref( VersionRange.class );
     return versionRangeType.staticInvoke( METHOD_NAME_FROM ).arg( JExpr.lit( from.getMajor() ) ).arg( JExpr.lit( from.getMinor() ) ).arg( JExpr.lit( from.getBuild() ) )
       .invoke( METHOD_NAME_TO ).arg( JExpr.lit( to.getMajor() ) ).arg( JExpr.lit( to.getMinor() ) ).arg( JExpr.lit( to.getBuild() ) );
   }

@@ -125,7 +125,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   @NotNull
   @Override
   protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
-    return codeModel.ref( AbstractStaxMateSerializer.class ).narrow( domainType );
+    return codeGenerator.ref( AbstractStaxMateSerializer.class ).narrow( domainType );
   }
 
   @Override
