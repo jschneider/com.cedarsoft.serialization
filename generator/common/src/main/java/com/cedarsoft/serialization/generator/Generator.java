@@ -42,6 +42,7 @@ import com.cedarsoft.io.WriterOutputStream;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.google.common.collect.Lists;
 import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.mirror.declaration.ClassDeclaration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -70,8 +71,18 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
       PrintStream statusPrinter = new PrintStream( new WriterOutputStream( configuration.getLogOut() ) );
 
       Result result = Parser.parse( configuration.getDomainSourceFiles() );
-      DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( result.getClassDeclaration() ).create();
 
+      if ( result.getClassDeclarations().isEmpty() ) {
+        throw new IllegalStateException( "No class declarations found" );
+      }
+
+      for ( ClassDeclaration classDeclaration : result.getClassDeclarations() ) {
+        DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( classDeclaration ).create();
+        generate( descriptor, configuration, statusPrinter );
+      }
+    }
+
+    private void generate( @NotNull DomainObjectDescriptor descriptor, @NotNull GeneratorConfiguration configuration, @NotNull PrintStream statusPrinter ) throws JClassAlreadyExistsException, IOException {
       T decisionCallback = createDecisionCallback();
 
       //The Serializer
