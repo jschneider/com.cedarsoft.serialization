@@ -34,6 +34,7 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.matchers.ContainsFileMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -78,7 +79,6 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     SerializerGeneratorMojo mojo = createMojo( "only-tests" );
     mojo.execute();
 
-
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
     assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
                                                                                                                     "unit/basic/DaDomainObjectSerializerTest.java" ) );
@@ -97,12 +97,15 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   private SerializerGeneratorMojo createMojo( @NotNull @NonNls String name ) throws Exception {
     File testPom = new File( getBasedir(), "src/test/resources/unit/" + name + "/basic-plugin-config.xml" );
     SerializerGeneratorMojo mojo = ( SerializerGeneratorMojo ) lookupMojo( "generate", testPom );
+
     assertNotNull( mojo );
+    mojo.mavenProject = new MavenProjectStub();
+
 
     assertNotNull( mojo.projectArtifact );
     assertNotNull( mojo.outputDirectory );
-    assertNotNull( mojo.domainClassSourceFile );
-    assertTrue( mojo.domainClassSourceFile.exists() );
+    assertNotNull( mojo.domainClassSourceFilePattern );
+    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
 
     //Clean up
     FileUtils.deleteQuietly( mojo.outputDirectory );

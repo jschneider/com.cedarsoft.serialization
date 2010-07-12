@@ -33,12 +33,13 @@ package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
-import com.google.common.collect.ImmutableList;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Generate a Serializer and the corresponding unit tests
@@ -48,13 +49,13 @@ import java.io.PrintWriter;
 public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
 
   /**
-   * The path to the domain class the Serializer is generated for.
+   * The pattern path to the domain class the Serializer is generated for.
    *
    * @parameter expression="${domain.class}"
    * @required
    * @readonly
    */
-  protected File domainClassSourceFile;
+  protected String domainClassSourceFilePattern;
 
   /**
    * Whether to create the serializer
@@ -76,7 +77,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     getLog().info( "Serializer Generator Mojo" );
     getLog().info( "-------------------------" );
 
-    if ( domainClassSourceFile == null ) {
+    if ( domainClassSourceFilePattern == null ) {
       throw new MojoExecutionException( "domain class source file is missing" );
     }
 
@@ -87,12 +88,19 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
 
     PrintWriter printWriter = new PrintWriter( new LogWriter( getLog() ) );
     try {
-      getLog().info( "Running Generator for " + domainClassSourceFile.getAbsolutePath() );
+      List<File> domainClassSourceFiles = FileUtils.getFiles( getBaseDir(), domainClassSourceFilePattern, null, true );
+      if ( domainClassSourceFiles.isEmpty() ) {
+        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainClassSourceFilePattern + ">" );
+      }
 
-      GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( domainClassSourceFile ), outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializer, createTests ) );
+      getLog().info( "Running Generator for" );
+      for ( File domainClassSourceFile : domainClassSourceFiles ) {
+        getLog().info( "\t" + domainClassSourceFile.getPath().substring( getBaseDir().getPath().length() + 1 ) );
+      }
+      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFiles, outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializer, createTests ) );
       new StaxMateGenerator().run( configuration );
     } catch ( Exception e ) {
-      throw new MojoExecutionException( "Generation failed due to " + e.getMessage(), e );
+      throw new MojoExecutionException( "Generation failed due to: " + e.getMessage(), e );
     } finally {
       printWriter.close();
     }

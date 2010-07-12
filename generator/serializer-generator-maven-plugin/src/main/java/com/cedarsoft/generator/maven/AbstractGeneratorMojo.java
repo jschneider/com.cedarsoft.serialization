@@ -34,6 +34,7 @@ package com.cedarsoft.generator.maven;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -67,6 +68,15 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
    */
   protected Artifact projectArtifact;
 
+  /**
+   * The maven session
+   *
+   * @parameter expression="${project}"
+   * @required
+   * @readonly
+   */
+  protected MavenProject mavenProject;
+
   protected void prepareOutputDirectories() throws MojoExecutionException {
     verifyDirectories();
     outputDirectory.mkdirs();
@@ -96,5 +106,15 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
       throw new MojoExecutionException( "output directory not set" );
     }
     return outputDirectory;
+  }
+
+  @NotNull
+  protected MavenProject getProject() {
+    return mavenProject;
+  }
+
+  @NotNull
+  protected File getBaseDir() {
+    return getProject().getBasedir();
   }
 }

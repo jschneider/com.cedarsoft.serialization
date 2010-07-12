@@ -85,15 +85,6 @@ public class CommitMojo extends AbstractGeneratorMojo {
   protected boolean commitTests = true;
 
   /**
-   * The maven session
-   *
-   * @parameter expression="${session}"
-   * @required
-   * @readonly
-   */
-  protected MavenSession context;
-
-  /**
    * @component
    * @required
    * @readonly
