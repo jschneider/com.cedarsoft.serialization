@@ -111,7 +111,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    */
   @NotNull
   @NonNls
-  protected String createSerializerClassName( @NotNull @NonNls String domainClassName ) {
+  public static String createSerializerClassName( @NotNull @NonNls String domainClassName ) {
     return domainClassName + SERIALIZER_CLASS_NAME_SUFFIX;
   }
 
