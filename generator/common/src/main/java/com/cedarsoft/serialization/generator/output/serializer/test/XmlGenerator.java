@@ -34,7 +34,9 @@ package com.cedarsoft.serialization.generator.output.serializer.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -67,13 +69,13 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NotNull
   @Override
   protected JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
-    return codeGenerator.ref( AbstractXmlSerializerMultiTest.class ).narrow( domainType );
+    return codeGenerator.ref( AbstractXmlSerializerTest2.class ).narrow( domainType );
   }
 
   @NotNull
   @Override
   protected JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
-    return codeGenerator.ref( AbstractXmlVersionTest.class ).narrow( domainType );
+    return codeGenerator.ref( AbstractXmlVersionTest2.class ).narrow( domainType );
   }
 
   @Override
