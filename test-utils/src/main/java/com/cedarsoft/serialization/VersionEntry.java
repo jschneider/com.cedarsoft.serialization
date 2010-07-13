@@ -29,25 +29,31 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io2;
+package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.Entry;
-import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.test.Money;
+import com.cedarsoft.Version;
 import org.jetbrains.annotations.NotNull;
-import org.junit.experimental.theories.*;
 
 /**
- *
+ * An entry used for {@link AbstractVersionTest2}. It provides a version information and a serialized object.
  */
-public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
+public interface VersionEntry {
+  /**
+   * Returns the version
+   *
+   * @return the version
+   */
   @NotNull
-  @Override
-  protected Serializer<Money> getSerializer() {
-    return new MoneySerializer();
-  }
+  Version getVersion();
 
-  @DataPoint
-  public static final Entry<Money> ENTRY1 = create( new Money( 1199 ), "<money cents=\"1199\"/>" );
+  /**
+   * Returns the serialized object
+   *
+   * @param serializer the serializer that is used to deserialize the byte stream
+   * @return the serialized object
+   *
+   * @throws Exception
+   */
+  @NotNull
+  byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception;
 }

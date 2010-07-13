@@ -34,6 +34,7 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
@@ -51,9 +52,9 @@ public class MoneySerializerVersionsTest extends AbstractXmlVersionTest2<Money> 
   }
 
   @DataPoint
-  public static final Entry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "<money>799</money>" );
+  public static final VersionEntry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "<money>799</money>" );
   @DataPoint
-  public static final Entry ENTRY2 = create( Version.valueOf( 1, 0, 1 ), "<money cents=\"799\" />" );
+  public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 0, 1 ), "<money cents=\"799\" />" );
 
   @Override
   protected void verifyDeserialized( @NotNull Money deserialized, @NotNull Version version ) {

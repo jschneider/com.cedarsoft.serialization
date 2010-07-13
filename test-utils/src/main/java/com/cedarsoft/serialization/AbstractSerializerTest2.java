@@ -59,12 +59,12 @@ public abstract class AbstractSerializerTest2<T> {
     Serializer<T> serializer = getSerializer();
 
     //Serialize
-    byte[] serialized = serialize( serializer, entry.object );
+    byte[] serialized = serialize( serializer, entry.getObject() );
 
     //Verify
     verifySerialized( entry, serialized );
 
-    verifyDeserialized( serializer.deserialize( new ByteArrayInputStream( serialized ) ), entry.object );
+    verifyDeserialized( serializer.deserialize( new ByteArrayInputStream( serialized ) ), entry.getObject() );
   }
 
   @NotNull
@@ -95,46 +95,26 @@ public abstract class AbstractSerializerTest2<T> {
     assertThat( deserialized, is( new ReflectionEquals( original ) ) );
   }
 
-  protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls String expected ) {
+  @NotNull
+  protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls byte[] expected ) {
     return new Entry<T>( object, expected );
   }
 
+  @NotNull
   protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls URL expected ) {
     try {
-      return new Entry<T>( object, IOUtils.toString( expected.openStream() ) );
+      return new Entry<T>( object, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
       throw new RuntimeException( e );
     }
   }
 
+  @NotNull
   protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls InputStream expected ) {
     try {
-      return new Entry<T>( object, IOUtils.toString( expected ) );
+      return new Entry<T>( object, IOUtils.toByteArray( expected ) );
     } catch ( IOException e ) {
       throw new RuntimeException( e );
-    }
-  }
-
-  public static class Entry<T> {
-    @NotNull
-    private final T object;
-    @NotNull
-    @NonNls
-    private final String expected;
-
-    public Entry( @NotNull T object, @NotNull @NonNls String expected ) {
-      this.object = object;
-      this.expected = expected;
-    }
-
-    @NotNull
-    public String getExpected() {
-      return expected;
-    }
-
-    @NotNull
-    public T getObject() {
-      return object;
     }
   }
 }

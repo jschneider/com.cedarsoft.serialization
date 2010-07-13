@@ -32,6 +32,7 @@
 package com.cedarsoft.test.io;
 
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Model;
 import org.jetbrains.annotations.NotNull;

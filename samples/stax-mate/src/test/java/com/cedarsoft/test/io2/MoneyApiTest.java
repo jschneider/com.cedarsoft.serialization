@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
@@ -52,7 +53,7 @@ import java.io.IOException;
 public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObject> {
 
   @DataPoint
-  public static final Entry<MoneyApiTest.MyObject> ENTRY1 = create(
+  public static final Entry<MyObject> ENTRY1 = create(
     new MyObject( new Money( 2034, 99 ) ),
     "<myObject>\n" +
       "  <money cents=\"203499\" />\n" +

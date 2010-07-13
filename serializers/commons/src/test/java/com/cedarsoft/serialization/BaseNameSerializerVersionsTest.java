@@ -37,8 +37,6 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
-import java.util.Map;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -58,7 +56,7 @@ public class BaseNameSerializerVersionsTest extends AbstractXmlVersionTest2<Base
   }
 
   @DataPoint
-  public static final Entry entry1 = create(
+  public static final VersionEntry entry1 = create(
     Version.valueOf( 1, 0, 0 ),
     "<baseName>asdf</baseName>" );
 }

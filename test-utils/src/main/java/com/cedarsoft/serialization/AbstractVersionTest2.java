@@ -32,7 +32,6 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
@@ -45,6 +44,7 @@ import java.io.IOException;
  * Abstract test class for testing the support for multiple format versions
  * Attention: it is necessary to define at least one DataPoint:
  * <pre>&#064;DataPoint<br/>public static final Entry&lt;BaseName&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> serializedAsByteArray; );</pre>
+ *
  * @param <T> the type that is deserialized
  */
 @RunWith( Theories.class )
@@ -56,7 +56,7 @@ public abstract class AbstractVersionTest2<T> {
    * @throws SAXException
    */
   @Theory
-  public void testVersion( @NotNull Entry entry ) throws Exception {
+  public void testVersion( @NotNull VersionEntry entry ) throws Exception {
     Serializer<T> serializer = getSerializer();
 
     Version version = entry.getVersion();
@@ -81,43 +81,4 @@ public abstract class AbstractVersionTest2<T> {
    * @param version      the version
    */
   protected abstract void verifyDeserialized( @NotNull T deserialized, @NotNull Version version ) throws Exception;
-
-  @NotNull
-  protected static Entry create( @NotNull Version version, @NotNull byte[] serialized ) {
-    return new DefaultEntry( version, serialized );
-  }
-
-
-  public interface Entry {
-    @NotNull
-    byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception;
-
-    @NotNull
-    Version getVersion();
-  }
-
-  public static class DefaultEntry implements Entry {
-    @NotNull
-    final byte[] serialized;
-    @NotNull
-    @NonNls
-    private final Version version;
-
-    public DefaultEntry( @NotNull Version version, @NotNull byte[] serialized ) {
-      this.version = version;
-      this.serialized = serialized;
-    }
-
-    @Override
-    @NotNull
-    public byte[] getSerialized( @NotNull Serializer<?> serializer ) {
-      return serialized;
-    }
-
-    @Override
-    @NotNull
-    public Version getVersion() {
-      return version;
-    }
-  }
 }

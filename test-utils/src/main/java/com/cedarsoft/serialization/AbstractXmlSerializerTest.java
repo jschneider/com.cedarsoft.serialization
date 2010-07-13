@@ -32,18 +32,8 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.AssertUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 /**
  * Abstract base class for XML based serializers.
@@ -55,7 +45,7 @@ import java.io.IOException;
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {
   @Override
   protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
-    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( getExpectedSerialized(), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), getExpectedSerialized().getBytes() );
     AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
   }
 

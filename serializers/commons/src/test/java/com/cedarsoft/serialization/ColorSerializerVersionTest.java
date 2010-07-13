@@ -46,7 +46,7 @@ public class ColorSerializerVersionTest extends AbstractXmlVersionTest2<Color> {
   }
 
   @DataPoint
-  public static final Entry entry1 = create(
+  public static final VersionEntry entry1 = create(
     Version.valueOf( 1, 0, 0 ),
     "<color>\n" +
       "  <red>100</red>\n" +

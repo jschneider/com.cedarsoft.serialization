@@ -61,22 +61,22 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
 
   @NotNull
   protected static byte[] processXml( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpace ) throws JDOMException, IOException {
-    return AbstractXmlSerializerTest2.addNameSpace( xml, nameSpace ).getBytes();
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
   }
 
   @NotNull
-  protected static Entry create( @NotNull Version version, @NotNull @NonNls String xml ) {
-    return new XmlEntry( version, xml );
+  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls String xml ) {
+    return new XmlVersionEntry( version, xml );
   }
 
-  public static class XmlEntry implements Entry {
+  public static class XmlVersionEntry implements VersionEntry {
     @NotNull
     private final Version version;
     @NotNull
     @NonNls
     private final String xml;
 
-    public XmlEntry( @NotNull Version version, @NotNull String xml ) {
+    public XmlVersionEntry( @NotNull Version version, @NotNull String xml ) {
       this.version = version;
       this.xml = xml;
     }

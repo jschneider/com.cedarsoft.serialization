@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
@@ -44,8 +45,6 @@ import org.junit.*;
 import org.junit.experimental.theories.*;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -61,7 +60,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
   }
 
   @DataPoint
-  public static final Entry ENTRY1 = create(  Version.valueOf( 1, 0, 0 ),  "<car>\n" +
+  public static final VersionEntry ENTRY1 = create(  Version.valueOf( 1, 0, 0 ),  "<car>\n" +
       "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
       "  <model>Ford</model>\n" +
       "  <basePrice>1900000</basePrice>\n" +
@@ -76,7 +75,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
       "</car>" );
 
   @DataPoint
-  public static final Entry ENTRY2 = create(  Version.valueOf( 1, 0, 1 ),  "<car>\n" +
+  public static final VersionEntry ENTRY2 = create(  Version.valueOf( 1, 0, 1 ),  "<car>\n" +
       "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
       "  <model>Ford</model>\n" +
       "  <basePrice cents=\"1900000\" />\n" +

@@ -56,24 +56,24 @@ import java.io.IOException;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify( @NotNull @NonNls final String expected, @NotNull byte[] current ) throws Exception {
-    String expectedWithNamespace = addNameSpace( expected, ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+  protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] exectedXml ) throws Exception {
+    String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
     AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
   }
 
   @Override
-  protected void verifySerialized( @NotNull AbstractSerializerTest2.Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
-    verify( entry.getExpected(), serialized );
+  protected void verifySerialized( @NotNull Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
+    verify( serialized, entry.getExpected() );
   }
 
   @NotNull
   @NonNls
-  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
-    return addNameSpace( xml, serializer.createNameSpaceUri( serializer.getFormatVersion() ) );
+  public static String addNameSpace( @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
+    return addNameSpace( serializer.createNameSpaceUri( serializer.getFormatVersion() ), xmlBytes );
   }
 
-  public static String addNameSpace( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpaceUri ) throws JDOMException, IOException {
-    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml.getBytes() ) );
+  public static String addNameSpace( @NotNull @NonNls String nameSpaceUri, @NotNull @NonNls byte[] xml ) throws JDOMException, IOException {
+    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml ) );
 
     Element root = doc.getRootElement();
     if ( root.getNamespaceURI().length() == 0 ) {
@@ -90,5 +90,10 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
     for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
       addNameSpaceRecursively( child, namespace );
     }
+  }
+
+  @NotNull
+  protected static <T> Entry<T> create( @NotNull T object, @NotNull @NonNls String expected ) {
+    return new Entry<T>( object, expected.getBytes() );
   }
 }

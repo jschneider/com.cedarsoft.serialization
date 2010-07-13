@@ -29,25 +29,43 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io2;
+package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.Entry;
-import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.test.Money;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.junit.experimental.theories.*;
 
 /**
- *
+ * An entry for a test pair
  */
-public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
+public class Entry<T> {
   @NotNull
-  @Override
-  protected Serializer<Money> getSerializer() {
-    return new MoneySerializer();
+  private final T object;
+  @NotNull
+  @NonNls
+  private final byte[] expected;
+
+  public Entry( @NotNull T object, @NotNull @NonNls byte[] expected ) {
+    this.object = object;
+    this.expected = expected;
   }
 
-  @DataPoint
-  public static final Entry<Money> ENTRY1 = create( new Money( 1199 ), "<money cents=\"1199\"/>" );
+  /**
+   * The domain object that is serialized
+   *
+   * @return the domain object that is serialized
+   */
+  @NotNull
+  public byte[] getExpected() {
+    return expected;
+  }
+
+  /**
+   * The expected serialized object
+   *
+   * @return the expected serialized object
+   */
+  @NotNull
+  public T getObject() {
+    return object;
+  }
 }

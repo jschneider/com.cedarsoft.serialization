@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
@@ -55,7 +56,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
   }
 
   @DataPoint
-  public static final Entry ENTRY1 = create(
+  public static final VersionEntry ENTRY1 = create(
     Version.valueOf( 1, 5, 0 ),
     "<extra>\n" +
       "  <description>Metallic</description>\n" +
@@ -63,7 +64,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
       "</extra>" );
 
   @DataPoint
-  public static final Entry ENTRY2 = create(
+  public static final VersionEntry ENTRY2 = create(
     Version.valueOf( 1, 5, 1 ),
     "<extra>\n" +
       "  <description>Metallic</description>\n" +

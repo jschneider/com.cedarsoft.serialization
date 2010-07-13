@@ -51,7 +51,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
 
     int index = 0;
     for ( byte[] current : serialized ) {
-      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( expected.get( index ), ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() );
+      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), expected.get( index ).getBytes() );
       try {
         AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
       } catch ( AssertionError e ) {

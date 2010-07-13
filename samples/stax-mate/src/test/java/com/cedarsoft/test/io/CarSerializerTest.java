@@ -32,6 +32,7 @@
 package com.cedarsoft.test.io;
 
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
