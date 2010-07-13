@@ -80,11 +80,6 @@
       </dependency>
       <dependency>
         <groupId>com.cedarsoft.serialization</groupId>
-        <artifactId>test-utils</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoft.serialization</groupId>
         <artifactId>commons-serializers</artifactId>
         <version>${project.version}</version>
       </dependency>
