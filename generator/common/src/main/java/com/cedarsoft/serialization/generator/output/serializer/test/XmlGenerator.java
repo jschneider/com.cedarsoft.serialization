@@ -31,37 +31,20 @@
 
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
-import com.cedarsoft.Version;
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JInvocation;
-import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
-import com.sun.codemodel.JVar;
+import com.sun.codemodel.JExpression;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
  */
 public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
-  @NonNls
-  public static final String METHOD_NAME_GET_EXPECTED_SERIALIZED = "getExpectedSerialized";
-  @NonNls
-  public static final String METHOD_NAME_GET_SERIALIZED_XML = "getSerializedXml";
-
   public XmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
@@ -78,40 +61,10 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
     return codeGenerator.ref( AbstractXmlVersionTest2.class ).narrow( domainType );
   }
 
-  @Override
-  protected void createGetSerializedMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JClass versionRef = codeGenerator.ref( Version.class );
-
-    JClass returnType = codeGenerator.ref( Map.class ).narrow( versionRef.wildcard(), codeModel.ref( String.class ).wildcard() );
-
-    JMethod method = testClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_SERIALIZED_XML );
-    method.annotate( Override.class );
-
-    JClass mapType = codeGenerator.ref( Map.class ).narrow( Version.class, String.class );
-    JClass hashMapType = codeGenerator.ref( HashMap.class ).narrow( Version.class, String.class );
-
-    JVar map = method.body().decl( mapType, "map", JExpr._new( hashMapType ) );
-
-    JInvocation invocation = map.invoke( "put" ).arg( versionRef.staticInvoke( "valueOf" ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) ).arg( "<todo/>" );
-
-    method.body().add( invocation );
-    method.body()._return( map );
-  }
-
-  @Override
   @NotNull
-  protected JMethod createVerifyMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
-    JClass returnType = codeGenerator.ref( List.class ).narrow( codeModel.ref( String.class ).wildcard() );
-    JMethod method = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_EXPECTED_SERIALIZED );
-    method.annotate( Override.class );
-
-
-    JInvocation asListInvocation = codeGenerator.ref( Arrays.class ).staticInvoke( "asList" );
-    for ( int i = 0; i < NUMBER_OF_OBJECTS; i++ ) {
-      asListInvocation.arg( JExpr.lit( "<implementMe/>" ) );
-    }
-
-    method.body()._return( asListInvocation );
-    return method;
+  @Override
+  protected JExpression createExpectedExpression( @NotNull JClass domainObjectDescriptor ) {
+    return JExpr.lit( "<addMe/>" );
   }
+
 }

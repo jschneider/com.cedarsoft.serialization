@@ -1,29 +1,21 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import org.testng.Assert;
 
 public class FooSerializerVersionTest
-    extends AbstractXmlVersionTest<Foo>
+    extends AbstractXmlVersionTest2 <Foo>
 {
 
+    public final static com.cedarsoft.serialization.AbstractSerializerTest2 .Entry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
 
     @Override
     protected Serializer<Foo> getSerializer()
         throws Exception
     {
         return new FooSerializer();
-    }
-
-    @Override
-    protected Map<? extends Version, ? extends String> getSerializedXml() {
-        Map<Version, String> map = new HashMap<Version, String>();
-        map.put(Version.valueOf(1, 0, 0), "<todo/>");
-        return map;
     }
 
     @Override

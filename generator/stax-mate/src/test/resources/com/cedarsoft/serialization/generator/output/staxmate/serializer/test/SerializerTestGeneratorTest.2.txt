@@ -3,32 +3,20 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.util.Arrays;
-import java.util.List;
-import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
+import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Serializer;
 
 public class FooSerializerTest
-    extends AbstractXmlSerializerMultiTest<Foo>
+    extends AbstractXmlSerializerTest2 <Foo>
 {
 
+    public final static com.cedarsoft.serialization.AbstractSerializerTest2 .Entry ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), "<addMe/>");
 
     @Override
     protected Serializer<Foo> getSerializer()
         throws Exception
     {
         return new FooSerializer();
-    }
-
-    @Override
-    protected Iterable<? extends Foo> createObjectsToSerialize()
-        throws Exception
-    {
-        return Arrays.asList(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())));
-    }
-
-    @Override
-    protected List<? extends String> getExpectedSerialized() {
-        return Arrays.asList("<implementMe/>");
     }
 
 }

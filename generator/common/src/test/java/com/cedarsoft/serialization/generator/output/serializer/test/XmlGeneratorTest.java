@@ -31,11 +31,30 @@
 
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
+import com.cedarsoft.AssertUtils;
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.codegen.model.FieldInfo;
+import com.cedarsoft.codegen.TypeUtils;
+import com.cedarsoft.codegen.model.DomainObjectDescriptor;
+import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
+import com.cedarsoft.codegen.parser.Parser;
+import com.cedarsoft.codegen.parser.Result;
+import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
+import com.cedarsoft.serialization.generator.output.serializer.I18nAnnotationsDecorator;
+import com.cedarsoft.serialization.generator.output.serializer.NotNullDecorator;
+import com.sun.codemodel.JClass;
+import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JPackage;
+import com.sun.codemodel.writer.SingleStreamCodeWriter;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -45,19 +64,71 @@ import static org.junit.Assert.*;
 public class XmlGeneratorTest {
   private XmlGenerator generator;
 
+  protected DomainObjectDescriptor domainObjectDescriptor;
+  protected CodeGenerator<XmlDecisionCallback> codeGenerator;
+
+  protected JCodeModel model;
+
   @Before
   public void setUp() throws Exception {
-    generator = new XmlGenerator( new CodeGenerator<XmlDecisionCallback>( new XmlDecisionCallback() {
-      @NotNull
-      @Override
-      public Target getSerializationTarget( @NotNull FieldInfo fieldInfo ) {
-        return Target.ELEMENT;
-      }
-    } ) );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/House.java" );
+
+    assertNotNull( resource );
+    File javaFile = new File( resource.toURI() );
+    assertTrue( javaFile.exists() );
+    Result parsed = Parser.parse( javaFile );
+    assertNotNull( parsed );
+
+    TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.House" ) );
+    domainObjectDescriptor = factory.create();
+    assertNotNull( domainObjectDescriptor );
+
+    assertEquals( 2, domainObjectDescriptor.getFieldsToSerialize().size() );
+    final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
+    this.codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
+    this.codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
+    codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
+    model = codeGenerator.getModel();
+
+    generator = new XmlGenerator( codeGenerator );
   }
 
   @Test
   public void testNames() {
     assertEquals( "com.test.SerializerTest", generator.createSerializerTestName( "com.test.Serializer" ) );
+  }
+
+  @Test
+  public void testGenerateVersionsTest() throws Exception {
+    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( "com.cedarsoft.serialization.generator.parsing.test.HouseSerializer", domainObjectDescriptor );
+
+    assertEquals( "HouseSerializerVersionTest", serializerVersionTestClass.name() );
+    assertEquals( "com.cedarsoft.serialization.generator.parsing.test", serializerVersionTestClass.getPackage().name() );
+
+    assertGeneratedCode( getClass().getResource( "XmlGeneratorTest1.txt" ) );
+  }
+
+  @Test
+  public void testCreateTest() throws Exception {
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.parsing.test.HouseSerializer" );
+
+    JDefinedClass serializerTestClass = generator.generateSerializerTest( serializerClass.fullName(), domainObjectDescriptor );
+    assertEquals( "HouseSerializerTest", serializerTestClass.name() );
+    assertEquals( "com.cedarsoft.serialization.generator.parsing.test", serializerTestClass.getPackage().name() );
+
+    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.parsing.test" );
+    JDefinedClass definedClass = thePackage._getClass( "HouseSerializerTest" );
+    assertNotNull( definedClass );
+    assertEquals( "HouseSerializerTest", definedClass.name() );
+
+    assertGeneratedCode( getClass().getResource( "XmlGeneratorTest2.txt" ) );
+  }
+
+  protected void assertGeneratedCode( @NotNull @NonNls URL expected ) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    model.build( new SingleStreamCodeWriter( out ) );
+
+    AssertUtils.assertEquals( expected, out.toString().trim() );
   }
 }
