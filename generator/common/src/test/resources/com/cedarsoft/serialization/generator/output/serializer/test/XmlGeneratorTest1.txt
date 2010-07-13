@@ -5,13 +5,14 @@ package com.cedarsoft.serialization.generator.parsing.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import org.testng.Assert;
+import com.cedarsoft.serialization.VersionEntry;
+import org.junit.Assert;
 
 public class HouseSerializerVersionTest
     extends AbstractXmlVersionTest2 <House>
 {
 
-    public final static com.cedarsoft.serialization.AbstractSerializerTest2 .Entry ENTRY1 = HouseSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
+    public final static VersionEntry ENTRY1 = HouseSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
 
     @Override
     protected Serializer<House> getSerializer()

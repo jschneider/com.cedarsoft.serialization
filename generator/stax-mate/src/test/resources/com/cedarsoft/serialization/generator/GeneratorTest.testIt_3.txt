@@ -3,13 +3,14 @@ package com.cedarsoft.serialization.generator.staxmate.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import org.testng.Assert;
+import com.cedarsoft.serialization.VersionEntry;
+import org.junit.Assert;
 
 public class FooSerializerVersionTest
     extends AbstractXmlVersionTest2 <Foo>
 {
 
-    public final static com.cedarsoft.serialization.AbstractSerializerTest2 .Entry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
+    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
 
     @Override
     protected Serializer<Foo> getSerializer()

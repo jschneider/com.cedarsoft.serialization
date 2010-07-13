@@ -4,13 +4,14 @@ package com.cedarsoft.serialization.generator.parsing.test;
 
 import java.util.Arrays;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 
 public class HouseSerializerTest
     extends AbstractXmlSerializerTest2 <House>
 {
 
-    public final static com.cedarsoft.serialization.AbstractSerializerTest2 .Entry ENTRY1 = HouseSerializerTest.create(new House(new Door(), Arrays.asList(new Room())), "<addMe/>");
+    public final static Entry ENTRY1 = HouseSerializerTest.create(new House(new Door(), Arrays.asList(new Room())), "<addMe/>");
 
     @Override
     protected Serializer<House> getSerializer()

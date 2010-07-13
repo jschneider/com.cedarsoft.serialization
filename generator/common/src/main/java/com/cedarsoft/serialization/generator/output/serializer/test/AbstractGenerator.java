@@ -37,7 +37,9 @@ import com.cedarsoft.codegen.DecisionCallback;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
 import com.cedarsoft.serialization.AbstractSerializerTest2;
+import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
 import com.cedarsoft.serialization.generator.output.GeneratorBase;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -68,10 +70,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NonNls
   public static final String METHOD_NAME_GET_SERIALIZER = "getSerializer";
   @NonNls
-  public static final String METHOD_NAME_CREATE_OBJECT_TO_SERIALIZE = "createObjectsToSerialize";
-
-  public static final int NUMBER_OF_OBJECTS = 1;
-  @NonNls
   public static final String METHOD_NAME_VERIFY_DESERIALIZED = "verifyDeserialized";
   @NonNls
   public static final String PARAM_NAME_DESERIALIZED = "deserialized";
@@ -85,6 +83,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   public static final String DATA_POINT_FIELD_NAME = "ENTRY1";
   @NonNls
   public static final String METHOD_NAME_VALUE_OF = "valueOf";
+  @NonNls
+  public static final String CLASS_NAME_ASSERT = "org.junit.Assert";
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
@@ -107,7 +107,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void createVersionsDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, AbstractSerializerTest2.Entry.class, DATA_POINT_FIELD_NAME );
+    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( VersionEntry.class ), DATA_POINT_FIELD_NAME );
 
     JInvocation versionInvocation = codeGenerator.ref( Version.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) );
     JExpression expected = createExpectedExpression( domainType );
@@ -123,7 +123,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar deserialized = method.param( domainType, PARAM_NAME_DESERIALIZED );
     method.param( Version.class, PARAM_NAME_VERSION );
 
-    JClass assertClass = codeGenerator.ref( "org.testng.Assert" );
+    JClass assertClass = codeGenerator.ref( CLASS_NAME_ASSERT );
 
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
       method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ) ).arg( "daValue" ) );
@@ -146,7 +146,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void createDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, AbstractSerializerTest2.Entry.class, DATA_POINT_FIELD_NAME );
+    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( Entry.class ), DATA_POINT_FIELD_NAME );
 
     JInvocation domainObjectCreation = createDomainObjectCreationExpression( domainObjectDescriptor );
     JExpression expected = createExpectedExpression( domainType );
