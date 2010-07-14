@@ -86,7 +86,7 @@ public class JdomSerializationTest {
 
   @Test
   public void testVersionRange() throws IOException {
-    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my xmlns=\"http://my/1.2.1\">7</my>" ).getBytes() );
+    ByteArrayInputStream in = new ByteArrayInputStream( ( "<my xmlns=\"http://my/1.2.0\">7</my>" ).getBytes() );
 
     try {
       serializer.deserialize( in );

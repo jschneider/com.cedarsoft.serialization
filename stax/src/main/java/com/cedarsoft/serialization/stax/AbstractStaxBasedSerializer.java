@@ -33,10 +33,10 @@ package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,28 +82,14 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
         throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + ">" );
       }
 
-      //Now get the namespace and verify the version
-      String namespaceURI = reader.getNamespaceURI();
-      if ( namespaceURI == null ) {
-        throw new VersionException( "Version information is missing for <" + reader.getName().getLocalPart() + ">" );
-      }
+      //Now build the deserialization context
+      DeserializationContext context = createDeserializationContext( reader.getNamespaceURI() );
 
-      //Parse and verify the version
-      Version version = parseVersionFromNamespaceUri( namespaceURI );
-      if ( !getFormatVersionRange().contains( version ) ) {
-        throw new VersionMismatchException( getFormatVersion(), version );
-      }
-
-      //Verify the name space
-      verifyNamespaceUri( namespaceURI );
-
-      T deserialized = deserialize( reader, version, new DeserializationContext( version ) );
-
+      T deserialized = deserialize( reader, context.getFormatVersion(), context );
 
       if ( !reader.isEndElement() ) {
         throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
       }
-
       if ( reader.next() != XMLStreamReader.END_DOCUMENT ) {
         throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
       }
@@ -111,13 +97,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       return deserialized;
     } catch ( XMLStreamException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
-    }
-  }
-
-  private void verifyNamespaceUri( @NotNull @NonNls String namespaceURI ) throws XMLStreamException {
-    String expectedBase = getNameSpaceUriBase();
-    if ( !namespaceURI.startsWith( expectedBase ) ) {
-      throw new XMLStreamException( "Invalid namespace. Was <" + namespaceURI + "> but expected <" + expectedBase + "/$VERSION>" );
+    } catch ( InvalidNamespaceException e ) {
+      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
     }
   }
 

@@ -42,6 +42,7 @@ import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+import org.junit.rules.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -54,6 +55,10 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
+  @NotNull
+  @Rule
+  public final ExpectedException expectedException = ExpectedException.none();
+
   @NotNull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {
@@ -117,11 +122,9 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
 
   @Test
   public void testWrongNamespaceVersion() throws IOException {
-    try {
-      getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
-      fail( "Where is the Exception" );
-    } catch ( IOException e ) {
-      assertEquals( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>", e.getCause().getMessage() );
-    }
+    expectedException.expect( IOException.class );
+    expectedException.expectMessage( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>" );
+
+    getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
   }
 }

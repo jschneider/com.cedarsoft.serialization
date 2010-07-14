@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.jdom;
 
-import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.InvalidNamespaceException;
 import com.cedarsoft.serialization.SerializationContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -96,13 +96,12 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
       Document document = new SAXBuilder().build( in );
 
       String namespaceURI = document.getRootElement().getNamespaceURI();
-      Version formatVersion = parseVersionFromNamespaceUri( namespaceURI );
+      DeserializationContext context = createDeserializationContext( namespaceURI );
 
-      Version.verifyMatch( getFormatVersion(), formatVersion );
-
-      DeserializationContext context = new DeserializationContext( formatVersion );
-      return deserialize( document.getRootElement(), formatVersion, context );
+      return deserialize( document.getRootElement(), context.getFormatVersion(), context );
     } catch ( JDOMException e ) {
+      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
+    } catch ( InvalidNamespaceException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
     }
   }

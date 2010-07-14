@@ -33,13 +33,11 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 /**
  * Abstract base class for xml based serializers.
@@ -130,5 +128,43 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   @Override
   public <T> AbstractXmlSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
     return ( AbstractXmlSerializer<? super T, S, D, E> ) super.getSerializer( type );
+  }
+
+  protected void verifyNamespaceUri( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
+    if ( namespaceURI == null || namespaceURI.trim().length() == 0 ) {
+      throw new VersionException( "No version information available" );
+    }
+    String expectedBase = getNameSpaceUriBase();
+    if ( !namespaceURI.startsWith( expectedBase ) ) {
+      throw new InvalidNamespaceException( namespaceURI, expectedBase + "/$VERSION>" );
+    }
+  }
+
+  protected void verifyFormatVersion( @NotNull Version formatVersion ) {
+    if ( !getFormatVersionRange().contains( formatVersion ) ) {
+      throw new VersionMismatchException( getFormatVersion(), formatVersion );
+    }
+  }
+
+  @NotNull
+  protected Version parseNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
+    //Verify the name space
+    verifyNamespaceUri( namespaceURI );
+
+    //Parse and verify the version
+    Version formatVersion = parseVersionFromNamespaceUri( namespaceURI );
+    verifyFormatVersion( formatVersion );
+    return formatVersion;
+  }
+
+  @NotNull
+  protected DeserializationContext createDeserializationContext( @NotNull Version formatVersion ) {
+    return new DeserializationContext( formatVersion );
+  }
+
+  @NotNull
+  protected DeserializationContext createDeserializationContext( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
+    Version formatVersion = parseNameSpace( namespaceURI );
+    return createDeserializationContext( formatVersion );
   }
 }
