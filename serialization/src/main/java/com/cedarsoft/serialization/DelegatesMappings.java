@@ -31,8 +31,6 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
@@ -93,33 +91,10 @@ public class DelegatesMappings<S, D, E extends Throwable> {
    * @return true if the verification has been successful. Throws an exception if not
    */
   public boolean verify() throws VersionException {
-    SortedSet<Version> mappedVersions = versionMappings.getMappedVersions();
-
-    if ( versionMappings.mappings.isEmpty() ) {
-      throw new VersionException( "No mappings available" );
-    }
+    versionMappings.verify();
 
     for ( Map.Entry<Class<?>, VersionMapping> entry : versionMappings.mappings.entrySet() ) {
       VersionMapping mapping = entry.getValue();
-
-      //Check for every entry whether the version ranges fit
-      if ( !mapping.getSourceVersionRange().equals( versionMappings.getVersionRange() ) ) {
-        throw new UnsupportedVersionRangeException( versionMappings.getVersionRange(), mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
-      }
-
-      //Verify the mapping itself
-      try {
-        mapping.verify();
-        mapping.verifyMappedVersions( mappedVersions );
-      } catch ( VersionMismatchException e ) {
-        RuntimeException newException = new VersionMismatchException( e.getExpected(), e.getActual(), "Invalid mapping for <" + entry.getKey().getName() + ">: " + e.getMessage(), false );
-        newException.setStackTrace( e.getStackTrace() );
-        throw newException;
-      } catch ( UnsupportedVersionException e ) {
-        RuntimeException newException = new UnsupportedVersionException( e.getActual(), e.getSupportedRange(), "Invalid mapping for <" + entry.getKey().getName() + ">: " + e.getMessage(), false );
-        newException.setStackTrace( e.getStackTrace() );
-        throw newException;
-      }
 
       //Check the write version
       PluggableSerializer<?, S, D, E> serializer = getSerializer( entry.getKey() );

@@ -31,7 +31,11 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.UnsupportedVersionException;
+import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
@@ -137,5 +141,38 @@ public class VersionMappings<T> {
   @NotNull
   public VersionRange getVersionRange() {
     return versionRange;
+  }
+
+  public boolean verify() throws VersionException {
+    SortedSet<Version> mappedVersions = getMappedVersions();
+
+    if ( mappings.isEmpty() ) {
+      throw new VersionException( "No mappings available" );
+    }
+
+    for ( Map.Entry<T, VersionMapping> entry : mappings.entrySet() ) {
+      VersionMapping mapping = entry.getValue();
+
+      //Check for every entry whether the version ranges fit
+      if ( !mapping.getSourceVersionRange().equals( getVersionRange() ) ) {
+        throw new UnsupportedVersionRangeException( getVersionRange(), mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey() + ">. " );
+      }
+
+      //Verify the mapping itself
+      try {
+        mapping.verify();
+        mapping.verifyMappedVersions( mappedVersions );
+      } catch ( VersionMismatchException e ) {
+        RuntimeException newException = new VersionMismatchException( e.getExpected(), e.getActual(), "Invalid mapping for <" + entry.getKey() + ">: " + e.getMessage(), false );
+        newException.setStackTrace( e.getStackTrace() );
+        throw newException;
+      } catch ( UnsupportedVersionException e ) {
+        RuntimeException newException = new UnsupportedVersionException( e.getActual(), e.getSupportedRange(), "Invalid mapping for <" + entry.getKey() + ">: " + e.getMessage(), false );
+        newException.setStackTrace( e.getStackTrace() );
+        throw newException;
+      }
+    }
+
+    return true;
   }
 }
