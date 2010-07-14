@@ -36,6 +36,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.junit.*;
+import org.junit.rules.*;
 
 import java.io.IOException;
 
@@ -46,12 +47,12 @@ import static org.junit.Assert.*;
  */
 public class DelegatesMappingsTest {
   private final VersionRange mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
-  private DelegateMappingTest.MySerializer serializer;
+  private VersionMappingTest.MySerializer serializer;
   private DelegatesMappings<Object, Object, IOException> delegatesMappings;
 
   @Before
   public void setup() {
-    serializer = new DelegateMappingTest.MySerializer( VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 ) );
+    serializer = new VersionMappingTest.MySerializer( VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 ) );
     delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
   }
 
@@ -164,23 +165,22 @@ public class DelegatesMappingsTest {
     delegatesMappings.add( serializer ).responsibleFor( String.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
 
-    try {
-      delegatesMappings.add( serializer ).responsibleFor( String.class );
-      fail( "Where is the Exception" );
-    } catch ( IllegalArgumentException e ) {
-      assertEquals( "A serializer for the key <class java.lang.String> has still been added", e.getMessage() );
-    }
+    expectedException.expect( IllegalArgumentException.class );
+    expectedException.expectMessage( "A serializer for the key <class java.lang.String> has still been added" );
+
+    delegatesMappings.add( serializer ).responsibleFor( String.class );
   }
 
   @Test
   public void testErrorHandling() {
-    try {
-      delegatesMappings.add( serializer ).responsibleFor( String.class )
-        .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
-        .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
-      fail( "Where is the Exception" );
-    } catch ( UnsupportedVersionRangeException e ) {
-      assertEquals( "The version range has still been mapped: Was <[1.0.0-1.0.0]>", e.getMessage() );
-    }
+    expectedException.expect( UnsupportedVersionRangeException.class );
+    expectedException.expectMessage( "The version range has still been mapped: Was <[1.0.0-1.0.0]>" );
+
+    delegatesMappings.add( serializer ).responsibleFor( String.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
   }
+
+  @Rule
+  public final ExpectedException expectedException = ExpectedException.none();
 }

@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DelegateMappingTest;
+import com.cedarsoft.serialization.VersionMappingTest;
 import com.cedarsoft.serialization.DelegatesMappings;
 import org.junit.*;
 
@@ -47,13 +47,13 @@ import static org.junit.Assert.*;
 public class DelegatesMappingVisualizerTest {
   private VersionRange mine;
   private DelegatesMappings<Object, Object, IOException> delegatesMappings;
-  private DelegateMappingTest.MySerializer serializer;
+  private VersionMappingTest.MySerializer serializer;
 
   @Before
   public void setUp() throws Exception {
     mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
     delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
-    serializer = new DelegateMappingTest.MySerializer( new VersionRange( new Version( 7, 0, 0 ), new Version( 7, 5, 9 ) ) );
+    serializer = new VersionMappingTest.MySerializer( new VersionRange( new Version( 7, 0, 0 ), new Version( 7, 5, 9 ) ) );
   }
 
   @Test

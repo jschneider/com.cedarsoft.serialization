@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.DelegateMapping;
+import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.DelegatesMappings;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
@@ -94,7 +94,7 @@ public class DelegatesMappingVisualizer {
     } );
 
     for ( Class<?> key : keys ) {
-      DelegateMapping mapping = mappings.getMapping( key );
+      VersionMapping mapping = mappings.getMapping( key );
 
       List<Version> versions = new ArrayList<Version>();
       for ( Version keyVersion : keyVersions ) {

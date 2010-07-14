@@ -49,11 +49,11 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class DelegateMappingTest {
+public class VersionMappingTest {
   @Test
   public void testVerify() {
     MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
-    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );
+    VersionMapping mapping = new VersionMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ), delegate.getFormatVersionRange() );
 
     try {
       mapping.verify();
@@ -82,7 +82,7 @@ public class DelegateMappingTest {
     VersionRange myVersionRange = new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) );
     VersionRange delegateVersionRange = new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 1 ) );
 
-    DelegateMapping mapping = new DelegateMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
+    VersionMapping mapping = new VersionMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
 
     mapping.map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 0 );
     assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 0 ) );
@@ -93,7 +93,7 @@ public class DelegateMappingTest {
     VersionRange myVersionRange = new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) );
     VersionRange delegateVersionRange = new VersionRange( new Version( 2, 0, 0 ), new Version( 2, 0, 1 ) );
 
-    DelegateMapping mapping = new DelegateMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
+    VersionMapping mapping = new VersionMapping( myVersionRange, new MySerializer( delegateVersionRange ).getFormatVersionRange() );
 
     mapping.map( 1, 0, 0 ).to( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 );
     assertEquals( mapping.getDelegateWriteVersion(), Version.valueOf( 2, 0, 0 ) );
@@ -112,7 +112,7 @@ public class DelegateMappingTest {
   @Test
   public void testBasic() {
     MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
-    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), delegate.getFormatVersionRange() );
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), delegate.getFormatVersionRange() );
 
 
     //Version 0.5.0 of me --> 1.0.0
@@ -132,7 +132,7 @@ public class DelegateMappingTest {
 
   @Test
   public void testDuplicate() {
-    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
 
     //Version 0.5.0 of me --> 1.0.0
@@ -147,7 +147,7 @@ public class DelegateMappingTest {
 
   @Test
   public void testDelegateWrongVersion() {
-    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
     MySerializer delegate = new MySerializer( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
     try {
@@ -171,7 +171,7 @@ public class DelegateMappingTest {
 
   @Test
   public void testMyWrongVersion() {
-    DelegateMapping mapping = new DelegateMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
     try {
       mapping.addMapping( VersionRange.from( 0, 4, 0 ).to( 0, 5, 0 ), new Version( 1, 0, 0 ) );
@@ -194,7 +194,7 @@ public class DelegateMappingTest {
 
   //  @Test
   //  public void testBasic() {
-  //    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
+  //    VersionMapping mapping = new VersionMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
   //
   //    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
   //
@@ -215,7 +215,7 @@ public class DelegateMappingTest {
   //
   //  @Test
   //  public void testDuplicate() {
-  //    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
+  //    VersionMapping mapping = new VersionMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
   //
   //    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
   //
@@ -231,7 +231,7 @@ public class DelegateMappingTest {
   //
   //  @Test
   //  public void testDelegateWrongVersion() {
-  //    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
+  //    VersionMapping mapping = new VersionMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
   //
   //    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
   //
@@ -254,7 +254,7 @@ public class DelegateMappingTest {
   //
   //  @Test
   //  public void testMyWrongVersion() {
-  //    DelegateMapping mapping = new DelegateMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
+  //    VersionMapping mapping = new VersionMapping( new VersionRange( new Version( 0, 5, 0 ), new Version( 2, 2, 7 ) ) );
   //
   //    MySerializer delegate = new MySerializer( new VersionRange( new Version( 1, 0, 0 ), new Version( 2, 0, 0 ) ) );
   //

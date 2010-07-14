@@ -45,12 +45,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Contains the mapping for delegating serializers.
+ * Contains the mapping for versions.
  * <p/>
  * This class offers a mapping for every version from the source version range
  * to a version of the delegate version range.
  */
-public class DelegateMapping {
+public class VersionMapping {
   /**
    * Represents the version range of the delegating object (the source).
    * The complete range has to be mapped to one or more versions of the delegate.
@@ -65,7 +65,7 @@ public class DelegateMapping {
   @NotNull
   private final List<Entry> entries = new ArrayList<Entry>();
 
-  public DelegateMapping( @NotNull VersionRange sourceVersionRange, @NotNull VersionRange delegateVersionRange ) {
+  public VersionMapping( @NotNull VersionRange sourceVersionRange, @NotNull VersionRange delegateVersionRange ) {
     this.sourceVersionRange = sourceVersionRange;
     this.delegateVersionRange = delegateVersionRange;
   }
@@ -213,14 +213,14 @@ public class DelegateMapping {
     }
 
     @NotNull
-    public DelegateMapping toDelegateVersion( int major, int minor, int build ) {
+    public VersionMapping toDelegateVersion( int major, int minor, int build ) {
       return toDelegateVersion( Version.valueOf( major, minor, build ) );
     }
 
     @NotNull
-    public DelegateMapping toDelegateVersion( @NotNull Version version ) {
+    public VersionMapping toDelegateVersion( @NotNull Version version ) {
       addMapping( range, version );
-      return DelegateMapping.this;
+      return VersionMapping.this;
     }
 
     @NotNull
