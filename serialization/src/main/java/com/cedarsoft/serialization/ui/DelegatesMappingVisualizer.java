@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.serialization.DelegatesMappings;
+import com.cedarsoft.serialization.ToString;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,7 +58,7 @@ public class DelegatesMappingVisualizer {
       public int compare( Class<?> o1, Class<?> o2 ) {
         return o1.getName().compareTo( o2.getName() );
       }
-    }, new VersionMappingsVisualizer.ToString<Class<?>>() {
+    }, new ToString<Class<?>>() {
       @NotNull
       @Override
       public String convert( @NotNull Class<?> object ) {

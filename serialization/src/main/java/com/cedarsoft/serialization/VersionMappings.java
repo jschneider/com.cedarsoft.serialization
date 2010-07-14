@@ -144,6 +144,16 @@ public class VersionMappings<T> {
   }
 
   public boolean verify() throws VersionException {
+    return verify( new ToString<T>() {
+      @NotNull
+      @Override
+      public String convert( @NotNull T object ) {
+        return object.toString();
+      }
+    } );
+  }
+
+  public boolean verify( @NotNull ToString<T> toString ) throws VersionException {
     SortedSet<Version> mappedVersions = getMappedVersions();
 
     if ( mappings.isEmpty() ) {
@@ -155,7 +165,7 @@ public class VersionMappings<T> {
 
       //Check for every entry whether the version ranges fit
       if ( !mapping.getSourceVersionRange().equals( getVersionRange() ) ) {
-        throw new UnsupportedVersionRangeException( getVersionRange(), mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey() + ">. " );
+        throw new UnsupportedVersionRangeException( getVersionRange(), mapping.getSourceVersionRange(), "Invalid mapping for <" + toString.convert( entry.getKey() ) + ">. " );
       }
 
       //Verify the mapping itself
@@ -163,11 +173,11 @@ public class VersionMappings<T> {
         mapping.verify();
         mapping.verifyMappedVersions( mappedVersions );
       } catch ( VersionMismatchException e ) {
-        RuntimeException newException = new VersionMismatchException( e.getExpected(), e.getActual(), "Invalid mapping for <" + entry.getKey() + ">: " + e.getMessage(), false );
+        RuntimeException newException = new VersionMismatchException( e.getExpected(), e.getActual(), "Invalid mapping for <" + toString.convert( entry.getKey() ) + ">: " + e.getMessage(), false );
         newException.setStackTrace( e.getStackTrace() );
         throw newException;
       } catch ( UnsupportedVersionException e ) {
-        RuntimeException newException = new UnsupportedVersionException( e.getActual(), e.getSupportedRange(), "Invalid mapping for <" + entry.getKey() + ">: " + e.getMessage(), false );
+        RuntimeException newException = new UnsupportedVersionException( e.getActual(), e.getSupportedRange(), "Invalid mapping for <" + toString.convert( entry.getKey() ) + ">: " + e.getMessage(), false );
         newException.setStackTrace( e.getStackTrace() );
         throw newException;
       }

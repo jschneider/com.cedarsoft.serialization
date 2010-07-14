@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
 import org.apache.commons.lang.StringUtils;
@@ -196,20 +197,4 @@ public class VersionMappingsVisualizer<T> {
     }
   }
 
-  /**
-   * Converts objects to strings
-   *
-   * @param <T> the string
-   */
-  public interface ToString<T> {
-    /**
-     * Returns the string representation
-     *
-     * @param object the object
-     * @return the string representation
-     */
-    @NotNull
-    @NonNls
-    String convert( @NotNull T object );
-  }
 }

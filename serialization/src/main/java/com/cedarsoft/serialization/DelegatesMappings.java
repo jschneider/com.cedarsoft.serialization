@@ -91,7 +91,13 @@ public class DelegatesMappings<S, D, E extends Throwable> {
    * @return true if the verification has been successful. Throws an exception if not
    */
   public boolean verify() throws VersionException {
-    versionMappings.verify();
+    versionMappings.verify( new ToString<Class<?>>() {
+      @NotNull
+      @Override
+      public String convert( @NotNull Class<?> object ) {
+        return object.getName();
+      }
+    } );
 
     for ( Map.Entry<Class<?>, VersionMapping> entry : versionMappings.mappings.entrySet() ) {
       VersionMapping mapping = entry.getValue();
