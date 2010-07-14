@@ -132,6 +132,13 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
   }
 
+  /**
+   * Returns whether the namespace fits
+   *
+   * @param streamReader the stream reader that is used to extract the namespace
+   * @param namespace    the expected namespace (or null if the check shall be skipped)
+   * @return true if the namespace fits (or the expected namespace is null), false otherwise
+   */
   protected boolean doesNamespaceFit( @NotNull XMLStreamReader streamReader, @Nullable @NonNls String namespace ) {
     if ( namespace == null ) {
       return true;
@@ -206,6 +213,14 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     closeTag( reader, true );
   }
 
+  /**
+   * Closes the tag
+   *
+   * @param reader the reader
+   * @param skipElementsWithOtherNamespaces
+   *               whether tos kip elemenst with other namespaces
+   * @throws XMLStreamException
+   */
   protected void closeTag( @NotNull XMLStreamReader reader, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result == XMLStreamReader.END_ELEMENT ) {

@@ -70,6 +70,12 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     this.nameSpaceUriBase = nameSpaceUriBase;
   }
 
+  /**
+   * Creates the namespace uri including the format version
+   *
+   * @param formatVersion the format version
+   * @return the namespace uri
+   */
   @NotNull
   @NonNls
   protected String createNameSpaceUri( @NotNull Version formatVersion ) {
@@ -87,6 +93,11 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     return createNameSpaceUri( getFormatVersion() );
   }
 
+  /**
+   * Returns the name space uri without the form at version
+   *
+   * @return the name space uri base
+   */
   @NonNls
   @NotNull
   public String getNameSpaceUriBase() {
@@ -130,6 +141,13 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     return ( AbstractXmlSerializer<? super T, S, D, E> ) super.getSerializer( type );
   }
 
+  /**
+   * Verifies the namespace uri
+   *
+   * @param namespaceURI the namespace uri
+   * @throws InvalidNamespaceException if the namespace is invalid
+   * @throws VersionException          the if the version does not fit the expected range
+   */
   protected void verifyNamespaceUri( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     if ( namespaceURI == null || namespaceURI.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
@@ -140,12 +158,26 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     }
   }
 
+  /**
+   * Verifies the format version
+   *
+   * @param formatVersion the format version
+   */
   protected void verifyFormatVersion( @NotNull Version formatVersion ) {
     if ( !getFormatVersionRange().contains( formatVersion ) ) {
       throw new VersionMismatchException( getFormatVersion(), formatVersion );
     }
   }
 
+  /**
+   * Parses the version from the namespace and verifies the namespace and version
+   *
+   * @param namespaceURI the namespace uri
+   * @return the parsed and verified version
+   *
+   * @throws InvalidNamespaceException
+   * @throws VersionException
+   */
   @NotNull
   protected Version parseNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space
@@ -157,11 +189,26 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
     return formatVersion;
   }
 
+  /**
+   * Creates the deserialization context
+   *
+   * @param formatVersion the format version
+   * @return the context
+   */
   @NotNull
   protected DeserializationContext createDeserializationContext( @NotNull Version formatVersion ) {
     return new DeserializationContext( formatVersion );
   }
 
+  /**
+   * Creates the deserialization context
+   *
+   * @param namespaceURI the namespace URI
+   * @return the created context
+   *
+   * @throws InvalidNamespaceException
+   * @throws VersionException
+   */
   @NotNull
   protected DeserializationContext createDeserializationContext( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     Version formatVersion = parseNameSpace( namespaceURI );
