@@ -57,8 +57,8 @@ public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Dimension object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionWriteable( formatVersion );
     serializeTo.addCharacters( object.width + SEPARATOR + object.height );
-
   }
 
   @Override

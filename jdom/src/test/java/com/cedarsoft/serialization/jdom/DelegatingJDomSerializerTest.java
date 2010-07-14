@@ -70,6 +70,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
     AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", "http://double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
       @Override
       public void serialize( @NotNull Element serializeTo, @NotNull Double object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException {
+        assert isVersionWriteable( formatVersion );
         serializeTo.setText( object.toString() );
       }
 

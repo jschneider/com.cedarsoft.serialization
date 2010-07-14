@@ -74,6 +74,7 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionWriteable( formatVersion );
     serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), formatVersion, context );
     serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), formatVersion, context );
   }

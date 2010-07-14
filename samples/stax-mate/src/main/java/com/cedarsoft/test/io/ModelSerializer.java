@@ -65,6 +65,7 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
 
   @Override
   public void serialize( SMOutputElement serializeTo, Model object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionWriteable( formatVersion );
     serializeTo.addCharacters( object.getName() );
   }
   //END SNIPPET: serialize

@@ -73,6 +73,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
   @Override
   public void serialize( SMOutputElement serializeTo, Extra object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionWriteable( formatVersion );
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer

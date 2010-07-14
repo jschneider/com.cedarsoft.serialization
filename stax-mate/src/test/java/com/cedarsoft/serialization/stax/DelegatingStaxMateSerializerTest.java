@@ -77,6 +77,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
       @Override
       @NotNull
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+        assert isVersionWriteable( formatVersion );
         serializeTo.addCharacters( object.toString() );
 
       }

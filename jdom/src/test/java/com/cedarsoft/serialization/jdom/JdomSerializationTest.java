@@ -113,6 +113,7 @@ public class JdomSerializationTest {
 
     @Override
     public void serialize( @NotNull Element serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, IOException {
+      assert isVersionWriteable( formatVersion );
       serializeTo.setText( String.valueOf( object ) );
     }
 
