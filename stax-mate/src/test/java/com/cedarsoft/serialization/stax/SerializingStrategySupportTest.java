@@ -34,6 +34,8 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -105,13 +107,13 @@ public class SerializingStrategySupportTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, SerializationContext context ) throws IOException {
       throw new UnsupportedOperationException();
     }
 
     @Override
     @NotNull
-    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException {
       throw new UnsupportedOperationException();
     }
   }

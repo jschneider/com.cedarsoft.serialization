@@ -50,13 +50,13 @@ public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Version object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Version object, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.toString() );
   }
 
   @Override
   @NotNull
-  public Version deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Version deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
     String text = getText( deserializeFrom );
     return Version.parse( text );
   }

@@ -35,6 +35,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
@@ -87,7 +89,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObjec
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull MyObject object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull MyObject object, SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.writeStartElement( "money" );
       serialize( object.getMoney(), Money.class, serializeTo );
       serializeTo.writeEndElement();
@@ -95,7 +97,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObjec
 
     @NotNull
     @Override
-    public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       nextTag( deserializeFrom, "money" );
       Money money = deserialize( Money.class, formatVersion, deserializeFrom );
       closeTag( deserializeFrom );

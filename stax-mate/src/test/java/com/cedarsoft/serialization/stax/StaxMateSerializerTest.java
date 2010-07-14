@@ -36,6 +36,8 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -57,13 +59,13 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   protected AbstractStaxMateSerializer<String> getSerializer() {
     return new AbstractStaxMateSerializer<String>( "aString", "http://www.lang.java/String", new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, SerializationContext context ) throws XMLStreamException {
         serializeTo.addCharacters( object );
       }
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws XMLStreamException {
         deserializeFrom.next();
         String text = deserializeFrom.getText();
         closeTag( deserializeFrom );

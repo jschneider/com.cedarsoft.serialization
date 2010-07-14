@@ -34,6 +34,8 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -132,7 +134,7 @@ public class Room {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
       serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo );
@@ -141,7 +143,7 @@ public class Room {
 
     @NotNull
     @Override
-    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "windows" );

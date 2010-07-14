@@ -33,6 +33,8 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
@@ -74,7 +76,7 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Car object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Car object, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.writeStartElement( "color" ); //okay, should be a own serializer in real world...
     serializeTo.writeAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     serializeTo.writeAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
@@ -105,7 +107,7 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
   //START SNIPPET: deserialize
 
   @Override
-  public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
+  public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
     //We deserialize the color. This should be done in its own serializer in real world --> improved reusability and testability
     nextTag( deserializeFrom, "color" );
     int red = Integer.parseInt( deserializeFrom.getAttributeValue( null, "red" ) );

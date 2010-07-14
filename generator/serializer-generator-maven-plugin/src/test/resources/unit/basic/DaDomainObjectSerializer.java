@@ -7,6 +7,8 @@ import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
@@ -22,7 +24,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public void serialize(SMOutputElement serializeTo, DaDomainObject object)
+    public void serialize( SMOutputElement serializeTo, DaDomainObject object, SerializationContext context )
         throws IOException, XMLStreamException
     {
         //description
@@ -32,7 +34,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public DaDomainObject deserialize(XMLStreamReader deserializeFrom, Version formatVersion)
+    public DaDomainObject deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context )
         throws VersionException, IOException, XMLStreamException
     {
         //description

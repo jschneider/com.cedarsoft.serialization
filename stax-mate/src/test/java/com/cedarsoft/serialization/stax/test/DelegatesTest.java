@@ -35,6 +35,8 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -148,7 +150,7 @@ public class DelegatesTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, SerializationContext context ) throws IOException, XMLStreamException {
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
       serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo );
@@ -157,7 +159,7 @@ public class DelegatesTest {
 
     @NotNull
     @Override
-    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "doors" );

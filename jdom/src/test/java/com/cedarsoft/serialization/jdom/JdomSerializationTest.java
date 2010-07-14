@@ -36,6 +36,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -110,13 +112,13 @@ public class JdomSerializationTest {
     }
 
     @Override
-    public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException, IOException {
+    public void serialize( @NotNull Element serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, IOException {
       serializeTo.setText( String.valueOf( object ) );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion ) throws IOException, IOException {
+    public Integer deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, IOException {
       return Integer.parseInt( deserializeFrom.getText() );
     }
   }

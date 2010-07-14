@@ -63,7 +63,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
       SMNamespace nameSpace = doc.getNamespace( nameSpaceUri );
 
       SMOutputElement root = doc.addElement( nameSpace, getDefaultElementName() );
-      serialize( root, object );
+      serialize( root, object, context );
       doc.closeRoot();
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
@@ -84,7 +84,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), elementName );
-      serializer.serialize( doorElement, object );
+      serializer.serialize( doorElement, object, context );
     }
   }
 
@@ -92,7 +92,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), serializer.getDefaultElementName() );
-      serializer.serialize( doorElement, object );
+      serializer.serialize( doorElement, object, context );
     }
   }
 

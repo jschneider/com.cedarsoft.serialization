@@ -52,16 +52,18 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    *
    * @param serializeTo the serializeTo
    * @param object      the object
+   * @param context     the context
    * @throws IOException
    * @throws E
    */
-  void serialize( @NotNull S serializeTo, @NotNull T object ) throws IOException, E;
+  void serialize( @NotNull S serializeTo, @NotNull T object, @NotNull SerializationContext context ) throws IOException, E;
 
   /**
    * Deserializes the object from the given document
    *
    * @param deserializeFrom the deserializeFrom
    * @param formatVersion   the format version
+   * @param context         the context
    * @return the deserialized object
    *
    * @throws VersionException
@@ -69,5 +71,5 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * @throws E
    */
   @NotNull
-  T deserialize( @NotNull D deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, E;
+  T deserialize( @NotNull D deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, E;
 }

@@ -56,14 +56,14 @@ public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Dimension object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Dimension object, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.width + SEPARATOR + object.height );
 
   }
 
   @Override
   @NotNull
-  public Dimension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Dimension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
     String[] parts = getText( deserializeFrom ).split( SEPARATOR );
 
     return new Dimension( Integer.parseInt( parts[0] ), Integer.parseInt( parts[1] ) );

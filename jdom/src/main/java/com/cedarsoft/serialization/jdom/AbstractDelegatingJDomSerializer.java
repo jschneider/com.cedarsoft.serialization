@@ -33,6 +33,8 @@ package com.cedarsoft.serialization.jdom;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.jdom.Element;
 import org.jetbrains.annotations.NonNls;
@@ -62,19 +64,19 @@ public class AbstractDelegatingJDomSerializer<T> extends AbstractJDomSerializer<
   }
 
   @Override
-  public void serialize( @NotNull Element serializeTo, @NotNull T object ) throws IOException {
+  public void serialize( @NotNull Element serializeTo, @NotNull T object, SerializationContext context ) throws IOException {
     JDomSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
     serializeTo.setAttribute( ATTRIBUTE_TYPE, strategy.getId() );
-    strategy.serialize( serializeTo, object );
+    strategy.serialize( serializeTo, object, context );
   }
 
   @Override
   @NotNull
-  public T deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+  public T deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException {
     String type = deserializeFrom.getAttributeValue( ATTRIBUTE_TYPE );
 
     JDomSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( type );
-    return strategy.deserialize( deserializeFrom, formatVersion );
+    return strategy.deserialize( deserializeFrom, formatVersion, context );
   }
 
   @NotNull

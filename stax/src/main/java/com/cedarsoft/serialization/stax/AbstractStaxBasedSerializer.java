@@ -96,7 +96,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       //Verify the name space
       verifyNamespaceUri( namespaceURI );
 
-      T deserialized = deserialize( reader, version );
+      T deserialized = deserialize( reader, version, context );
 
 
       if ( !reader.isEndElement() ) {

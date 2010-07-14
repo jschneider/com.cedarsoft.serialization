@@ -35,6 +35,8 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -58,14 +60,14 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
         getText( deserializeFrom );
         return 1;
       }
@@ -74,14 +76,14 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", "asdf", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, SerializationContext context ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
         getText( deserializeFrom );
         return 2.0;
       }

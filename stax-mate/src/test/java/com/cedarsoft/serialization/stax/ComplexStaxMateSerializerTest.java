@@ -34,6 +34,8 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -51,13 +53,13 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
   protected AbstractStaxMateSerializer<String> getSerializer() {
     final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", "asdf",new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, SerializationContext context ) throws XMLStreamException {
         serializeTo.addCharacters( object );
       }
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws XMLStreamException {
         deserializeFrom.next();
         String text = deserializeFrom.getText();
         closeTag( deserializeFrom );
@@ -67,16 +69,16 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
 
     return new AbstractStaxMateSerializer<String>( "aString","asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object ) throws IOException, XMLStreamException {
-        stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object );
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, SerializationContext context ) throws IOException, XMLStreamException {
+        stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object, context );
         serializeTo.addElement( serializeTo.getNamespace(), "emptyChild" ).addCharacters( "" );
       }
 
       @Override
       @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
         nextTag( deserializeFrom, "sub" );
-        String string = stringSerializer.deserialize( deserializeFrom, formatVersion );
+        String string = stringSerializer.deserialize( deserializeFrom, formatVersion, context );
 
         Assert.assertEquals( getChildText( deserializeFrom, "emptyChild" ), "" );
         closeTag( deserializeFrom );

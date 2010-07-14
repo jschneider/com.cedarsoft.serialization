@@ -66,7 +66,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
   @NotNull
   public Element serializeToElement( @NotNull T object ) throws IOException {
     Element element = new Element( getDefaultElementName() );
-    serialize( element, object );
+    serialize( element, object, context );
     return element;
   }
 
@@ -81,7 +81,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     Element root = new Element( getDefaultElementName(), namespace );
     document.setRootElement( root );
 
-    serialize( root, object );
+    serialize( root, object, context );
     new XMLOutputter( Format.getPrettyFormat().setLineSeparator( LINE_SEPARATOR ) ).output( document, out );
   }
 
@@ -96,7 +96,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
 
       Version.verifyMatch( getFormatVersion(), formatVersion );
 
-      return deserialize( document.getRootElement(), formatVersion );
+      return deserialize( document.getRootElement(), formatVersion, context );
     } catch ( JDOMException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
     }

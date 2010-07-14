@@ -33,6 +33,8 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
@@ -70,7 +72,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Extra object ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Extra object, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
@@ -78,7 +80,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   }
 
   @Override
-  public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
+  public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );

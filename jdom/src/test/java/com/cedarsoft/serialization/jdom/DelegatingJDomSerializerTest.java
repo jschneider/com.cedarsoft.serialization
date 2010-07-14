@@ -35,6 +35,8 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import org.jdom.Element;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -55,25 +57,25 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   public void setUp() throws Exception {
     AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", "http://int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
       @Override
-      public void serialize( @NotNull Element serializeTo, @NotNull Integer object ) throws IOException {
+      public void serialize( @NotNull Element serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException {
         serializeTo.setText( object.toString() );
       }
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+      public Integer deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException {
         return 1;
       }
     };
     AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", "http://double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
       @Override
-      public void serialize( @NotNull Element serializeTo, @NotNull Double object ) throws IOException {
+      public void serialize( @NotNull Element serializeTo, @NotNull Double object, SerializationContext context ) throws IOException {
         serializeTo.setText( object.toString() );
       }
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+      public Double deserialize( @NotNull @NonNls Element deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException {
         return 2.0;
       }
     };

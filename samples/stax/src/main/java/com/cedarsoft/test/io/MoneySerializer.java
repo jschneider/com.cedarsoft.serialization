@@ -33,6 +33,8 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
@@ -52,12 +54,12 @@ public class MoneySerializer extends AbstractStaxSerializer<Money> {
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.writeCharacters( String.valueOf( object.getCents() ) );
   }
 
   @Override
-  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
+  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
     int cents = Integer.parseInt( getText( deserializeFrom ) );
 
     //We don't have to close the tag. The getText method does that for us

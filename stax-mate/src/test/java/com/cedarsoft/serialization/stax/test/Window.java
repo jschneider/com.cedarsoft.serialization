@@ -35,6 +35,8 @@ import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -101,7 +103,7 @@ public class Window {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
       serializeTo.addAttribute( "height", String.valueOf( object.getHeight() ) );
 
@@ -110,7 +112,7 @@ public class Window {
 
     @NotNull
     @Override
-    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
         double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
         double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
