@@ -29,42 +29,17 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.ui;
+package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.DelegatesMappings;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Comparator;
+import org.junit.*;
 
 /**
  *
  */
-public class DelegatesMappingVisualizer {
-  @NotNull
-  private final DelegatesMappings<?, ?, ?> mappings;
-
-  public DelegatesMappingVisualizer( @NotNull DelegatesMappings<?, ?, ?> mappings ) {
-    this.mappings = mappings;
+public class SerializingStrategySupportTest {
+  @Test
+  public void testIt() {
+//    SerializingStrategySupport support = new SerializingStrategySupport();
   }
 
-  @NotNull
-  @NonNls
-  public String visualize() throws IOException {
-    VersionMappingsVisualizer<Class<?>> visualizer = new VersionMappingsVisualizer<Class<?>>( mappings.getVersionMappings(), new Comparator<Class<?>>() {
-      @Override
-      public int compare( Class<?> o1, Class<?> o2 ) {
-        return o1.getName().compareTo( o2.getName() );
-      }
-    }, new VersionMappingsVisualizer.ToString<Class<?>>() {
-      @NotNull
-      @Override
-      public String convert( @NotNull Class<?> object ) {
-        String[] parts = object.getName().split( "\\." );
-        return parts[parts.length - 1];
-      }
-    } );
-    return visualizer.visualize();
-  }
 }

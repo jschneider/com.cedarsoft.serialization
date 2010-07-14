@@ -43,12 +43,14 @@ import java.util.TreeSet;
 
 /**
  * Holds several {@link VersionMapping}s.
+ *
+ * @param <T> the type of the key
  */
-public class VersionMappings {
+public class VersionMappings<T> {
   @NotNull
   protected final VersionRange versionRange;
   @NotNull
-  protected final Map<Class<?>, VersionMapping> mappings = new HashMap<Class<?>, VersionMapping>();
+  protected final Map<T, VersionMapping> mappings = new HashMap<T, VersionMapping>();
 
   /**
    * Creates a new version mappings
@@ -65,7 +67,7 @@ public class VersionMappings {
    * @return the mappings
    */
   @NotNull
-  public Map<? extends Class<?>, ? extends VersionMapping> getMappings() {
+  public Map<? extends T, ? extends VersionMapping> getMappings() {
     return Collections.unmodifiableMap( mappings );
   }
 
@@ -74,11 +76,10 @@ public class VersionMappings {
    *
    * @param key     the key
    * @param version the version
-   * @param <T>     the type
    * @return the mapped version
    */
   @NotNull
-  public <T> Version resolveVersion( @NotNull Class<? extends T> key, @NotNull Version version ) {
+  public Version resolveVersion( @NotNull T key, @NotNull Version version ) {
     return getMapping( key ).resolveVersion( version );
   }
 
@@ -89,7 +90,7 @@ public class VersionMappings {
    * @return the version mapping for the key
    */
   @NotNull
-  public VersionMapping getMapping( @NotNull Class<?> key ) {
+  public VersionMapping getMapping( @NotNull T key ) {
     VersionMapping mapping = mappings.get( key );
     if ( mapping == null ) {
       throw new IllegalArgumentException( "No mapping found for <" + key + ">" );
@@ -98,7 +99,7 @@ public class VersionMappings {
   }
 
   @NotNull
-  protected VersionMapping addMapping( @NotNull Class<?> key, @NotNull VersionRange targetVersionRange ) {
+  protected VersionMapping addMapping( @NotNull T key, @NotNull VersionRange targetVersionRange ) {
     if ( mappings.containsKey( key ) ) {
       throw new IllegalStateException( "An entry for the key <" + key + "> has still been added" );
     }
@@ -129,7 +130,7 @@ public class VersionMappings {
   }
 
   @NotNull
-  public VersionMapping add( @NotNull Class<?> key, @NotNull VersionRange targetVersionRange ) {
+  public VersionMapping add( @NotNull T key, @NotNull VersionRange targetVersionRange ) {
     return addMapping( key, targetVersionRange );
   }
 

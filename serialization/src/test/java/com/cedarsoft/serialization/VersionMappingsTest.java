@@ -47,11 +47,11 @@ import static org.junit.Assert.*;
  */
 public class VersionMappingsTest {
   private final VersionRange mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
-  private VersionMappings mapping;
+  private VersionMappings<Class<?>> mapping;
 
   @Before
   public void setup() {
-    mapping = new VersionMappings( mine );
+    mapping = new VersionMappings<Class<?>>( mine );
   }
 
   @Test

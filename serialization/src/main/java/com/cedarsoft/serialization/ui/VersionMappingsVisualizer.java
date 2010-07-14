@@ -32,12 +32,12 @@
 package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.DelegatesMappings;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -50,9 +50,9 @@ import java.util.List;
 import java.util.SortedSet;
 
 /**
- *
+ * @param <T> the type
  */
-public class VersionMappingsVisualizer {
+public class VersionMappingsVisualizer<T> {
   @NotNull
   @NonNls
   private static final String COL_SEPARATOR = "  ";
@@ -64,11 +64,27 @@ public class VersionMappingsVisualizer {
   @NonNls
   private static final String COL_VERSION_REPEAT = "|  ";
   @NotNull
+  private final VersionMappings<T> mappings;
+  @NotNull
+  private final Comparator<T> comparator;
 
-  private final VersionMappings mappings;
+  @Nullable
+  private final ToString<T> toString;
 
-  public VersionMappingsVisualizer( @NotNull VersionMappings mappings ) {
+  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator ) {
+    this( mappings, comparator, new ToString<T>() {
+      @NotNull
+      @Override
+      public String convert( @NotNull T object ) {
+        return String.valueOf( object );
+      }
+    } );
+  }
+
+  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator, @NotNull ToString<T> toString ) {
     this.mappings = mappings;
+    this.comparator = comparator;
+    this.toString = toString;
   }
 
   @NotNull
@@ -86,15 +102,10 @@ public class VersionMappingsVisualizer {
     SortedSet<Version> keyVersions = mappings.getMappedVersions();
 
     //The keys
-    List<Class<?>> keys = new ArrayList<Class<?>>( mappings.getMappings().keySet() );
-    Collections.sort( keys, new Comparator<Class<?>>() {
-      @Override
-      public int compare( @NonNls Class<?> o1, @NonNls Class<?> o2 ) {
-        return o1.getName().compareTo( o2.getName() );
-      }
-    } );
+    List<T> keys = new ArrayList<T>( mappings.getMappings().keySet() );
+    Collections.sort( keys, comparator );
 
-    for ( Class<?> key : keys ) {
+    for ( T key : keys ) {
       VersionMapping mapping = mappings.getMapping( key );
 
       List<Version> versions = new ArrayList<Version>();
@@ -102,7 +113,7 @@ public class VersionMappingsVisualizer {
         versions.add( mapping.resolveVersion( keyVersion ) );
       }
 
-      columns.add( new Column( key, versions ) );
+      columns.add( new Column( toString.convert( key ), versions ) );
     }
 
     writeHeadline( columns, out );
@@ -166,8 +177,8 @@ public class VersionMappingsVisualizer {
     @NotNull
     private final List<String> lines = new ArrayList<String>();
 
-    public Column( @NotNull Class<?> type, @NotNull Iterable<? extends Version> versions ) {
-      this.header = getRepresentation( type );
+    public Column( @NotNull String header, @NotNull Iterable<? extends Version> versions ) {
+      this.header = header;
 
       Version lastVersion = null;
       for ( Version version : versions ) {
@@ -179,12 +190,22 @@ public class VersionMappingsVisualizer {
         lastVersion = version;
       }
     }
+  }
 
+  /**
+   * Converts objects to strings
+   *
+   * @param <T> the string
+   */
+  public interface ToString<T> {
+    /**
+     * Returns the string representation
+     *
+     * @param object the object
+     * @return the string representation
+     */
     @NotNull
     @NonNls
-    private static String getRepresentation( @NotNull Class<?> type ) {
-      String[] parts = type.getName().split( "\\." );
-      return parts[parts.length - 1];
-    }
+    String convert( @NotNull T object );
   }
 }

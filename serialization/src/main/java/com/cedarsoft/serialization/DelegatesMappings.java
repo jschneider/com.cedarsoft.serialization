@@ -56,10 +56,10 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   private final Map<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
 
   @NotNull
-  private final VersionMappings versionMappings;
+  private final VersionMappings<Class<?>> versionMappings;
 
   public DelegatesMappings( @NotNull VersionRange versionRange ) {
-    versionMappings = new VersionMappings( versionRange );
+    versionMappings = new VersionMappings<Class<?>>( versionRange );
   }
 
   @NotNull
@@ -157,7 +157,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @NotNull
-  public VersionMappings getVersionMappings() {
+  public VersionMappings<Class<?>> getVersionMappings() {
     return versionMappings;
   }
 

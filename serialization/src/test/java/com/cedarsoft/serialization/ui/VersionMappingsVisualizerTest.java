@@ -33,9 +33,11 @@ package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.VersionMappings;
+import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
 import java.io.IOException;
+import java.util.Comparator;
 
 import static org.junit.Assert.*;
 
@@ -44,13 +46,13 @@ import static org.junit.Assert.*;
  */
 public class VersionMappingsVisualizerTest {
   private VersionRange mine;
-  private VersionMappings versionMappings;
+  private VersionMappings<Class<?>> versionMappings;
   private VersionRange other;
 
   @Before
   public void setUp() throws Exception {
     mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
-    versionMappings = new VersionMappings( mine );
+    versionMappings = new VersionMappings<Class<?>>( mine );
     other = VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 );
   }
 
@@ -86,6 +88,18 @@ public class VersionMappingsVisualizerTest {
         "  1.15.0 -->       |         |         |  \n" +
         "   2.0.0 -->     7.5.9     7.5.9     7.5.9\n" +
         "------------------------------------------\n",
-      new VersionMappingsVisualizer( versionMappings ).visualize() );
+      new VersionMappingsVisualizer<Class<?>>( versionMappings, new Comparator<Class<?>>() {
+        @Override
+        public int compare( Class<?> o1, Class<?> o2 ) {
+          return o1.getName().compareTo( o2.getName() );
+        }
+      }, new VersionMappingsVisualizer.ToString<Class<?>>() {
+        @NotNull
+        @Override
+        public String convert( @NotNull Class<?> object ) {
+          String[] parts = object.getName().split( "\\." );
+          return parts[parts.length - 1];
+        }
+      } ).visualize() );
   }
 }
