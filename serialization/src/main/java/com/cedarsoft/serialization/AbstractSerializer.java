@@ -81,7 +81,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     }
   }
 
-  protected boolean isVersionReadable( @NotNull Version formatVersion ) {
+  public boolean isVersionReadable( @NotNull Version formatVersion ) {
     return getFormatVersionRange().contains( formatVersion );
   }
 
@@ -96,7 +96,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     }
   }
 
-  protected boolean isVersionWritable( @NotNull Version formatVersion ) {
+  public boolean isVersionWritable( @NotNull Version formatVersion ) {
     return getFormatVersion().equals( formatVersion );
   }
 
