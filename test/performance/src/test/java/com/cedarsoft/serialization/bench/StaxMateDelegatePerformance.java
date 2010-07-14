@@ -211,7 +211,7 @@ public class StaxMateDelegatePerformance {
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
       SMOutputElement extensionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION );
-      extensionSerializer.serialize( extensionElement, object.getExtension(), formatVersion, context );
+      extensionSerializer.serialize( extensionElement, object.getExtension(), EXTENSION_FORMAT_VERSION, context );
     }
 
     @NotNull

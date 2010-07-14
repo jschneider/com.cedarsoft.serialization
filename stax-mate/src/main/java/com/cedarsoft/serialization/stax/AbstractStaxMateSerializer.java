@@ -85,17 +85,21 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    */
   protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo, Version formatVersion, SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
+
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), elementName );
-      serializer.serialize( doorElement, object, formatVersion, context );
+      serializer.serialize( doorElement, object, resolvedVersion, context );
     }
   }
 
   protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo, Version formatVersion, SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
+
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), serializer.getDefaultElementName() );
-      serializer.serialize( doorElement, object, formatVersion, context );
+      serializer.serialize( doorElement, object, resolvedVersion, context );
     }
   }
 

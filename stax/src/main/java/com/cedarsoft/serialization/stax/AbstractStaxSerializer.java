@@ -96,18 +96,22 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    */
   protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion, SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
+
     for ( T object : objects ) {
       serializeTo.writeStartElement( elementName );
-      serializer.serialize( serializeTo, object, formatVersion, context );
+      serializer.serialize( serializeTo, object, resolvedVersion, context );
       serializeTo.writeEndElement();
     }
   }
 
   protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
+    Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
+
     for ( T object : objects ) {
       serializeTo.writeStartElement( serializer.getDefaultElementName() );
-      serializer.serialize( serializeTo, object, formatVersion, context );
+      serializer.serialize( serializeTo, object, resolvedVersion, context );
       serializeTo.writeEndElement();
     }
   }
