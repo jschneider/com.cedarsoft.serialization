@@ -110,6 +110,7 @@ public class StaxMateVersionTest {
     @NotNull
     @Override
     public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       if ( formatVersion.equals( new Version( 1, 0, 0 ) ) ) {
         int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
         closeTag( deserializeFrom );
@@ -135,6 +136,7 @@ public class StaxMateVersionTest {
     @NotNull
     @Override
     public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       return Integer.parseInt( getText( deserializeFrom ) );
     }
   }
@@ -153,6 +155,7 @@ public class StaxMateVersionTest {
     @NotNull
     @Override
     public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
       closeTag( deserializeFrom );
       return intValue;

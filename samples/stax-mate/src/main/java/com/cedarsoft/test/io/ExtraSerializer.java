@@ -82,6 +82,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
   @Override
   public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );

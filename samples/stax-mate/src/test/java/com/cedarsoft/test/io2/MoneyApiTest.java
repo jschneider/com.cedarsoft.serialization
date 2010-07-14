@@ -86,6 +86,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
     @NotNull
     @Override
     public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       nextTag( deserializeFrom, "money" );
       Money money = deserialize( Money.class, formatVersion, deserializeFrom, context );
       closeTag( deserializeFrom );

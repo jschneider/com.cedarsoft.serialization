@@ -82,6 +82,7 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
   @NotNull
   @Override
   public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
     BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom, context );
 

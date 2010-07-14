@@ -40,6 +40,7 @@ public class DaDomainObjectSerializer
     public DaDomainObject deserialize( XMLStreamReader deserializeFrom, Version formatVersion, @NotNull DeserializationContext context )
         throws VersionException, IOException, XMLStreamException
     {
+        assert isVersionReadable( formatVersion );
         //description
         String description = getChildText(deserializeFrom, ELEMENT_DESCRIPTION);
         //id

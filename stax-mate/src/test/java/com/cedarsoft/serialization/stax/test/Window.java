@@ -114,6 +114,7 @@ public class Window {
     @NotNull
     @Override
     public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
         double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
         double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );

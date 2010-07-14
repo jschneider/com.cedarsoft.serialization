@@ -78,6 +78,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
   @Override
   @NotNull
   public Application deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 
     nextTag( deserializeFrom, ELEMENT_VERSION );

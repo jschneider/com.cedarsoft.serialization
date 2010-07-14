@@ -95,6 +95,7 @@ public class WindowSerializerNamespaceSkipTest {
     @NotNull
     @Override
     public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
 

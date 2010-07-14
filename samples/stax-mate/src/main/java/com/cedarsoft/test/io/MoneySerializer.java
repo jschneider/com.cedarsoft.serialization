@@ -60,6 +60,7 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
 
   @Override
   public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     int cents = Integer.parseInt( getText( deserializeFrom ) );
 
     //We don't have to close the tag. The getText method does that for us

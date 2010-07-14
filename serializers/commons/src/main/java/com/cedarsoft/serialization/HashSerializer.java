@@ -66,6 +66,7 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
   @NotNull
   @Override
   public Hash deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     String algorithm = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ALGORITHM );
     String valueAsHex = getText( deserializeFrom );
 

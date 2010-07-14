@@ -113,6 +113,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
 
   @Override
   public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     //We deserialize the color. This should be done in its own serializer in real world --> improved reusability and testability
     nextTag( deserializeFrom, "color" );
     int red = Integer.parseInt( deserializeFrom.getAttributeValue( null, "red" ) );

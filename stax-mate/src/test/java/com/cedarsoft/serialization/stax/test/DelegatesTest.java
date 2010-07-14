@@ -161,6 +161,7 @@ public class DelegatesTest {
     @NotNull
     @Override
     public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "doors" );

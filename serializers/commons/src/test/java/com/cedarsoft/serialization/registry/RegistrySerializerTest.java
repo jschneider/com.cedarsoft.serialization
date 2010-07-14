@@ -73,6 +73,7 @@ public class RegistrySerializerTest {
       @NotNull
       @Override
       public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+        assert isVersionReadable( formatVersion );
         return getText( deserializeFrom );
       }
 

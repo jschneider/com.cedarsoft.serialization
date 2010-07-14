@@ -76,9 +76,13 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    * @param formatVersion the format version
    */
   protected void verifyVersionReadable( @NotNull Version formatVersion ) {
-    if ( !getFormatVersionRange().contains( formatVersion ) ) {
+    if ( !isVersionReadable( formatVersion ) ) {
       throw new VersionMismatchException( getFormatVersion(), formatVersion );
     }
+  }
+
+  protected boolean isVersionReadable( @NotNull Version formatVersion ) {
+    return getFormatVersionRange().contains( formatVersion );
   }
 
   /**

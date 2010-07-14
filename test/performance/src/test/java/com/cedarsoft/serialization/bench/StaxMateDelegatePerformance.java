@@ -170,6 +170,7 @@ public class StaxMateDelegatePerformance {
     @NotNull
     @Override
     public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
@@ -217,6 +218,7 @@ public class StaxMateDelegatePerformance {
     @NotNull
     @Override
     public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
@@ -253,6 +255,7 @@ public class StaxMateDelegatePerformance {
     @NotNull
     @Override
     public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       boolean isDefault = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEFAULT ) );
       String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );
 

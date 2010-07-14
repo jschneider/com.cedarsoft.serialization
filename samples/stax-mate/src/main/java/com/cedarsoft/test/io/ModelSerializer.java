@@ -75,6 +75,7 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
 
   @Override
   public Model deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     return new Model( getText( deserializeFrom ) );
     //getText automatically closes the tag
   }

@@ -89,6 +89,7 @@ public class Door {
     @NotNull
     @Override
     public Door deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+      assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
       closeTag( deserializeFrom );
       return new Door( description );

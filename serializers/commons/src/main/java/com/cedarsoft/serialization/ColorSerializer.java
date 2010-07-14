@@ -74,6 +74,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
   @NotNull
   @Override
   public Color deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws VersionException, IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     //red
     int red = Integer.parseInt( getChildText( deserializeFrom, ELEMENT_RED ) );
     //green

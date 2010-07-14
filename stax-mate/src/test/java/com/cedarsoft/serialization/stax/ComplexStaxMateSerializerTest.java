@@ -61,6 +61,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
       @Override
       @NotNull
       public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws XMLStreamException {
+        assert isVersionReadable( formatVersion );
         deserializeFrom.next();
         String text = deserializeFrom.getText();
         closeTag( deserializeFrom );
@@ -78,6 +79,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
       @Override
       @NotNull
       public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+        assert isVersionReadable( formatVersion );
         nextTag( deserializeFrom, "sub" );
         String string = stringSerializer.deserialize( deserializeFrom, formatVersion, context );
 

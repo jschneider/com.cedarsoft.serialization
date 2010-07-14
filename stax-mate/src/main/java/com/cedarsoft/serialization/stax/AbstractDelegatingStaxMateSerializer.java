@@ -99,6 +99,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
   @Override
   @NotNull
   public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
     StaxMateSerializingStrategy<? extends T> strategy = serializingStrategySupport.findStrategy( type );

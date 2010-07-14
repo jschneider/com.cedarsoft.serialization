@@ -62,6 +62,7 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   @NotNull
   @Override
   public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    assert isVersionReadable( formatVersion );
     String text = getText( deserializeFrom );
 
     if ( formatVersion.equals( Version.valueOf( 0, 9, 0 ) ) ) {
