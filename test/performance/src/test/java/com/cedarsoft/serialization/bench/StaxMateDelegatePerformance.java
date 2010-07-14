@@ -159,7 +159,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
@@ -206,12 +206,12 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
       SMOutputElement extensionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION );
-      extensionSerializer.serialize( extensionElement, object.getExtension(), context );
+      extensionSerializer.serialize( extensionElement, object.getExtension(), formatVersion, context );
     }
 
     @NotNull
@@ -243,7 +243,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( object.isDefault() ) );
       serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
       serializeTo.addCharacters( object.getExtension() );

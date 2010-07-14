@@ -150,7 +150,7 @@ public class DelegatesTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
       serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, context );

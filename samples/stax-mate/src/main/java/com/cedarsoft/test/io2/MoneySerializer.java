@@ -61,7 +61,7 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
   }
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Money object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Money object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...
   }

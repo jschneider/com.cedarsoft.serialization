@@ -83,7 +83,7 @@ public class WindowSerializerNamespaceSkipTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
       serializeTo.addAttribute( "height", String.valueOf( object.getHeight() ) );
 

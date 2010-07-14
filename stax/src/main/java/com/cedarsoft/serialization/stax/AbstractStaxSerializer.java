@@ -72,7 +72,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
       writer.writeStartElement( getDefaultElementName() );
       writer.writeDefaultNamespace( nameSpace );
 
-      serialize( writer, object, new SerializationContext() );
+      serialize( writer, object, formatVersion, new SerializationContext() );
       writer.writeEndElement();
 
       writer.close();
@@ -96,7 +96,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       serializeTo.writeStartElement( elementName );
-      serializer.serialize( serializeTo, object, context );
+      serializer.serialize( serializeTo, object, formatVersion, context );
       serializeTo.writeEndElement();
     }
   }
@@ -105,7 +105,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       serializeTo.writeStartElement( serializer.getDefaultElementName() );
-      serializer.serialize( serializeTo, object, context );
+      serializer.serialize( serializeTo, object, formatVersion, context );
       serializeTo.writeEndElement();
     }
   }

@@ -73,7 +73,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Extra object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Extra object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.writeStartElement( "description" );
     serializeTo.writeCharacters( object.getDescription() );
     serializeTo.writeEndElement();

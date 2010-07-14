@@ -65,7 +65,7 @@ public class RegistrySerializerTest {
     access = new InMemoryObjectsAccess();
     serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
         serializeTo.writeCharacters( object );
       }
 

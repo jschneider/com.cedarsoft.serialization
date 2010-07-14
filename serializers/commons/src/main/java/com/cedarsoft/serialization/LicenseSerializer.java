@@ -59,7 +59,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull License object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull License object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_ID, object.getId() );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
   }

@@ -65,7 +65,7 @@ public class ModelSerializer extends AbstractStaxSerializer<Model> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Model object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Model object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.writeCharacters( object.getName() );
   }
   //END SNIPPET: serialize

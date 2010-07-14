@@ -50,13 +50,13 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
   /**
    * Serializes the object to the given element
    *
-   * @param serializeTo the serializeTo
-   * @param object      the object
-   * @param context     the context
-   * @throws IOException
+   * @param serializeTo   the serializeTo
+   * @param object        the object
+   * @param formatVersion the format version
+   * @param context       the context  @throws IOException
    * @throws E
    */
-  void serialize( @NotNull S serializeTo, @NotNull T object, @NotNull SerializationContext context ) throws IOException, E;
+  void serialize( @NotNull S serializeTo, @NotNull T object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, E;
 
   /**
    * Deserializes the object from the given document

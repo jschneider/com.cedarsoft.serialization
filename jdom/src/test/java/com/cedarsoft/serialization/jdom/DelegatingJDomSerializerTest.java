@@ -57,7 +57,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
   public void setUp() throws Exception {
     AbstractJDomSerializingStrategy<Integer> intSerializer = new AbstractJDomSerializingStrategy<Integer>( "int", "http://int", Integer.class, new VersionRange( new Version( 1, 0, 1 ), new Version( 1, 0, 1 ) ) ) {
       @Override
-      public void serialize( @NotNull Element serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException {
+      public void serialize( @NotNull Element serializeTo, @NotNull Integer object, Version formatVersion, @NotNull SerializationContext context ) throws IOException {
         serializeTo.setText( object.toString() );
       }
 
@@ -69,7 +69,7 @@ public class DelegatingJDomSerializerTest extends AbstractXmlSerializerTest<Numb
     };
     AbstractJDomSerializingStrategy<Double> doubleSerializer = new AbstractJDomSerializingStrategy<Double>( "double", "http://double", Double.class, new VersionRange( new Version( 1, 0, 2 ), new Version( 1, 0, 2 ) ) ) {
       @Override
-      public void serialize( @NotNull Element serializeTo, @NotNull Double object, @NotNull SerializationContext context ) throws IOException {
+      public void serialize( @NotNull Element serializeTo, @NotNull Double object, Version formatVersion, @NotNull SerializationContext context ) throws IOException {
         serializeTo.setText( object.toString() );
       }
 

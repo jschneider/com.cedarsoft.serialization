@@ -53,7 +53,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
   protected AbstractStaxMateSerializer<String> getSerializer() {
     final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", "asdf",new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull SerializationContext context ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException {
         serializeTo.addCharacters( object );
       }
 
@@ -69,8 +69,8 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
 
     return new AbstractStaxMateSerializer<String>( "aString","asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-        stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object, context );
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+        stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object, formatVersion, context );
         serializeTo.addElement( serializeTo.getNamespace(), "emptyChild" ).addCharacters( "" );
       }
 

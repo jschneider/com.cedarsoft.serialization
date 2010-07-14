@@ -88,7 +88,7 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Car object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Car object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.writeStartElement( "color" ); //okay, should be a own serializer in real world...
     serializeTo.writeAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     serializeTo.writeAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );

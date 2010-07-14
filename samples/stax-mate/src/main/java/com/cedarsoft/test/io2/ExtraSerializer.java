@@ -80,7 +80,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Extra object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Extra object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer

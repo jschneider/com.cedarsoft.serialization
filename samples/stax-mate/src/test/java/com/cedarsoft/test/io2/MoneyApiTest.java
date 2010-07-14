@@ -78,7 +78,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
       serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ), context );
     }
 

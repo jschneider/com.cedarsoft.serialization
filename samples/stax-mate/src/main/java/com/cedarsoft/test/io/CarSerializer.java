@@ -75,7 +75,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Car object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Car object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
     SMOutputElement colorElement = serializeTo.addElement( serializeTo.getNamespace(), "color" );  //okay, should be a own serializer in real world...
     colorElement.addAttribute( "red", String.valueOf( object.getColor().getRed() ) );
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
