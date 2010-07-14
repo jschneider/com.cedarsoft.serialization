@@ -150,7 +150,7 @@ public class DelegatesTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
       serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo );
@@ -159,7 +159,7 @@ public class DelegatesTest {
 
     @NotNull
     @Override
-    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "doors" );

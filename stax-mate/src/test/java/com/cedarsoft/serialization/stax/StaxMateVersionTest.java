@@ -103,13 +103,13 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       if ( formatVersion.equals( new Version( 1, 0, 0 ) ) ) {
         int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
         closeTag( deserializeFrom );
@@ -128,13 +128,13 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       return Integer.parseInt( getText( deserializeFrom ) );
     }
   }
@@ -145,13 +145,13 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "value", object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
       closeTag( deserializeFrom );
       return intValue;

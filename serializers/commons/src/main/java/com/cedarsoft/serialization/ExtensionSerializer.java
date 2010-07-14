@@ -56,14 +56,14 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
     serializeTo.addCharacters( object.getExtension() );
   }
 
   @NotNull
   @Override
-  public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
     String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );
     if ( delimiter == null ) {
       delimiter = Extension.DEFAULT_DELIMITER;

@@ -282,12 +282,12 @@ public class DelegateMappingTest {
     }
 
     @Override
-    public void serialize( @NotNull Object serializeTo, @NotNull Object object, SerializationContext context ) throws IOException, IOException {
+    public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull SerializationContext context ) throws IOException, IOException {
     }
 
     @NotNull
     @Override
-    public Object deserialize( @NotNull Object deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, IOException {
+    public Object deserialize( @NotNull Object deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, IOException {
       throw new UnsupportedOperationException();
     }
 

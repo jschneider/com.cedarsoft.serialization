@@ -58,7 +58,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
   protected AbstractStaxMateSerializer<List<String>> getSerializer() {
     return new AbstractStaxMateSerializer<List<String>>( "aString", "http://aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object, SerializationContext context ) throws XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object, @NotNull SerializationContext context ) throws XMLStreamException {
         for ( String s : object ) {
           serializeTo.addElement( serializeTo.getNamespace(), "string" ).addCharacters( s );
         }
@@ -68,7 +68,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
 
       @Override
       @NotNull
-      public List<String> deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws XMLStreamException, IOException {
+      public List<String> deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws XMLStreamException, IOException {
         final List<String> strings = new ArrayList<String>();
 
         final boolean[] called = {false};

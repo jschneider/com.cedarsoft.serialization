@@ -159,7 +159,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
@@ -169,7 +169,7 @@ public class StaxMateDelegatePerformance {
 
     @NotNull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
@@ -206,7 +206,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
@@ -216,7 +216,7 @@ public class StaxMateDelegatePerformance {
 
     @NotNull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
@@ -243,7 +243,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( object.isDefault() ) );
       serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
       serializeTo.addCharacters( object.getExtension() );
@@ -251,7 +251,7 @@ public class StaxMateDelegatePerformance {
 
     @NotNull
     @Override
-    public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       boolean isDefault = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEFAULT ) );
       String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );
 

@@ -58,7 +58,7 @@ public class BaseNameSerializer extends AbstractStaxMateSerializer<BaseName> {
 
   @NotNull
   @Override
-  public BaseName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public BaseName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
     return new BaseName( getText( deserializeFrom ) );
   }
 }

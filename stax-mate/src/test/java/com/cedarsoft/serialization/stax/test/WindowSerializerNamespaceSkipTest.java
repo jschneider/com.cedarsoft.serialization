@@ -83,7 +83,7 @@ public class WindowSerializerNamespaceSkipTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
       serializeTo.addAttribute( "height", String.valueOf( object.getHeight() ) );
 
@@ -92,7 +92,7 @@ public class WindowSerializerNamespaceSkipTest {
 
     @NotNull
     @Override
-    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );
 

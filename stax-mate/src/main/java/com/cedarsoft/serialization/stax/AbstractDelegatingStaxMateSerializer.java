@@ -84,7 +84,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull T object, SerializationContext context ) throws IOException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull T object, @NotNull SerializationContext context ) throws IOException {
     try {
       StaxMateSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
       serializeTo.addAttribute( ATTRIBUTE_TYPE, strategy.getId() );
@@ -96,7 +96,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
 
   @Override
   @NotNull
-  public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
     StaxMateSerializingStrategy<? extends T> strategy = serializingStrategySupport.findStrategy( type );

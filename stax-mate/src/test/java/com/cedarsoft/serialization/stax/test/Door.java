@@ -81,13 +81,13 @@ public class Door {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Door object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Door object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
     }
 
     @NotNull
     @Override
-    public Door deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Door deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       String description = getChildText( deserializeFrom, "description" );
       closeTag( deserializeFrom );
       return new Door( description );

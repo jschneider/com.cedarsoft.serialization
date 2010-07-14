@@ -83,13 +83,13 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.writeCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
       return Integer.parseInt( getText( deserializeFrom ) );
     }
   }

@@ -112,13 +112,13 @@ public class JdomSerializationTest {
     }
 
     @Override
-    public void serialize( @NotNull Element serializeTo, @NotNull Integer object, SerializationContext context ) throws IOException, IOException {
+    public void serialize( @NotNull Element serializeTo, @NotNull Integer object, @NotNull SerializationContext context ) throws IOException, IOException {
       serializeTo.setText( String.valueOf( object ) );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, IOException {
+    public Integer deserialize( @NotNull Element deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, IOException {
       return Integer.parseInt( deserializeFrom.getText() );
     }
   }

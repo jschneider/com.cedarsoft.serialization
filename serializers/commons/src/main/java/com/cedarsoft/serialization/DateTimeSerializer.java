@@ -54,13 +54,13 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( createFormatter().print( object ) );
   }
 
   @NotNull
   @Override
-  public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
     String text = getText( deserializeFrom );
 
     if ( formatVersion.equals( Version.valueOf( 0, 9, 0 ) ) ) {

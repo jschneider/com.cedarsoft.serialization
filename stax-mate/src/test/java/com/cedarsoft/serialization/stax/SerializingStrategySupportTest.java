@@ -107,13 +107,13 @@ public class SerializingStrategySupportTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, SerializationContext context ) throws IOException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull SerializationContext context ) throws IOException {
       throw new UnsupportedOperationException();
     }
 
     @Override
     @NotNull
-    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException {
+    public String deserialize( @NotNull @NonNls XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException {
       throw new UnsupportedOperationException();
     }
   }

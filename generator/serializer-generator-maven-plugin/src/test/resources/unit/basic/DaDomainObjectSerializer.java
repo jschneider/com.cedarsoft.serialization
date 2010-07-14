@@ -11,6 +11,7 @@ import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
+import org.jetbrains.annotations.NotNull;
 
 public class DaDomainObjectSerializer
     extends AbstractStaxMateSerializer<DaDomainObject>
@@ -24,7 +25,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public void serialize( SMOutputElement serializeTo, DaDomainObject object, SerializationContext context )
+    public void serialize( SMOutputElement serializeTo, DaDomainObject object, @NotNull SerializationContext context )
         throws IOException, XMLStreamException
     {
         //description
@@ -34,7 +35,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public DaDomainObject deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context )
+    public DaDomainObject deserialize( XMLStreamReader deserializeFrom, Version formatVersion, @NotNull DeserializationContext context )
         throws VersionException, IOException, XMLStreamException
     {
         //description
