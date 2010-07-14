@@ -160,6 +160,11 @@ public class VersionMappingsVisualizer<T> {
   }
 
   @NotNull
+  public static <T> VersionMappingsVisualizer<T> create( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator, @NotNull ToString<T> toString ) {
+    return new VersionMappingsVisualizer<T>( mappings, comparator, toString );
+  }
+
+  @NotNull
   @NonNls
   private static String extend( @NonNls @NotNull String string ) {
     if ( string.length() > COL_WIDTH ) {
@@ -168,7 +173,6 @@ public class VersionMappingsVisualizer<T> {
 
     return StringUtils.leftPad( string, COL_WIDTH );
   }
-
 
   public static class Column {
     @NotNull
