@@ -104,20 +104,14 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
 
   @Test
   public void testNoVersion() throws IOException {
-    try {
-      getSerializer().deserialize( new ByteArrayInputStream( "<aString>asdf</aString>".getBytes() ) );
-      fail( "Where is the Exception" );
-    } catch ( VersionException ignore ) {
-    }
+    expectedException.expect( VersionException.class );
+    getSerializer().deserialize( new ByteArrayInputStream( "<aString>asdf</aString>".getBytes() ) );
   }
 
   @Test
   public void testWrongVersion() throws IOException {
-    try {
-      getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.java/String/0.9.9\">asdf</aString>".getBytes() ) );
-      fail( "Where is the Exception" );
-    } catch ( VersionMismatchException ignore ) {
-    }
+    expectedException.expect( VersionMismatchException.class );
+    getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.java/String/0.9.9\">asdf</aString>".getBytes() ) );
   }
 
   @Test
