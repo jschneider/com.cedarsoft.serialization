@@ -156,6 +156,11 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return versionMappings.getVersionRange();
   }
 
+  @NotNull
+  public VersionMappings getVersionMappings() {
+    return versionMappings;
+  }
+
   public class FluentFactory<T> {
     @NotNull
     private final PluggableSerializer<? super T, S, D, E> serializer;
