@@ -88,7 +88,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
 
     //We delegate the serialization of the price to the money serializer
     serializeTo.writeStartElement( "price" );
-    serialize( object.getPrice(), Money.class, serializeTo, context );
+    serialize( object.getPrice(), Money.class, serializeTo, formatVersion, context );
     serializeTo.writeEndElement();
   }
 

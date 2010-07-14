@@ -97,17 +97,17 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
 
 
     serializeTo.writeStartElement( "model" );
-    serialize( object.getModel(), Model.class, serializeTo, context );
+    serialize( object.getModel(), Model.class, serializeTo, formatVersion, context );
     serializeTo.writeEndElement();
 
 
     serializeTo.writeStartElement( "basePrice" );
-    serialize( object.getBasePrice(), Money.class, serializeTo, context );
+    serialize( object.getBasePrice(), Money.class, serializeTo, formatVersion, context );
     serializeTo.writeEndElement();
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, context );
+    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, formatVersion, context );
 
     //The statement above does exactly the same as this loop:
     //    for ( Extra extra : object.getExtras() ) {

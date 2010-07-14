@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.SerializationContext;
@@ -64,7 +65,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
       SMNamespace nameSpace = doc.getNamespace( nameSpaceUri );
 
       SMOutputElement root = doc.addElement( nameSpace, getDefaultElementName() );
-      serialize( root, object, formatVersion, new SerializationContext() );
+      serialize( root, object, getFormatVersion(), new SerializationContext() );
       doc.closeRoot();
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
@@ -74,15 +75,15 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
   /**
    * Serializes the elements of a collection
    *
-   * @param objects     the objects that are serialized
-   * @param type        the type
-   * @param elementName the element name
-   * @param serializeTo the object the elements are serialized to
-   * @param context     the context
-   * @throws XMLStreamException
+   * @param objects       the objects that are serialized
+   * @param type          the type
+   * @param elementName   the element name
+   * @param serializeTo   the object the elements are serialized to
+   * @param formatVersion the format version
+   * @param context       the context  @throws XMLStreamException
    * @throws IOException
    */
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo, SerializationContext context ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo, Version formatVersion, SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), elementName );
@@ -90,7 +91,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     }
   }
 
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo, SerializationContext context ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo, Version formatVersion, SerializationContext context ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     for ( T object : objects ) {
       SMOutputElement doorElement = serializeTo.addElement( serializeTo.getNamespace(), serializer.getDefaultElementName() );
@@ -106,18 +107,18 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @param collectionElementName the collection element name
    * @param elementName           the element name
    * @param serializeTo           the object the elements are serialized to
-   * @param context               the context
-   * @throws XMLStreamException
+   * @param formatVersion         the format version
+   * @param context               the context  @throws XMLStreamException
    * @throws IOException
    */
-  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull @NonNls String elementName, @NotNull SMOutputElement serializeTo, Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
     SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
-    serializeCollection( objects, type, elementName, collectionElement, context );
+    serializeCollection( objects, type, elementName, collectionElement, formatVersion, context );
   }
 
-  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull SMOutputElement serializeTo, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull SMOutputElement serializeTo, Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
     SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
-    serializeCollection( objects, type, collectionElement, context );
+    serializeCollection( objects, type, collectionElement, formatVersion, context );
   }
 
   protected void serializeToElementWithCharacters( @NotNull @NonNls String elementName, @NotNull String characters, @NotNull SMOutputElement serializeTo ) throws XMLStreamException {

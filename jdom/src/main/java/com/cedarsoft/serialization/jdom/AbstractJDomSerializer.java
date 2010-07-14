@@ -69,7 +69,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
   @NotNull
   public Element serializeToElement( @NotNull T object ) throws IOException {
     Element element = new Element( getDefaultElementName() );
-    serialize( element, object, formatVersion, new SerializationContext() );
+    serialize( element, object, getFormatVersion(), new SerializationContext() );
     return element;
   }
 
@@ -85,7 +85,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     document.setRootElement( root );
 
     SerializationContext context = new SerializationContext();
-    serialize( root, object, formatVersion, context );
+    serialize( root, object, getFormatVersion(), context );
     new XMLOutputter( Format.getPrettyFormat().setLineSeparator( LINE_SEPARATOR ) ).output( document, out );
   }
 

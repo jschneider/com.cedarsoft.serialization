@@ -153,8 +153,8 @@ public class DelegatesTest {
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
-      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, context );
-      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, context );
+      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, formatVersion, context );
+      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, formatVersion, context );
     }
 
     @NotNull

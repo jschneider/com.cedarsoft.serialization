@@ -81,12 +81,12 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
     colorElement.addAttribute( "green", String.valueOf( object.getColor().getGreen() ) );
 
-    serialize( object.getModel(), Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), context );
-    serialize( object.getBasePrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), context );
+    serialize( object.getModel(), Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), formatVersion, context );
+    serialize( object.getBasePrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), formatVersion, context );
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, context );
+    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, formatVersion, context );
 
     //The statement above does exactly the same as this loop:
     //    for ( Extra extra : object.getExtras() ) {
