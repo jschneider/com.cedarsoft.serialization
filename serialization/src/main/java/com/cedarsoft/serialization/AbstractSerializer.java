@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,6 +68,17 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   @NotNull
   public Version getFormatVersion() {
     return formatVersionRange.getMax();
+  }
+
+  /**
+   * Verifies the format version is supported
+   *
+   * @param formatVersion the format version
+   */
+  protected void verifyVersionReadable( @NotNull Version formatVersion ) {
+    if ( !getFormatVersionRange().contains( formatVersion ) ) {
+      throw new VersionMismatchException( getFormatVersion(), formatVersion );
+    }
   }
 
   @Override

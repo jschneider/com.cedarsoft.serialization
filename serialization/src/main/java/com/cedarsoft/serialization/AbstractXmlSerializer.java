@@ -33,7 +33,6 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -159,17 +158,6 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   }
 
   /**
-   * Verifies the format version
-   *
-   * @param formatVersion the format version
-   */
-  protected void verifyFormatVersion( @NotNull Version formatVersion ) {
-    if ( !getFormatVersionRange().contains( formatVersion ) ) {
-      throw new VersionMismatchException( getFormatVersion(), formatVersion );
-    }
-  }
-
-  /**
    * Parses the version from the namespace and verifies the namespace and version
    *
    * @param namespaceURI the namespace uri
@@ -185,7 +173,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
 
     //Parse and verify the version
     Version formatVersion = parseVersionFromNamespaceUri( namespaceURI );
-    verifyFormatVersion( formatVersion );
+    verifyVersionReadable( formatVersion );
     return formatVersion;
   }
 
