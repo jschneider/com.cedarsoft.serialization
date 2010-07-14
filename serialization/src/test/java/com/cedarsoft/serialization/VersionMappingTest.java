@@ -38,6 +38,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
+import org.junit.rules.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,6 +192,29 @@ public class VersionMappingTest {
       assertEquals( "Invalid source range: Was <[1.0.0-2.2.8]> but expected <[0.5.0-2.2.7]>", e.getMessage() );
     }
   }
+
+  @Test
+  public void testFluentTypicalFaults() {
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+
+    expectedException.expect( IllegalStateException.class );
+    expectedException.expectMessage( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
+
+    mapping.map( VersionRange.from( 0, 5, 0 ).to() ).to( 7, 1, 1 ).to( 2, 0, 0 );
+  }
+
+  @Test
+  public void testFluentTypicalFaults2() {
+    VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
+
+    expectedException.expect( IllegalStateException.class );
+    expectedException.expectMessage( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
+
+    mapping.map( VersionRange.from( 0, 5, 0 ).to() ).to( 2, 1, 1 );
+  }
+
+  @Rule
+  public final ExpectedException expectedException = ExpectedException.none();
 
   //  @Test
   //  public void testBasic() {

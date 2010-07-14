@@ -87,7 +87,7 @@ public class VersionMapping {
 
   @NotNull
   public FluentFactory map( @NotNull VersionRange range ) throws VersionException {
-    return new FluentFactory( range );
+    return new FluentFactory( range, true );
   }
 
   @NotNull
@@ -217,8 +217,15 @@ public class VersionMapping {
     @NotNull
     private final VersionRange range;
 
+    private final boolean toCalled;
+
     public FluentFactory( @NotNull VersionRange range ) {
+      this( range, false );
+    }
+
+    public FluentFactory( @NotNull VersionRange range, boolean toCalled ) {
       this.range = range;
+      this.toCalled = toCalled;
     }
 
     @NotNull
@@ -234,7 +241,11 @@ public class VersionMapping {
 
     @NotNull
     public FluentFactory to( int major, int minor, int build ) {
-      return new FluentFactory( VersionRange.from( range.getMin() ).to( major, minor, build ) );
+      //check if we have still set a to version. Then it is probably a user fault
+      if ( toCalled ) {
+        throw new IllegalStateException( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
+      }
+      return new FluentFactory( VersionRange.from( range.getMin() ).to( major, minor, build ), true );
     }
   }
 }
