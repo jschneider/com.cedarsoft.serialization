@@ -53,13 +53,13 @@ public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extensio
   }
 
   @DataPoint
-  public static final Entry<Extension> entry1 = create( new Extension( ",", "jpg" ), "<extension delimiter=\",\">jpg</extension>" );
+  public static final Entry<?> entry1 = create( new Extension( ",", "jpg" ), "<extension delimiter=\",\">jpg</extension>" );
   @DataPoint
-  public static final Entry<Extension> entry2 = create( new Extension( ".", "jpg" ), "<extension delimiter=\".\">jpg</extension>" );
+  public static final Entry<?> entry2 = create( new Extension( ".", "jpg" ), "<extension delimiter=\".\">jpg</extension>" );
   @DataPoint
-  public static final Entry<Extension> entry3 = create( new Extension( "-", "jpg" ), "<extension delimiter=\"-\">jpg</extension>" );
+  public static final Entry<?> entry3 = create( new Extension( "-", "jpg" ), "<extension delimiter=\"-\">jpg</extension>" );
   @DataPoint
-  public static final Entry<Extension> entry4 = create( new Extension( ",", "cr2" ), "<extension delimiter=\",\">cr2</extension>" );
+  public static final Entry<?> entry4 = create( new Extension( ",", "cr2" ), "<extension delimiter=\",\">cr2</extension>" );
   
   @Test
   public void testDelimiter() throws IOException {

@@ -47,12 +47,12 @@ public class BaseNameSerializerTest extends AbstractXmlSerializerTest2<BaseName>
   }
 
   @DataPoint
-  public static final Entry<BaseName> entry1 = create(
+  public static final Entry<?> entry1 = create(
     new BaseName( "asdf" ),
     "<baseName>asdf</baseName>" );
 
   @DataPoint
-  public static final Entry<BaseName> entry2 = create(
+  public static final Entry<?> entry2 = create(
     new BaseName( "asdf2" ),
     "<baseName>asdf2</baseName>" );
 }

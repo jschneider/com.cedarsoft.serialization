@@ -51,7 +51,7 @@ public class ExtraSerializerTest extends AbstractXmlSerializerTest2<Extra> {
   }
 
   @DataPoint
-  public static final Entry<Extra> ENTRY1 = create(
+  public static final Entry<?> ENTRY1 = create(
     new Extra( "Metallic", new Money( 400, 00 ) ),
     "<extra>\n" +
       "  <description>Metallic</description>\n" +
@@ -59,7 +59,7 @@ public class ExtraSerializerTest extends AbstractXmlSerializerTest2<Extra> {
       "</extra>" );
 
   @DataPoint
-  public static final Entry<Extra> ENTRY2 = create(
+  public static final Entry<?> ENTRY2 = create(
     new Extra( "Great Radio", new Money( 700, 00 ) ),
     "<extra>\n" +
       "  <description>Great Radio</description>\n" +

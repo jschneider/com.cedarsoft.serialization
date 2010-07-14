@@ -54,7 +54,7 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName>
   }
 
   @DataPoint
-  public static final Entry<FileName> entry1 = create( new FileName( "a", ",", "pdf" ), "<fileName>\n" +
+  public static final Entry<?> entry1 = create( new FileName( "a", ",", "pdf" ), "<fileName>\n" +
     "  <baseName>a</baseName>\n" +
     "  <extension delimiter=\",\">pdf</extension>\n" +
     "</fileName>" );

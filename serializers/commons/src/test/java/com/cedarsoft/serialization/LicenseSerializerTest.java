@@ -47,21 +47,21 @@ public class LicenseSerializerTest extends AbstractXmlSerializerTest2<License> {
   }
 
   @DataPoint
-  public static final Entry<License> entry1 = create(
+  public static final Entry<?> entry1 = create(
     License.PUBLIC_DOMAIN,
     "<license id=\"PUBLIC_DOMAIN\">\n" +
       "  <name>Public Domain</name>\n" +
       "</license>" );
 
   @DataPoint
-  public static final Entry<License> entry2 = create(
+  public static final Entry<?> entry2 = create(
     License.ALL_RIGHTS_RESERVED,
     "<license id=\"ALL_RIGHTS_RESERVED\">\n" +
       "  <name>All rights reserved</name>\n" +
       "</license>" );
 
   @DataPoint
-  public static final Entry<License> entry3 = create(
+  public static final Entry<?> entry3 = create(
     License.UNKNOWN,
     "<license id=\"UNKNOWN\">\n" +
       "  <name>Unknown</name>\n" +

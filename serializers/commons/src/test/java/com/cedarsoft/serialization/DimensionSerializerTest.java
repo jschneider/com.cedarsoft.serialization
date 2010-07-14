@@ -49,7 +49,7 @@ public class DimensionSerializerTest extends AbstractXmlSerializerTest2<Dimensio
   }
 
   @DataPoint
-  public static final Entry<Dimension> entry1 = create( new Dimension( 1600, 600 ), "<dimension>1600x600</dimension>" );
+  public static final Entry<?> entry1 = create( new Dimension( 1600, 600 ), "<dimension>1600x600</dimension>" );
 
   @Override
   protected void verifyDeserialized( @NotNull Dimension deserialized, @NotNull Dimension original ) {

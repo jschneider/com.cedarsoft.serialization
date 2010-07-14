@@ -44,7 +44,7 @@ public class ColorSerializerTest extends AbstractXmlSerializerTest2<Color> {
   }
 
   @DataPoint
-  public static final Entry<Color> entry1 = create(
+  public static final Entry<?> entry1 = create(
     new Color( 100, 42, 130 ),
     "<color>\n" +
       "  <red>100</red>\n" +

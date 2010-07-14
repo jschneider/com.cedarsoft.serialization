@@ -66,7 +66,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
   }
 
   @DataPoint
-  public static final Entry<DateTime> entry1 = create( new DateTime( 2009, 5, 1, 2, 2, 5, 4, ZONE ), "<dateTime>20090501T020205.004-0400</dateTime>" );
+  public static final Entry<?> entry1 = create( new DateTime( 2009, 5, 1, 2, 2, 5, 4, ZONE ), "<dateTime>20090501T020205.004-0400</dateTime>" );
 
   @Override
   protected void verifyDeserialized( @NotNull DateTime deserialized, @NotNull DateTime original ) {

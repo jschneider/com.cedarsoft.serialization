@@ -55,7 +55,7 @@ import java.io.IOException;
 public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObject> {
 
   @DataPoint
-  public static final Entry<MyObject> ENTRY1 = create(
+  public static final Entry<?> ENTRY1 = create(
     new MyObject( new Money( 2034, 99 ) ),
     "<myObject>\n" +
       "  <money cents=\"203499\" />\n" +

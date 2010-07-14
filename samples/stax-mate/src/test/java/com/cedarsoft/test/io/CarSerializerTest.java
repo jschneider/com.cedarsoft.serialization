@@ -62,10 +62,10 @@ public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
   }
 
   @DataPoint
-  public static final Entry<Car> ENTRY1 = create( new Car( new Model( "Toyota" ), Color.BLACK, new Money( 49000, 00 ) ), CarSerializerTest.class.getResourceAsStream( "car1.xml" ) );
+  public static final Entry<?> ENTRY1 = create( new Car( new Model( "Toyota" ), Color.BLACK, new Money( 49000, 00 ) ), CarSerializerTest.class.getResourceAsStream( "car1.xml" ) );
 
   @DataPoint
-  public static final Entry<Car> ENTRY2 = create(
+  public static final Entry<?> ENTRY2 = create(
     new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) ),
     CarSerializerTest.class.getResourceAsStream( "car2.xml" ) );
 

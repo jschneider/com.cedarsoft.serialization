@@ -48,7 +48,7 @@ public class FileTypeSerializerTest extends AbstractXmlSerializerTest2<FileType>
   }
 
   @DataPoint
-  public static final Entry<FileType> entry1 = create(
+  public static final Entry<?> entry1 = create(
     new FileType( "TheId", true, new Extension( ",", "ext" ), new Extension( ".", "_ext2" ) ),
     "<fileType dependent=\"true\">\n" +
       "  <id>TheId</id>\n" +

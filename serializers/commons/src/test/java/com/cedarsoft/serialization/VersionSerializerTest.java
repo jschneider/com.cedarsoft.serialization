@@ -46,7 +46,7 @@ public class VersionSerializerTest extends AbstractXmlSerializerTest2<Version> {
   }
 
   @DataPoint
-  public static final Entry<Version> entry1 = create( new Version( 1, 2, 3, "build65" ), "<version>1.2.3-build65</version>" );
+  public static final Entry<?> entry1 = create( new Version( 1, 2, 3, "build65" ), "<version>1.2.3-build65</version>" );
   @DataPoint
-  public static final Entry<Version> entry2 = create( new Version( 1, 2, 4 ), "<version>1.2.4</version>" );
+  public static final Entry<?> entry2 = create( new Version( 1, 2, 4 ), "<version>1.2.4</version>" );
 }

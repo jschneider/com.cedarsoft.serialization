@@ -47,7 +47,7 @@ public class ApplicationSerializerTest extends AbstractXmlSerializerTest2<Applic
   }
 
   @DataPoint
-  public static final Entry<Application> entry1 = create(
+  public static final Entry<?> entry1 = create(
     new Application( "gimp", new Version( 1, 2, 3 ) ),
     "<application >\n" +
       "  <name>gimp</name>\n" +

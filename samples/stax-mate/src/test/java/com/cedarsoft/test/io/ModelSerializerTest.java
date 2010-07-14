@@ -55,13 +55,13 @@ public class ModelSerializerTest extends AbstractXmlSerializerTest2<Model> {
   //Note: The xml serializers write a version information to the xml. This has been left out here!
 
   @DataPoint
-  public static final Entry<Model> ENTRY1 = create( new Model( "Toyota" ), "<model>Toyota</model>" );
+  public static final Entry<?> ENTRY1 = create( new Model( "Toyota" ), "<model>Toyota</model>" );
   @DataPoint
-  public static final Entry<Model> ENTRY2 = create( new Model( "GM" ), "<model>GM</model>" );
+  public static final Entry<?> ENTRY2 = create( new Model( "GM" ), "<model>GM</model>" );
   @DataPoint
-  public static final Entry<Model> ENTRY3 = create( new Model( "Volkswagen" ), "<model>Volkswagen</model>" );
+  public static final Entry<?> ENTRY3 = create( new Model( "Volkswagen" ), "<model>Volkswagen</model>" );
   @DataPoint
-  public static final Entry<Model> ENTRY4 = create( new Model( "Renault" ), "<model>Renault</model>" );
+  public static final Entry<?> ENTRY4 = create( new Model( "Renault" ), "<model>Renault</model>" );
 
   @Override
   protected void verifyDeserialized( @NotNull Model deserialized, @NotNull Model original ) {

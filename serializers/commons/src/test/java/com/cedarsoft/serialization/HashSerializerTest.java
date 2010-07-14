@@ -54,7 +54,7 @@ public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
   }
 
   @DataPoint
-  public static final Entry<Hash> entry1 = create( Hash.fromHex( Algorithm.SHA256, "11223344" ), "<hash algorithm=\"SHA256\">11223344</hash>" );
+  public static final Entry<?> entry1 = create( Hash.fromHex( Algorithm.SHA256, "11223344" ), "<hash algorithm=\"SHA256\">11223344</hash>" );
 
   @Test
   public void testIt() throws Exception {

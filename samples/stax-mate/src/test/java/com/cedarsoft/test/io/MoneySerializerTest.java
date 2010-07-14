@@ -51,5 +51,5 @@ public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
   }
 
   @DataPoint
-  public static final Entry<Money> ENTRY1 = create( new Money( 1199 ), "<money>1199</money>" );
+  public static final Entry<?> ENTRY1 = create( new Money( 1199 ), "<money>1199</money>" );
 }
