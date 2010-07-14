@@ -115,7 +115,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     serializeCollection( objects, type, elementName, collectionElement, context );
   }
 
-  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull SMOutputElement serializeTo, SerializationContext context ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollectionToElement( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String collectionElementName, @NotNull SMOutputElement serializeTo, @NotNull SerializationContext context ) throws XMLStreamException, IOException {
     SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
     serializeCollection( objects, type, collectionElement, context );
   }

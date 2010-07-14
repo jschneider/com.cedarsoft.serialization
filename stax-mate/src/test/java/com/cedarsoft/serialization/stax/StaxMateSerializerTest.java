@@ -80,7 +80,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   }
 
   @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception, IOException {
+  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
     super.verifySerialized( serialized );
     assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ) );
   }
