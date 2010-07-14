@@ -51,12 +51,15 @@ import java.util.SortedSet;
  * @param <D> the object to deserialize from ((e.g. a dom element or stream)
  * @param <E> the exception that might be thrown
  */
-public class DelegatesMappings<S, D, E extends Throwable> extends VersionMappings {
+public class DelegatesMappings<S, D, E extends Throwable> {
   @NotNull
   private final Map<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
 
+  @NotNull
+  private final VersionMappings versionMappings;
+
   public DelegatesMappings( @NotNull VersionRange versionRange ) {
-    super( versionRange );
+    versionMappings = new VersionMappings( versionRange );
   }
 
   @NotNull
@@ -66,7 +69,7 @@ public class DelegatesMappings<S, D, E extends Throwable> extends VersionMapping
 
   public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
-    serializer.serialize( outputElement, object, resolveVersion( type, formatVersion ), context );
+    serializer.serialize( outputElement, object, versionMappings.resolveVersion( type, formatVersion ), context );
   }
 
   @NotNull
@@ -81,7 +84,7 @@ public class DelegatesMappings<S, D, E extends Throwable> extends VersionMapping
   @NotNull
   public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom, @NotNull DeserializationContext context ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
-    return type.cast( serializer.deserialize( deserializeFrom, resolveVersion( type, formatVersion ), context ) );
+    return type.cast( serializer.deserialize( deserializeFrom, versionMappings.resolveVersion( type, formatVersion ), context ) );
   }
 
   /**
@@ -90,18 +93,18 @@ public class DelegatesMappings<S, D, E extends Throwable> extends VersionMapping
    * @return true if the verification has been successful. Throws an exception if not
    */
   public boolean verify() throws VersionException {
-    SortedSet<Version> mappedVersions = getMappedVersions();
+    SortedSet<Version> mappedVersions = versionMappings.getMappedVersions();
 
-    if ( mappings.isEmpty() ) {
+    if ( versionMappings.mappings.isEmpty() ) {
       throw new VersionException( "No mappings available" );
     }
 
-    for ( Map.Entry<Class<?>, VersionMapping> entry : mappings.entrySet() ) {
+    for ( Map.Entry<Class<?>, VersionMapping> entry : versionMappings.mappings.entrySet() ) {
       VersionMapping mapping = entry.getValue();
 
       //Check for every entry whether the version ranges fit
-      if ( !mapping.getSourceVersionRange().equals( versionRange ) ) {
-        throw new UnsupportedVersionRangeException( versionRange, mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
+      if ( !mapping.getSourceVersionRange().equals( versionMappings.getVersionRange() ) ) {
+        throw new UnsupportedVersionRangeException( versionMappings.getVersionRange(), mapping.getSourceVersionRange(), "Invalid mapping for <" + entry.getKey().getName() + ">. " );
       }
 
       //Verify the mapping itself
@@ -128,6 +131,31 @@ public class DelegatesMappings<S, D, E extends Throwable> extends VersionMapping
     return true;
   }
 
+  @NotNull
+  public Map<? extends Class<?>, ? extends VersionMapping> getMappings() {
+    return versionMappings.getMappings();
+  }
+
+  @NotNull
+  public <T> Version resolveVersion( @NotNull Class<? extends T> key, @NotNull Version version ) {
+    return versionMappings.resolveVersion( key, version );
+  }
+
+  @NotNull
+  public VersionMapping getMapping( @NotNull Class<?> key ) {
+    return versionMappings.getMapping( key );
+  }
+
+  @NotNull
+  public SortedSet<Version> getMappedVersions() {
+    return versionMappings.getMappedVersions();
+  }
+
+  @NotNull
+  public VersionRange getVersionRange() {
+    return versionMappings.getVersionRange();
+  }
+
   public class FluentFactory<T> {
     @NotNull
     private final PluggableSerializer<? super T, S, D, E> serializer;
@@ -139,7 +167,7 @@ public class DelegatesMappings<S, D, E extends Throwable> extends VersionMapping
     @NotNull
     public VersionMapping responsibleFor( @NotNull Class<? extends T> key ) {
       VersionRange targetVersionRange = serializer.getFormatVersionRange();
-      VersionMapping mapping = addMapping( key, targetVersionRange );
+      VersionMapping mapping = versionMappings.addMapping( key, targetVersionRange );
 
       serializers.put( key, serializer );
       return mapping;

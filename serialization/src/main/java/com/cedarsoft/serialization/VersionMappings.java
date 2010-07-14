@@ -101,4 +101,9 @@ public class VersionMappings {
   public VersionMapping add( @NotNull Class<?> key, @NotNull VersionRange targetVersionRange ) {
     return addMapping( key, targetVersionRange );
   }
+
+  @NotNull
+  public VersionRange getVersionRange() {
+    return versionRange;
+  }
 }
