@@ -283,7 +283,7 @@ public class DelegateMappingTest {
 
     @Override
     public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, IOException {
-      assert isVersionWriteable( formatVersion );
+      assert isVersionWritable( formatVersion );
     }
 
     @NotNull

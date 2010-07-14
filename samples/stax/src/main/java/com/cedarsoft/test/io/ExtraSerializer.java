@@ -74,7 +74,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
 
   @Override
   public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Extra object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
-    assert isVersionWriteable( formatVersion );
+    assert isVersionWritable( formatVersion );
     serializeTo.writeStartElement( "description" );
     serializeTo.writeCharacters( object.getDescription() );
     serializeTo.writeEndElement();

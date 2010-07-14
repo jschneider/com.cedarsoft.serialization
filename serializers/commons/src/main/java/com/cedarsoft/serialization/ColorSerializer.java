@@ -61,7 +61,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Color object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-    assert isVersionWriteable( formatVersion );
+    assert isVersionWritable( formatVersion );
 
     //red
     serializeTo.addElementWithCharacters( serializeTo.getNamespace(), ELEMENT_RED, String.valueOf( object.getRed() ) );

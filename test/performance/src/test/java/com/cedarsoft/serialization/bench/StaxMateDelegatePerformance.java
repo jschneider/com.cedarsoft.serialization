@@ -244,7 +244,7 @@ public class StaxMateDelegatePerformance {
 
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-      assert isVersionWriteable( formatVersion );
+      assert isVersionWritable( formatVersion );
       serializeTo.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( object.isDefault() ) );
       serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
       serializeTo.addCharacters( object.getExtension() );

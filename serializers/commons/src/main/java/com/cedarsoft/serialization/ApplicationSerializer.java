@@ -68,7 +68,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-    assert isVersionWriteable( formatVersion );
+    assert isVersionWritable( formatVersion );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_VERSION );

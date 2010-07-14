@@ -84,7 +84,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
 
     @Override
     public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-      assert isVersionWriteable( formatVersion );
+      assert isVersionWritable( formatVersion );
       serializeTo.writeCharacters( object.toString() );
     }
 

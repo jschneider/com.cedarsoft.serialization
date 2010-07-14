@@ -63,7 +63,7 @@ public class MoneySerializer extends AbstractStaxSerializer<Money> {
 
   @Override
   public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
-    assert isVersionWriteable( formatVersion );
+    assert isVersionWritable( formatVersion );
     serializeTo.writeAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...
   }

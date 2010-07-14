@@ -54,7 +54,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
     final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", "asdf",new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException {
-        assert isVersionWriteable( formatVersion );
+        assert isVersionWritable( formatVersion );
         serializeTo.addCharacters( object );
       }
 

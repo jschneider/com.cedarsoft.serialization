@@ -87,12 +87,12 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    * @param formatVersion the format version
    */
   protected void verifyVersionWritable( @NotNull Version formatVersion ) {
-    if ( !isVersionWriteable( formatVersion ) ) {
+    if ( !isVersionWritable( formatVersion ) ) {
       throw new VersionMismatchException( getFormatVersion(), formatVersion );
     }
   }
 
-  protected boolean isVersionWriteable( @NotNull Version formatVersion ) {
+  protected boolean isVersionWritable( @NotNull Version formatVersion ) {
     return getFormatVersion().equals( formatVersion );
   }
 

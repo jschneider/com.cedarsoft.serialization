@@ -59,7 +59,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
     return new AbstractStaxMateSerializer<List<String>>( "aString", "http://aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws XMLStreamException {
-        assert isVersionWriteable( formatVersion );
+        assert isVersionWritable( formatVersion );
         for ( String s : object ) {
           serializeTo.addElement( serializeTo.getNamespace(), "string" ).addCharacters( s );
         }

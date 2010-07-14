@@ -28,7 +28,7 @@ public class DaDomainObjectSerializer
     public void serialize( SMOutputElement serializeTo, DaDomainObject object, @NotNull Version formatVersion, @NotNull SerializationContext context )
         throws IOException, XMLStreamException
     {
-        assert isVersionWriteable( formatVersion );
+        assert isVersionWritable( formatVersion );
 
         //description
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_DESCRIPTION, object.getDescription());

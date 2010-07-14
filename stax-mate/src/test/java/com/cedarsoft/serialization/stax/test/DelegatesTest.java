@@ -151,7 +151,7 @@ public class DelegatesTest {
 
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-      assert isVersionWriteable( formatVersion );
+      assert isVersionWritable( formatVersion );
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
       serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, formatVersion, context );
