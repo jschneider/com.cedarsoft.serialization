@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.SerializationContext;
+import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -56,7 +57,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
   @NonNls
   private static final String ATTRIBUTE_TYPE = "type";
   @NotNull
-  private final SerializingStrategySupport<T, StaxMateSerializingStrategy<T>> serializingStrategySupport;
+  protected final SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException> serializingStrategySupport;
 
   /**
    * Creates a new serializer
@@ -80,7 +81,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
    */
   public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange, @NotNull Collection<? extends StaxMateSerializingStrategy<? extends T>> strategies ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
-    serializingStrategySupport = new SerializingStrategySupport<T, StaxMateSerializingStrategy<T>>( strategies );
+    serializingStrategySupport = new SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException>( formatVersionRange, strategies );
   }
 
   @Override
@@ -88,7 +89,9 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
     assert isVersionWritable( formatVersion );
 
     try {
-      StaxMateSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
+//      StaxMateSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
+      SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = ( SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException> )
+        serializingStrategySupport.findStrategy( object );
       serializeTo.addAttribute( ATTRIBUTE_TYPE, strategy.getId() );
       strategy.serialize( serializeTo, object, formatVersion, context );
     } catch ( XMLStreamException e ) {
@@ -102,7 +105,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
     assert isVersionReadable( formatVersion );
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
-    StaxMateSerializingStrategy<? extends T> strategy = serializingStrategySupport.findStrategy( type );
+    SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = serializingStrategySupport.findStrategy( type );
     return strategy.deserialize( deserializeFrom, formatVersion, context );
   }
 
@@ -112,7 +115,11 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
    * @return the strategies
    */
   @NotNull
-  public Collection<? extends StaxMateSerializingStrategy<T>> getStrategies() {
+  public Collection<? extends SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException>> getStrategies() {
     return serializingStrategySupport.getStrategies();
   }
+
+//  protected Object addStrategy( @NotNull StaxMateSerializingStrategy<T> strategy ) {
+//    serializingStrategySupport.
+//  }
 }

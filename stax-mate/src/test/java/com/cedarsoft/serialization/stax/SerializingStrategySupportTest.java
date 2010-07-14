@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,16 +58,20 @@ import java.util.List;
 public class SerializingStrategySupportTest {
   @Test
   public void testGenerics() {
-    SerializingStrategySupport<String, MyStrategy> support = new SerializingStrategySupport<String, MyStrategy>( Arrays.asList( new MyStrategy() ) );
-    SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support2 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( Arrays.asList( new MyStrategy() ) );
+    SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException> support = new SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException>(
+      VersionRange.from( 1, 0, 0 ).to(), Arrays.asList( new MyStrategy() ) );
+    SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException> support2 = new SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException>(
+      VersionRange.from( 1, 0, 0 ).to(), Arrays.asList( new MyStrategy() ) );
 
     List<StaxMateSerializingStrategy<? extends String>> strategies1 = Arrays.<StaxMateSerializingStrategy<? extends String>>asList( new MyStrategy() );
 
-    SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support5 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( strategies1 );
+    SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException> support5 = new SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException>(
+      VersionRange.from( 1, 0, 0 ).to(), strategies1 );
 
-    Collection<? extends StaxMateSerializingStrategy<? extends String>> strategies = new ArrayList<StaxMateSerializingStrategy<? extends String>>();
+    Collection<? extends StaxMateSerializingStrategy<? extends String>> strategies2 = new ArrayList<StaxMateSerializingStrategy<? extends String>>();
     try {
-      SerializingStrategySupport<String, StaxMateSerializingStrategy<String>> support3 = new SerializingStrategySupport<String, StaxMateSerializingStrategy<String>>( strategies );
+      SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException> support3 = new SerializingStrategySupport<String, SMOutputElement, XMLStreamReader, XMLStreamException>(
+        VersionRange.from( 1, 0, 0 ).to(), strategies2 );
     } catch ( Exception ignore ) {
     }
   }
@@ -75,7 +80,7 @@ public class SerializingStrategySupportTest {
     @Override
     @NotNull
     public String getId() {
-      throw new UnsupportedOperationException();
+      return "daId";
     }
 
     @Override
@@ -98,7 +103,7 @@ public class SerializingStrategySupportTest {
     @NotNull
     @Override
     public VersionRange getFormatVersionRange() {
-      throw new UnsupportedOperationException();
+      return VersionRange.from( 7, 0, 0 ).to();
     }
 
     @Override

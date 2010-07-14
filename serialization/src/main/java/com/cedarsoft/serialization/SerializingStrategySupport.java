@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.VersionRange;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,20 +44,31 @@ import java.util.List;
  * Support class for serializing strategies
  *
  * @param <T> the type
- * @param <S> the serializing strategy type
+ * @param <D> as defined in {@link SerializingStrategy}
+ * @param <S> as defined in {@link SerializingStrategy}
+ * @param <E> as defined in {@link SerializingStrategy}
  */
-public class SerializingStrategySupport<T, S extends SerializingStrategy<? extends T, ?, ?, ?>> {
+public class SerializingStrategySupport<T, S, D, E extends Throwable> {
   @NotNull
-  private final List<S> strategies = new ArrayList<S>();
+  private final List<SerializingStrategy<? extends T, S, D, E>> strategies = new ArrayList<SerializingStrategy<? extends T, S, D, E>>();
+
+  @NotNull
+  private final VersionMappings<String> versionMappings;
 
   /**
    * Creates a new serializing strategy
    *
-   * @param strategies the strategies
+   * @param versionRange the format version range
+   * @param strategies   the strategies
    */
-  public SerializingStrategySupport( @NotNull Iterable<? extends SerializingStrategy<? extends T, ?, ?, ?>> strategies ) {
-    for ( SerializingStrategy<? extends T, ?, ?, ?> strategy : strategies ) {
-      this.strategies.add( ( S ) strategy );
+  public SerializingStrategySupport( @NotNull VersionRange versionRange, @NotNull Iterable<? extends SerializingStrategy<? extends T, S, D, E>> strategies ) {
+    versionMappings = new VersionMappings<String>( versionRange );
+
+    for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
+      this.strategies.add( strategy );
+
+      //now add the mapping
+      versionMappings.add( strategy.getId(), strategy.getFormatVersionRange() );
     }
 
     if ( this.strategies.isEmpty() ) {
@@ -65,7 +77,8 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
   }
 
   /**
-   * Returns the strategy for the given id
+   * Returns the strategy for the given id.
+   * Attention: The returned strategy is not able to serialize all types of T. Handle with care depending on the id!
    *
    * @param id the id
    * @return the strategy with that id
@@ -73,8 +86,8 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
    * @throws NotFoundException if not strategy could be found
    */
   @NotNull
-  public S findStrategy( @NotNull @NonNls String id ) throws NotFoundException {
-    for ( S strategy : strategies ) {
+  public SerializingStrategy<? extends T, S, D, E> findStrategy( @NotNull @NonNls String id ) throws NotFoundException {
+    for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
       if ( strategy.getId().equals( id ) ) {
         return strategy;
       }
@@ -92,10 +105,10 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
    * @throws NotFoundException
    */
   @NotNull
-  public S findStrategy( @NotNull T object ) throws NotFoundException {
-    for ( S strategy : strategies ) {
+  public <R extends T> SerializingStrategy<R, S, D, E> findStrategy( @NotNull R object ) throws NotFoundException {
+    for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
       if ( strategy.supports( object ) ) {
-        return ( S ) strategy;
+        return ( SerializingStrategy<R, S, D, E> ) strategy;
       }
     }
 
@@ -108,7 +121,19 @@ public class SerializingStrategySupport<T, S extends SerializingStrategy<? exten
    * @return the strategies
    */
   @NotNull
-  public Collection<? extends S> getStrategies() {
+  public Collection<? extends SerializingStrategy<? extends T, S, D, E>> getStrategies() {
     return Collections.unmodifiableList( strategies );
+  }
+
+  @NotNull
+  public VersionMapping addStrategy( @NotNull SerializingStrategy<? extends T, S, D, E> strategy ) {
+    strategies.add( strategy );
+    return versionMappings.add( strategy.getId(), strategy.getFormatVersionRange() );
+  }
+
+  @NotNull
+  public VersionMapping addStrategy2( @NotNull SerializingStrategy<? extends T, S, D, E> strategy ) {
+    strategies.add( strategy );
+    return versionMappings.add( strategy.getId(), strategy.getFormatVersionRange() );
   }
 }
