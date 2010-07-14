@@ -92,6 +92,10 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
     assert isVersionReadable( formatVersion );
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
+    if ( type == null ) {
+      throw new XMLStreamException( "No type attribute found. Cannot find strategy." );
+    }
+
     SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = serializingStrategySupport.findStrategy( type );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
     return strategy.deserialize( deserializeFrom, resolvedVersion, context );
