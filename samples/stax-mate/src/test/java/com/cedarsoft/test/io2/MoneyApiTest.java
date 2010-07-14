@@ -79,14 +79,14 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
 
     @Override
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, SerializationContext context ) throws IOException, XMLStreamException {
-      serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ) );
+      serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ), context );
     }
 
     @NotNull
     @Override
     public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
       nextTag( deserializeFrom, "money" );
-      Money money = deserialize( Money.class, formatVersion, deserializeFrom );
+      Money money = deserialize( Money.class, formatVersion, deserializeFrom, context );
       closeTag( deserializeFrom );
 
       return new MyObject( money );

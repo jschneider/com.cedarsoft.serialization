@@ -71,7 +71,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_VERSION );
-    serialize( object.getVersion(), Version.class, versionElement );
+    serialize( object.getVersion(), Version.class, versionElement, context );
   }
 
   @Override
@@ -80,7 +80,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 
     nextTag( deserializeFrom, ELEMENT_VERSION );
-    Version applicationVersion = deserialize( Version.class, formatVersion, deserializeFrom );
+    Version applicationVersion = deserialize( Version.class, formatVersion, deserializeFrom, context );
     closeTag( deserializeFrom );
 
     return new Application( name, applicationVersion );

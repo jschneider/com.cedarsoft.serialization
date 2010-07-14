@@ -90,7 +90,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return mapping;
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement ) throws E, IOException {
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull SerializationContext context ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     serializer.serialize( outputElement, object, context );
   }
@@ -105,7 +105,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @NotNull
-  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
+  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom, @NotNull DeserializationContext context ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     return type.cast( serializer.deserialize( deserializeFrom, resolveVersion( type, formatVersion ), context ) );
   }

@@ -76,7 +76,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
-    serialize( object.getPrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ) );
+    serialize( object.getPrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ), context );
   }
 
   @Override
@@ -84,7 +84,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );
-    Money price = deserialize( Money.class, formatVersion, deserializeFrom );
+    Money price = deserialize( Money.class, formatVersion, deserializeFrom, context );
     //closes the price tag automatically
 
     //we have to close our tag now

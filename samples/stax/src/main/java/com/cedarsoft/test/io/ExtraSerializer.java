@@ -80,7 +80,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
 
     //We delegate the serialization of the price to the money serializer
     serializeTo.writeStartElement( "price" );
-    serialize( object.getPrice(), Money.class, serializeTo );
+    serialize( object.getPrice(), Money.class, serializeTo, context );
     serializeTo.writeEndElement();
   }
 
@@ -89,7 +89,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );
-    Money price = deserialize( Money.class, formatVersion, deserializeFrom );
+    Money price = deserialize( Money.class, formatVersion, deserializeFrom, context );
     //closes the price tag automatically
 
     //we have to close our tag now

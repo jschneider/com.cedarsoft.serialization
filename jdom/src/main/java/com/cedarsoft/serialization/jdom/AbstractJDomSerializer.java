@@ -35,6 +35,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.DeserializationContext;
+import com.cedarsoft.serialization.SerializationContext;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -63,10 +65,11 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
+  @Deprecated
   @NotNull
   public Element serializeToElement( @NotNull T object ) throws IOException {
     Element element = new Element( getDefaultElementName() );
-    serialize( element, object, context );
+    serialize( element, object, new SerializationContext() );
     return element;
   }
 
@@ -81,6 +84,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
     Element root = new Element( getDefaultElementName(), namespace );
     document.setRootElement( root );
 
+    SerializationContext context = new SerializationContext();
     serialize( root, object, context );
     new XMLOutputter( Format.getPrettyFormat().setLineSeparator( LINE_SEPARATOR ) ).output( document, out );
   }
@@ -96,6 +100,7 @@ public abstract class AbstractJDomSerializer<T> extends AbstractXmlSerializer<T,
 
       Version.verifyMatch( getFormatVersion(), formatVersion );
 
+      DeserializationContext context = new DeserializationContext( formatVersion );
       return deserialize( document.getRootElement(), formatVersion, context );
     } catch ( JDOMException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );

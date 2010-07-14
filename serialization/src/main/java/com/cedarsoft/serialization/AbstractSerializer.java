@@ -51,7 +51,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   private final VersionRange formatVersionRange;
 
   @NotNull
-  protected final DelegatesMappings<S,D,E> delegatesMappings;
+  protected final DelegatesMappings<S, D, E> delegatesMappings;
 
   /**
    * Creates a serializer.
@@ -60,7 +60,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    */
   protected AbstractSerializer( @NotNull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
-    this.delegatesMappings = new DelegatesMappings<S,D,E>( formatVersionRange );
+    this.delegatesMappings = new DelegatesMappings<S, D, E>( formatVersionRange );
   }
 
   @Override
@@ -96,13 +96,14 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   }
 
   // Delegate methods to the DelegatesMappings
+
   @NotNull
   public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> sdePluggableSerializer ) {
     return delegatesMappings.add( sdePluggableSerializer );
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement ) throws E, IOException {
-    delegatesMappings.serialize( object, type, outputElement );
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull SerializationContext context ) throws E, IOException {
+    delegatesMappings.serialize( object, type, outputElement, context );
   }
 
   @NotNull
@@ -111,8 +112,8 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   }
 
   @NotNull
-  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
-    return delegatesMappings.deserialize( type, formatVersion, deserializeFrom );
+  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom, @NotNull DeserializationContext context ) throws E, IOException {
+    return delegatesMappings.deserialize( type, formatVersion, deserializeFrom, context );
   }
 
   /**

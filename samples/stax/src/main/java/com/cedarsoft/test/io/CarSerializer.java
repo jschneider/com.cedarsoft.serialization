@@ -85,17 +85,17 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
 
 
     serializeTo.writeStartElement( "model" );
-    serialize( object.getModel(), Model.class, serializeTo );
+    serialize( object.getModel(), Model.class, serializeTo, context );
     serializeTo.writeEndElement();
 
 
     serializeTo.writeStartElement( "basePrice" );
-    serialize( object.getBasePrice(), Money.class, serializeTo );
+    serialize( object.getBasePrice(), Money.class, serializeTo, context );
     serializeTo.writeEndElement();
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo );
+    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, context );
 
     //The statement above does exactly the same as this loop:
     //    for ( Extra extra : object.getExtras() ) {
@@ -117,13 +117,13 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
     closeTag( deserializeFrom );
 
     nextTag( deserializeFrom, "model" );
-    Model model = deserialize( Model.class, formatVersion, deserializeFrom );
+    Model model = deserialize( Model.class, formatVersion, deserializeFrom, context );
 
     nextTag( deserializeFrom, "basePrice" );
-    Money basePrice = deserialize( Money.class, formatVersion, deserializeFrom );
+    Money basePrice = deserialize( Money.class, formatVersion, deserializeFrom, context );
 
     //Now we visit all remaining children (should only be extras)
-    List<? extends Extra> extras = deserializeCollection( deserializeFrom, Extra.class, formatVersion );
+    List<? extends Extra> extras = deserializeCollection( deserializeFrom, Extra.class, formatVersion, context );
 
     return new Car( model, color, basePrice, extras );
   }

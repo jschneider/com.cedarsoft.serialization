@@ -137,8 +137,8 @@ public class Room {
     public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
-      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo );
-      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo );
+      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, context );
+      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, context );
     }
 
     @NotNull
@@ -147,10 +147,10 @@ public class Room {
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "windows" );
-      final List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion );
+      final List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion, context );
 
       nextTag( deserializeFrom, "doors" );
-      final List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion );
+      final List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion, context );
 
       closeTag( deserializeFrom );
       return new Room( description, windows, doors );

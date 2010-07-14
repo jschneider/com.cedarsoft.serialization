@@ -36,6 +36,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.DeserializationContext;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -96,7 +97,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       //Verify the name space
       verifyNamespaceUri( namespaceURI );
 
-      T deserialized = deserialize( reader, version, context );
+      T deserialized = deserialize( reader, version, new DeserializationContext( version ) );
 
 
       if ( !reader.isEndElement() ) {
@@ -330,20 +331,20 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param deserializeFrom where it is deserialized from
    * @param type            the type
    * @param formatVersion   the format version
-   * @param <T>             the type
+   * @param context         the context
    * @return the deserialized objects
    *
    * @throws XMLStreamException
    * @throws IOException
    */
   @NotNull
-  protected <T> List<? extends T> deserializeCollection( @NotNull XMLStreamReader deserializeFrom, @NotNull final Class<T> type, @NotNull final Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> List<? extends T> deserializeCollection( @NotNull XMLStreamReader deserializeFrom, @NotNull final Class<T> type, @NotNull final Version formatVersion, final DeserializationContext context ) throws XMLStreamException, IOException {
     final List<T> deserializedObjects = new ArrayList<T>();
 
     visitChildren( deserializeFrom, new CB() {
       @Override
       public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-        deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom ) );
+        deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom, context ) );
       }
     } );
 

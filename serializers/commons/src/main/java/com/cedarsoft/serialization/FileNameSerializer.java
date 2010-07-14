@@ -74,18 +74,18 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
   @Override
   public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
-    serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ) );
-    serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ) );
+    serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), context );
+    serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), context );
   }
 
   @NotNull
   @Override
   public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
-    BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom );
+    BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom, context );
 
     nextTag( deserializeFrom, ELEMENT_EXTENSION );
-    Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom );
+    Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom, context );
 
     closeTag( deserializeFrom );
 

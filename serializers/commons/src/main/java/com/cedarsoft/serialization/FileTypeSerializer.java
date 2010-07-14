@@ -86,7 +86,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
         extensionElement.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( true ) );
       }
 
-      serialize( extension, Extension.class, extensionElement );
+      serialize( extension, Extension.class, extensionElement, context );
     }
   }
 
@@ -96,7 +96,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
     boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
     String id = getChildText( deserializeFrom, ELEMENT_ID );
 
-    List<? extends Extension> extensions = deserializeCollection( deserializeFrom, Extension.class, formatVersion );
+    List<? extends Extension> extensions = deserializeCollection( deserializeFrom, Extension.class, formatVersion, context );
     return new FileType( id, dependent, extensions );
   }
 }
