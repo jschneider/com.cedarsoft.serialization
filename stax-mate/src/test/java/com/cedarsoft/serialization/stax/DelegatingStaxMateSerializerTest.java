@@ -38,8 +38,8 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.SerializingStrategy;
-import com.cedarsoft.serialization.VersionMappings;
 import com.cedarsoft.serialization.ToString;
+import com.cedarsoft.serialization.VersionMappings;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -48,9 +48,8 @@ import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Comparator;
 
 import static org.junit.Assert.*;
@@ -134,6 +133,9 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   public void testVis() throws IOException {
     VersionMappings<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> versionMappings = serializer.getSerializingStrategySupport().getVersionMappings();
 
+    assertTrue( versionMappings.verify() );
+    assertEquals( 2, versionMappings.getMappings().size() );
+
     VersionMappingsVisualizer<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> visualizer = VersionMappingsVisualizer.create( versionMappings, new Comparator<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
       @Override
       public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o2 ) {
@@ -146,10 +148,14 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
         return object.getId();
       }
     } );
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    visualizer.visualize( new PrintWriter( out ) );
+    StringWriter writer = new StringWriter();
+    visualizer.visualize( writer );
 
-    assertEquals( "", out.toString() );
+    assertEquals(
+      "         -->    double       int\n" +
+        "--------------------------------\n" +
+        "   1.0.0 -->     1.0.0     1.0.0\n" +
+        "--------------------------------\n", writer.toString() );
   }
 
   public static class MySerializer extends AbstractDelegatingStaxMateSerializer<Number> {
