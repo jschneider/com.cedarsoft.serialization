@@ -143,6 +143,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
       throw new IllegalStateException( "No strategies available" );
     }
 
+    versionMappings.verify();
     return true;
   }
 }

@@ -37,6 +37,10 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.SerializationContext;
+import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.VersionMappings;
+import com.cedarsoft.serialization.ToString;
+import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -44,8 +48,10 @@ import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collection;
+import java.io.PrintWriter;
+import java.util.Comparator;
 
 import static org.junit.Assert.*;
 
@@ -124,14 +130,42 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );
   }
 
+  @Test
+  public void testVis() throws IOException {
+    VersionMappings<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> versionMappings = serializer.getSerializingStrategySupport().getVersionMappings();
+
+    VersionMappingsVisualizer<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> visualizer = VersionMappingsVisualizer.create( versionMappings, new Comparator<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+      @Override
+      public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o2 ) {
+        return o1.getId().compareTo( o2.getId() );
+      }
+    }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+      @NotNull
+      @Override
+      public String convert( @NotNull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
+        return object.getId();
+      }
+    } );
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    visualizer.visualize( new PrintWriter( out ) );
+
+    assertEquals( "", out.toString() );
+  }
 
   public static class MySerializer extends AbstractDelegatingStaxMateSerializer<Number> {
-    public MySerializer( @NotNull StaxMateSerializingStrategy<? extends Number>... serializingStrategies ) {
-      super( "number", "http://number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
-    }
+    public MySerializer( SerializingStrategy intSerializer, SerializingStrategy doubleSerializer ) {
+      super( "number", "http://number", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
 
-    public MySerializer( @NotNull Collection<? extends StaxMateSerializingStrategy<? extends Number>> serializingStrategies ) {
-      super( "number", "http://number", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ), serializingStrategies );
+      addStrategy( intSerializer )
+        .map( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) ).toDelegateVersion( 1, 0, 0 )
+        ;
+
+      addStrategy( doubleSerializer )
+        .map( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) ).toDelegateVersion( 1, 0, 0 )
+        ;
+
+      //Verify the delegate mappings
+      getSerializingStrategySupport().verify();
     }
   }
 }
