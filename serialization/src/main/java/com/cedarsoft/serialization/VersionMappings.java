@@ -69,7 +69,7 @@ public class VersionMappings {
   @NotNull
   protected VersionMapping addMapping( @NotNull Class<?> key, @NotNull VersionRange targetVersionRange ) {
     if ( mappings.containsKey( key ) ) {
-      throw new IllegalArgumentException( "A serializer for the key <" + key + "> has still been added" );
+      throw new IllegalStateException( "An entry for the key <" + key + "> has still been added" );
     }
 
     VersionMapping mapping = new VersionMapping( versionRange, targetVersionRange );
@@ -95,5 +95,10 @@ public class VersionMappings {
       }
     }
     return keyVersions;
+  }
+
+  @NotNull
+  public VersionMapping add( @NotNull Class<?> key, @NotNull VersionRange targetVersionRange ) {
+    return addMapping( key, targetVersionRange );
   }
 }
