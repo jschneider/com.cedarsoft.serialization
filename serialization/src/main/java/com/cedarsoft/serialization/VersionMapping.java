@@ -182,6 +182,15 @@ public class VersionMapping {
     }
   }
 
+  @Override
+  public String toString() {
+    return "VersionMapping{" +
+      "from " + sourceVersionRange +
+      " to " + delegateVersionRange +
+      ": " + entries +
+      '}';
+  }
+
   public static class Entry {
     @NotNull
     private final VersionRange versionRange;
