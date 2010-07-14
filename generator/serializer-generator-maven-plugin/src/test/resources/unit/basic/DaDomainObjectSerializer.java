@@ -25,7 +25,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public void serialize( SMOutputElement serializeTo, DaDomainObject object, Version formatVersion, @NotNull SerializationContext context )
+    public void serialize( SMOutputElement serializeTo, DaDomainObject object, @NotNull Version formatVersion, @NotNull SerializationContext context )
         throws IOException, XMLStreamException
     {
         //description

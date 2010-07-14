@@ -134,7 +134,7 @@ public class Room {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
       serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, context );

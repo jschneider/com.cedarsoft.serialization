@@ -56,7 +56,7 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
     serializeTo.addCharacters( object.getExtension() );
   }

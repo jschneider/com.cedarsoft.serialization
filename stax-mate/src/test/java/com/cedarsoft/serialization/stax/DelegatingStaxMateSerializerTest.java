@@ -60,7 +60,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }
@@ -76,7 +76,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", "asdf", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       @NotNull
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }

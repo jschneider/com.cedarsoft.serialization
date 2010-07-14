@@ -57,7 +57,7 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Hash object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Hash object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_ALGORITHM, object.getAlgorithm().name() );
     serializeTo.addCharacters( object.getValueAsHex() );
   }

@@ -282,7 +282,7 @@ public class DelegateMappingTest {
     }
 
     @Override
-    public void serialize( @NotNull Object serializeTo, @NotNull Object object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, IOException {
+    public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, IOException {
     }
 
     @NotNull

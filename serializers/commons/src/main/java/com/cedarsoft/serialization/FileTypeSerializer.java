@@ -75,7 +75,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependentType() ) );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 

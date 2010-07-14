@@ -64,7 +64,7 @@ public class AbstractDelegatingJDomSerializer<T> extends AbstractJDomSerializer<
   }
 
   @Override
-  public void serialize( @NotNull Element serializeTo, @NotNull T object, Version formatVersion, @NotNull SerializationContext context ) throws IOException {
+  public void serialize( @NotNull Element serializeTo, @NotNull T object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException {
     JDomSerializingStrategy<T> strategy = serializingStrategySupport.findStrategy( object );
     serializeTo.setAttribute( ATTRIBUTE_TYPE, strategy.getId() );
     strategy.serialize( serializeTo, object, formatVersion, context );

@@ -107,7 +107,7 @@ public class SerializingStrategySupportTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, Version formatVersion, @NotNull SerializationContext context ) throws IOException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException {
       throw new UnsupportedOperationException();
     }
 

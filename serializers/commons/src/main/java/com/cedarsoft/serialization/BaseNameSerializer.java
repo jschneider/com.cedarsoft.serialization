@@ -51,7 +51,7 @@ public class BaseNameSerializer extends AbstractStaxMateSerializer<BaseName> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull BaseName object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull BaseName object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( object.getName() );
 
   }

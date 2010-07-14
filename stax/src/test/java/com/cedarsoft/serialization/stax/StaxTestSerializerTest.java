@@ -83,7 +83,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
       serializeTo.writeCharacters( object.toString() );
     }
 

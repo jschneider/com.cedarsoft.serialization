@@ -54,7 +54,7 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
     serializeTo.addCharacters( createFormatter().print( object ) );
   }
 

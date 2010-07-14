@@ -56,7 +56,7 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * @param context       the context  @throws IOException
    * @throws E
    */
-  void serialize( @NotNull S serializeTo, @NotNull T object, Version formatVersion, @NotNull SerializationContext context ) throws IOException, E;
+  void serialize( @NotNull S serializeTo, @NotNull T object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, E;
 
   /**
    * Deserializes the object from the given document
