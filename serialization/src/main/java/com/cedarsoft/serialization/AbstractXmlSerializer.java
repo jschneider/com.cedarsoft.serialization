@@ -179,7 +179,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * @throws VersionException
    */
   @NotNull
-  protected Version parseNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
+  protected Version parseAndVerifyNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space
     verifyNamespaceUri( namespaceURI );
 
@@ -211,7 +211,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    */
   @NotNull
   protected DeserializationContext createDeserializationContext( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
-    Version formatVersion = parseNameSpace( namespaceURI );
+    Version formatVersion = parseAndVerifyNameSpace( namespaceURI );
     return createDeserializationContext( formatVersion );
   }
 }
