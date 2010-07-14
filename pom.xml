@@ -36,7 +36,6 @@
 
   <modules>
     <module>serialization</module>
-    <module>jdom</module>
     <module>stax</module>
     <module>stax-mate</module>
 
@@ -61,11 +60,6 @@
       <dependency>
         <groupId>com.cedarsoft</groupId>
         <artifactId>serialization</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoft.serialization</groupId>
-        <artifactId>jdom</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -162,12 +156,6 @@
         <groupId>org.codehaus.woodstox</groupId>
         <artifactId>woodstox-core-asl</artifactId>
         <version>4.0.8</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.jdom</groupId>
-        <artifactId>jdom</artifactId>
-        <version>1.1</version>
       </dependency>
 
       <dependency>
