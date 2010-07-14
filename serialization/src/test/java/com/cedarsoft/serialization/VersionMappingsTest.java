@@ -34,6 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.UnsupportedVersionRangeException;
 import com.cedarsoft.Version;
+import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
@@ -52,6 +53,32 @@ public class VersionMappingsTest {
   @Before
   public void setup() {
     mapping = new VersionMappings<Class<?>>( mine );
+  }
+
+  @Test
+  public void testValidate() {
+    mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
+      .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 6, 0 ).to( 1, 9, 0 ).toDelegateVersion( 8, 0, 0 )
+      ;
+
+    expectedException.expect( VersionMismatchException.class );
+    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Upper border of source range not mapped: Expected <2.0.0> but was <1.9.0>" );
+
+    mapping.verify();
+  }
+
+  @Test
+  public void testValidate2() {
+    mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
+      .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 1 )
+      .map( 1, 6, 0 ).to( 2, 0, 0 ).toDelegateVersion( 8, 0, 0 )
+      ;
+
+    expectedException.expect( VersionMismatchException.class );
+    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Lower border of source range not mapped: Expected <1.0.0> but was <1.0.1>" );
+
+    mapping.verify();
   }
 
   @Test
