@@ -193,11 +193,12 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * Creates the deserialization context
    *
    * @param formatVersion the format version
+   * @param namespace     the namespace
    * @return the context
    */
   @NotNull
-  protected DeserializationContext createDeserializationContext( @NotNull Version formatVersion ) {
-    return new DeserializationContext( formatVersion );
+  protected DeserializationContext createDeserializationContext( @NotNull Version formatVersion, @NotNull @NonNls String namespace ) {
+    return new DeserializationContext( formatVersion, namespace );
   }
 
   /**
@@ -212,6 +213,7 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
   @NotNull
   protected DeserializationContext createDeserializationContext( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     Version formatVersion = parseAndVerifyNameSpace( namespaceURI );
-    return createDeserializationContext( formatVersion );
+    assert namespaceURI != null;
+    return createDeserializationContext( formatVersion, namespaceURI );
   }
 }

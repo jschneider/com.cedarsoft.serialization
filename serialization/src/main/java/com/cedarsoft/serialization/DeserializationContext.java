@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -40,9 +41,18 @@ import org.jetbrains.annotations.NotNull;
 public class DeserializationContext {
   @NotNull
   private final Version formatVersion;
+  @NotNull
+  @NonNls
+  private final String namespace;
 
-  public DeserializationContext( @NotNull Version formatVersion ) {
+  public DeserializationContext( @NotNull Version formatVersion, @NotNull String namespace ) {
     this.formatVersion = formatVersion;
+    this.namespace = namespace;
+  }
+
+  @NotNull
+  public String getNamespace() {
+    return namespace;
   }
 
   @NotNull
