@@ -68,4 +68,14 @@ public class DelegatesMappingVisualizer {
     } );
     return visualizer.visualize();
   }
+
+  @NotNull
+  public static DelegatesMappingVisualizer create( @NotNull DelegatesMappings<?, ?, ?> mappings ) {
+    return new DelegatesMappingVisualizer( mappings );
+  }
+
+  @NotNull
+  public static String toString( @NotNull DelegatesMappings<?, ?, ?> mappings ) throws IOException {
+    return new DelegatesMappingVisualizer( mappings ).visualize();
+  }
 }

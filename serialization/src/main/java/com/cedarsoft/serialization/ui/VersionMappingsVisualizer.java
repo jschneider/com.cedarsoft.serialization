@@ -72,14 +72,17 @@ public class VersionMappingsVisualizer<T> {
   @Nullable
   private final ToString<T> toString;
 
+
+  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings ) {
+    this( mappings, new ToStringComparator<T>() );
+  }
+
   public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator ) {
-    this( mappings, comparator, new ToString<T>() {
-      @NotNull
-      @Override
-      public String convert( @NotNull T object ) {
-        return String.valueOf( object );
-      }
-    } );
+    this( mappings, comparator, new DefaultToString<T>() );
+  }
+
+  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull ToString<T> toString ) {
+    this( mappings, new ToStringComparator<T>(), toString );
   }
 
   public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator, @NotNull ToString<T> toString ) {
@@ -167,6 +170,18 @@ public class VersionMappingsVisualizer<T> {
 
   @NotNull
   @NonNls
+  public static <T> String toString( @NotNull VersionMappings<T> mappings ) throws IOException {
+    return new VersionMappingsVisualizer<T>( mappings ).visualize();
+  }
+
+  @NotNull
+  @NonNls
+  public static <T> String toString( @NotNull VersionMappings<T> mappings, @NotNull ToString<T> toString ) throws IOException {
+    return new VersionMappingsVisualizer<T>( mappings, toString ).visualize();
+  }
+
+  @NotNull
+  @NonNls
   private static String extend( @NonNls @NotNull String string ) {
     if ( string.length() > COL_WIDTH ) {
       return string.substring( 0, COL_WIDTH );
@@ -197,4 +212,18 @@ public class VersionMappingsVisualizer<T> {
     }
   }
 
+  public static class ToStringComparator<T> implements Comparator<T> {
+    @Override
+    public int compare( T o1, T o2 ) {
+      return o1.toString().compareTo( o2.toString() );
+    }
+  }
+
+  public static class DefaultToString<T> implements ToString<T> {
+    @NotNull
+    @Override
+    public String convert( @NotNull T object ) {
+      return String.valueOf( object );
+    }
+  }
 }
