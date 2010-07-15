@@ -53,7 +53,6 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
    *
    * @parameter expression="${domain.class}"
    * @required
-   * @readonly
    */
   protected String domainClassSourceFilePattern;
 
@@ -61,14 +60,12 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
    * Whether to create the serializer
    *
    * @parameter expression="${createSerializer}"
-   * @readonly
    */
   protected boolean createSerializer = true;
   /**
    * Whether to create the tests
    *
    * @parameter expression="${createTests}"
-   * @readonly
    */
   protected boolean createTests = true;
 

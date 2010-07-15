@@ -48,7 +48,6 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
    *
    * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-main"
    * @required
-   * @readonly
    */
   protected File outputDirectory;
   /**
@@ -56,7 +55,6 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
    *
    * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-test"
    * @required
-   * @readonly
    */
   protected File testOutputDirectory;
   /**

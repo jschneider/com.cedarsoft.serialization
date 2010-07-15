@@ -31,7 +31,6 @@
 
 package com.cedarsoft.generator.maven;
 
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.components.interactivity.Prompter;
@@ -73,14 +72,12 @@ public class CommitMojo extends AbstractGeneratorMojo {
    * Whether to commit the serializer
    *
    * @parameter expression="${commitSerializer}"
-   * @readonly
    */
   protected boolean commitSerializer = true;
   /**
    * Whether to commit the tests
    *
    * @parameter expression="${commitTests}"
-   * @readonly
    */
   protected boolean commitTests = true;
 
