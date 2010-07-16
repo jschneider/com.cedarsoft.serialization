@@ -11,6 +11,8 @@ import java.util.List;
  *
  */
 public class Foo {
+  public static final String CONSTANT_DO_NOT_SERIALIZE = "asdf";
+
   /**
    * the comment for field width
    */

@@ -36,6 +36,8 @@ package com.cedarsoft.serialization.generator.parsing.test;
  *
  */
 public class Door {
+  public static final String DO_NOT_PARSE = "aConstnat";
+
   private final String description;
 
   public Door( String description ) {
