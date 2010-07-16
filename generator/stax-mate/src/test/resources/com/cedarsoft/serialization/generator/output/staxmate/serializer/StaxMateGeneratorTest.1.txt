@@ -51,7 +51,9 @@ public class FooSerializer
         @NotNull
         SMOutputElement serializeTo,
         @NotNull
-        Foo object)
+        Foo object,
+        @NotNull
+        Version formatVersion)
         throws IOException, XMLStreamException
     {
         //width

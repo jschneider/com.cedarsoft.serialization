@@ -89,6 +89,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   public static final String PARAM_NAME_SERIALIZE_TO = "serializeTo";
   @NonNls
   public static final String VAR_NAME_OBJECT = "object";
+  @NonNls
+  public static final String PARAM_NAME_CONTEXT = "context";
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
@@ -193,6 +195,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     serializeMethod.annotate( Override.class );
     serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO );
     serializeMethod.param( domainType, VAR_NAME_OBJECT );
+    serializeMethod.param( codeGenerator.ref( Version.class ), PARAM_NAME_FORMAT_VERSION );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
 
     for ( Decorator decorator : codeGenerator.getDecorators() ) {
