@@ -58,7 +58,7 @@
               <packageName>com.cedarsoft.serialization.generator</packageName>
             </manifest>
             <manifestEntries>
-              <url>${pom.url}</url>
+              <url>${project.url}</url>
             </manifestEntries>
           </archive>
         </configuration>
