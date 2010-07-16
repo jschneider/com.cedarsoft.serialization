@@ -64,7 +64,7 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
 
   @Override
   @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
     generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );

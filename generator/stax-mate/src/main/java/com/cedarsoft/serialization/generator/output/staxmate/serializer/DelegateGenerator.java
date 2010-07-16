@@ -62,7 +62,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
   @NotNull
   @Override
-  public JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object ) {
+  public JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
     //Add serializer to constructor
     generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( fieldInfo.getType().toString() ) );
 
@@ -74,6 +74,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
       .arg( getterInvocation )
       .arg( JExpr.dotclass( codeGenerator.ref( fieldInfo.getType().toString() ) ) )
       .arg( createAddElementExpression( serializeTo, constant )
+        .arg( formatVersion )
       );
   }
 

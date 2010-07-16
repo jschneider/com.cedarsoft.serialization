@@ -48,14 +48,16 @@ public interface SerializeToGenerator {
   /**
    * Creates a statement that is used to store the object (converted as string) to the <code>serializeTo</code> object
    *
-   * @param generator       the generator
-   * @param serializerClass the serializer class
-   * @param serializeTo     the serialize to var
-   * @param fieldInfo       the field info    @return the invocation the serializes the given
-   * @param object          the object that is serialized     @return the created statement
+   * @param generator        the generator
+   * @param serializerClass  the serializer class
+   * @param serializeTo      the serialize to var
+   * @param fieldInfo        the field info    @return the invocation the serializes the given
+   * @param object           the object that is serialized     @return the created statement
+   * @param formatVersion    the format version
+   * @return the created statement
    */
   @NotNull
-  JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object );
+  JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, @NotNull JVar formatVersion );
 
   /**
    * Creates an expression that is used to read an object (as String) from <code>deserializeFrom</code>
@@ -65,6 +67,7 @@ public interface SerializeToGenerator {
    * @param deserializeFrom the object that shall be used to deserialize from
    * @param formatVersion   the format version
    * @param fieldInfo       the field info   @return the expression that returns the object as string  @return the created statement     @return the created expression
+   * @return the created expressions
    */
   @NotNull
   Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );

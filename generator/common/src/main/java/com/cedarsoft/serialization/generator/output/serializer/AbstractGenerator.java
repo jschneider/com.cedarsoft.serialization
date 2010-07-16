@@ -231,16 +231,17 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     //Extract the parameters for the serialize method
     JVar serializeTo = serializeMethod.listParams()[0];
     JVar object = serializeMethod.listParams()[1];
+    JVar serializeFormatVersion = serializeMethod.listParams()[2];
 
     //Extract the parameters for the deserialize method
     JVar deserializeFrom = deserializeMethod.listParams()[0];
-    JVar formatVersion = deserializeMethod.listParams()[1];
+    JVar deserializeFormatVersion = deserializeMethod.listParams()[1];
 
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
-      appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, fieldInfo );
+      appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, serializeFormatVersion, fieldInfo );
 
-      fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, formatVersion, fieldInfo ) );
+      fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, deserializeFormatVersion, fieldInfo ) );
     }
 
     return fieldToVar;
@@ -314,11 +315,12 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   /**
    * Appends the serialize statement
    *
-   * @param serializerClass the serializer class
-   * @param serializeMethod the serialize method
-   * @param serializeTo     serialize to
-   * @param object          the object that is serialized
-   * @param fieldInfo       the field info
+   * @param serializerClass  the serializer class
+   * @param serializeMethod  the serialize method
+   * @param serializeTo      serialize to
+   * @param object           the object that is serialized
+   * @param formatVersion    the format version
+   * @param fieldInfo        the field info
    */
-  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo );
+  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
 }

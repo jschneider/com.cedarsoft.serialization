@@ -45,7 +45,7 @@ public class FooSerializer
         //bars
         serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
         //bar
-        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR));
+        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR, formatVersion));
     }
 
     @Override
