@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -83,7 +81,7 @@ public class WindowSerializerNamespaceSkipTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
 
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
@@ -94,7 +92,7 @@ public class WindowSerializerNamespaceSkipTest {
 
     @NotNull
     @Override
-    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );

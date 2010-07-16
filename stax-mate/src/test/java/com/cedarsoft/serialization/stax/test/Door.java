@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -81,14 +79,14 @@ public class Door {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Door object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Door object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
     }
 
     @NotNull
     @Override
-    public Door deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Door deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
       closeTag( deserializeFrom );

@@ -33,8 +33,6 @@ package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import com.cedarsoft.serialization.VersionMapping;
@@ -72,7 +70,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull T object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull T object, @NotNull Version formatVersion ) throws IOException {
     assert isVersionWritable( formatVersion );
 
     try {
@@ -80,7 +78,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
       Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
       serializeTo.addAttribute( ATTRIBUTE_TYPE, strategy.getId() );
 
-      strategy.serialize( serializeTo, object, resolvedVersion, context );
+      strategy.serialize( serializeTo, object, resolvedVersion );
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
     }
@@ -88,7 +86,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
 
   @Override
   @NotNull
-  public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+  public T deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
@@ -98,7 +96,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
 
     SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = serializingStrategySupport.findStrategy( type );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
-    return strategy.deserialize( deserializeFrom, resolvedVersion, context );
+    return strategy.deserialize( deserializeFrom, resolvedVersion );
   }
 
   /**

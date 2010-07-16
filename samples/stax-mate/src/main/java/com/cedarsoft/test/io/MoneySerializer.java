@@ -33,8 +33,6 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -53,13 +51,13 @@ public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
   }
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Money object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Money object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addCharacters( String.valueOf( object.getCents() ) );
   }
 
   @Override
-  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     int cents = Integer.parseInt( getText( deserializeFrom ) );
 

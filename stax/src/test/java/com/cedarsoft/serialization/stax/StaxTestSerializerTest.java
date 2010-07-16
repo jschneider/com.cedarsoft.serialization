@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -83,14 +81,14 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.writeCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       return Integer.parseInt( getText( deserializeFrom ) );
     }

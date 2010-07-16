@@ -60,7 +60,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Color object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Color object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
 
     //red
@@ -73,7 +73,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
 
   @NotNull
   @Override
-  public Color deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws VersionException, IOException, XMLStreamException {
+  public Color deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     //red
     int red = Integer.parseInt( getChildText( deserializeFrom, ELEMENT_RED ) );

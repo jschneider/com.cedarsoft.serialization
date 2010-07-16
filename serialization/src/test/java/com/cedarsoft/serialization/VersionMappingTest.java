@@ -306,13 +306,13 @@ public class VersionMappingTest {
     }
 
     @Override
-    public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, IOException {
+    public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull Version formatVersion ) throws IOException, IOException {
       assert isVersionWritable( formatVersion );
     }
 
     @NotNull
     @Override
-    public Object deserialize( @NotNull Object deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, IOException {
+    public Object deserialize( @NotNull Object deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, IOException {
       throw new UnsupportedOperationException();
     }
 

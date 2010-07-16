@@ -33,8 +33,6 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
@@ -72,21 +70,21 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Extra object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Extra object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addElement( serializeTo.getNamespace(), "description" ).addCharacters( object.getDescription() );
 
     //We delegate the serialization of the price to the money serializer
-    serialize( object.getPrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ), formatVersion, context );
+    serialize( object.getPrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "price" ), formatVersion );
   }
 
   @Override
-  public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Extra deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String description = getChildText( deserializeFrom, "description" );
 
     nextTag( deserializeFrom, "price" );
-    Money price = deserialize( Money.class, formatVersion, deserializeFrom, context );
+    Money price = deserialize( Money.class, formatVersion, deserializeFrom );
     //closes the price tag automatically
 
     //we have to close our tag now

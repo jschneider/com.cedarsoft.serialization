@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.staxmate.SMInputFactory;
@@ -159,24 +157,24 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
       SMOutputElement extensionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION );
-      serialize( object.getExtension(), Extension.class, extensionElement, formatVersion, context );
+      serialize( object.getExtension(), Extension.class, extensionElement, formatVersion );
     }
 
     @NotNull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
 
       nextTag( deserializeFrom, ELEMENT_EXTENSION );
-      Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom, context );
+      Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom );
 
       closeTag( deserializeFrom );
 
@@ -207,24 +205,24 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
       SMOutputElement extensionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION );
-      extensionSerializer.serialize( extensionElement, object.getExtension(), EXTENSION_FORMAT_VERSION, context );
+      extensionSerializer.serialize( extensionElement, object.getExtension(), EXTENSION_FORMAT_VERSION );
     }
 
     @NotNull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
 
 
       nextTag( deserializeFrom, ELEMENT_EXTENSION );
-      Extension extension = extensionSerializer.deserialize( deserializeFrom, EXTENSION_FORMAT_VERSION, context );
+      Extension extension = extensionSerializer.deserialize( deserializeFrom, EXTENSION_FORMAT_VERSION );
 
       closeTag( deserializeFrom );
 
@@ -245,7 +243,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( object.isDefault() ) );
       serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
@@ -254,7 +252,7 @@ public class StaxMateDelegatePerformance {
 
     @NotNull
     @Override
-    public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean isDefault = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEFAULT ) );
       String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );

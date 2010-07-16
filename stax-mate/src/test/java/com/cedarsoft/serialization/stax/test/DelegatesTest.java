@@ -35,8 +35,6 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -150,24 +148,24 @@ public class DelegatesTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeToElementWithCharacters( "description", object.getDescription(), serializeTo );
 
-      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, formatVersion, context );
-      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, formatVersion, context );
+      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, formatVersion );
+      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, formatVersion );
     }
 
     @NotNull
     @Override
-    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
 
       nextTag( deserializeFrom, "doors" );
-      List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion, context );
+      List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion );
       nextTag( deserializeFrom, "windows" );
-      List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion, context );
+      List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion );
 
       closeTag( deserializeFrom );
       return new Room( description, windows, doors );

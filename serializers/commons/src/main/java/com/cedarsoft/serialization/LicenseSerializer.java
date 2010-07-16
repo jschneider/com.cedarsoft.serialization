@@ -59,7 +59,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull License object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull License object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_ID, object.getId() );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
@@ -67,7 +67,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
 
   @NotNull
   @Override
-  public License deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+  public License deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String id = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ID );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );

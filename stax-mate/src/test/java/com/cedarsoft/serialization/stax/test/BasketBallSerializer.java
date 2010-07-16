@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -53,14 +51,14 @@ public class BasketBallSerializer extends AbstractStaxMateSerializingStrategy<Ba
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull BasketBall object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull BasketBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     verifyVersionReadable( formatVersion );
     serializeTo.addAttribute( "theId", String.valueOf( object.getTheId() ) );
   }
 
   @NotNull
   @Override
-  public BasketBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+  public BasketBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     verifyVersionReadable( formatVersion );
 
     String theId;

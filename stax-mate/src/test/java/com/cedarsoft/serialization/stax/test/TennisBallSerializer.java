@@ -34,8 +34,6 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
@@ -53,14 +51,14 @@ public class TennisBallSerializer extends AbstractStaxMateSerializingStrategy<Te
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull TennisBall object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull TennisBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     verifyVersionReadable( formatVersion );
     serializeTo.addAttribute( "id", String.valueOf( object.getId() ) );
   }
 
   @NotNull
   @Override
-  public TennisBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+  public TennisBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     verifyVersionReadable( formatVersion );
 
     int id;

@@ -34,8 +34,6 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
 import org.jetbrains.annotations.NotNull;
@@ -62,14 +60,14 @@ public class MoneySerializer extends AbstractStaxSerializer<Money> {
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.writeAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...
   }
 
   @Override
-  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Money deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     //This serializer supports reading of an old format. Therefore we have to switch based on the format version.
     //This might be solved using the strategy pattern. But in most of the cases the format changes only in small portions.

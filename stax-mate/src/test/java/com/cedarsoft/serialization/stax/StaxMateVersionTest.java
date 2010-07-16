@@ -36,8 +36,6 @@ import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -103,13 +101,13 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       if ( formatVersion.equals( new Version( 1, 0, 0 ) ) ) {
         int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
@@ -129,13 +127,13 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addCharacters( object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       return Integer.parseInt( getText( deserializeFrom ) );
     }
@@ -147,14 +145,14 @@ public class StaxMateVersionTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addAttribute( "value", object.toString() );
     }
 
     @NotNull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       int intValue = Integer.parseInt( deserializeFrom.getAttributeValue( null, "value" ) );
       closeTag( deserializeFrom );

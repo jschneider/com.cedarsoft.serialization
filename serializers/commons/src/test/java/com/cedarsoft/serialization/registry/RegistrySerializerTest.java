@@ -37,8 +37,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -65,14 +63,14 @@ public class RegistrySerializerTest {
     access = new InMemoryObjectsAccess();
     serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionWritable( formatVersion );
         serializeTo.writeCharacters( object );
       }
 
       @NotNull
       @Override
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         return getText( deserializeFrom );
       }

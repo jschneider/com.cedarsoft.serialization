@@ -35,8 +35,6 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
@@ -64,14 +62,14 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   public void setUp() throws Exception {
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }
 
       @Override
       @NotNull
-      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         getText( deserializeFrom );
         return 1;
@@ -80,7 +78,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
     AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", "asdf", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionWritable( formatVersion );
         serializeTo.addCharacters( object.toString() );
 
@@ -88,7 +86,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
       @Override
       @NotNull
-      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         getText( deserializeFrom );
         return 2.0;

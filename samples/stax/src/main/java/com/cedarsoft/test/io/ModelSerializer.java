@@ -33,8 +33,6 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Model;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +63,7 @@ public class ModelSerializer extends AbstractStaxSerializer<Model> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Model object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Model object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.writeCharacters( object.getName() );
   }
@@ -75,7 +73,7 @@ public class ModelSerializer extends AbstractStaxSerializer<Model> {
   //START SNIPPET: deserialize
 
   @Override
-  public Model deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Model deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     return new Model( getText( deserializeFrom ) );
     //getText automatically closes the tag

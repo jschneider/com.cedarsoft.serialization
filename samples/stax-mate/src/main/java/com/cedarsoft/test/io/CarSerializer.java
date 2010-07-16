@@ -33,8 +33,6 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
@@ -75,7 +73,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Car object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Car object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
 
     SMOutputElement colorElement = serializeTo.addElement( serializeTo.getNamespace(), "color" );  //okay, should be a own serializer in real world...
@@ -83,12 +81,12 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     colorElement.addAttribute( "blue", String.valueOf( object.getColor().getBlue() ) );
     colorElement.addAttribute( "green", String.valueOf( object.getColor().getGreen() ) );
 
-    serialize( object.getModel(), Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), formatVersion, context );
-    serialize( object.getBasePrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), formatVersion, context );
+    serialize( object.getModel(), Model.class, serializeTo.addElement( serializeTo.getNamespace(), "model" ), formatVersion );
+    serialize( object.getBasePrice(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "basePrice" ), formatVersion );
 
 
     //We could also at an additional tag called "extras". But I don't like that style... So here we go...
-    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, formatVersion, context );
+    serializeCollection( object.getExtras(), Extra.class, "extra", serializeTo, formatVersion );
 
     //The statement above does exactly the same as this loop:
     //    for ( Extra extra : object.getExtras() ) {
@@ -100,7 +98,7 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
   //START SNIPPET: deserialize
 
   @Override
-  public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Car deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     //We deserialize the color. This should be done in its own serializer in real world --> improved reusability and testability
     nextTag( deserializeFrom, "color" );
@@ -111,13 +109,13 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     closeTag( deserializeFrom );
 
     nextTag( deserializeFrom, "model" );
-    Model model = deserialize( Model.class, formatVersion, deserializeFrom, context );
+    Model model = deserialize( Model.class, formatVersion, deserializeFrom );
 
     nextTag( deserializeFrom, "basePrice" );
-    Money basePrice = deserialize( Money.class, formatVersion, deserializeFrom, context );
+    Money basePrice = deserialize( Money.class, formatVersion, deserializeFrom );
 
     //Now we visit all remaining children (should only be extras)
-    List<? extends Extra> extras = deserializeCollection( deserializeFrom, Extra.class, formatVersion, context );
+    List<? extends Extra> extras = deserializeCollection( deserializeFrom, Extra.class, formatVersion );
 
     return new Car( model, color, basePrice, extras );
   }

@@ -67,22 +67,22 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
     SMOutputElement versionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_VERSION );
-    serialize( object.getVersion(), Version.class, versionElement, formatVersion, context );
+    serialize( object.getVersion(), Version.class, versionElement, formatVersion );
   }
 
   @Override
   @NotNull
-  public Application deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+  public Application deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 
     nextTag( deserializeFrom, ELEMENT_VERSION );
-    Version applicationVersion = deserialize( Version.class, formatVersion, deserializeFrom, context );
+    Version applicationVersion = deserialize( Version.class, formatVersion, deserializeFrom );
     closeTag( deserializeFrom );
 
     return new Application( name, applicationVersion );

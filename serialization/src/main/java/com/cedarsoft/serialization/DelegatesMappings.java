@@ -65,9 +65,9 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return new FluentFactory<T>( serializer );
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws E, IOException {
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull Version formatVersion ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
-    serializer.serialize( outputElement, object, versionMappings.resolveVersion( type, formatVersion ), context );
+    serializer.serialize( outputElement, object, versionMappings.resolveVersion( type, formatVersion ) );
   }
 
   @NotNull
@@ -80,9 +80,9 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @NotNull
-  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom, @NotNull DeserializationContext context ) throws E, IOException {
+  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
-    return type.cast( serializer.deserialize( deserializeFrom, versionMappings.resolveVersion( type, formatVersion ), context ) );
+    return type.cast( serializer.deserialize( deserializeFrom, versionMappings.resolveVersion( type, formatVersion ) ) );
   }
 
   /**

@@ -35,7 +35,6 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
-import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -83,9 +82,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       }
 
       //Now build the deserialization context
-      DeserializationContext context = createDeserializationContext( reader.getNamespaceURI() );
-
-      T deserialized = deserialize( reader, context.getFormatVersion(), context );
+      T deserialized = deserialize( reader, parseAndVerifyNameSpace( reader.getNamespaceURI() ) );
 
       if ( !reader.isEndElement() ) {
         throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
@@ -327,20 +324,19 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param deserializeFrom where it is deserialized from
    * @param type            the type
    * @param formatVersion   the format version
-   * @param context         the context
    * @return the deserialized objects
    *
    * @throws XMLStreamException
    * @throws IOException
    */
   @NotNull
-  protected <T> List<? extends T> deserializeCollection( @NotNull XMLStreamReader deserializeFrom, @NotNull final Class<T> type, @NotNull final Version formatVersion, final DeserializationContext context ) throws XMLStreamException, IOException {
+  protected <T> List<? extends T> deserializeCollection( @NotNull XMLStreamReader deserializeFrom, @NotNull final Class<T> type, @NotNull final Version formatVersion ) throws XMLStreamException, IOException {
     final List<T> deserializedObjects = new ArrayList<T>();
 
     visitChildren( deserializeFrom, new CB() {
       @Override
       public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-        deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom, context ) );
+        deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom ) );
       }
     } );
 

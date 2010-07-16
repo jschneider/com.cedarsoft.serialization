@@ -33,8 +33,6 @@ package com.cedarsoft.test.io;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.DeserializationContext;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Model;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -64,7 +62,7 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( SMOutputElement serializeTo, Model object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( SMOutputElement serializeTo, Model object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addCharacters( object.getName() );
   }
@@ -74,7 +72,7 @@ public class ModelSerializer extends AbstractStaxMateSerializer<Model> {
   //START SNIPPET: deserialize
 
   @Override
-  public Model deserialize( XMLStreamReader deserializeFrom, Version formatVersion, DeserializationContext context ) throws IOException, XMLStreamException {
+  public Model deserialize( XMLStreamReader deserializeFrom, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     return new Model( getText( deserializeFrom ) );
     //getText automatically closes the tag

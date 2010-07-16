@@ -75,7 +75,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependentType() ) );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
@@ -87,18 +87,18 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
         extensionElement.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( true ) );
       }
 
-      serialize( extension, Extension.class, extensionElement, formatVersion, context );
+      serialize( extension, Extension.class, extensionElement, formatVersion );
     }
   }
 
   @NotNull
   @Override
-  public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+  public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
     String id = getChildText( deserializeFrom, ELEMENT_ID );
 
-    List<? extends Extension> extensions = deserializeCollection( deserializeFrom, Extension.class, formatVersion, context );
+    List<? extends Extension> extensions = deserializeCollection( deserializeFrom, Extension.class, formatVersion );
     return new FileType( id, dependent, extensions );
   }
 }

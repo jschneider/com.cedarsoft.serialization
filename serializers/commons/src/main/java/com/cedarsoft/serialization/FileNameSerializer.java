@@ -73,21 +73,21 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object, @NotNull Version formatVersion, @NotNull SerializationContext context ) throws IOException, XMLStreamException {
+  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
-    serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), formatVersion, context );
-    serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), formatVersion, context );
+    serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), formatVersion );
+    serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), formatVersion );
   }
 
   @NotNull
   @Override
-  public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, @NotNull DeserializationContext context ) throws IOException, XMLStreamException {
+  public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
-    BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom, context );
+    BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom );
 
     nextTag( deserializeFrom, ELEMENT_EXTENSION );
-    Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom, context );
+    Extension extension = deserialize( Extension.class, formatVersion, deserializeFrom );
 
     closeTag( deserializeFrom );
 

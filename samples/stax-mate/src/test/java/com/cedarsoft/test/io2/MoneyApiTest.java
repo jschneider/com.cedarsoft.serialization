@@ -35,9 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.DeserializationContext;
 import com.cedarsoft.serialization.Entry;
-import com.cedarsoft.serialization.SerializationContext;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
@@ -78,17 +76,17 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, Version formatVersion, SerializationContext context ) throws IOException, XMLStreamException {
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
-      serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ), formatVersion, context );
+      serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ), formatVersion );
     }
 
     @NotNull
     @Override
-    public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion, DeserializationContext context ) throws IOException, VersionException, XMLStreamException {
+    public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       nextTag( deserializeFrom, "money" );
-      Money money = deserialize( Money.class, formatVersion, deserializeFrom, context );
+      Money money = deserialize( Money.class, formatVersion, deserializeFrom );
       closeTag( deserializeFrom );
 
       return new MyObject( money );
