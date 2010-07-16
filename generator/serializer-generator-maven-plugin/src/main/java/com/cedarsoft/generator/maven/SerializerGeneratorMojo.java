@@ -35,11 +35,17 @@ import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Generate a Serializer and the corresponding unit tests
@@ -54,7 +60,14 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
    * @parameter expression="${domain.class}"
    * @required
    */
-  protected String domainClassSourceFilePattern;
+  protected String domainSourceFilePattern;
+
+  /**
+   * A list of exclusion filters for the compiler.
+   *
+   * @parameter
+   */
+  private Set<String> excludes = new HashSet<String>( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
 
   /**
    * Whether to create the serializer
@@ -74,8 +87,8 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     getLog().info( "Serializer Generator Mojo" );
     getLog().info( "-------------------------" );
 
-    if ( domainClassSourceFilePattern == null ) {
-      throw new MojoExecutionException( "domain class source file pattern is missing" );
+    if ( domainSourceFilePattern == null ) {
+      throw new MojoExecutionException( "domain class source file is missing" );
     }
 
     prepareOutputDirectories();
@@ -85,14 +98,14 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
 
     PrintWriter printWriter = new PrintWriter( new LogWriter( getLog() ) );
     try {
-      List<File> domainClassSourceFiles = FileUtils.getFiles( getBaseDir(), domainClassSourceFilePattern, null, true );
+      List<? extends File> domainClassSourceFiles = getDomainSourceFiles();
       if ( domainClassSourceFiles.isEmpty() ) {
-        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainClassSourceFilePattern + ">" );
+        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainSourceFilePattern + ">" );
       }
 
       getLog().info( "Running Generator for" );
       for ( File domainClassSourceFile : domainClassSourceFiles ) {
-        getLog().info( "\t" + domainClassSourceFile.getPath().substring( getBaseDir().getPath().length() + 1 ) );
+        getLog().info( "\t" + domainClassSourceFile.getPath() );
       }
       GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFiles, outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializer, createTests ) );
       new StaxMateGenerator().run( configuration );
@@ -101,5 +114,24 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     } finally {
       printWriter.close();
     }
+  }
+
+  @NotNull
+  protected List<? extends File> getDomainSourceFiles() throws IOException {
+    DirectoryScanner scanner = new DirectoryScanner();
+    scanner.setBasedir( getBaseDir() );
+
+    scanner.setExcludes( excludes.toArray( new String[0] ) );
+    scanner.setIncludes( new String[]{domainSourceFilePattern} );
+    scanner.scan();
+
+
+    List<File> files = new ArrayList<File>();
+
+    for ( String fileName : scanner.getIncludedFiles() ) {
+      files.add( new File( fileName ) );
+    }
+
+    return files;
   }
 }

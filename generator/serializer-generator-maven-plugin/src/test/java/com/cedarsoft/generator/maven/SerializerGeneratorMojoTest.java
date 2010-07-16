@@ -161,8 +161,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo.projectArtifact );
     assertNotNull( mojo.outputDirectory );
-    assertNotNull( mojo.domainClassSourceFilePattern );
-    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
+    assertNotNull( mojo.domainSourceFilePattern );
+    assertTrue( mojo.domainSourceFilePattern.length() > 0 );
 
     assertNotNull( mojo.getTestOutputDirectory() );
     assertNotNull( mojo.getOutputDirectory() );
