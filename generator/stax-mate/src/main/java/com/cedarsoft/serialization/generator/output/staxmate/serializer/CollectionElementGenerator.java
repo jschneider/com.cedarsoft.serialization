@@ -76,6 +76,7 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
       .arg( JExpr.dotclass( codeGenerator.ref( fieldInfo.getCollectionParam().toString() ) ) )
       .arg( constant )
       .arg( serializeTo )
+      .arg( formatVersion )
       ;
   }
 

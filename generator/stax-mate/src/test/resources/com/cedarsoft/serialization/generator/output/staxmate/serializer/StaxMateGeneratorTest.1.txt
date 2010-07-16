@@ -67,9 +67,9 @@ public class FooSerializer
         //floatField
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
         //bars
-        serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo);
+        serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo, formatVersion);
         //bar
-        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR, formatVersion));
+        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR), formatVersion);
     }
 
     @Override
