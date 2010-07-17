@@ -36,6 +36,7 @@ import com.cedarsoft.serialization.generator.StaxMateGenerator;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -43,6 +44,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -133,5 +136,16 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     }
 
     return files;
+  }
+
+  public void setExcludes( @NotNull Collection<String> excludes ) {
+    this.excludes.clear();
+    this.excludes.addAll( excludes );
+  }
+
+  @NotNull
+  @NonNls
+  public Set<String> getExcludes() {
+    return Collections.unmodifiableSet( excludes );
   }
 }

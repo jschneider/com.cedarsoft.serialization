@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
 import java.io.File;
+import java.util.Collections;
 
 import static com.cedarsoft.matchers.ContainsFileMatcher.containsFiles;
 import static com.cedarsoft.matchers.ContainsFileMatcher.empty;
@@ -66,6 +67,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   public void testBasic() throws Exception {
     SerializerGeneratorMojo mojo = createVerifiedMojo( "basic" );
 
+    assertEquals( 2, mojo.getExcludes().size() );
     assertTrue( mojo.outputDirectory.getAbsolutePath(), mojo.outputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/out" ) );
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
     mojo.execute();
@@ -78,6 +80,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   @Test
   public void testOnlyTests() throws Exception {
     SerializerGeneratorMojo mojo = createVerifiedMojo( "only-tests" );
+    assertEquals( 2, mojo.getExcludes().size() );
     mojo.execute();
 
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
@@ -88,6 +91,29 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   @Test
   public void testNoTests() throws Exception {
     SerializerGeneratorMojo mojo = createVerifiedMojo( "no-tests" );
+    assertEquals( 2, mojo.getExcludes().size() );
+    mojo.execute();
+
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+  }
+
+  @Test
+  public void testExcludes() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "excludes" );
+    mojo.execute();
+
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+  }
+
+  @Test
+  public void testExcludes2() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "excludes" );
+
+    assertEquals( 2, mojo.getExcludes().size() );
+    mojo.setExcludes( Collections.<String>emptySet() );
+    assertEquals( 0, mojo.getExcludes().size() );
     mojo.execute();
 
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
@@ -145,7 +171,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
       assertEquals( "domain class source file pattern is missing", e.getMessage() );
     }
 
-    mojo.domainClassSourceFilePattern = "invalid pattern";
+    mojo.domainSourceFilePattern = "invalid pattern";
 
     try {
       mojo.execute();
