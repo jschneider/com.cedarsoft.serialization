@@ -33,7 +33,6 @@ package com.cedarsoft.generator.maven;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 import org.codehaus.plexus.util.FileUtils;
 import org.jetbrains.annotations.NonNls;
@@ -48,26 +47,7 @@ import java.util.List;
  *
  * @goal commit
  */
-public class CommitMojo extends AbstractGeneratorMojo {
-
-  /**
-   * The source directories containing the sources to be compiled.
-   *
-   * @parameter default-value="${project.compileSourceRoots}"
-   * @required
-   * @readonly
-   */
-  private List<String> sourceRoots;
-
-  /**
-   * The source directories containing the test sources to be compiled.
-   *
-   * @parameter default-value="${project.testCompileSourceRoots}"
-   * @required
-   * @readonly
-   */
-  private List<String> testSourceRoots;
-
+public class CommitMojo extends AbstractCommitMojo {
   /**
    * Whether to commit the serializer
    *
@@ -81,20 +61,10 @@ public class CommitMojo extends AbstractGeneratorMojo {
    */
   protected boolean commitTests = true;
 
-  /**
-   * @component
-   * @required
-   * @readonly
-   */
-  private Prompter prompter;
-
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     if ( commitSerializer ) {
-      if ( sourceRoots.isEmpty() ) {
-        throw new MojoExecutionException( "No compile source roots available" );
-      }
-      File sourceRoot = new File( sourceRoots.get( 0 ) );
+      File sourceRoot = getSourceRoot();
 
       try {
         commit( outputDirectory, sourceRoot );
@@ -105,10 +75,7 @@ public class CommitMojo extends AbstractGeneratorMojo {
 
 
     if ( commitTests ) {
-      if ( testSourceRoots.isEmpty() ) {
-        throw new MojoExecutionException( "No test compile source roots available" );
-      }
-      File testSourceRoot = new File( testSourceRoots.get( 0 ) );
+      File testSourceRoot = getTestSourceRoot();
 
       try {
         commit( testOutputDirectory, testSourceRoot );
