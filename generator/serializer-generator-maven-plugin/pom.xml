@@ -108,4 +108,7 @@
     </plugins>
   </reporting>
 
+  <properties>
+    <coverage.haltOnFailure>false</coverage.haltOnFailure>
+  </properties>
 </project>
