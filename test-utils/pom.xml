@@ -91,4 +91,8 @@
     </dependency>
 
   </dependencies>
+
+  <properties>
+    <coverage.haltOnFailure>false</coverage.haltOnFailure>
+  </properties>
 </project>
