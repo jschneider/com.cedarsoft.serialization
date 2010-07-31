@@ -33,6 +33,7 @@ package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.matchers.ContainsFileMatcher;
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.jetbrains.annotations.NonNls;
@@ -63,7 +64,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
   @Test
   public void testBasic() throws Exception {
-    SerializerGeneratorMojo mojo = createMojo( "basic" );
+    SerializerGeneratorMojo mojo = createVerifiedMojo( "basic" );
 
     assertTrue( mojo.outputDirectory.getAbsolutePath(), mojo.outputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/out" ) );
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
@@ -76,7 +77,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
   @Test
   public void testOnlyTests() throws Exception {
-    SerializerGeneratorMojo mojo = createMojo( "only-tests" );
+    SerializerGeneratorMojo mojo = createVerifiedMojo( "only-tests" );
     mojo.execute();
 
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
@@ -86,11 +87,93 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
   @Test
   public void testNoTests() throws Exception {
-    SerializerGeneratorMojo mojo = createMojo( "no-tests" );
+    SerializerGeneratorMojo mojo = createVerifiedMojo( "no-tests" );
     mojo.execute();
 
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
     assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+  }
+
+  @Test
+  public void testNoDirs() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "no-dirs" );
+
+    try {
+      mojo.getOutputDirectory();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "output directory not set", e.getMessage() );
+    }
+
+    try {
+      mojo.getTestOutputDirectory();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "test output directory not set", e.getMessage() );
+    }
+  }
+
+  @Test
+  public void testNoDirs2() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "no-dirs" );
+
+    try {
+      mojo.execute();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "output directory not set", e.getMessage() );
+    }
+
+    mojo.outputDirectory = new File( "a file" );
+
+    try {
+      mojo.execute();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "test output directory not set", e.getMessage() );
+    }
+  }
+
+  @Test
+  public void testNoClass() throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( "no-class" );
+
+    try {
+      mojo.execute();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "domain class source file pattern is missing", e.getMessage() );
+    }
+
+    mojo.domainClassSourceFilePattern = "invalid pattern";
+
+    try {
+      mojo.execute();
+      fail( "Where is the Exception" );
+    } catch ( MojoExecutionException e ) {
+      assertEquals( "Generation failed due to: No domain class source files found for pattern <invalid pattern>", e.getMessage() );
+    }
+  }
+
+  @NotNull
+  private SerializerGeneratorMojo createVerifiedMojo( @NotNull @NonNls String name ) throws Exception {
+    SerializerGeneratorMojo mojo = createMojo( name );
+
+    assertNotNull( mojo.projectArtifact );
+    assertNotNull( mojo.outputDirectory );
+    assertNotNull( mojo.domainClassSourceFilePattern );
+    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
+
+    assertNotNull( mojo.getTestOutputDirectory() );
+    assertNotNull( mojo.getOutputDirectory() );
+
+    //Clean up
+    FileUtils.deleteQuietly( mojo.outputDirectory );
+    FileUtils.deleteQuietly( mojo.testOutputDirectory );
+    assertFalse( mojo.outputDirectory.exists() );
+    assertFalse( mojo.testOutputDirectory.exists() );
+
+    return mojo;
   }
 
   @NotNull
@@ -100,19 +183,6 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo );
     mojo.mavenProject = new MavenProjectStub();
-
-
-    assertNotNull( mojo.projectArtifact );
-    assertNotNull( mojo.outputDirectory );
-    assertNotNull( mojo.domainClassSourceFilePattern );
-    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
-
-    //Clean up
-    FileUtils.deleteQuietly( mojo.outputDirectory );
-    FileUtils.deleteQuietly( mojo.testOutputDirectory );
-    assertFalse( mojo.outputDirectory.exists() );
-    assertFalse( mojo.testOutputDirectory.exists() );
-
     return mojo;
   }
 }

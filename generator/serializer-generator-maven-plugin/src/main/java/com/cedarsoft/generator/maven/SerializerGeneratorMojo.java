@@ -78,7 +78,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     getLog().info( "-------------------------" );
 
     if ( domainClassSourceFilePattern == null ) {
-      throw new MojoExecutionException( "domain class source file is missing" );
+      throw new MojoExecutionException( "domain class source file pattern is missing" );
     }
 
     prepareOutputDirectories();
