@@ -59,11 +59,11 @@ public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
 
   @DataPoint
   public static final Entry<?> ENTRY1 = create(
-    new TennisBall( 7 ), "<ball type=\"tennisBall\" id=\"7\" />" );
+    new Ball.TennisBall( 7 ), "<ball type=\"tennisBall\" id=\"7\" />" );
 
   @DataPoint
   public static final Entry<?> ENTRY2 = create(
-    new BasketBall( "asdf" ), "<ball type=\"basketBall\" theId=\"asdf\"></ball>" );
+    new Ball.BasketBall( "asdf" ), "<ball type=\"basketBall\" theId=\"asdf\"></ball>" );
 
 
   @Test

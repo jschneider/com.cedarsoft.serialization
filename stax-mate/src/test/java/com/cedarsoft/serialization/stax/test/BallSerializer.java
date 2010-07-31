@@ -31,8 +31,17 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.Version;
+import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractDelegatingStaxMateSerializer;
+import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
+import org.codehaus.staxmate.out.SMOutputElement;
+import org.jetbrains.annotations.NotNull;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
 
 /**
  *
@@ -52,5 +61,67 @@ public class BallSerializer extends AbstractDelegatingStaxMateSerializer<Ball> {
       ;
 
     getSerializingStrategySupport().verify();
+  }
+
+  /**
+   *
+   */
+  public static class TennisBallSerializer extends AbstractStaxMateSerializingStrategy<Ball.TennisBall> {
+    public TennisBallSerializer() {
+      super( "tennisBall", "http://test/tennisball", Ball.TennisBall.class, VersionRange.from( 1, 5, 0 ).to( 1, 5, 1 ) );
+    }
+
+    @Override
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Ball.TennisBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      verifyVersionReadable( formatVersion );
+      serializeTo.addAttribute( "id", String.valueOf( object.getId() ) );
+    }
+
+    @NotNull
+    @Override
+    public Ball.TennisBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+      verifyVersionReadable( formatVersion );
+
+      int id;
+      if ( formatVersion.equals( Version.valueOf( 1, 5, 0 ) ) ) {
+        id = Integer.parseInt( getText( deserializeFrom ) );
+      } else {
+        id = Integer.parseInt( deserializeFrom.getAttributeValue( null, "id" ) );
+        closeTag( deserializeFrom );
+      }
+
+      return new Ball.TennisBall( id );
+    }
+  }
+
+  /**
+   *
+   */
+  public static class BasketBallSerializer extends AbstractStaxMateSerializingStrategy<Ball.BasketBall> {
+    public BasketBallSerializer() {
+      super( "basketBall", "http://test/basketball", Ball.BasketBall.class, VersionRange.from( 2, 0, 0 ).to( 2, 0, 1 ) );
+    }
+
+    @Override
+    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Ball.BasketBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      verifyVersionReadable( formatVersion );
+      serializeTo.addAttribute( "theId", String.valueOf( object.getTheId() ) );
+    }
+
+    @NotNull
+    @Override
+    public Ball.BasketBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+      verifyVersionReadable( formatVersion );
+
+      String theId;
+      if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
+        theId = getText( deserializeFrom );
+      } else {
+        theId = deserializeFrom.getAttributeValue( null, "theId" );
+        closeTag( deserializeFrom );
+      }
+
+      return new Ball.BasketBall( theId );
+    }
   }
 }

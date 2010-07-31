@@ -31,9 +31,69 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-/**
-*
-*/
-public interface Ball {
+import org.jetbrains.annotations.NotNull;
 
+/**
+ *
+ */
+public interface Ball {
+  class TennisBall implements Ball {
+    private final int id;
+
+    public TennisBall( int id ) {
+      this.id = id;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+      if ( this == o ) return true;
+      if ( !( o instanceof TennisBall ) ) return false;
+
+      TennisBall that = ( TennisBall ) o;
+
+      if ( id != that.id ) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return id;
+    }
+  }
+
+  class BasketBall implements Ball {
+    @NotNull
+    private final String theId;
+
+    public BasketBall( @NotNull String theId ) {
+      this.theId = theId;
+    }
+
+    @NotNull
+    public String getTheId() {
+      return theId;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+      if ( this == o ) return true;
+      if ( !( o instanceof BasketBall ) ) return false;
+
+      BasketBall that = ( BasketBall ) o;
+
+      if ( !theId.equals( that.theId ) ) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return theId.hashCode();
+    }
+  }
 }

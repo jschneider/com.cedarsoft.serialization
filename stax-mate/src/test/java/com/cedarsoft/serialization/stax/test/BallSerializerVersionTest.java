@@ -52,12 +52,12 @@ public class BallSerializerVersionTest extends AbstractXmlVersionTest2<Ball> {
 
   @Override
   protected void verifyDeserialized( @NotNull Ball deserialized, @NotNull Version version ) throws Exception {
-    if ( deserialized instanceof BasketBall ) {
-      assertEquals( "asdf", ( ( BasketBall ) deserialized ).getTheId() );
+    if ( deserialized instanceof Ball.BasketBall ) {
+      assertEquals( "asdf", ( ( Ball.BasketBall ) deserialized ).getTheId() );
     }
 
-    if ( deserialized instanceof TennisBall ) {
-      assertEquals( 7, ( ( TennisBall ) deserialized ).getId() );
+    if ( deserialized instanceof Ball.TennisBall ) {
+      assertEquals( 7, ( ( Ball.TennisBall ) deserialized ).getId() );
     }
   }
 
