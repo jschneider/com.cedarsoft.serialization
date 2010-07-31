@@ -16,4 +16,7 @@
     <module>performance</module>
   </modules>
 
+  <properties>
+    <coverage.haltOnFailure>false</coverage.haltOnFailure>
+  </properties>
 </project>
