@@ -215,7 +215,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    *
    * @param reader the reader
    * @param skipElementsWithOtherNamespaces
-   *               whether tos kip elemenst with other namespaces
+   *               whether tos kip elements with other namespaces
    * @throws XMLStreamException
    */
   protected void closeTag( @NotNull XMLStreamReader reader, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {

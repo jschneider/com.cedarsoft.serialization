@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.VersionMismatchException;
 import com.google.common.collect.Lists;
 import org.junit.*;
 import org.junit.rules.*;
@@ -67,5 +68,29 @@ public class BallSerializerTest {
 
     expectedException.expect( IllegalArgumentException.class );
     serializer.serialize( new Ball( 77, Lists.newArrayList( new Ball.Element( "a" ), new Ball.Element( "b" ) ) ), new ByteArrayOutputStream() );
+  }
+
+  @Test
+  public void testNs2() throws Exception {
+    BallSerializer serializer = new BallSerializer();
+    serializer.registerElementsSerializer();
+
+    Ball ball = serializer.deserialize( getClass().getResourceAsStream( "ball.ns.xml" ) );
+    assertEquals( 77, ball.getId() );
+    assertEquals( 2, ball.getElements().size() );
+  }
+
+  @Test
+  public void testInvalidNamespaceVersion() throws IOException {
+    expectedException.expect( VersionMismatchException.class );
+    expectedException.expectMessage( "Version mismatch. Expected [1.0.0-1.1.0] but was [1.1.1]" );
+    new BallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/ball/1.1.1\" id=\"77\"/>".getBytes() ) );
+  }
+
+  @Test
+  public void testInvalidNamespace() throws IOException {
+    expectedException.expect( IOException.class );
+    expectedException.expectMessage( "Could not parse stream due to Invalid namespace. Was <http://test/wrong/1.1.0> but expected <http://test/ball/$VERSION>>" );
+    new BallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/wrong/1.1.0\" id=\"77\"/>".getBytes() ) );
   }
 }
