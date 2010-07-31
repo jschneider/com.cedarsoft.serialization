@@ -33,9 +33,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>javolution</groupId>
+      <groupId>org.javolution</groupId>
       <artifactId>javolution</artifactId>
-      <version>5.5.1</version>
+      <version>5.2.6</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
