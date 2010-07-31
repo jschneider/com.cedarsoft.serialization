@@ -22,6 +22,11 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>test-utils</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

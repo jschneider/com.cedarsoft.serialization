@@ -68,7 +68,7 @@ public class DelegatesMappingsTest {
       delegatesMappings.verify();
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
-      assertEquals( "Invalid mapping for <java.lang.Object>: Upper border of source range not mapped: Expected <2.0.0> but was <1.5.0>", e.getMessage() );
+      assertEquals( "Invalid mapping for <java.lang.Object>: Upper border of source range not mapped: Expected [2.0.0] but was [1.5.0]", e.getMessage() );
     }
   }
 
@@ -83,7 +83,7 @@ public class DelegatesMappingsTest {
         mappings.verify();
         fail( "Where is the Exception" );
       } catch ( VersionMismatchException e ) {
-        assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.0.0>", e.getMessage() );
+        assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected [7.5.9] but was [7.0.0]", e.getMessage() );
       }
     }
 
@@ -115,7 +115,7 @@ public class DelegatesMappingsTest {
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
       assertEquals( delegatesMappings.getMapping( String.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 10 ) );
-      assertEquals( "Invalid serialization/output version for <java.lang.String>. Expected <7.5.9> but was <7.1.10>", e.getMessage().trim() );
+      assertEquals( "Invalid serialization/output version for <java.lang.String>. Expected [7.5.9] but was [7.1.10]", e.getMessage().trim() );
     }
   }
 
@@ -133,7 +133,7 @@ public class DelegatesMappingsTest {
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
       assertEquals( delegatesMappings.getMapping( Object.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 1 ) );
-      assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected <7.5.9> but was <7.1.1>", e.getMessage().trim() );
+      assertEquals( "Invalid serialization/output version for <java.lang.Object>. Expected [7.5.9] but was [7.1.1]", e.getMessage().trim() );
     }
   }
 

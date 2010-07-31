@@ -69,7 +69,7 @@ public class VersionMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( "Upper border of source range not mapped: Expected <2.2.7> but was <0.5.0>", e.getMessage() );
+      assertEquals( "Upper border of source range not mapped: Expected [2.2.7] but was [0.5.0]", e.getMessage() );
     }
 
     mapping.addMapping( new VersionRange( new Version( 0, 5, 1 ), new Version( 1, 0, 0 ) ), new Version( 1, 0, 1 ) );
@@ -103,7 +103,7 @@ public class VersionMappingTest {
       mapping.verify();
       fail( "Where is the Exception" );
     } catch ( VersionException e ) {
-      assertEquals( "Upper border of source range not mapped: Expected <1.0.1> but was <1.0.0>", e.getMessage() );
+      assertEquals( "Upper border of source range not mapped: Expected [1.0.1] but was [1.0.0]", e.getMessage() );
     }
 
     mapping.map( 1, 0, 1 ).to( 1, 0, 1 ).toDelegateVersion( 2, 0, 1 );

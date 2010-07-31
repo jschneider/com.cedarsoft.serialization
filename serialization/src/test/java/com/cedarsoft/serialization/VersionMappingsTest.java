@@ -63,7 +63,7 @@ public class VersionMappingsTest {
       ;
 
     expectedException.expect( VersionMismatchException.class );
-    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Upper border of source range not mapped: Expected <2.0.0> but was <1.9.0>" );
+    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Upper border of source range not mapped: Expected [2.0.0] but was [1.9.0]" );
 
     mapping.verify();
   }
@@ -76,7 +76,7 @@ public class VersionMappingsTest {
       ;
 
     expectedException.expect( VersionMismatchException.class );
-    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Lower border of source range not mapped: Expected <1.0.0> but was <1.0.1>" );
+    expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Lower border of source range not mapped: Expected [1.0.0] but was [1.0.1]" );
 
     mapping.verify();
   }
