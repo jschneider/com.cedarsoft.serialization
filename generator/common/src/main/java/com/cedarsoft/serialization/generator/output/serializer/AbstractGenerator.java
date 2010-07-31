@@ -195,7 +195,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     serializeMethod.param( domainType, VAR_NAME_OBJECT );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
 
-    for ( Decorator decorator : codeGenerator.getMethodDecorators() ) {
+    for ( Decorator decorator : codeGenerator.getDecorators() ) {
       if ( decorator instanceof GeneratorDecorator ) {
         ( ( GeneratorDecorator ) decorator ).decorateSerializeMethod( codeGenerator, domainType, serializerClass, serializeMethod );
       }
@@ -212,7 +212,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     deserializeMethod.annotate( Override.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( getExceptionType() );
 
-    for ( Decorator decorator : codeGenerator.getMethodDecorators() ) {
+    for ( Decorator decorator : codeGenerator.getDecorators() ) {
       if ( decorator instanceof GeneratorDecorator ) {
         ( ( GeneratorDecorator ) decorator ).decorateDeserializeMethod( codeGenerator, domainType, serializerClass, deserializeMethod );
       }
