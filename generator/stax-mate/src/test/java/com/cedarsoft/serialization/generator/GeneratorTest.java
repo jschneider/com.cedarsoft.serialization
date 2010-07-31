@@ -32,12 +32,13 @@
 package com.cedarsoft.serialization.generator;
 
 import com.cedarsoft.AssertUtils;
-import com.cedarsoft.TestUtils;
+import com.cedarsoft.SystemOutRule;
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
+import org.junit.rules.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,19 +52,59 @@ import static org.junit.Assert.*;
  *
  */
 public class GeneratorTest {
+  @Rule
+  public SystemOutRule systemOutRule = new SystemOutRule();
+
+  @Rule
+  public TemporaryFolder tmp = new TemporaryFolder();
+
   private File destDir;
   private File testDestDir;
 
   @Before
   public void setUp() throws Exception {
-    destDir = TestUtils.createEmptyTmpDir();
-    testDestDir = TestUtils.createEmptyTmpDir();
+    destDir = tmp.newFolder( "dest" );
+    testDestDir = tmp.newFolder( "test-dest" );
   }
 
-  @After
-  public void tearDown() throws IOException {
-    FileUtils.deleteDirectory( destDir );
-    FileUtils.deleteDirectory( testDestDir );
+  @Test
+  public void testHelp() throws Exception {
+    StaxMateGenerator.main( new String[]{} );
+    assertEquals( "Missing required options: d, t\n" +
+                    "usage: ser-gen -d <serializer dest dir> -t <test dest dir> path-to-class\n" +
+                    "-d,--destination <arg>     the output directory for the created classes\n" +
+                    "-h,--help                  display this use message\n" +
+                    "-t,--test-destination <arg>the output directory for the created tests\n", systemOutRule.getOutAsString() );
+    assertEquals( "", systemOutRule.getErrAsString() );
+  }
+
+  @Test
+  public void testRun() throws Exception {
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
+    assertTrue( javaFile.exists() );
+    assertTrue( javaFile.isFile() );
+
+    StaxMateGenerator.main( new String[]{"-d", destDir.getAbsolutePath(), "-t", testDestDir.getAbsolutePath(), javaFile.getPath()} );
+    assertEquals( "Generating Serializer:\n" +
+                    "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java\n" +
+                    "Generating Serializer Tests:\n" +
+                    "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java\n" +
+                    "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java\n",
+                  systemOutRule.getOutAsString() );
+    assertEquals( "", systemOutRule.getErrAsString() );
+
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
+    assertTrue( serializerFile.exists() );
+
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
+
+    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" );
+    assertTrue( serializerTestFile.exists() );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_2.txt" ), FileUtils.readFileToString( serializerTestFile ).trim() );
+
+    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java" );
+    assertTrue( serializerVersionTestFile.exists() );
+    AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
   }
 
   @Test
