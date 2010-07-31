@@ -82,8 +82,8 @@ public abstract class AbstractGeneratorTest {
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator = codeGenerator;
-    this.codeGenerator.addMethodDecorator( new NotNullDecorator( NotNull.class ) );
-    codeGenerator.addMethodDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
+    this.codeGenerator.addDecorator( new NotNullDecorator( NotNull.class ) );
+    codeGenerator.addDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
     model = codeGenerator.getModel();
   }
 
