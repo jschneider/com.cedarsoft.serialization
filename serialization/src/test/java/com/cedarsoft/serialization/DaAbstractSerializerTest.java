@@ -76,8 +76,8 @@ public class DaAbstractSerializerTest {
     assertFalse( serializer.isVersionWritable( Version.valueOf( 1, 5, 0 ) ) );
     assertFalse( serializer.isVersionWritable( Version.valueOf( 2, 0, 1 ) ) );
     assertFalse( serializer.isVersionWritable( Version.valueOf( 0, 0, 1 ) ) );
-
-    serializer.isVersionWritable( Version.valueOf( 2, 0, 0 ) );
+    
+    serializer.verifyVersionWritable( Version.valueOf( 2, 0, 0 ) );
 
     expectedException.expect( VersionMismatchException.class );
     expectedException.expectMessage( "Version mismatch. Expected [2.0.0] but was [2.0.1]" );
