@@ -88,7 +88,7 @@ public class StaxMateVersionTest {
       fail( "Where is the Exception" );
     } catch ( VersionMismatchException e ) {
       assertEquals( e.getActual(), new Version( 1, 0, 0 ) );
-      assertEquals( e.getExpected(), new Version( 2, 0, 0 ) );
+      assertEquals( e.getExpected(), VersionRange.single( 2, 0, 0 ) );
     }
 
     assertEquals( new NewOldSerializer().deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
