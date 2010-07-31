@@ -72,4 +72,7 @@
     </resources>
   </build>
 
+  <properties>
+    <coverage.haltOnFailure>false</coverage.haltOnFailure>
+  </properties>
 </project>
