@@ -91,7 +91,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     }
   }
 
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo, Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull SMOutputElement serializeTo, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 
