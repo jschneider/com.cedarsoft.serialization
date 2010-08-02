@@ -176,7 +176,7 @@ public class VersionMapping {
     return entries.get( entries.size() - 1 ).getDelegateVersion();
   }
 
-  public void verifyMappedVersions( Iterable<? extends Version> mappedVersions ) throws UnsupportedVersionException {
+  public void verifyMappedVersions( @NotNull Iterable<? extends Version> mappedVersions ) throws UnsupportedVersionException {
     for ( Version mappedVersion : mappedVersions ) {
       resolveVersion( mappedVersion );
     }
