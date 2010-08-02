@@ -81,7 +81,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
         nextTag( deserializeFrom, "sub" );
         String string = stringSerializer.deserialize( deserializeFrom, formatVersion );
 
-        Assert.assertEquals( getChildText( deserializeFrom, "emptyChild" ), "" );
+        Assert.assertEquals( "", getChildText( deserializeFrom, "emptyChild" ) );
         closeTag( deserializeFrom );
 
         return string;
