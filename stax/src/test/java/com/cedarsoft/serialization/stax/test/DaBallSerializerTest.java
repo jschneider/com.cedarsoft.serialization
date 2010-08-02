@@ -46,17 +46,17 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class BallSerializerTest {
+public class DaBallSerializerTest {
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
   @Test
   public void testIt() throws Exception {
-    BallSerializer serializer = new BallSerializer();
+    DaBallSerializer serializer = new DaBallSerializer();
     serializer.registerElementsSerializer();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    serializer.serialize( new Ball( 77, Lists.newArrayList( new Ball.Element( "a" ), new Ball.Element( "b" ) ) ), out );
+    serializer.serialize( new DaBall( 77, Lists.newArrayList( new DaBall.Element( "a" ), new DaBall.Element( "b" ) ) ), out );
 
     assertXMLEquals( getClass().getResource( "ball.xml" ), out.toString() );
     assertEquals( 77, serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ).getId() );
@@ -64,18 +64,18 @@ public class BallSerializerTest {
 
   @Test
   public void testMissing() throws IOException {
-    BallSerializer serializer = new BallSerializer();
+    DaBallSerializer serializer = new DaBallSerializer();
 
     expectedException.expect( IllegalArgumentException.class );
-    serializer.serialize( new Ball( 77, Lists.newArrayList( new Ball.Element( "a" ), new Ball.Element( "b" ) ) ), new ByteArrayOutputStream() );
+    serializer.serialize( new DaBall( 77, Lists.newArrayList( new DaBall.Element( "a" ), new DaBall.Element( "b" ) ) ), new ByteArrayOutputStream() );
   }
 
   @Test
   public void testNs2() throws Exception {
-    BallSerializer serializer = new BallSerializer();
+    DaBallSerializer serializer = new DaBallSerializer();
     serializer.registerElementsSerializer();
 
-    Ball ball = serializer.deserialize( getClass().getResourceAsStream( "ball.ns.xml" ) );
+    DaBall ball = serializer.deserialize( getClass().getResourceAsStream( "ball.ns.xml" ) );
     assertEquals( 77, ball.getId() );
     assertEquals( 2, ball.getElements().size() );
   }
@@ -84,13 +84,13 @@ public class BallSerializerTest {
   public void testInvalidNamespaceVersion() throws IOException {
     expectedException.expect( VersionMismatchException.class );
     expectedException.expectMessage( "Version mismatch. Expected [1.0.0-1.1.0] but was [1.1.1]" );
-    new BallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/ball/1.1.1\" id=\"77\"/>".getBytes() ) );
+    new DaBallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/ball/1.1.1\" id=\"77\"/>".getBytes() ) );
   }
 
   @Test
   public void testInvalidNamespace() throws IOException {
     expectedException.expect( IOException.class );
     expectedException.expectMessage( "Could not parse stream due to Invalid namespace. Was <http://test/wrong/1.1.0> but expected <http://test/ball/$VERSION>>" );
-    new BallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/wrong/1.1.0\" id=\"77\"/>".getBytes() ) );
+    new DaBallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/wrong/1.1.0\" id=\"77\"/>".getBytes() ) );
   }
 }

@@ -45,40 +45,40 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class BallSerializer extends AbstractStaxSerializer<Ball> {
-  public BallSerializer() {
+public class DaBallSerializer extends AbstractStaxSerializer<DaBall> {
+  public DaBallSerializer() {
     super( "ball", "http://test/ball", VersionRange.from( 1, 0, 0 ).to( 1, 1, 0 ) );
   }
 
   public void registerElementsSerializer() {
-    add( new ElementSerializer() ).responsibleFor( Ball.Element.class )
+    add( new ElementSerializer() ).responsibleFor( DaBall.Element.class )
       .map( 1, 1, 0 ).toDelegateVersion( 2, 0, 0 )
     ;
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Ball object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull DaBall object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     serializeTo.writeAttribute( "id", String.valueOf( object.getId() ) );
 
-    serializeCollection( object.getElements(), Ball.Element.class, "daElement", serializeTo, formatVersion );
+    serializeCollection( object.getElements(), DaBall.Element.class, "daElement", serializeTo, formatVersion );
   }
 
   @NotNull
   @Override
-  public Ball deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public DaBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     int id = Integer.parseInt( deserializeFrom.getAttributeValue( null, "id" ) );
 
-    List<? extends Ball.Element> elements = deserializeCollection( deserializeFrom, Ball.Element.class, formatVersion );
-    return new Ball( id, elements );
+    List<? extends DaBall.Element> elements = deserializeCollection( deserializeFrom, DaBall.Element.class, formatVersion );
+    return new DaBall( id, elements );
   }
 
-  public static class ElementSerializer extends AbstractStaxSerializer<Ball.Element> {
+  public static class ElementSerializer extends AbstractStaxSerializer<DaBall.Element> {
     public ElementSerializer() {
       super( "element", "http://test/element", VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Ball.Element object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull DaBall.Element object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       serializeTo.writeStartElement( "name1" );
       serializeTo.writeCharacters( object.getName() );
       serializeTo.writeEndElement();
@@ -90,7 +90,7 @@ public class BallSerializer extends AbstractStaxSerializer<Ball> {
 
     @NotNull
     @Override
-    public Ball.Element deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public DaBall.Element deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assertEquals( Version.valueOf( 2, 0, 0 ), formatVersion );
 
       String name2 = getChildText( deserializeFrom, "name1" );
@@ -101,7 +101,7 @@ public class BallSerializer extends AbstractStaxSerializer<Ball> {
 
       closeTag( deserializeFrom );
 
-      return new Ball.Element( name );
+      return new DaBall.Element( name );
     }
   }
 }

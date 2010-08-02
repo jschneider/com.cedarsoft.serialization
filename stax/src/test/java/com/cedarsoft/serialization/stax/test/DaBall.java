@@ -39,13 +39,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Ball {
+public class DaBall {
   private final int id;
 
   @NotNull
   private final List<Element> elements = new ArrayList<Element>();
 
-  public Ball( int id, @NotNull Collection<? extends Element> elements ) {
+  public DaBall( int id, @NotNull Collection<? extends Element> elements ) {
     this.id = id;
     this.elements.addAll( elements );
   }
@@ -62,9 +62,9 @@ public class Ball {
   @Override
   public boolean equals( Object o ) {
     if ( this == o ) return true;
-    if ( !( o instanceof Ball ) ) return false;
+    if ( !( o instanceof DaBall ) ) return false;
 
-    Ball ball = ( Ball ) o;
+    DaBall ball = (DaBall) o;
 
     if ( id != ball.id ) return false;
 

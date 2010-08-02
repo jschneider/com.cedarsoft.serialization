@@ -162,11 +162,11 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
       addStrategy( intSerializer )
         .map( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) ).toDelegateVersion( 1, 0, 0 )
-        ;
+      ;
 
       addStrategy( doubleSerializer )
         .map( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) ).toDelegateVersion( 1, 0, 0 )
-        ;
+      ;
 
       //Verify the delegate mappings
       getSerializingStrategySupport().verify();
