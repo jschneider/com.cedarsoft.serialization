@@ -39,12 +39,17 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.fmt.JTextFile;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
 public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
+  @NonNls
+  @NotNull
+  public static final String METHOD_GET_RESOURCE = "getResource";
+
   public XmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
@@ -71,7 +76,7 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
 
     resource.setContents( createSampleContent( domainType ) );
 
-    return testClass.dotclass().invoke( "getResourceAsStream" ).arg( resourceName );
+    return testClass.dotclass().invoke( METHOD_GET_RESOURCE ).arg( resourceName );
   }
 
   private String createSampleContent( @NotNull JClass domainType ) {

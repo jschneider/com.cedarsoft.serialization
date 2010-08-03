@@ -14,7 +14,7 @@ public class FooSerializerVersionTest
 {
 
     @DataPoint
-    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), FooSerializerVersionTest.class.getResourceAsStream("FooSerializerVersionTest.1.xml"));
+    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), FooSerializerVersionTest.class.getResource("FooSerializerVersionTest.1.xml"));
 
     @Override
     protected Serializer<Foo> getSerializer()
