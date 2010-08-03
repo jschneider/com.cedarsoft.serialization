@@ -11,7 +11,7 @@ public class FooSerializerTest
 {
 
     @DataPoint
-    public final static Entry ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), FooSerializerTest.class.getResource("FooSerializerTest.1.xml"));
+    public final static Entry ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), FooSerializerTest.class.getResource("Foo.1.xml"));
 
     @Override
     protected Serializer<Foo> getSerializer()

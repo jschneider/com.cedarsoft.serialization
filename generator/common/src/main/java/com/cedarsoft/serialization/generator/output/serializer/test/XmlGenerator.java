@@ -38,6 +38,7 @@ import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JPackage;
 import com.sun.codemodel.fmt.JTextFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -69,12 +70,14 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NotNull
   @Override
   protected JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType ) {
-    String resourceName = testClass.name() + ".1.xml";
+    String resourceName = domainType.name() + ".1.xml";
 
-    JTextFile resource = new JTextFile( resourceName );
-    testClass._package().addResourceFile( resource );
-
-    resource.setContents( createSampleContent( domainType ) );
+    JPackage testClassPackage = testClass._package();
+    if ( !testClassPackage.hasResourceFile( resourceName ) ) {
+      JTextFile resource = new JTextFile( resourceName );
+      resource.setContents( createSampleContent( domainType ) );
+      testClassPackage.addResourceFile( resource );
+    }
 
     return testClass.dotclass().invoke( METHOD_GET_RESOURCE ).arg( resourceName );
   }

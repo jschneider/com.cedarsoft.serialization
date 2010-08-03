@@ -99,8 +99,7 @@ public class GeneratorTest {
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" ) );
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" ) );
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.1.xml" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.1.xml" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/Foo.1.xml" ) );
 
     assertEquals( "", systemOutRule.getErrAsString() );
 
@@ -122,7 +121,7 @@ public class GeneratorTest {
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
 
 
-    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.1.xml" );
+    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/staxmate/test/Foo.1.xml" );
     assertTrue( resFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_4.txt" ), FileUtils.readFileToString( resFile ).trim() );
   }
