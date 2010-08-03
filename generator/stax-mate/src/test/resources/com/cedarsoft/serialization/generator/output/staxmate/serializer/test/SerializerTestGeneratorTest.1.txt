@@ -7,11 +7,13 @@ import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
 import org.junit.Assert;
+import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerVersionTest
     extends AbstractXmlVersionTest2 <Foo>
 {
 
+    @DataPoint
     public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
 
     @Override

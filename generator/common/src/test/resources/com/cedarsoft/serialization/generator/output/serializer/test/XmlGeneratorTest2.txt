@@ -6,11 +6,13 @@ import java.util.Arrays;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
+import org.junit.experimental.theories.DataPoint;
 
 public class HouseSerializerTest
     extends AbstractXmlSerializerTest2 <House>
 {
 
+    @DataPoint
     public final static Entry ENTRY1 = HouseSerializerTest.create(new House(new Door(), Arrays.asList(new Room())), "<addMe/>");
 
     @Override

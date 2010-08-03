@@ -4,11 +4,13 @@ import java.util.Arrays;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
+import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerTest
     extends AbstractXmlSerializerTest2 <Foo>
 {
 
+    @DataPoint
     public final static Entry ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), "<addMe/>");
 
     @Override
