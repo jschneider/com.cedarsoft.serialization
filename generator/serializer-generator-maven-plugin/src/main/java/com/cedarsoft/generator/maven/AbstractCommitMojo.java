@@ -72,8 +72,7 @@ public abstract class AbstractCommitMojo extends AbstractGeneratorMojo {
     if ( testSourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No test compile source roots available" );
     }
-    File testSourceRoot = new File( testSourceRoots.get( 0 ) );
-    return testSourceRoot;
+    return new File( testSourceRoots.get( 0 ) );
   }
 
   @NotNull
@@ -81,7 +80,6 @@ public abstract class AbstractCommitMojo extends AbstractGeneratorMojo {
     if ( sourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No compile source roots available" );
     }
-    File sourceRoot = new File( sourceRoots.get( 0 ) );
-    return sourceRoot;
+    return new File( sourceRoots.get( 0 ) );
   }
 }
