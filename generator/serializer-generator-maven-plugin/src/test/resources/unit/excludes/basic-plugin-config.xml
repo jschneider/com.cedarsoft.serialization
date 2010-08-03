@@ -14,7 +14,7 @@
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
 
           <createTests>false</createTests>
-          <createSerializer>true</createSerializer>
+          <createSerializers>true</createSerializers>
         </configuration>
       </plugin>
     </plugins>

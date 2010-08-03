@@ -75,9 +75,9 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
   /**
    * Whether to create the serializer
    *
-   * @parameter expression="${createSerializer}"
+   * @parameter expression="${createSerializers}"
    */
-  protected boolean createSerializer = true;
+  protected boolean createSerializers = true;
   /**
    * Whether to create the tests
    *
@@ -110,7 +110,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
       for ( File domainClassSourceFile : domainClassSourceFiles ) {
         getLog().info( "\t" + domainClassSourceFile.getPath() );
       }
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFiles, outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializer, createTests ) );
+      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFiles, outputDirectory, testOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializers, createTests ) );
       new StaxMateGenerator().run( configuration );
     } catch ( Exception e ) {
       throw new MojoExecutionException( "Generation failed due to: " + e.getMessage(), e );
