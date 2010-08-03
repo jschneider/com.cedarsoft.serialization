@@ -156,7 +156,7 @@ public class DaGeneratorTest {
           }
 
           @Override
-          protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull FieldWithInitializationInfo fieldInfo ) {
+          protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
             serializeMethod.body().directStatement( "//serialize:" + fieldInfo.getSimpleName() );
           }
         };
