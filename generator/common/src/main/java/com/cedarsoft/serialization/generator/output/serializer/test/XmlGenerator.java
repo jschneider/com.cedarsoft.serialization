@@ -70,7 +70,7 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NotNull
   @Override
   protected JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType ) {
-    String resourceName = domainType.name() + ".1.xml";
+    String resourceName = domainType.name() + "_1.0.0_1.xml";
 
     JPackage testClassPackage = testClass._package();
     if ( !testClassPackage.hasResourceFile( resourceName ) ) {

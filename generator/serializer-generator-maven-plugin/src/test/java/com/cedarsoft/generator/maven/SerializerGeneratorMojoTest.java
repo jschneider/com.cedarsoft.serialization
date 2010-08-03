@@ -226,7 +226,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
                 containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
                                "unit/basic/DaDomainObjectSerializerTest.java" ) );
     assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory,
-                containsFiles( "unit/basic/DaDomainObject.1.xml"
+                containsFiles( "unit/basic/DaDomainObject_1.0.0_1.xml"
                 ) );
   }
 

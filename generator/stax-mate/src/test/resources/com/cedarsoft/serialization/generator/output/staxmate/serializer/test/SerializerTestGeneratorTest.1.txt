@@ -14,7 +14,7 @@ public class FooSerializerVersionTest
 {
 
     @DataPoint
-    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), FooSerializerVersionTest.class.getResource("Foo.1.xml"));
+    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), FooSerializerVersionTest.class.getResource("Foo_1.0.0_1.xml"));
 
     @Override
     protected Serializer<Foo> getSerializer()
@@ -37,7 +37,7 @@ public class FooSerializerVersionTest
     }
 
 }
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.Foo.1.xml-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.Foo_1.0.0_1.xml-----------------------------------
 <?xml version="1.0"?>
 <foo>
 </foo>
