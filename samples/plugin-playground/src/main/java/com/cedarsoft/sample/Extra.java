@@ -50,6 +50,14 @@ public class Extra {
   }
 
   @Override
+  public String toString() {
+    return "Extra{" +
+      "description='" + description + '\'' +
+      ", price=" + price +
+      '}';
+  }
+
+  @Override
   public boolean equals( Object o ) {
     if ( this == o ) return true;
     if ( !( o instanceof Extra ) ) return false;
