@@ -72,4 +72,26 @@ public class Car {
   public Model getModel() {
     return model;
   }
+
+  @Override
+  public boolean equals( Object o ) {
+    if ( this == o ) return true;
+    if ( !( o instanceof Car ) ) return false;
+
+    Car car = ( Car ) o;
+
+    if ( basePrice != null ? !basePrice.equals( car.basePrice ) : car.basePrice != null ) return false;
+    if ( extras != null ? !extras.equals( car.extras ) : car.extras != null ) return false;
+    if ( model != null ? !model.equals( car.model ) : car.model != null ) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = model != null ? model.hashCode() : 0;
+    result = 31 * result + ( basePrice != null ? basePrice.hashCode() : 0 );
+    result = 31 * result + ( extras != null ? extras.hashCode() : 0 );
+    return result;
+  }
 }
