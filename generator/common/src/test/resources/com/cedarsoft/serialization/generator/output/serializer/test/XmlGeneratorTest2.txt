@@ -13,7 +13,7 @@ public class HouseSerializerTest
 {
 
     @DataPoint
-    public final static Entry ENTRY1 = HouseSerializerTest.create(new House(new Door(), Arrays.asList(new Room())), "<addMe/>");
+    public final static Entry ENTRY1 = HouseSerializerTest.create(new House(new Door(), Arrays.asList(new Room())), HouseSerializerTest.class.getResourceAsStream("HouseSerializerTest.1.xml"));
 
     @Override
     protected Serializer<House> getSerializer()

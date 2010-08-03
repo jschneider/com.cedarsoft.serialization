@@ -14,7 +14,7 @@ public class HouseSerializerVersionTest
 {
 
     @DataPoint
-    public final static VersionEntry ENTRY1 = HouseSerializerVersionTest.create(Version.valueOf(1, 0, 0), "<addMe/>");
+    public final static VersionEntry ENTRY1 = HouseSerializerVersionTest.create(Version.valueOf(1, 0, 0), HouseSerializerVersionTest.class.getResourceAsStream("HouseSerializerVersionTest.1.xml"));
 
     @Override
     protected Serializer<House> getSerializer()

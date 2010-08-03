@@ -38,7 +38,6 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -63,8 +62,14 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
 
   @NotNull
   @Override
-  protected JExpression createExpectedExpression( @NotNull JClass domainObjectDescriptor ) {
-    return JExpr.lit( "<addMe/>" );
+  protected JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType ) {
+    return testClass.dotclass().invoke( "getResourceAsStream" ).arg( testClass.name() + ".1.xml" );
+
+    //    JExpr.invoke( "" );
+
+    //      HouseSerializerVersionTest.class.getResourceAsStream("HouseSerializerVersionTest.1.xml")
+
+    //    return JExpr.lit( "<addMe/>" );
   }
 
 }

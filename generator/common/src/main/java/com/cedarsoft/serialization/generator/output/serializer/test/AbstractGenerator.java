@@ -110,7 +110,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     field.annotate( codeModel.ref( "org.junit.experimental.theories.DataPoint" ) );
 
     JInvocation versionInvocation = codeGenerator.ref( Version.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) );
-    JExpression expected = createExpectedExpression( domainType );
+    JExpression expected = createExpectedExpression( testClass, domainType );
 
     field.init( testClass.staticInvoke( METHOD_NAME_CREATE ).arg( versionInvocation ).arg( expected ) );
   }
@@ -150,13 +150,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     field.annotate( codeModel.ref( "org.junit.experimental.theories.DataPoint" ) );
 
     JInvocation domainObjectCreation = createDomainObjectCreationExpression( domainObjectDescriptor );
-    JExpression expected = createExpectedExpression( domainType );
+    JExpression expected = createExpectedExpression( testClass, domainType );
 
     field.init( testClass.staticInvoke( METHOD_NAME_CREATE ).arg( domainObjectCreation ).arg( expected ) );
   }
 
   @NotNull
-  protected abstract JExpression createExpectedExpression( @NotNull JClass domainObjectDescriptor );
+  protected abstract JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType );
 
   @NotNull
   protected JInvocation createDomainObjectCreationExpression( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
