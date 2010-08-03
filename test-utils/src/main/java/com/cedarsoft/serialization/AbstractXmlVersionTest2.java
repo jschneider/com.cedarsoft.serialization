@@ -32,11 +32,13 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+import org.apache.commons.io.IOUtils;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * It is necessary to define at least one DataPoint
@@ -60,8 +62,18 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
   }
 
   @NotNull
+  protected static byte[] processXml( @NotNull @NonNls byte[] xml, @NotNull Version version, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
+    return processXml( xml, serializer.createNameSpaceUri( version ) );
+  }
+
+  @NotNull
   protected static byte[] processXml( @NotNull @NonNls String xml, @NotNull @NonNls String nameSpace ) throws JDOMException, IOException {
     return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+  }
+
+  @NotNull
+  protected static byte[] processXml( @NotNull @NonNls byte[] xml, @NotNull @NonNls String nameSpace ) throws JDOMException, IOException {
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
   }
 
   @NotNull
@@ -69,16 +81,29 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
     return new XmlVersionEntry( version, xml );
   }
 
+  @NotNull
+  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls URL expected ) {
+    try {
+      return new XmlVersionEntry( version, IOUtils.toByteArray( expected.openStream() ) );
+    } catch ( IOException e ) {
+      throw new RuntimeException( e );
+    }
+  }
+
   public static class XmlVersionEntry implements VersionEntry {
     @NotNull
     private final Version version;
     @NotNull
     @NonNls
-    private final String xml;
+    private final byte[] xml;
 
-    public XmlVersionEntry( @NotNull Version version, @NotNull String xml ) {
+    public XmlVersionEntry( @NotNull Version version, @NotNull @NonNls byte[] xml ) {
       this.version = version;
       this.xml = xml;
+    }
+
+    public XmlVersionEntry( @NotNull Version version, @NotNull @NonNls String xml ) {
+      this( version, xml.getBytes() );
     }
 
     @NotNull
