@@ -106,7 +106,7 @@ public class ShowDiffMojo extends AbstractCommitMojo {
 
         showDiff( inSourceDir, generated );
       } else {
-        getLog().info( "No corresponding file found at " + relative );
+        getLog().info( "No corresponding file found for " + relative );
       }
     }
   }
