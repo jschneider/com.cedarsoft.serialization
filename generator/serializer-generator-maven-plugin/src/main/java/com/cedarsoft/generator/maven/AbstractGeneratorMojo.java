@@ -53,10 +53,24 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
   /**
    * Location of the output directory for the placeholder poms
    *
+   * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-resources"
+   * @required
+   */
+  protected File resourcesOutputDirectory;
+  /**
+   * Location of the output directory for the placeholder poms
+   *
    * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-test"
    * @required
    */
   protected File testOutputDirectory;
+  /**
+   * Location of the output directory for the placeholder poms
+   *
+   * @parameter expression="${basedir}/target/generated-sources/cedarsoft-serialization-test-resources"
+   * @required
+   */
+  protected File testResourcesOutputDirectory;
   /**
    * Project artifacts.
    *
@@ -78,7 +92,9 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
   protected void prepareOutputDirectories() throws MojoExecutionException {
     verifyDirectories();
     outputDirectory.mkdirs();
+    resourcesOutputDirectory.mkdirs();
     testOutputDirectory.mkdirs();
+    testResourcesOutputDirectory.mkdirs();
   }
 
   protected void verifyDirectories() throws MojoExecutionException {
@@ -87,6 +103,10 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
     }
     if ( testOutputDirectory == null ) {
       throw new MojoExecutionException( "test output directory not set" );
+    }
+
+    if ( resourcesOutputDirectory == null ) {
+      throw new MojoExecutionException( "resources output directory not set" );
     }
   }
 
@@ -104,6 +124,20 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
       throw new MojoExecutionException( "output directory not set" );
     }
     return outputDirectory;
+  }
+
+  public File getResourcesOutputDirectory() throws MojoExecutionException {
+    if ( resourcesOutputDirectory == null ) {
+      throw new MojoExecutionException( "resources output directory not set" );
+    }
+    return resourcesOutputDirectory;
+  }
+
+  public File getTestResourcesOutputDirectory() throws MojoExecutionException {
+    if ( testResourcesOutputDirectory == null ) {
+      throw new MojoExecutionException( "test resources output directory not set" );
+    }
+    return testResourcesOutputDirectory;
   }
 
   @NotNull

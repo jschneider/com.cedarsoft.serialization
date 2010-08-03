@@ -23,3 +23,7 @@ public class FooSerializerTest
     }
 
 }
+-----------------------------------com.cedarsoft.serialization.generator.staxmate.test.FooSerializerTest.1.xml-----------------------------------
+<?xml version="1.0"?>
+<foo>
+</foo>

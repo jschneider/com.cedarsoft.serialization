@@ -80,7 +80,7 @@ public class DaGeneratorTest {
     List<File> sourceFiles = Lists.newArrayList( sourceFile );
     out = new StringWriter();
 
-    generatorConfiguration = new GeneratorConfiguration( sourceFiles, tmp.newFolder( "dest" ), tmp.newFolder( "test-dest" ), new PrintWriter( out ) );
+    generatorConfiguration = new GeneratorConfiguration( sourceFiles, tmp.newFolder( "dest" ), tmp.newFolder( "resources-dest" ), tmp.newFolder( "test-dest" ), tmp.newFolder( "test-resources-dest" ), new PrintWriter( out ) );
   }
 
   @Test
@@ -165,9 +165,9 @@ public class DaGeneratorTest {
 
     runner.generate( generatorConfiguration );
 
-    assertEquals( "Generating Serializer:\n" +
-                    "Generating Serializer Tests:\n" +
-                    "com/cedarsoft/serialization/generator/MyClassSerializerTest.java\n" +
-                    "com/cedarsoft/serialization/generator/MyClassSerializerVersionTest.java\n", out.toString() );
+    assertTrue( out.toString(), out.toString().contains( "Generating Serializer:\n" +
+      "Generating Serializer Tests:\n" +
+      "com/cedarsoft/serialization/generator/MyClassSerializerTest.java\n" +
+      "com/cedarsoft/serialization/generator/MyClassSerializerVersionTest.java\n" ) );
   }
 }

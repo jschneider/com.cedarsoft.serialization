@@ -72,20 +72,19 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
     mojo.execute();
 
-    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
-    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
-                                                                                                                    "unit/basic/DaDomainObjectSerializerTest.java" ) );
+
+    assertSerializers( mojo );
+    assertTests( mojo );
   }
 
   @Test
   public void testOnlyTests() throws Exception {
-    SerializerGeneratorMojo mojo = createVerifiedMojo( "only-tests" );
+    SerializerGeneratorMojo mojo = createMojo( "only-tests" );
     assertEquals( 2, mojo.getExcludes().size() );
     mojo.execute();
 
-    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
-    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
-                                                                                                                    "unit/basic/DaDomainObjectSerializerTest.java" ) );
+    assertNoSerializers( mojo );
+    assertTests( mojo );
   }
 
   @Test
@@ -94,8 +93,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertEquals( 2, mojo.getExcludes().size() );
     mojo.execute();
 
-    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
-    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+    assertSerializers( mojo );
+    assertNoTests( mojo );
   }
 
   @Test
@@ -192,14 +191,17 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo.getTestOutputDirectory() );
     assertNotNull( mojo.getOutputDirectory() );
-
-    //Clean up
-    FileUtils.deleteQuietly( mojo.outputDirectory );
-    FileUtils.deleteQuietly( mojo.testOutputDirectory );
-    assertFalse( mojo.outputDirectory.exists() );
-    assertFalse( mojo.testOutputDirectory.exists() );
+    assertNotNull( mojo.getResourcesOutputDirectory() );
+    assertNotNull( mojo.getTestResourcesOutputDirectory() );
 
     return mojo;
+  }
+
+  private void cleanUp( SerializerGeneratorMojo mojo ) {
+    FileUtils.deleteQuietly( mojo.outputDirectory );
+    FileUtils.deleteQuietly( mojo.testOutputDirectory );
+    FileUtils.deleteQuietly( mojo.resourcesOutputDirectory );
+    FileUtils.deleteQuietly( mojo.testResourcesOutputDirectory );
   }
 
   @NotNull
@@ -209,6 +211,34 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo );
     mojo.mavenProject = new MavenProjectStub();
+
+    cleanUp( mojo );
     return mojo;
   }
+
+  private void assertSerializers( SerializerGeneratorMojo mojo ) {
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.resourcesOutputDirectory ), mojo.resourcesOutputDirectory, containsFiles() );
+  }
+
+  private void assertTests( AbstractGeneratorMojo mojo ) {
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory,
+                containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
+                               "unit/basic/DaDomainObjectSerializerTest.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory,
+                containsFiles( "unit/basic/DaDomainObjectSerializerTest.1.xml",
+                               "unit/basic/DaDomainObjectSerializerVersionTest.1.xml"
+                ) );
+  }
+
+  private void assertNoSerializers( AbstractGeneratorMojo mojo ) {
+    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
+    assertThat( ContainsFileMatcher.toMessage( mojo.resourcesOutputDirectory ), mojo.resourcesOutputDirectory, containsFiles() );
+  }
+
+  private void assertNoTests( AbstractGeneratorMojo mojo ) {
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory, containsFiles() );
+  }
+
 }
