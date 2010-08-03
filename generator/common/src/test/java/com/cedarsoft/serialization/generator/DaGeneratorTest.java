@@ -74,8 +74,8 @@ public class DaGeneratorTest {
   public void setUp() throws Exception {
     myGenerator = new MyGenerator();
 
-    sourceFile = tmp.newFile( "TestClass.java" );
-    FileUtils.writeByteArrayToFile( sourceFile, IOUtils.toByteArray( getClass().getResourceAsStream( "TestClass.java" ) ) );
+    sourceFile = tmp.newFile( "MyClass.java" );
+    FileUtils.writeByteArrayToFile( sourceFile, IOUtils.toByteArray( getClass().getResourceAsStream( "MyClass.java" ) ) );
 
     List<File> sourceFiles = Lists.newArrayList( sourceFile );
     out = new StringWriter();
@@ -167,7 +167,7 @@ public class DaGeneratorTest {
 
     assertEquals( "Generating Serializer:\n" +
                     "Generating Serializer Tests:\n" +
-                    "com/cedarsoft/serialization/generator/TestClassSerializerTest.java\n" +
-                    "com/cedarsoft/serialization/generator/TestClassSerializerVersionTest.java\n", out.toString() );
+                    "com/cedarsoft/serialization/generator/MyClassSerializerTest.java\n" +
+                    "com/cedarsoft/serialization/generator/MyClassSerializerVersionTest.java\n", out.toString() );
   }
 }

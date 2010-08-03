@@ -3,7 +3,7 @@ package com.cedarsoft.serialization.generator;
 /**
  *
  */
-public class TestClass {
+public class MyClass {
 
 
 }
