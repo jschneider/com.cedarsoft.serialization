@@ -31,6 +31,7 @@
 
 package com.cedarsoft.generator.maven;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +61,26 @@ public abstract class AbstractCommitMojo extends AbstractGeneratorMojo {
    * @readonly
    */
   protected List<String> testSourceRoots;
+
+  /**
+   * The list of resources.
+   *
+   * @parameter default-value="${project.resources}"
+   * @required
+   * @readonly
+   */
+  private List<Resource> resources;
+
+  /**
+   * The list of test resources
+   *
+   * @parameter expression="${project.testResources}"
+   * @required
+   * @readonly
+   */
+  private List<Resource> testResources;
+
+
   /**
    * @component
    * @required
@@ -81,5 +102,21 @@ public abstract class AbstractCommitMojo extends AbstractGeneratorMojo {
       throw new MojoExecutionException( "No compile source roots available" );
     }
     return new File( sourceRoots.get( 0 ) );
+  }
+
+  @NotNull
+  protected File getResourcesRoot() throws MojoExecutionException {
+    if ( resources.isEmpty() ) {
+      throw new MojoExecutionException( "No resource roots available" );
+    }
+    return new File( resources.get( 0 ).getDirectory() );
+  }
+
+  @NotNull
+  protected File getTestResourcesRoot() throws MojoExecutionException {
+    if ( testResources.isEmpty() ) {
+      throw new MojoExecutionException( "No test resource roots available" );
+    }
+    return new File( testResources.get( 0 ).getDirectory() );
   }
 }

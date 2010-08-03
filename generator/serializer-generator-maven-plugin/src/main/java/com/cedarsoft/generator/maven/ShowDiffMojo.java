@@ -64,18 +64,18 @@ public class ShowDiffMojo extends AbstractCommitMojo {
 
     try {
       {
-        File sourceRoot = getSourceRoot();
         try {
-          showDiffs( outputDirectory, sourceRoot );
+          showDiffs( outputDirectory, getSourceRoot() );
+          showDiffs( resourcesOutputDirectory, getResourcesRoot() );
         } catch ( IOException e ) {
           throw new MojoFailureException( "Diff failed due to " + e.getMessage(), e );
         }
       }
 
       {
-        File testSourceRoot = getTestSourceRoot();
         try {
-          showDiffs( testOutputDirectory, testSourceRoot );
+          showDiffs( testOutputDirectory, getTestSourceRoot() );
+          showDiffs( testResourcesOutputDirectory, getTestResourcesRoot() );
         } catch ( IOException e ) {
           throw new MojoFailureException( "Diff failed due to " + e.getMessage(), e );
         }

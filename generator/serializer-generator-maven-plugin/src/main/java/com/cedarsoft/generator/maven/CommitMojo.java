@@ -64,10 +64,10 @@ public class CommitMojo extends AbstractCommitMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     if ( commitSerializer ) {
-      File sourceRoot = getSourceRoot();
 
       try {
-        commit( outputDirectory, sourceRoot );
+        commit( outputDirectory, getSourceRoot() );
+        commit( resourcesOutputDirectory, getResourcesRoot() );
       } catch ( IOException e ) {
         throw new MojoFailureException( "Commiting serializer failed due to " + e.getMessage(), e );
       }
@@ -75,10 +75,9 @@ public class CommitMojo extends AbstractCommitMojo {
 
 
     if ( commitTests ) {
-      File testSourceRoot = getTestSourceRoot();
-
       try {
-        commit( testOutputDirectory, testSourceRoot );
+        commit( testOutputDirectory, getTestSourceRoot() );
+        commit( testResourcesOutputDirectory, getTestResourcesRoot() );
       } catch ( IOException e ) {
         throw new MojoFailureException( "Commiting serializer failed due to " + e.getMessage(), e );
       }
