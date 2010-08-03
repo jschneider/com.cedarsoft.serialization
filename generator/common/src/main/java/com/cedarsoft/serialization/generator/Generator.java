@@ -90,7 +90,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
         configuration.getLogOut().println( "Generating Serializer:" );
         CodeGenerator<T> codeGenerator = new CodeGenerator<T>( decisionCallback );
         instantiateGenerator( codeGenerator ).generateSerializer( descriptor );
-        codeGenerator.getModel().build( configuration.getDestination(), statusPrinter );
+        codeGenerator.getModel().build( configuration.getDestination(), configuration.getResourcesDestination(), statusPrinter );
       }
 
       //The Serializer Tests
@@ -102,7 +102,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
         instantiateTestGenerator( testCodeGenerator ).generateSerializerTest( serializerClassName, descriptor );
         instantiateTestGenerator( testCodeGenerator ).generateSerializerVersionTest( serializerClassName, descriptor );
 
-        testCodeGenerator.getModel().build( configuration.getTestDestination(), statusPrinter );
+        testCodeGenerator.getModel().build( configuration.getTestDestination(), configuration.getTestResourcesDestination(), statusPrinter );
       }
     }
 

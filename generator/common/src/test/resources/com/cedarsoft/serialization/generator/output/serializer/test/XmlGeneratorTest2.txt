@@ -23,3 +23,7 @@ public class HouseSerializerTest
     }
 
 }
+-----------------------------------com.cedarsoft.serialization.generator.parsing.test.HouseSerializerTest.1.xml-----------------------------------
+<?xml version="1.0"?>
+<house>
+</house>

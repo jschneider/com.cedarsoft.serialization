@@ -32,12 +32,13 @@
 package com.cedarsoft.serialization.generator.output.serializer.test;
 
 import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.NamingSupport;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
+import com.sun.codemodel.fmt.JTextFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -63,13 +64,22 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NotNull
   @Override
   protected JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType ) {
-    return testClass.dotclass().invoke( "getResourceAsStream" ).arg( testClass.name() + ".1.xml" );
+    String resourceName = testClass.name() + ".1.xml";
 
-    //    JExpr.invoke( "" );
+    JTextFile resource = new JTextFile( resourceName );
+    testClass._package().addResourceFile( resource );
 
-    //      HouseSerializerVersionTest.class.getResourceAsStream("HouseSerializerVersionTest.1.xml")
+    resource.setContents( createSampleContent( domainType ) );
 
-    //    return JExpr.lit( "<addMe/>" );
+    return testClass.dotclass().invoke( "getResourceAsStream" ).arg( resourceName );
   }
 
+  private String createSampleContent( @NotNull JClass domainType ) {
+    String simpleName = NamingSupport.createVarName( domainType.name() );
+
+    return "<?xml version=\"1.0\"?>\n" +
+      "<" + simpleName + ">\n" +
+      "</" + simpleName + ">\n"
+      ;
+  }
 }
