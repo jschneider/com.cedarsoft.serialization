@@ -10,7 +10,7 @@
         <configuration>
           <outputDirectory>${basedir}/target/test/unit/target/out</outputDirectory>
           <testOutputDirectory>${basedir}/target/test/unit/target/test-out</testOutputDirectory>
-          <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
+          <domainClassSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainClassSourceFilePattern>
 
           <createTests>true</createTests>
           <createSerializer>false</createSerializer>

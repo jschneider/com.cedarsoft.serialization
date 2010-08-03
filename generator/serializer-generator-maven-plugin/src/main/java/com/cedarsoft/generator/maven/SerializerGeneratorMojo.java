@@ -63,7 +63,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
    * @parameter expression="${domain.class}"
    * @required
    */
-  protected String domainSourceFilePattern;
+  protected String domainClassSourceFilePattern;
 
   /**
    * A list of exclusion filters for the compiler.
@@ -90,8 +90,8 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     getLog().info( "Serializer Generator Mojo" );
     getLog().info( "-------------------------" );
 
-    if ( domainSourceFilePattern == null ) {
-      throw new MojoExecutionException( "domain class source file is missing" );
+    if ( domainClassSourceFilePattern == null ) {
+      throw new MojoExecutionException( "domain class source file pattern is missing" );
     }
 
     prepareOutputDirectories();
@@ -103,7 +103,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     try {
       List<? extends File> domainClassSourceFiles = getDomainSourceFiles();
       if ( domainClassSourceFiles.isEmpty() ) {
-        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainSourceFilePattern + ">" );
+        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainClassSourceFilePattern + ">" );
       }
 
       getLog().info( "Running Generator for" );
@@ -125,7 +125,7 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
     scanner.setBasedir( getBaseDir() );
 
     scanner.setExcludes( excludes.toArray( new String[0] ) );
-    scanner.setIncludes( new String[]{domainSourceFilePattern} );
+    scanner.setIncludes( new String[]{domainClassSourceFilePattern} );
     scanner.scan();
 
 

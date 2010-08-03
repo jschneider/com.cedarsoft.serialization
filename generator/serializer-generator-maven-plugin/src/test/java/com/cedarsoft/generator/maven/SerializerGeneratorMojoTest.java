@@ -171,7 +171,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
       assertEquals( "domain class source file pattern is missing", e.getMessage() );
     }
 
-    mojo.domainSourceFilePattern = "invalid pattern";
+    mojo.domainClassSourceFilePattern = "invalid pattern";
 
     try {
       mojo.execute();
@@ -187,8 +187,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo.projectArtifact );
     assertNotNull( mojo.outputDirectory );
-    assertNotNull( mojo.domainSourceFilePattern );
-    assertTrue( mojo.domainSourceFilePattern.length() > 0 );
+    assertNotNull( mojo.domainClassSourceFilePattern );
+    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
 
     assertNotNull( mojo.getTestOutputDirectory() );
     assertNotNull( mojo.getOutputDirectory() );
