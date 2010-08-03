@@ -146,7 +146,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   }
 
   protected void createDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( Entry.class ), DATA_POINT_FIELD_NAME );
+    JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( Entry.class ).narrow( domainType.wildcard() ), DATA_POINT_FIELD_NAME );
     field.annotate( codeModel.ref( "org.junit.experimental.theories.DataPoint" ) );
 
     JInvocation domainObjectCreation = createDomainObjectCreationExpression( domainObjectDescriptor );
