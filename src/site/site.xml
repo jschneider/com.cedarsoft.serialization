@@ -62,7 +62,10 @@
 
     <menu name="Tutorial">
       <item name="Tutorial" href="tutorial.html" />
-      <item name="Evolution Sample" href="evolution.html"/>
+      <item name="Evolution Sample" href="evolution.html">
+        <item name="using XStream" href="evolutionXStream.html"/>
+        <item name="using cedarsoft Serialization" href="evolutionCedarsoftSerialization.html"/>
+      </item>
       <!--<item name="Advanced" href="advancedTut.html" />-->
     </menu>
 
