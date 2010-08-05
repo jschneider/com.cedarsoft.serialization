@@ -125,59 +125,6 @@
         <version>${commons.version}</version>
         <scope>test</scope>
       </dependency>
-
-
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>1.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>1.6</version>
-      </dependency>
-
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.5</version>
-        <optional>true</optional>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.staxmate</groupId>
-        <artifactId>staxmate</artifactId>
-        <version>2.0.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.woodstox</groupId>
-        <artifactId>woodstox-core-asl</artifactId>
-        <version>4.0.8</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava-concurrent</artifactId>
-        <version>r03</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava-collections</artifactId>
-        <version>r03</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava-io</artifactId>
-        <version>r03</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava-primitives</artifactId>
-        <version>r03</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -186,20 +133,17 @@
       <groupId>com.intellij</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>
-      <version>7.0.3</version>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-collections</artifactId>
-      <version>r03</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
