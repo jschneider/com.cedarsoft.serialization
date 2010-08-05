@@ -5,7 +5,7 @@
 
   It has been designed to highlight the typical faults developers make. It is not
   a rant about XStream (or similar tools). Instead it is a rant about choosing the
-  wrong tools for the jobs.
+  wrong tools for the wrong jobs.
 
   This sample shows which problems might occure and how to solve/avoid them.
 
@@ -13,9 +13,9 @@
 
 * Part 1: The Model
 
-  The {{{samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} javadocs}} for the model can be found
-  {{{samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} here}}.
-  The {{{samples/evolution/xref/index.html} source code }} is also available.
+  The {{{./samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} javadocs}} for the model can be found
+  {{{./samples/evolution/apidocs/com/cedarsoft/sample/package-summary.html} here}}.
+  The {{{./samples/evolution/xref/index.html} source code }} is also available.
 
 ** Domain Objects:
 
@@ -48,7 +48,7 @@
 
   Therefore many people start to serialize their objects using {{{XStream}http://xstream.codehaus.org/}}.
 
----
++---
 XStream xStream = new XStream();
 //We define some aliases to get a nicer xml output without fqns
 xStream.alias( "car", Car.class );
@@ -57,7 +57,7 @@ xStream.alias( "money", Money.class );
 
 Car sampleCar = ...
 String xml = xStream.toXML( sampleCar );
----
++---
 
 ** Resulting XML
 
@@ -125,19 +125,19 @@ String xml = xStream.toXML( sampleCar );
   It is just a small difference - but it is an important difference. Every time a Money object is serialized, the XML has changed from
   something like
 
----
++---
 <basePrice>
   <amount>19000.00</amount>
 </basePrice>
----
++---
 
   to
 
----
++---
 <basePrice>
   <cents>1900000</cents>
 </basePrice>
----
++---
 
 ** The consequence!
 
@@ -146,15 +146,15 @@ String xml = xStream.toXML( sampleCar );
 
 *** Even worse:
 
-  Deserialization fails with a com.thoughtworks.xstream.converters.ConversionException.
+  Deserialization fails with a <com.thoughtworks.xstream.converters.ConversionException>.
 
-  This extends RuntimeException so propably we forgot to catch that Exception and provide nice feedback to the user.
+  This extends <RuntimeException> so probably we forgot to catch that Exception and provide nice feedback to the user.
   But even if we did, we just know that the XML format is "invalid". We can't provide a reason for that behaviour.
 
   So there are two common scenarios: Either our application just fails with a strange stack trace. Or (if we are really foresighted
-  developers) we have to tell our user that the file is "corrputed".
+  developers) we have to tell our user that the file is somehow "corrupted".
 
-  Propably this will result in angry customers and a lot of work for our support team...
+  Probably this will result in angry customers and a lot of work for our support team...
 
 
 * What to do? How can we solve that problem?
@@ -189,7 +189,7 @@ String xml = xStream.toXML( sampleCar );
 
   Yes. Nice work done. We solved our problem. And with custom converters we should be able to solve nearly all kind of problems.
 
-  By the way: Did you notice that you did write XML writing/parsing code on your own? So as soon as you have to tweak the XML, you
+  By the way: Did you notice that you did write the XML writing/parsing code on your own? So as soon as you have to tweak the XML, you
   are forced to write your own converters...
 
   Why did we choose XStream in the first place? Yes - we wanted to avoid writing the (un)marshalling code ourselves...
