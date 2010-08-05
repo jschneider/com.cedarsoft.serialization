@@ -6,14 +6,15 @@ import com.cedarsoft.sample.Extra;
 import com.cedarsoft.sample.Model;
 import com.cedarsoft.sample.Money;
 import com.thoughtworks.xstream.XStream;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  *
@@ -39,7 +40,7 @@ public class XStreamDemo {
     xStream.alias( "money", Money.class );
 
     String xml = xStream.toXML( createSampleCar() );
-    AssertUtils.assertXMLEquals( xml, getClass().getResource( "car.xml" ) );
+    AssertUtils.assertXMLEquals( getClass().getResource( "car.xml" ), xml );
   }
 
   @Test

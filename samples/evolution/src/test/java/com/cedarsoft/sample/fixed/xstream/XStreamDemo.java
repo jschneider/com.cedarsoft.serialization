@@ -7,14 +7,15 @@ import com.cedarsoft.sample.fixed.Model;
 import com.cedarsoft.sample.fixed.Money;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
-import org.testng.annotations.*;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
+
 
 /**
  *
@@ -37,7 +38,7 @@ public class XStreamDemo {
     xStream.alias( "money", Money.class );
 
     String xml = xStream.toXML( createSampleCar() );
-    AssertUtils.assertXMLEquals( xml, getClass().getResource( "car.xml" ) );
+    AssertUtils.assertXMLEquals( getClass().getResource( "car.xml" ), xml );
   }
 
   @Test
@@ -49,7 +50,7 @@ public class XStreamDemo {
     xStream.alias( "money", Money.class );
 
     Car deserialized = ( Car ) xStream.fromXML( getClass().getResourceAsStream( "car.xml" ) );
-    assertEquals( deserialized.getBasePrice(), createSampleCar().getBasePrice() );
+    assertEquals( createSampleCar().getBasePrice(), deserialized.getBasePrice() );
   }
 
   @Test
@@ -87,7 +88,7 @@ public class XStreamDemo {
     xStream.registerConverter( new MoneyConverter() );
 
     String xml = xStream.toXML( createSampleCar() );
-    AssertUtils.assertXMLEquals( xml, getClass().getResource( "car.xml" ) );
+    AssertUtils.assertXMLEquals( getClass().getResource( "car.xml" ), xml );
   }
 
   @Test
