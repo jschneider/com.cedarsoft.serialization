@@ -6,7 +6,9 @@ import com.cedarsoft.sample.Extra;
 import com.cedarsoft.sample.Model;
 import com.cedarsoft.sample.Money;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConversionException;
 import org.junit.*;
+import org.junit.rules.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -20,6 +22,8 @@ import static org.junit.Assert.assertEquals;
  *
  */
 public class XStreamDemo {
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
 
   //START SNIPPET: createSampleCar
   public Car createSampleCar() {
@@ -47,11 +51,23 @@ public class XStreamDemo {
   public void testDeserialize() {
     XStream xStream = new XStream();
     //We define some aliases to get a nicer xml output without fqns
+    xStream.alias( "car", Car.class );
+    xStream.alias( "extra", Extra.class );
+    xStream.alias( "money", Money.class );
+
+    Car deserialized = ( Car ) xStream.fromXML( getClass().getResourceAsStream( "car.xml" ) );
+    assertEquals( deserialized.getBasePrice(), createSampleCar().getBasePrice() );
+  }
+
+  @Test
+  public void testDeserializeWithFixedClasses() {
+    XStream xStream = new XStream();
+    //We define some aliases to get a nicer xml output without fqns
     xStream.alias( "car", com.cedarsoft.sample.fixed.Car.class );
     xStream.alias( "extra", com.cedarsoft.sample.fixed.Extra.class );
     xStream.alias( "money", com.cedarsoft.sample.fixed.Money.class );
 
-    com.cedarsoft.sample.fixed.Car deserialized = ( com.cedarsoft.sample.fixed.Car ) xStream.fromXML( getClass().getResourceAsStream( "car.xml" ) );
-    assertEquals( deserialized.getBasePrice(), createSampleCar().getBasePrice() );
+    expectedException.expect( ConversionException.class );
+    xStream.fromXML( getClass().getResourceAsStream( "car.xml" ) );
   }
 }
