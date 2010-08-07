@@ -66,4 +66,18 @@ Generator Maven Plugin
 
 
   The {{{./usage.html}sample usage}} is described {{{./usage.html}here}}.
-           
+
+
+Quick overview
+
+  A typical workflow might look like that:
+
+* Generation of serializers and tests
+
++---
+mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/**/*.java
++---
+
+* Generation of serializers and tests
+
+      

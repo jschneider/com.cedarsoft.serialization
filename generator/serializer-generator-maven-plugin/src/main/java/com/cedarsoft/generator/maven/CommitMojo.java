@@ -51,9 +51,9 @@ public class CommitMojo extends AbstractCommitMojo {
   /**
    * Whether to commit the serializer
    *
-   * @parameter expression="${commitSerializer}"
+   * @parameter expression="${commitSerializers}"
    */
-  protected boolean commitSerializer = true;
+  protected boolean commitSerializers = true;
   /**
    * Whether to commit the tests
    *
@@ -63,7 +63,7 @@ public class CommitMojo extends AbstractCommitMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    if ( commitSerializer ) {
+    if ( commitSerializers ) {
 
       try {
         commit( outputDirectory, getSourceRoot() );

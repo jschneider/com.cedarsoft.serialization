@@ -29,47 +29,18 @@
  * have any questions.
  *#
 
-~~
-~~ Copyright (C) cedarsoft GmbH.
-~~
-~~ Licensed under the GNU General Public License version 3 (the "License")
-~~ with Classpath Exception; you may not use this file except in compliance
-~~ with the License. You may obtain a copy of the License at
-~~
-~~         http://www.cedarsoft.org/gpl3ce
-~~         (GPL 3 with Classpath Exception)
-~~
-~~ This code is free software; you can redistribute it and/or modify it
-~~ under the terms of the GNU General Public License version 3 only, as
-~~ published by the Free Software Foundation. cedarsoft GmbH designates this
-~~ particular file as subject to the "Classpath" exception as provided
-~~ by cedarsoft GmbH in the LICENSE file that accompanied this code.
-~~
-~~ This code is distributed in the hope that it will be useful, but WITHOUT
-~~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-~~ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-~~ version 3 for more details (a copy is included in the LICENSE file that
-~~ accompanied this code).
-~~
-~~ You should have received a copy of the GNU General Public License version
-~~ 3 along with this work; if not, write to the Free Software Foundation,
-~~ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-~~
-~~ Please contact cedarsoft GmbH, 72810 Gomaringen, Germany,
-~~ or visit www.cedarsoft.com if you need additional information or
-~~ have any questions.
-~~
-
 Usage
 
- Using the plugin is very easy. It has just to be called within the Maven project:
+  Using the plugin is very easy. It has just to be called within the Maven project.
 
 +---
 mvn com.cedarsoft.serialization.generator:serializer-generator-maven-plugin:generate \
-  -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
+  -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
 * Shortening the command line
+
+  Either add an entry to your
 
   It might be a good idea to add that entry to your <<<${user.home}/.m2/settings.xml>>>
 
@@ -82,7 +53,7 @@ mvn com.cedarsoft.serialization.generator:serializer-generator-maven-plugin:gene
   Then it is possible to just call the plugin using 
 
 +---
-mvn serializer-generator:generate -Ddomain.class=src/main/java/com/cedarsoft/MyDomainObject.java
+mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
 
@@ -90,37 +61,38 @@ Generation process
 
  This plugin analyzes the source code of the domain object source file. It then creates a serializer and corresponding unit tests using some simple heuristics.
 
-* Serializer
+* Generating Serializers
 
- This serializer is placed in <<<target/generated-sources/cedarsoft-serialization-main>>>
+ This serializers are placed in <<<target/generated-sources/cedarsoft-serialization-main>>>
 
-  The serializer is compilable and can be used immediately.
+  The serializers are compilable and can be used immediately.
 
-
-* Unit Tests
+* Generating the Unit Tests
 
  There are two unit tests generated for each serializer. They are placed in <<<target/generated-sources/cedarsoft-serialization-test>>>
 
+** Test Resources
 
-  Those unit tests need some manual work to get them up running. But most of the work is done.
-  Necessary steps are marked within the generated source code.
+ Placeholder resources are generated in <<<target/generated-sources/cedarsoft-serialization-test-resources>>>
 
-** Roundtrip Test
+  There just contain an XML fragment and should be filled when running the tests.
 
-  The first generated test is a round trip test.
+** Generated Unit Tests
 
+  Two tests are generated for each serializer:
 
-** Versions Test
+  * ${SerializerClass}Test: This is a round trip test for the current version
 
-  This test case is used to ensure that the current serializer is able to deserialize all (old) XML formats.
+  * ${SerializerClass}VersionTest:
+  This test is used to ensure that the current serializer is able to deserialize all (old) XML formats.
   This test will become important as soon as the format changes.
 
-  To avoid unnecessary manual work and encourage the creation of this test, this stub is created immediately.
 
+  To avoid unnecessary manual work and encourage the creation of this test, those stubs are created immediately.
 
 Defining the plugin version
 
-  To define the version number of every plugin. 
+  It is recommended to define the plugin version for each plugin. Therefore that section should be added to the pom.xml:
 
 +----
 <build>
@@ -136,4 +108,3 @@ Defining the plugin version
 </build>
 +----
 
-    

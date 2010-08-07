@@ -51,22 +51,32 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Generate a Serializer and the corresponding unit tests
+ * Generate a Serializer and the corresponding unit tests.
+ *
+ * All files are generated within <i>target/generated-sources</i>.
+ * So no source files are overwritten by this goal.
  *
  * @goal generate
  */
 public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
 
   /**
-   * The pattern path to the domain class the Serializer is generated for.
+   * The pattern path to the domain classes the serializers (and tests) are generated for.
    *
-   * @parameter expression="${domain.class}"
+   * @parameter expression="${domain.class.pattern}"
    * @required
    */
   protected String domainClassSourceFilePattern;
 
   /**
-   * A list of exclusion filters for the compiler.
+   * A list of exclusion filters for the generator.
+   * The default excludes contain:
+   * <ul>
+   * <li>**&#47;*Serializer.java</li>
+   * <li>**&#47;*Test.java</li>
+   * </ul>
+   * <p/>
+   * Those excludes are useful to avoid recursive creation of serializers and tests.
    *
    * @parameter
    */

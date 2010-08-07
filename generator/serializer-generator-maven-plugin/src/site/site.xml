@@ -45,7 +45,11 @@
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
-      <item name="Usage" href="usage.html" />
+      <item name="Usage" href="usage.html">
+        <item name="Generation" href="generation.html" />
+        <item name="Diff" href="diff.html" />
+        <item name="Commit" href="commit.html" />
+      </item>
       <item name="Goals" href="plugin-info.html" />
       <item name="FAQ" href="faq.html" />
     </menu>

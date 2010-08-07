@@ -43,6 +43,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,21 +54,24 @@ import java.util.List;
  */
 public class ShowDiffMojo extends AbstractCommitMojo {
   /**
-   * Whether to commit the serializer
+   * The diff command that shall be executed.
+   * The default value is "diff {0} {1}"
    *
    * @parameter expression="${diffCommand}"
    */
+  @NonNls
   private String diffCommand = "diff {0} {1}";
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info( "Showing diff" );
 
+    List<String> skippedFiles = new ArrayList<String>();
     try {
       {
         try {
-          showDiffs( outputDirectory, getSourceRoot() );
-          showDiffs( resourcesOutputDirectory, getResourcesRoot() );
+          skippedFiles.addAll( showDiffs( outputDirectory, getSourceRoot() ) );
+          skippedFiles.addAll( showDiffs( resourcesOutputDirectory, getResourcesRoot() ) );
         } catch ( IOException e ) {
           throw new MojoFailureException( "Diff failed due to " + e.getMessage(), e );
         }
@@ -74,11 +79,23 @@ public class ShowDiffMojo extends AbstractCommitMojo {
 
       {
         try {
-          showDiffs( testOutputDirectory, getTestSourceRoot() );
-          showDiffs( testResourcesOutputDirectory, getTestResourcesRoot() );
+          skippedFiles.addAll( showDiffs( testOutputDirectory, getTestSourceRoot() ) );
+          skippedFiles.addAll( showDiffs( testResourcesOutputDirectory, getTestResourcesRoot() ) );
         } catch ( IOException e ) {
           throw new MojoFailureException( "Diff failed due to " + e.getMessage(), e );
         }
+      }
+
+      if ( !skippedFiles.isEmpty() ) {
+        getLog().info( "" );
+        getLog().info( "-----------------------------------------------" );
+        getLog().info( "Those files do *not* exist in the source folder:" );
+        getLog().info( "" );
+
+        for ( String skipped : skippedFiles ) {
+          getLog().info( "\t- " + skipped );
+        }
+        getLog().info( "-----------------------------------------------" );
       }
 
     } catch ( InterruptedException e ) {
@@ -86,14 +103,17 @@ public class ShowDiffMojo extends AbstractCommitMojo {
     }
   }
 
-  protected void showDiffs( @NotNull File sourceDirectory, @NotNull File targetDir ) throws MojoExecutionException, IOException, InterruptedException {
+  @NotNull
+  protected List<String> showDiffs( @NotNull File sourceDirectory, @NotNull File targetDir ) throws MojoExecutionException, IOException, InterruptedException {
     if ( !sourceDirectory.exists() || sourceDirectory.list().length == 0 ) {
       getLog().warn( "No generated files found in " + sourceDirectory.getPath() );
       getLog().warn( "Call serializer-generator:generate first." );
-      return;
+      return Collections.emptyList();
     }
 
     getLog().info( "Showing diff for generated files comparing to " + targetDir.getPath() );
+
+    List<String> skippedFiles = new ArrayList<String>();
 
     List<? extends String> filesNames = FileUtils.getFileNames( sourceDirectory, "**", null, true );
     for ( String serializerFileName : filesNames ) {
@@ -106,9 +126,12 @@ public class ShowDiffMojo extends AbstractCommitMojo {
 
         showDiff( inSourceDir, generated );
       } else {
+        skippedFiles.add( relative );
         getLog().info( "No corresponding file found for " + relative );
       }
     }
+
+    return skippedFiles;
   }
 
   private void showDiff( @NotNull File src, @NotNull File generated ) throws IOException, InterruptedException {
