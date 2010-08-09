@@ -20,11 +20,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.cedarsoft.maven</groupId>
-      <artifactId>generator-support</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>stax-mate</artifactId>
     </dependency>

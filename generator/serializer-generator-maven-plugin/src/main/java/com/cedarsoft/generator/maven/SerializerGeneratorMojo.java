@@ -57,18 +57,4 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
   protected AbstractGenerator createGenerator() {
     return new StaxMateGenerator();
   }
-
-  /**
-   * A list of exclusion filters for the generator.
-   * The default excludes contain:
-   * <ul>
-   * <li>**&#47;*Serializer.java</li>
-   * <li>**&#47;*Test.java</li>
-   * </ul>
-   * <p/>
-   * Those excludes are useful to avoid recursive creation of serializers and tests.
-   *
-   * @parameter
-   */
-  private Set<String> excludes = new HashSet<String>( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
 }

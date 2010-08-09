@@ -125,12 +125,6 @@
         <version>3.0.0</version>
         <scope>test</scope>
       </dependency>
-
-      <dependency>
-        <groupId>com.cedarsoft.maven</groupId>
-        <artifactId>generator-support</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 

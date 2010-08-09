@@ -111,7 +111,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     SerializerGeneratorMojo mojo = createMojo( "excludes" );
 
     assertEquals( 2, mojo.getExcludes().size() );
-    mojo.setExcludes( Collections.<String>emptySet() );
+    mojo.excludes = Collections.<String>emptySet();
     assertEquals( 0, mojo.getExcludes().size() );
     mojo.execute();
 
@@ -207,6 +207,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   @NotNull
   private SerializerGeneratorMojo createMojo( @NotNull @NonNls String name ) throws Exception {
     File testPom = new File( getBasedir(), "src/test/resources/unit/" + name + "/basic-plugin-config.xml" );
+    assertTrue( testPom.exists() );
     SerializerGeneratorMojo mojo = ( SerializerGeneratorMojo ) lookupMojo( "generate", testPom );
 
     assertNotNull( mojo );
