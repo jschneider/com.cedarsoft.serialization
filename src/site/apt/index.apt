@@ -30,10 +30,13 @@
 ~~
 
 cedarsoft Serialization
-
   cedarsoft Serialization offers version aware serialization of java object trees with maximum control.
   Its goal is to provide some simple classes (very small framework) that enables rapid development
   of versioned serialization.
+
+* 2010-08-09: Released 2.0.0
+
+  Version 2.0.0 has been released. Further informations can be found on the {{{./news.html}news page}}.
 
 * Introduction
 

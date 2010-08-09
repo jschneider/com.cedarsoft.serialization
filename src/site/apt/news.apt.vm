@@ -31,6 +31,56 @@
 
 News
 
+* 2010-08-09: Released 2.0.0
+
+  A new major version has been released. This version is a major step forward.
+
+
+** Serializer (and test) Generator
+
+  The major feature for this release is the availability of a {{{./generator.html}generator}} that generates serializers and test stubs for
+  domain objects.
+
+  There also exist a {{{generator/serializer-generator-maven-plugin/index.html}Maven plugin}} that offers additional features.
+
+  That Generator avoids unnecessary manual work when the serializers are created initially.
+  It is no longer necessary to type any code when creating serializers. Everything is created automatically.
+
+  But of course the source code can be viewed and edited. So this approach offers maximum flexibility and 
+
+
+** New abstract tests
+
+   New abstract test classes have been created. Those are based on JUnit and make use of @DataPoint(s).
+   Those tests allow the creation of shorter and nicer tests.
+
+   The old basic test classes can still be used. So there is no need to convert old tests.
+   But it is strongly recommended to use the new testing infrastructure for new tests.
+
+   The relevant base classes are:
+
+*** For XML based serializers:
+
+* {{{./xref/com/cedarsoft/serialization/AbstractXmlSerializerTest2.html}<com.cedarsoft.serialization.AbstractXmlSerializerTest2>}}
+
+   For roundtrip tests.
+
+* {{{./xref/com/cedarsoft/serialization/AbstractXmlVersionTest2.html}<com.cedarsoft.serialization.AbstractXmlVersionTest2>}}
+
+  For read-only tests of old versions
+
+
+** Incompatible API changes
+
+*** Added <formatVersion> to <PluggableSerializer#serialize>
+
+  A parameter has been added to the <serialize> method of <PluggableSerializer>.
+  The added <formatVersion> (of type <Version>) represents the version that shall be written.
+
+  It is recommended that every serializer only writes one format version (the most recent one). Details are discussed within the documentation.
+
+  But for those special cases, where it is really necessary to write different format versions, this parameter allows this behaviour.
+
 * 2010-07-09: Released 1.0.3
 
   A new version has been released. The most important new feature is the availability of the {{{./generator.html}Generator}}.
