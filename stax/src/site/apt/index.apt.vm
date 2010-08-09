@@ -61,6 +61,6 @@ Stax based Serializers
 
 * Download
 
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Jar with all dependencies}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-all.jar}Jar with all dependencies}}
 
-  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/stax-${currentDevelopmentVersion}-jar-with-dependencies.jar}Current development version}}
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax/${currentDevelopmentVersion}/stax-${currentDevelopmentVersion}-all.jar}Current development version}}

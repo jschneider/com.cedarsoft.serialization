@@ -44,9 +44,9 @@ Download
 
 ** Current stable version
 
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Stax}}
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Stax Mate}}
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/${currentStableVersion}/serialization-${currentStableVersion}-jar-with-dependencies.jar}Custom}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-all.jar}Stax}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-all.jar}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/${currentStableVersion}/serialization-${currentStableVersion}-all.jar}Custom}}
 
 
 ** Current development version

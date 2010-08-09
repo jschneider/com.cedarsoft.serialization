@@ -77,4 +77,4 @@ Generator
 
   It is also possible to invoke the generator manually. Therefore the executable generator jar has to be downloaded from
 
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/generator/stax-mate/${currentStableVersion}/generator-jar-with-dependencies.jar}generator.jar}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/generator/stax-mate/${currentStableVersion}/generator-all.jar}generator.jar}}
