@@ -83,7 +83,6 @@
       <item name="Overview" href="backends.html" />
       <item name="Stax based" href="stax/" />
       <item name="Stax Mate based" href="stax-mate/" />
-      <item name="JDom" href="jdom/" />
       <item name="Custom" href="customBackend.html" />
     </menu>
 

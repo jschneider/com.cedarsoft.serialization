@@ -104,17 +104,6 @@ Download
 +---
 
 
-**  JDom:
-
-+---
-<dependency>
-  <groupId>com.cedarsoft.serialization</groupId>
-  <artifactId>jdom</artifactId>
-  <version>${currentStableVersion}</version>
-</dependency>
-+---
-
-
 **  Custom implementation:
 
 +---
