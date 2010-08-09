@@ -30,6 +30,7 @@
 ~~
 
 cedarsoft Serialization
+
   cedarsoft Serialization offers version aware serialization of java object trees with maximum control.
   Its goal is to provide some simple classes (very small framework) that enables rapid development
   of versioned serialization.
