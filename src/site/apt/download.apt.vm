@@ -51,9 +51,9 @@ Download
 
 ** Current development version
 
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax&v=${currentDevelopmentVersion}}Stax}}.
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax-mate&v=${currentDevelopmentVersion}}Stax Mate}}.
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft&a=serialization&v=${currentDevelopmentVersion}}Custom}}.
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax&v=${currentDevelopmentVersion}}Stax}}
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax-mate&v=${currentDevelopmentVersion}}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft&a=serialization&v=${currentDevelopmentVersion}}Custom}}
 
 * {Maven}
 
