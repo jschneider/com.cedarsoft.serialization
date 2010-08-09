@@ -149,8 +149,8 @@
   </dependencies>
 
   <properties>
-    <currentStableVersion>1.0.3</currentStableVersion>
-    <currentDevelopmentVersion>1.0.4-SNAPSHOT</currentDevelopmentVersion>
+    <currentStableVersion>2.0.0</currentStableVersion>
+    <currentDevelopmentVersion>2.0.1-SNAPSHOT</currentDevelopmentVersion>
   </properties>
 
   <repositories>
