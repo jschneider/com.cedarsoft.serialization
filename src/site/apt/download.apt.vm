@@ -44,16 +44,16 @@ Download
 
 ** Current stable version
 
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-jar-with-dependencies.jar}Stax}}
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Stax Mate}}
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/${currentStableVersion}/serialization-${currentStableVersion}-jar-with-dependencies.jar}Custom}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax/${currentStableVersion}/stax-${currentStableVersion}-all.jar}Stax}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-all.jar}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/${currentStableVersion}/serialization-${currentStableVersion}-all.jar}Custom}}
 
 
 ** Current development version
 
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax&v=${currentDevelopmentVersion}}Stax}}.
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax-mate&v=${currentDevelopmentVersion}}Stax Mate}}.
-  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft&a=serialization&v=${currentDevelopmentVersion}}Custom}}.
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax&v=${currentDevelopmentVersion}}Stax}}
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft.serialization&a=stax-mate&v=${currentDevelopmentVersion}}Stax Mate}}
+  {{{http://nexus.cedarsoft.com/service/local/artifact/maven/redirect?r=snapshots&g=com.cedarsoft&a=serialization&v=${currentDevelopmentVersion}}Custom}}
 
 * {Maven}
 
@@ -100,17 +100,6 @@ Download
   <groupId>org.codehaus.woodstox</groupId>
   <artifactId>woodstox-core-asl</artifactId>
   <version>4.0.6</version>
-</dependency>
-+---
-
-
-**  JDom:
-
-+---
-<dependency>
-  <groupId>com.cedarsoft.serialization</groupId>
-  <artifactId>jdom</artifactId>
-  <version>${currentStableVersion}</version>
 </dependency>
 +---
 

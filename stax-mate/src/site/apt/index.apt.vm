@@ -61,6 +61,6 @@ Stax Mate based Serializers
 
 * Download
 
-  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-jar-with-dependencies.jar}Jar with dependencies}}
+  {{{http://nexus.cedarsoft.com/content/groups/public/com/cedarsoft/serialization/stax-mate/${currentStableVersion}/stax-mate-${currentStableVersion}-all.jar}Jar with dependencies}}
 
-  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/stax-mate-${currentDevelopmentVersion}-jar-with-dependencies.jar}Current development version}}
+  {{{http://nexus.cedarsoft.com/content/groups/snapshots/com/cedarsoft/serialization/stax-mate/${currentDevelopmentVersion}/stax-mate-${currentDevelopmentVersion}-all.jar}Current development version}}

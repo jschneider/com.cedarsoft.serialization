@@ -42,10 +42,13 @@ Best Practices
 ** Every XML file should have a namespace!
 
   Every XML file should have a namespace declaration. A XML file without a namespace is like
-  a class file without a package...
+  a class without a package...
 
-  It is not possible to be sure about the context of a xml file with a namespace declaration.
+  It is not possible to be sure about the context without a namespace declaration.
 
+** Use the generator...
+
+  Why doing the work manually when the {{{./generator.html}generator}} can do the work. So let the generator create the test stups for you.
 
 * Serializing strategy
 
@@ -84,21 +87,22 @@ Best Practices
 
 * Tests
 
+** Use the generator...
+
+  Why doing the work manually when the {{{./generator.html}generator}} can do the work. So let the generator create the test stups for you.
+
 ** Which base class should the tests extend from?
 
-  At first you should support the implementation of your serializer with a non-multi test (<AbstractXmlSerializerMultiTest> or <AbstractSerializerMultiTest>).
+  At first you should support the implementation of your serializer with a roundtrip test (<AbstractSerializerTest2>).
   Those tests are easier to write but do not provide enough flexibility to cover all corner edges.
   For (very) simple serializers this test might be enough.
-
-  If you find a special case that can't be handled within your simple test, create a new test extending the abstract "multi" test class (<AbstractXmlSerializerMultiTest>
-  or <AbstractSerializerMultiTest>). If you prefer, you might also convert your initial test class to extend from the "multi" test class.
 
   If you have finished implementing your serializer you really should create a version test for that serializer. At that moment the version range
   of your serializer does just cover one version.
   But it is very easy to forget creating that test before refactoring a serializer. Therefore it is strongly recommended to create
   a version test in time.
 
-** What is the <Abstract(Xml)VersionTest> for?
+** What is the <Abstract(Xml)VersionTest2> for?
 
   In an evolving world change happens. And sooner or later your business objects may change. And therefore the serializers have to be changed.
   And some of those changes will require changes to the serialized format.
@@ -106,7 +110,7 @@ Best Practices
   At that point your serializer will probably be able to deserialize different format versions. To ensure that the old format can still
   be deserialized some tests are necessary.
 
-  A test extending <Abstract(Xml)VersionTest> should be created for each serializer. For each new format version one or more entries should
+  A test extending <Abstract(Xml)VersionTest2> should be created for each serializer. For each new format version one or more entries should
   be added to that test.
 
 ** Verify the mappings

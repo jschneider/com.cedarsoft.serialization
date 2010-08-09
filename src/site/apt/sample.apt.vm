@@ -33,6 +33,15 @@ Sample
 
   This is a very simple example that shows how cedarsoft Serialization works. This sample is based on {{{stax-mate/}Stax Mate}}.
 
+* The business object
+
+  We can serialize all kinds of business objects. cedarsoft Serialization just provides the structure while the specific code
+  is hand written.
+
+  In this sample we serialize a simple money object with just one value:
+
+%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Money.java}
+
 * The resulting XML
 
   This is a sample XML that is created by a very simple serializer:
@@ -49,16 +58,8 @@ Sample
 
 * The serialization class
 
-  For each business class there should be one serializer. So for our <Money> class we create the class <MoneySerializer>:
+  For each business class there should be one serializer. So for our <Money> class we create the class <MoneySerializer>.
+  The creation of this serializer and test stubs can be done using the {{{./generator.html}generator}}.
 
 %{snippet|id=body|file=samples/stax-mate/src/main/java/com/cedarsoft/test/io/MoneySerializer.java}
-
-* The business object
-
-  We can serialize all kinds of business objects. cedarsoft Serialization just provides the structure while the specific code
-  is hand written.
-
-  In this sample we serialize a simple money object with just one value:
-
-%{snippet|id=fieldsAndConstructors|file=samples/stax-mate/src/main/java/com/cedarsoft/test/Money.java}
 
