@@ -8,7 +8,7 @@
         <version>1.0.3-SNAPSHOT</version>
 
         <configuration>
-          <domainClassSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainClassSourceFilePattern>
+          <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
         </configuration>
       </plugin>

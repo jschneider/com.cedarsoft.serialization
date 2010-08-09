@@ -31,18 +31,10 @@
 
 package com.cedarsoft.generator.maven;
 
-import com.google.common.collect.Lists;
-import org.junit.*;
-
 /**
+ * Commits the created serializers and tests to the source directory
  *
+ * @goal commit
  */
-public class ShowDiffMojoTest {
-  @Test
-  public void testCommandLine() {
-    ShowDiffMojo mojo = new ShowDiffMojo();
-    mojo.sourceRoots = Lists.newArrayList( "src/main" );
-//    mojo.buildCommandLine( src.getAbsolutePath(), generated.getAbsolutePath() );
-  }
-
+public class MyCommitMojo extends CommitMojo {
 }

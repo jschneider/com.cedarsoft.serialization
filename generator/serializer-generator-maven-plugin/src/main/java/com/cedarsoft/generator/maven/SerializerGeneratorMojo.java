@@ -31,42 +31,32 @@
 
 package com.cedarsoft.generator.maven;
 
-import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.cedarsoft.codegen.AbstractGenerator;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.util.DirectoryScanner;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Generate a Serializer and the corresponding unit tests.
- *
+ * <p/>
  * All files are generated within <i>target/generated-sources</i>.
  * So no source files are overwritten by this goal.
  *
  * @goal generate
  */
-public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
+public class SerializerGeneratorMojo extends AbstractGenerateMojo {
+  public SerializerGeneratorMojo() {
+    super( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
+  }
 
-  /**
-   * The pattern path to the domain classes the serializers (and tests) are generated for.
-   *
-   * @parameter expression="${domain.class.pattern}"
-   * @required
-   */
-  protected String domainClassSourceFilePattern;
+  @NotNull
+  @Override
+  protected AbstractGenerator createGenerator() {
+    return new StaxMateGenerator();
+  }
 
   /**
    * A list of exclusion filters for the generator.
@@ -81,81 +71,4 @@ public class SerializerGeneratorMojo extends AbstractGeneratorMojo {
    * @parameter
    */
   private Set<String> excludes = new HashSet<String>( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
-
-  /**
-   * Whether to create the serializer
-   *
-   * @parameter expression="${createSerializers}"
-   */
-  protected boolean createSerializers = true;
-  /**
-   * Whether to create the tests
-   *
-   * @parameter expression="${createTests}"
-   */
-  protected boolean createTests = true;
-
-  @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
-    getLog().info( "Serializer Generator Mojo" );
-    getLog().info( "-------------------------" );
-
-    if ( domainClassSourceFilePattern == null ) {
-      throw new MojoExecutionException( "domain class source file pattern is missing" );
-    }
-
-    prepareOutputDirectories();
-
-    getLog().debug( "Output Dir: " + outputDirectory.getAbsolutePath() );
-    getLog().debug( "Test output Dir: " + testOutputDirectory.getAbsolutePath() );
-
-    PrintWriter printWriter = new PrintWriter( new LogWriter( getLog() ) );
-    try {
-      List<? extends File> domainClassSourceFiles = getDomainSourceFiles();
-      if ( domainClassSourceFiles.isEmpty() ) {
-        throw new MojoExecutionException( "No domain class source files found for pattern <" + domainClassSourceFilePattern + ">" );
-      }
-
-      getLog().info( "Running Generator for" );
-      for ( File domainClassSourceFile : domainClassSourceFiles ) {
-        getLog().info( "\t" + domainClassSourceFile.getPath() );
-      }
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainClassSourceFiles, outputDirectory, resourcesOutputDirectory, testOutputDirectory, testResourcesOutputDirectory, printWriter, GeneratorConfiguration.CreationMode.get( createSerializers, createTests ) );
-      new StaxMateGenerator().run( configuration );
-    } catch ( Exception e ) {
-      throw new MojoExecutionException( "Generation failed due to: " + e.getMessage(), e );
-    } finally {
-      printWriter.close();
-    }
-  }
-
-  @NotNull
-  protected List<? extends File> getDomainSourceFiles() throws IOException {
-    DirectoryScanner scanner = new DirectoryScanner();
-    scanner.setBasedir( getBaseDir() );
-
-    scanner.setExcludes( excludes.toArray( new String[0] ) );
-    scanner.setIncludes( new String[]{domainClassSourceFilePattern} );
-    scanner.scan();
-
-
-    List<File> files = new ArrayList<File>();
-
-    for ( String fileName : scanner.getIncludedFiles() ) {
-      files.add( new File( fileName ) );
-    }
-
-    return files;
-  }
-
-  public void setExcludes( @NotNull Collection<String> excludes ) {
-    this.excludes.clear();
-    this.excludes.addAll( excludes );
-  }
-
-  @NotNull
-  @NonNls
-  public Set<String> getExcludes() {
-    return Collections.unmodifiableSet( excludes );
-  }
 }

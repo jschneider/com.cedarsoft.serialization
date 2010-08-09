@@ -12,7 +12,7 @@
           <resourcesOutputDirectory>${basedir}/target/test/unit/target/resources-out</resourcesOutputDirectory>
           <testOutputDirectory>${basedir}/target/test/unit/target/test-out</testOutputDirectory>
           <testResourcesOutputDirectory>${basedir}/target/test/unit/target/test-resources-out</testResourcesOutputDirectory>
-          <domainClassSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainClassSourceFilePattern>
+          <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
 
           <createTests>true</createTests>
           <createSerializers>false</createSerializers>

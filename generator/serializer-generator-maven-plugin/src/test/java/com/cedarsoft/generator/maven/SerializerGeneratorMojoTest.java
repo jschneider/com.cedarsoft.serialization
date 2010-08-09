@@ -170,7 +170,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
       assertEquals( "domain class source file pattern is missing", e.getMessage() );
     }
 
-    mojo.domainClassSourceFilePattern = "invalid pattern";
+    mojo.domainSourceFilePattern = "invalid pattern";
 
     try {
       mojo.execute();
@@ -186,8 +186,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
 
     assertNotNull( mojo.projectArtifact );
     assertNotNull( mojo.outputDirectory );
-    assertNotNull( mojo.domainClassSourceFilePattern );
-    assertTrue( mojo.domainClassSourceFilePattern.length() > 0 );
+    assertNotNull( mojo.domainSourceFilePattern );
+    assertTrue( mojo.domainSourceFilePattern.length() > 0 );
 
     assertNotNull( mojo.getTestOutputDirectory() );
     assertNotNull( mojo.getOutputDirectory() );
@@ -221,7 +221,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertThat( ContainsFileMatcher.toMessage( mojo.resourcesOutputDirectory ), mojo.resourcesOutputDirectory, containsFiles() );
   }
 
-  private void assertTests( AbstractGeneratorMojo mojo ) {
+  private void assertTests( AbstractGenerateMojo mojo ) {
     assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory,
                 containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
                                "unit/basic/DaDomainObjectSerializerTest.java" ) );
@@ -230,12 +230,12 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
                 ) );
   }
 
-  private void assertNoSerializers( AbstractGeneratorMojo mojo ) {
+  private void assertNoSerializers( AbstractGenerateMojo mojo ) {
     assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, empty() );
     assertThat( ContainsFileMatcher.toMessage( mojo.resourcesOutputDirectory ), mojo.resourcesOutputDirectory, containsFiles() );
   }
 
-  private void assertNoTests( AbstractGeneratorMojo mojo ) {
+  private void assertNoTests( AbstractGenerateMojo mojo ) {
     assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
     assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory, containsFiles() );
   }
