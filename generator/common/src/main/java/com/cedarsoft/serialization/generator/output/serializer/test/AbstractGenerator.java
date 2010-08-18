@@ -107,7 +107,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   protected void createVersionsDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
     JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( VersionEntry.class ), DATA_POINT_FIELD_NAME );
-    field.annotate( codeModel.ref( "org.junit.experimental.theories.DataPoint" ) );
+    field.annotate( codeGenerator.ref( "org.junit.experimental.theories.DataPoint" ) );
 
     JInvocation versionInvocation = codeGenerator.ref( Version.class ).staticInvoke( METHOD_NAME_VALUE_OF ).arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) );
     JExpression expected = createExpectedExpression( testClass, domainType );
