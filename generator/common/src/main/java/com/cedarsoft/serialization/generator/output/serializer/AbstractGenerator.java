@@ -89,8 +89,6 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   public static final String PARAM_NAME_SERIALIZE_TO = "serializeTo";
   @NonNls
   public static final String VAR_NAME_OBJECT = "object";
-  @NonNls
-  public static final String PARAM_NAME_CONTEXT = "context";
 
   protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
     super( codeGenerator );
