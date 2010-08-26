@@ -32,6 +32,8 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
+import org.codehaus.jettison.mapped.Configuration;
+import org.codehaus.jettison.mapped.MappedXMLOutputFactory;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
 import org.codehaus.staxmate.out.SMOutputDocument;
@@ -56,6 +58,9 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateTest {
+  @NotNull
+  @NonNls
+  public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -172,4 +177,28 @@ public class StaxMateTest {
     }
   }
 
+  @Test
+  public void testStaxMateJson() throws XMLStreamException, IOException, SAXException {
+    XMLOutputFactory factory = new MappedXMLOutputFactory( new Configuration() );
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    SMOutputFactory smOutputFactory = new SMOutputFactory( factory );
+
+    SMOutputDocument doc = smOutputFactory.createOutputDocument( out );
+    SMOutputElement fileTypeElement = doc.addElement( "fileType" );
+    fileTypeElement.addAttribute( "dependent", "false" );
+
+    SMOutputElement idElement = fileTypeElement.addElement( "id" );
+    idElement.addCharacters( "Canon Raw" );
+
+    SMOutputElement extensionElement = fileTypeElement.addElement( "extension" );
+    extensionElement.addAttribute( "default", "true" );
+    extensionElement.addAttribute( "delimiter", "." );
+    extensionElement.addCharacters( "cr2" );
+
+    doc.closeRoot();
+
+    assertEquals( CONTENT_SAMPLE_JSON, out.toString() );
+  }
 }

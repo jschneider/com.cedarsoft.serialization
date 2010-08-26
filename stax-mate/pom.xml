@@ -37,6 +37,13 @@
       <optional>true</optional>
     </dependency>
 
+
+    <dependency>
+      <groupId>org.codehaus.jettison</groupId>
+      <artifactId>jettison</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>test-utils</artifactId>

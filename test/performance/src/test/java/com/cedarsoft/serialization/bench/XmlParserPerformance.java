@@ -33,6 +33,8 @@ package com.cedarsoft.serialization.bench;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.time.StopWatch;
+import org.codehaus.jettison.mapped.Configuration;
+import org.codehaus.jettison.mapped.MappedXMLInputFactory;
 import org.codehaus.staxmate.SMInputFactory;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -42,9 +44,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
+import org.junit.*;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.junit.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -77,6 +79,9 @@ public class XmlParserPerformance {
     "  <id>Canon Raw</id>\n" +
     "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
     "</fileType>";
+  @NotNull
+  @NonNls
+  public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
@@ -151,8 +156,11 @@ public class XmlParserPerformance {
 
   public static void main( String[] args ) throws IOException {
     System.out.println();
-    System.out.println( "Jibx" );
-    new XmlParserPerformance().benchJibx();
+    //Needs the plugin to be enabled (in pom.xml)
+    //    System.out.println( "Jibx" );
+    //    new XmlParserPerformance().benchJibx();
+    System.out.println( "Json" );
+    new XmlParserPerformance().benchJson();
     System.out.println( "Serialization (10%)" );
     new XmlParserPerformance().benchSerialization();
     System.out.println();
@@ -366,7 +374,7 @@ public class XmlParserPerformance {
           //          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "StAXInputFactory", getClass().getClassLoader() );
           XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
 
-          benchParse( inputFactory );
+          benchParse( inputFactory, CONTENT_SAMPLE );
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }
@@ -397,7 +405,23 @@ public class XmlParserPerformance {
         try {
           XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() );
 
-          benchParse( inputFactory );
+          benchParse( inputFactory, CONTENT_SAMPLE );
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchJson() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          Configuration configuration = new Configuration();
+          XMLInputFactory inputFactory = new MappedXMLInputFactory( configuration );
+
+          benchParse( inputFactory, CONTENT_SAMPLE_JSON );
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }
@@ -412,7 +436,7 @@ public class XmlParserPerformance {
         try {
           SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
 
-          benchParse( inf.getStaxFactory() );
+          benchParse( inf.getStaxFactory(), CONTENT_SAMPLE );
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }
@@ -425,7 +449,7 @@ public class XmlParserPerformance {
       @Override
       public void run() {
         try {
-          benchParse( XMLInputFactory.newInstance( "com.bea.xml.stream.MXParserFactory", getClass().getClassLoader() ) );
+          benchParse( XMLInputFactory.newInstance( "com.bea.xml.stream.MXParserFactory", getClass().getClassLoader() ), CONTENT_SAMPLE );
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }
@@ -490,9 +514,9 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParse( XMLInputFactory inputFactory ) throws XMLStreamException {
+  private void benchParse( XMLInputFactory inputFactory, @NotNull @NonNls String contentSample ) throws XMLStreamException {
     for ( int i = 0; i < BIG; i++ ) {
-      XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( CONTENT_SAMPLE ) );
+      XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( contentSample ) );
 
       assertEquals( XMLStreamReader.START_ELEMENT, parser.nextTag() );
       assertEquals( "fileType", parser.getLocalName() );
