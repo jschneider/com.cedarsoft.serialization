@@ -73,7 +73,7 @@ public class ParserTest {
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
-    parsed = Parser.parse( javaFile );
+    parsed = Parser.parse( null, javaFile );
     assertNotNull( parsed );
   }
 

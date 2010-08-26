@@ -63,7 +63,7 @@ public class ParseWindowTest {
 
   @Test
   public void testParsing() throws ClassNotFoundException, NoSuchMethodException {
-    Result parsed = Parser.parse( javaFile );
+    Result parsed = Parser.parse( null, javaFile );
     assertNotNull( parsed );
 
     assertEquals( 1, parsed.getClassDeclarations().size() );

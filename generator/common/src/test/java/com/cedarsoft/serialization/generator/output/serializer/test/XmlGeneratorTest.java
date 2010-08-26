@@ -76,7 +76,7 @@ public class XmlGeneratorTest {
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
-    Result parsed = Parser.parse( javaFile );
+    Result parsed = Parser.parse( null, javaFile );
     assertNotNull( parsed );
 
     TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
@@ -84,7 +84,7 @@ public class XmlGeneratorTest {
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( 2, domainObjectDescriptor.getFieldsToSerialize().size() );
+    assertEquals( 2, domainObjectDescriptor.getFieldInfos().size() );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     this.codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator.addDecorator( new NotNullDecorator( NotNull.class ) );

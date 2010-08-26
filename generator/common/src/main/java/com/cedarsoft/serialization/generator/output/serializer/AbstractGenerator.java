@@ -236,7 +236,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar deserializeFormatVersion = deserializeMethod.listParams()[1];
 
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
-    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldsToSerialize() ) {
+    for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldInfos() ) {
       appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, serializeFormatVersion, fieldInfo );
 
       fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, deserializeFormatVersion, fieldInfo ) );

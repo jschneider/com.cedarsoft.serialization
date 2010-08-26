@@ -80,7 +80,7 @@ public class DaGeneratorTest {
     List<File> sourceFiles = Lists.newArrayList( sourceFile );
     out = new StringWriter();
 
-    generatorConfiguration = new GeneratorConfiguration( sourceFiles, tmp.newFolder( "dest" ), tmp.newFolder( "resources-dest" ), tmp.newFolder( "test-dest" ), tmp.newFolder( "test-resources-dest" ), new PrintWriter( out ) );
+    generatorConfiguration = new GeneratorConfiguration( sourceFiles, tmp.newFolder( "dest" ), tmp.newFolder( "resources-dest" ), tmp.newFolder( "test-dest" ), tmp.newFolder( "test-resources-dest" ), null, new PrintWriter( out ) );
   }
 
   @Test

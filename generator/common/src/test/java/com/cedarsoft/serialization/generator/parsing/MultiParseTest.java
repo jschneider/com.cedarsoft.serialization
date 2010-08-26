@@ -74,7 +74,7 @@ public class MultiParseTest {
 
   @Test
   public void testIt() {
-    Result parsed = Parser.parse( files );
+    Result parsed = Parser.parse( null, files );
     assertEquals( 4, parsed.getClassDeclarations().size() );
     ClassDeclaration doorDeclaration = parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.parsing.test.Door" );
     assertEquals( 2, doorDeclaration.getFields().size() );
