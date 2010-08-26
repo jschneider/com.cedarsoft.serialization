@@ -47,9 +47,21 @@ public class StaxSupport {
   }
 
   @NotNull
-  static final XMLInputFactory XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+  static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected XMLInputFactory initialValue() {
+      return XMLInputFactory.newInstance();
+    }
+  };
   @NotNull
-  static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
+  static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected XMLOutputFactory initialValue() {
+      return XMLOutputFactory.newInstance();
+    }
+  };
 
   /**
    * Returns a cached xml output factory
@@ -58,7 +70,7 @@ public class StaxSupport {
    */
   @NotNull
   public static XMLOutputFactory getXmlOutputFactory() {
-    return XML_OUTPUT_FACTORY;
+    return XML_OUTPUT_FACTORY.get();
   }
 
   /**
@@ -68,7 +80,7 @@ public class StaxSupport {
    */
   @NotNull
   public static XMLInputFactory getXmlInputFactory() {
-    return XML_INPUT_FACTORY;
+    return XML_INPUT_FACTORY.get();
   }
 
   /**
@@ -97,5 +109,19 @@ public class StaxSupport {
       return "Unknown error: " + eventId;
     }
 
+  }
+
+  public static void clear() {
+    StaxSupport.XML_INPUT_FACTORY.remove();
+    StaxSupport.XML_OUTPUT_FACTORY.remove();
+  }
+
+  public static void enableJson() {
+    try {
+      XML_INPUT_FACTORY.set( ( XMLInputFactory ) Class.forName( "org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory" ).newInstance() );
+      XML_OUTPUT_FACTORY.set( ( XMLOutputFactory ) Class.forName( "org.codehaus.jettison.badgerfish.BadgerFishXMLOutputFactory" ).newInstance() );
+    } catch ( Exception e ) {
+      throw new RuntimeException( e );
+    }
   }
 }

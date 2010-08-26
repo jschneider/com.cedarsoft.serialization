@@ -45,6 +45,7 @@ import org.junit.rules.*;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
@@ -100,6 +101,19 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Override
   protected void verifyDeserialized( @NotNull String deserialized ) {
     assertEquals( "asdf", deserialized );
+  }
+
+  @Test
+  public void testJson() throws Exception {
+    StaxMateSupport.clear();
+    try {
+      StaxSupport.enableJson();
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      getSerializer().serialize( "daObject", out );
+      assertEquals( "{\"aString\":{\"@xmlns\":{\"$\":\"http:\\/\\/www.lang.java\\/String\\/1.5.3\"},\"$\":\"daObject\"}}", out.toString() );
+    } finally {
+      StaxMateSupport.clear();
+    }
   }
 
   @Test

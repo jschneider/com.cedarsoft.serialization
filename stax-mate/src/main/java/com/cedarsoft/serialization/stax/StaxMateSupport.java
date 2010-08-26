@@ -40,9 +40,21 @@ import org.jetbrains.annotations.NotNull;
  */
 public class StaxMateSupport {
   @NotNull
-  static final SMInputFactory SM_INPUT_FACTORY = new SMInputFactory( StaxSupport.XML_INPUT_FACTORY );
+  static final ThreadLocal<SMInputFactory> SM_INPUT_FACTORY = new ThreadLocal<SMInputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected SMInputFactory initialValue() {
+      return new SMInputFactory( StaxSupport.XML_INPUT_FACTORY.get() );
+    }
+  };
   @NotNull
-  static final SMOutputFactory SM_OUTPUT_FACTORY = new SMOutputFactory( StaxSupport.XML_OUTPUT_FACTORY );
+  static final ThreadLocal<SMOutputFactory> SM_OUTPUT_FACTORY = new ThreadLocal<SMOutputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected SMOutputFactory initialValue() {
+      return new SMOutputFactory( StaxSupport.XML_OUTPUT_FACTORY.get() );
+    }
+  };
 
   private StaxMateSupport() {
   }
@@ -54,7 +66,7 @@ public class StaxMateSupport {
    */
   @NotNull
   public static SMOutputFactory getSmOutputFactory() {
-    return SM_OUTPUT_FACTORY;
+    return SM_OUTPUT_FACTORY.get();
   }
 
   /**
@@ -64,6 +76,13 @@ public class StaxMateSupport {
    */
   @NotNull
   public static SMInputFactory getSmInputFactory() {
-    return SM_INPUT_FACTORY;
+    return SM_INPUT_FACTORY.get();
+  }
+
+  public static void clear() {
+    StaxMateSupport.SM_INPUT_FACTORY.remove();
+    StaxMateSupport.SM_OUTPUT_FACTORY.remove();
+
+    StaxSupport.clear();
   }
 }

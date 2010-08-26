@@ -32,10 +32,13 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
+import com.google.common.collect.Maps;
+import org.codehaus.jettison.badgerfish.BadgerFishXMLOutputFactory;
 import org.codehaus.jettison.mapped.Configuration;
 import org.codehaus.jettison.mapped.MappedXMLOutputFactory;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
+import org.codehaus.staxmate.out.SMGlobalNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
@@ -50,6 +53,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
@@ -58,9 +62,6 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateTest {
-  @NotNull
-  @NonNls
-  public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -179,14 +180,14 @@ public class StaxMateTest {
 
   @Test
   public void testStaxMateJson() throws XMLStreamException, IOException, SAXException {
-    XMLOutputFactory factory = new MappedXMLOutputFactory( new Configuration() );
+    XMLOutputFactory factory = new BadgerFishXMLOutputFactory();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     SMOutputFactory smOutputFactory = new SMOutputFactory( factory );
 
     SMOutputDocument doc = smOutputFactory.createOutputDocument( out );
-    SMOutputElement fileTypeElement = doc.addElement( "fileType" );
+    SMOutputElement fileTypeElement = doc.addElement( doc.getNamespace( "http://cedarsoft.com/test/an/object/1.0.0" ), "fileType" );
     fileTypeElement.addAttribute( "dependent", "false" );
 
     SMOutputElement idElement = fileTypeElement.addElement( "id" );
@@ -199,6 +200,6 @@ public class StaxMateTest {
 
     doc.closeRoot();
 
-    assertEquals( CONTENT_SAMPLE_JSON, out.toString() );
+    assertEquals( "{\"fileType\":{\"@xmlns\":{\"$\":\"http:\\/\\/cedarsoft.com\\/test\\/an\\/object\\/1.0.0\"},\"@dependent\":\"false\",\"id\":{\"@xmlns\":{\"$\":\"\"},\"$\":\"Canon Raw\"},\"extension\":{\"@xmlns\":{\"$\":\"\"},\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}", out.toString() );
   }
 }
