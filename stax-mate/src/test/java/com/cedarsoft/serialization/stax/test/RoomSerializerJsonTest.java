@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.StaxMateSupport;
@@ -43,10 +43,12 @@ import org.junit.experimental.theories.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  *
  */
-public class RoomSerializerJsonTest extends AbstractXmlSerializerTest2<Room> {
+public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
   @NotNull
   @Override
   protected Serializer<Room> getSerializer() throws Exception {
@@ -58,35 +60,9 @@ public class RoomSerializerJsonTest extends AbstractXmlSerializerTest2<Room> {
     StaxMateSupport.clear();
   }
 
-  @DataPoint
-  public static Entry<?> xml() {
-    List<Window> windows = Arrays.asList( new Window( "asdf", 20, 30 ), new Window( "asdf2", 50, 60.7 ) );
-    List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
-    Room room = new Room( "descr", windows, doors );
-
-    return create( room,
-                   "<room xmlns=\"room/1.0.0\">\n" +
-                     "  <description>descr</description>\n" +
-                     "  <windows>\n" +
-                     "    <window width=\"20.0\" height=\"30.0\">\n" +
-                     "      <description>asdf</description>\n" +
-                     "    </window>\n" +
-                     "    <window width=\"50.0\" height=\"60.7\">\n" +
-                     "      <description>asdf2</description>\n" +
-                     "    </window>\n" +
-                     "  </windows>\n" +
-                     "  <doors>\n" +
-                     "    <door>\n" +
-                     "      <description>asdf</description>\n" +
-                     "    </door>\n" +
-                     "    <door>\n" +
-                     "      <description>asdf2</description>\n" +
-                     "    </door>\n" +
-                     "    <door>\n" +
-                     "      <description>asdf3</description>\n" +
-                     "    </door>\n" +
-                     "  </doors>\n" +
-                     "</room>" );
+  @Override
+  protected void verifySerialized( @NotNull Entry<Room> entry, @NotNull byte[] serialized ) throws Exception {
+    assertEquals( new String( serialized ), new String( entry.getExpected() ) );
   }
 
   @DataPoint
@@ -97,6 +73,6 @@ public class RoomSerializerJsonTest extends AbstractXmlSerializerTest2<Room> {
     List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
     Room room = new Room( "descr", windows, doors );
 
-    return create( room, "{\"room\":{\"@xmlns\":{\"$\":\"room\\/1.0.0\"},\"description\":{\"$\":\"descr\"},\"windows\":{\"window\":[{\"@width\":\"20.0\",\"@height\":\"30.0\",\"description\":{\"$\":\"asdf\"}},{\"@width\":\"50.0\",\"@height\":\"60.7\",\"description\":{\"$\":\"asdf2\"}}]},\"doors\":{\"door\":[{\"description\":{\"$\":\"asdf\"}},{\"description\":{\"$\":\"asdf2\"}},{\"description\":{\"$\":\"asdf3\"}}]}}}" );
+    return create( room, "{\"room\":{\"@xmlns\":{\"$\":\"room\\/1.0.0\"},\"description\":{\"$\":\"descr\"},\"windows\":{\"window\":[{\"@width\":\"20.0\",\"@height\":\"30.0\",\"description\":{\"$\":\"asdf\"}},{\"@width\":\"50.0\",\"@height\":\"60.7\",\"description\":{\"$\":\"asdf2\"}}]},\"doors\":{\"door\":[{\"description\":{\"$\":\"asdf\"}},{\"description\":{\"$\":\"asdf2\"}},{\"description\":{\"$\":\"asdf3\"}}]}}}".getBytes() );
   }
 }
