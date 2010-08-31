@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.serialization.registry.AbstractRegistrySerializingStrategy;
+import com.cedarsoft.serialization.NotFoundException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +53,8 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
   @NotNull
   OutputStream openOut( @NotNull @NonNls String id ) throws StillContainedException, FileNotFoundException;
 
+  OutputStream openOutForUpdate( @NotNull @NonNls String id ) throws NotFoundException, FileNotFoundException;
+
   /**
    * Returns the input stream
    *
@@ -63,4 +65,6 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
    */
   @NotNull
   InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException;
+
+  void delete( @NotNull @NonNls String id ) throws NotFoundException;
 }

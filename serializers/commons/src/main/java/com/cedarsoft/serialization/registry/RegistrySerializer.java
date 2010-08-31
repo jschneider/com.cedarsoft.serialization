@@ -35,6 +35,7 @@ import com.cedarsoft.StillContainedException;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
+import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -131,6 +132,14 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     serializingStrategy.serialize( object, getId( object ) );
   }
 
+  public void update( @NotNull T object ) throws NotFoundException, IOException {
+    serializingStrategy.update( object, getId( object ) );
+  }
+
+  public void remove( @NotNull T object ) throws NotFoundException, IOException {
+    serializingStrategy.remove( object, getId( object ) );
+  }
+
   /**
    * Creates a connected registry
    *
@@ -154,6 +163,24 @@ public class RegistrySerializer<T, R extends Registry<T>> {
       public void objectStored( @NotNull T object ) {
         try {
           serialize( object );
+        } catch ( IOException e ) {
+          throw new RuntimeException( e );
+        }
+      }
+
+      @Override
+      public void objectRemoved( @NotNull T object ) {
+        try {
+          remove( object );
+        } catch ( IOException e ) {
+          throw new RuntimeException( e );
+        }
+      }
+
+      @Override
+      public void objectUpdated( @NotNull T object ) {
+        try {
+          update( object );
         } catch ( IOException e ) {
           throw new RuntimeException( e );
         }

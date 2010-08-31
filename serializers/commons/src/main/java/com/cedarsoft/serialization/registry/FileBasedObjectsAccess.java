@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
+import com.cedarsoft.serialization.NotFoundException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jetbrains.annotations.NonNls;
@@ -99,9 +99,28 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
+  public OutputStream openOutForUpdate( @NotNull @NonNls String id ) throws NotFoundException, FileNotFoundException {
+    File file = getFile( id );
+    if ( !file.exists() ) {
+      throw new NotFoundException( id );
+    }
+    return new BufferedOutputStream( new FileOutputStream( file ) );
+  }
+
+  @Override
   @NotNull
   public InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException {
     return new BufferedInputStream( new FileInputStream( getFile( id ) ) );
+  }
+
+  @Override
+  public void delete( @NotNull @NonNls String id ) throws NotFoundException {
+    File file = getFile( id );
+    if ( !file.exists() ) {
+      throw new NotFoundException( "No entry found for <" + id + ">" );
+    }
+
+    file.delete();
   }
 
   @NotNull

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.registry;
 
-import com.cedarsoft.serialization.registry.DirBasedObjectsAccess;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,6 +74,18 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
     serialize( object, id, dir );
   }
 
+  @Override
+  public void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    File dir = objectsAccess.getDirectory( id );
+    serialize( object, id, dir );
+  }
+
+  @Override
+  public void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    File dir = objectsAccess.getDirectory( id );
+    FileUtils.deleteDirectory( dir );
+  }
+
   /**
    * Serialize the object to the given directory
    *
@@ -83,4 +95,5 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @throws IOException
    */
   protected abstract void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
+
 }

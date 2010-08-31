@@ -32,12 +32,13 @@
 package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
+import com.cedarsoft.serialization.NotFoundException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -84,6 +85,30 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
         serialized.put( id, toByteArray() );
       }
     };
+  }
+
+  @Override
+  public OutputStream openOutForUpdate( @NotNull @NonNls final String id ) throws NotFoundException, FileNotFoundException {
+    byte[] stored = serialized.get( id );
+    if ( stored == null ) {
+      throw new NotFoundException( id );
+    }
+
+    return new ByteArrayOutputStream() {
+      @Override
+      public void close() throws IOException {
+        super.close();
+        serialized.put( id, toByteArray() );
+      }
+    };
+  }
+
+  @Override
+  public void delete( @NotNull @NonNls String id ) throws NotFoundException {
+    byte[] bytes = serialized.remove( id );
+    if ( bytes == null ) {
+      throw new NotFoundException( "id" );
+    }
   }
 
   public void clear() {

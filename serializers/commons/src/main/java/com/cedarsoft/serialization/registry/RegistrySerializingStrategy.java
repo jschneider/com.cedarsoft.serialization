@@ -46,7 +46,7 @@ public interface RegistrySerializingStrategy<T> {
   /**
    * Deserialize the object
    *
-   * @param id                        the id
+   * @param id the id
    * @return the deserialized object
    *
    * @throws IOException
@@ -57,15 +57,21 @@ public interface RegistrySerializingStrategy<T> {
   /**
    * Serialize the object
    *
-   * @param object                    the object to serialize
-   * @param id                        the id
+   * @param object the object to serialize
+   * @param id     the id
    * @throws IOException
    */
   void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
 
+  void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+
+  void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+
   /**
    * Deserializes all
+   *
    * @return the deserialized objects
+   *
    * @throws IOException
    */
   @NotNull

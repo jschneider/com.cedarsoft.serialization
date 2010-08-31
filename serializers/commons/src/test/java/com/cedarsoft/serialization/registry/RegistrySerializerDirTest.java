@@ -106,6 +106,28 @@ public class RegistrySerializerDirTest {
   }
 
   @Test
+  public void testUpdated() throws Exception {
+    Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
+    assertEquals( 0, registry.getStoredObjects().size() );
+    registry.store( "asdf" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+    registry.updated( "asdf" );
+
+    assertEquals( 1, registry.getStoredObjects().size() );
+  }
+
+  @Test
+  public void testRemove() throws Exception {
+    Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
+    assertEquals( 0, registry.getStoredObjects().size() );
+    registry.store( "asdf" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+    registry.remove( "asdf" );
+
+    assertEquals( 0, registry.getStoredObjects().size() );
+  }
+
+  @Test
   public void testDeserialize() throws IOException {
     serializer.serialize( "1" );
 

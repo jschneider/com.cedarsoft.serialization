@@ -70,6 +70,21 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
     }
   }
 
+  @Override
+  public void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    OutputStream out = objectsAccess.openOutForUpdate( id );
+    try {
+      serializer.serialize( object, out );
+    } finally {
+      out.close();
+    }
+  }
+
+  @Override
+  public void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+    objectsAccess.delete( id );
+  }
+
   @NotNull
   public Serializer<T> getSerializer() {
     return serializer;

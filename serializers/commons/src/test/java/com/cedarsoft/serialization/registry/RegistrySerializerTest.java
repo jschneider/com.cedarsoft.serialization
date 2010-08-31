@@ -37,6 +37,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
+import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
@@ -50,6 +51,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -96,6 +98,36 @@ public class RegistrySerializerTest {
     } catch ( StillContainedException ignore ) {
     }
     assertEquals( 1, registry.getStoredObjects().size() );
+  }
+
+  @Test
+  public void testRemove() throws Exception {
+    Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
+
+    registry.store( "1" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+    registry.remove( "1" );
+
+    assertEquals( 0, registry.getStoredObjects().size() );
+  }
+
+  @Test
+  public void testUpdate() throws Exception {
+    Registry<String> registry = serializer.createConnectedRegistry( new MyRegistryFactory() );
+
+    registry.store( "1" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+    registry.updated( "1" );
+    assertEquals( 1, registry.getStoredObjects().size() );
+
+    assertEquals( 1, serializer.deserialize().size() );
+    assertEquals( "1", serializer.deserialize().get( 0 ) );
+
+    try {
+      registry.updated( "2" );
+      fail( "Where is the Exception" );
+    } catch ( NotFoundException ignore ) {
+    }
   }
 
   @Test
