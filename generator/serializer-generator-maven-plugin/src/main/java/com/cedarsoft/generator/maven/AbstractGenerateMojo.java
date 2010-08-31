@@ -90,7 +90,7 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
    * @parameter expression="${createTests}"
    */
   protected boolean createTests = true;
-  
+
   protected AbstractGenerateMojo( @NotNull @NonNls Collection<? extends String> defaultExcludes ) {
     this.excludes.addAll( defaultExcludes );
   }
@@ -138,7 +138,7 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
       for ( File domainClassSourceFile : domainSourceFiles ) {
         getLog().info( "\t" + domainClassSourceFile.getPath() );
       }
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainSourceFiles, getOutputDirectory(), getResourcesOutputDirectory(), getTestOutputDirectory(), getTestResourcesOutputDirectory(), printWriter, GeneratorConfiguration.CreationMode.get( createSerializers(), createTests() ) );
+      GeneratorConfiguration configuration = new GeneratorConfiguration( domainSourceFiles, getOutputDirectory(), getResourcesOutputDirectory(), getTestOutputDirectory(), getTestResourcesOutputDirectory(), null, printWriter, GeneratorConfiguration.CreationMode.get( createSerializers(), createTests() ) );
       createGenerator().run( configuration );
     } catch ( Exception e ) {
       throw new MojoExecutionException( "Generation failed due to: " + e.getMessage(), e );

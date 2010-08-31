@@ -70,7 +70,7 @@ public abstract class AbstractGeneratorTest {
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );
-    Result parsed = Parser.parse( javaFile );
+    Result parsed = Parser.parse( null, javaFile );
     assertNotNull( parsed );
 
     TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
@@ -78,7 +78,7 @@ public abstract class AbstractGeneratorTest {
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 
-    assertEquals( 7, domainObjectDescriptor.getFieldsToSerialize().size() );
+    assertEquals( 7, domainObjectDescriptor.getFieldInfos().size() );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
     this.codeGenerator = codeGenerator;

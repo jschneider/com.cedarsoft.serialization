@@ -130,7 +130,7 @@ public class GeneratorTest {
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
-    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, new PrintWriter( new ByteArrayOutputStream() ) );
+    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ) );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 
@@ -147,7 +147,7 @@ public class GeneratorTest {
   public void testOnlyTests() throws Exception {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
 
-    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
+    GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 
