@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
@@ -64,7 +65,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @Override
   public JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
     //Add serializer to constructor
-    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( fieldInfo.getType().toString() ) );
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
@@ -72,7 +73,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
 
     return JExpr.invoke( METHOD_NAME_SERIALIZE )
       .arg( getterInvocation )
-      .arg( JExpr.dotclass( codeGenerator.ref( fieldInfo.getType().toString() ) ) )
+      .arg( JExpr.dotclass( codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) ) )
       .arg( createAddElementExpression( serializeTo, constant ) )
       .arg( formatVersion )
       ;
@@ -83,7 +84,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
 
-    JClass type = codeGenerator.ref( fieldInfo.getType().toString() );
+    JClass type = codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
     JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
     return new Expressions( expression, nextTagExpression );
   }
@@ -91,7 +92,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @NotNull
   @Override
   public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
-    return codeGenerator.ref( fieldInfo.getType().toString() );
+    return codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
   }
 
   @Override
