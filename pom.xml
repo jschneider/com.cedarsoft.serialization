@@ -125,6 +125,31 @@
         <version>${commons.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>registry</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>app</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>license</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>file</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cedarsoft.commons</groupId>
+        <artifactId>crypt</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.codehaus.jettison</groupId>
