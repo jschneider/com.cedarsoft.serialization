@@ -149,7 +149,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @throws IOException
    */
   @NotNull
-  public R createConnectedRegistry( @NotNull RegistryFactory<T, R> factory ) throws IOException {
+  public R createConnectedRegistry( @NotNull RegistryFactory<T, ? extends R> factory ) throws IOException {
     List<? extends T> objects = deserialize();
     R registry = factory.createRegistry( objects, new Comparator<T>() {
       @Override
@@ -205,7 +205,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
   }
 
-  @NotNull 
+  @NotNull
   public RegistrySerializingStrategy<T> getSerializingStrategy() {
     return serializingStrategy;
   }
