@@ -70,7 +70,7 @@ public class FooSerializer
         nextTag(deserializeFrom, ELEMENT_BAR);
         Bar bar = deserialize(Bar.class, formatVersion, deserializeFrom);
         //Finally closing element
-        closeTag(deserializeFrom);
+        closeObject(deserializeFrom);
         //Constructing the deserialized object
         Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);

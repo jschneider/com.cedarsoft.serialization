@@ -48,28 +48,11 @@ public abstract class AbstractDelegateGenerator extends AbstractSerializeToGener
   @NonNls
   public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
   @NonNls
-  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
-  @NonNls
-  public static final String METHOD_NAME_NEXT_TAG = "nextTag";
+  public static final String METHOD_NAME_NEXT_TAG = "nextField";
   @NonNls
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
   protected AbstractDelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
-  }
-
-  @NotNull
-  protected JInvocation createCloseTagInvocation( @NotNull JExpression deserializeFrom ) {
-    return JExpr.invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
-  }
-
-  @NotNull
-  protected JInvocation createNextTagInvocation( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
-    return JExpr.invoke( METHOD_NAME_NEXT_TAG ).arg( deserializeFrom ).arg( getConstant( serializerClass, fieldInfo ) );
-  }
-
-  @NotNull
-  protected JInvocation createAddElementExpression( @NotNull JExpression serializeTo, @NotNull JExpression elementName ) {
-    return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( elementName );
   }
 }

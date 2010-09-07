@@ -62,7 +62,7 @@ import java.util.Map;
  */
 public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
   @NonNls
-  public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
+  public static final String METHOD_NAME_CLOSE_OBJECT = "closeObject";
 
   @NotNull
   private final List<SerializeToGenerator> generators = new ArrayList<SerializeToGenerator>();
@@ -98,7 +98,7 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
       //Call closeTag( deserializeFrom ); on deserialize
       JVar deserializeFrom = deserializeMethod.listParams()[0];
       deserializeMethod.body().directStatement( "//Finally closing element" );
-      deserializeMethod.body().invoke( JacksonGenerator.METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
+      deserializeMethod.body().invoke( JacksonGenerator.METHOD_NAME_CLOSE_OBJECT ).arg( deserializeFrom );
     }
   }
 

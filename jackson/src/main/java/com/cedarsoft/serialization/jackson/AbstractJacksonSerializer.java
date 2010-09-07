@@ -153,4 +153,10 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
     return deserialized;
   }
+
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator deserializeTo, @NotNull Version formatVersion ) throws JsonProcessingException, IOException {
+    deserializeTo.writeObjectFieldStart( propertyName );
+    serialize( object, type, deserializeTo, formatVersion );
+    deserializeTo.writeEndObject();
+  }
 }

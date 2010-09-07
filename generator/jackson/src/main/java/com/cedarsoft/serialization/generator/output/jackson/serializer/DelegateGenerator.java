@@ -35,6 +35,7 @@ import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
+import com.cedarsoft.codegen.model.FieldInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
@@ -74,7 +75,8 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
     return JExpr.invoke( METHOD_NAME_SERIALIZE )
       .arg( getterInvocation )
       .arg( JExpr.dotclass( codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) ) )
-      .arg( createAddElementExpression( serializeTo, constant ) )
+      .arg( constant )
+      .arg( serializeTo )
       .arg( formatVersion )
       ;
   }
@@ -82,11 +84,11 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @NotNull
   @Override
   public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
-    JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JClass type = codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
-    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( formatVersion ).arg( deserializeFrom );
-    return new Expressions( expression, nextTagExpression );
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( constant ).arg( formatVersion ).arg( deserializeFrom );
+    return new Expressions( expression );
   }
 
   @NotNull
@@ -98,5 +100,12 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @Override
   public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
     return true;
+  }
+
+  @Override
+  @NotNull
+  @NonNls
+  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+    return "PROPERTY_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

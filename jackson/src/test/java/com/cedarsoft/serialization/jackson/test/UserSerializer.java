@@ -71,6 +71,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
 
     serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
     serializeArray( object.getRoles(), Role.class, PROPERTY_ROLES, serializeTo, formatVersion );
+
+    serialize( object.getEmails().get( 0 ), Email.class, "asdf", serializeTo, formatVersion );
   }
 
   @NotNull

@@ -2,13 +2,13 @@ package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.io.IOException;
 import java.util.List;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.codehaus.staxmate.out.SMOutputElement;
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
 
 public class FooSerializer
     extends AbstractJacksonSerializer<Foo>
@@ -32,8 +32,7 @@ public class FooSerializer
     public void serialize(JsonGenerator serializeTo, Foo object, Version formatVersion)
         throws IOException, JsonProcessingException
     {
-        verifyVersionReadable( formatVersion );
-        
+        verifyVersionReadable(formatVersion);
         //width
         serializeTo.writeNumberField(PROPERTY_WIDTH, object.getWidth());
         //height
@@ -47,9 +46,7 @@ public class FooSerializer
         //bars
         serializeArray(object.getBars(), Bar.class, PROPERTY_BARS, serializeTo, formatVersion);
         //bar
-        serializeTo.writeObjectFieldStart(PROPERTY_BAR);
-        serialize(object.getBar(), Bar.class, serializeTo, formatVersion);
-        serializeTo.writeEndObject();
+        serialize(object.getBar(), Bar.class, PROPERTY_BAR, serializeTo, formatVersion);
     }
 
     @Override
@@ -74,10 +71,9 @@ public class FooSerializer
         //bars
         List<? extends Bar> bars = deserializeArray(Bar.class, PROPERTY_BARS, deserializeFrom, formatVersion);
         //bar
-        nextField(deserializeFrom, PROPERTY_BAR);
-        Bar bar = deserialize(Bar.class, formatVersion, deserializeFrom);
+        Bar bar = deserialize(Bar.class, PROPERTY_BAR, formatVersion, deserializeFrom);
         //Finally closing element
-        nextToken(deserializeFrom, JsonToken.END_OBJECT);
+        closeObject(deserializeFrom);
         //Constructing the deserialized object
         Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);

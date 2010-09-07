@@ -33,8 +33,9 @@ package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
-import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.TypeUtils;
+import com.cedarsoft.codegen.model.FieldDeclarationInfo;
+import com.cedarsoft.codegen.model.FieldInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
@@ -84,11 +85,10 @@ public class ArrayElementGenerator extends AbstractDelegateGenerator {
   @NotNull
   public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
-
-    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( collectionParamType ) ).arg( deserializeFrom ).arg( formatVersion );
-    return new Expressions( expression, nextTagExpression );
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( collectionParamType ) ).arg( constant ).arg( deserializeFrom ).arg( formatVersion );
+    return new Expressions( expression );
   }
 
   @NotNull
@@ -102,5 +102,12 @@ public class ArrayElementGenerator extends AbstractDelegateGenerator {
   @Override
   public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
     return fieldInfo.isCollectionType();
+  }
+
+  @Override
+  @NotNull
+  @NonNls
+  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+    return "PROPERTY_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

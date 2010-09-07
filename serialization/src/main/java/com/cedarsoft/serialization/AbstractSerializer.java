@@ -133,8 +133,8 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     return delegatesMappings.add( sdePluggableSerializer );
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull Version formatVersion ) throws E, IOException {
-    delegatesMappings.serialize( object, type, outputElement, formatVersion );
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S deserializeTo, @NotNull Version formatVersion ) throws E, IOException {
+    delegatesMappings.serialize( object, type, deserializeTo, formatVersion );
   }
 
   @NotNull
