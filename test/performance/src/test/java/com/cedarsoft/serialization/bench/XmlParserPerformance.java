@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.bench;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.time.StopWatch;
+import org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory;
 import org.codehaus.jettison.mapped.Configuration;
 import org.codehaus.jettison.mapped.MappedXMLInputFactory;
 import org.codehaus.staxmate.SMInputFactory;
@@ -82,6 +83,8 @@ public class XmlParserPerformance {
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
+  @NonNls
+  public static final String CONTENT_SAMPLE_JSON_BADGER = "{\"fileType\":{\"@dependent\":\"false\",\"id\":{\"$\":\"Canon Raw\"},\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
@@ -159,8 +162,10 @@ public class XmlParserPerformance {
     //Needs the plugin to be enabled (in pom.xml)
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
-    System.out.println( "Json" );
+    System.out.println( "Json (Mapped)" );
     new XmlParserPerformance().benchJson();
+    System.out.println( "Json (Badgerfish)" );
+    new XmlParserPerformance().benchJsonBadgerFish();
     System.out.println( "Serialization (10%)" );
     new XmlParserPerformance().benchSerialization();
     System.out.println();
@@ -422,6 +427,21 @@ public class XmlParserPerformance {
           XMLInputFactory inputFactory = new MappedXMLInputFactory( configuration );
 
           benchParse( inputFactory, CONTENT_SAMPLE_JSON );
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchJsonBadgerFish() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          XMLInputFactory inputFactory = new BadgerFishXMLInputFactory();
+
+          benchParse( inputFactory, CONTENT_SAMPLE_JSON_BADGER );
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }

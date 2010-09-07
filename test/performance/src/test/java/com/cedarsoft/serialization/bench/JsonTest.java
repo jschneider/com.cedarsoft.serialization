@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.bench;
 
 import org.codehaus.jettison.AbstractXMLStreamWriter;
+import org.codehaus.jettison.badgerfish.BadgerFishXMLStreamWriter;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 import org.junit.*;
@@ -80,7 +81,41 @@ public class JsonTest {
     assertEquals( "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}", strWriter.toString() );
   }
 
-//
+  @Test
+  public void testBadger() throws Exception {
+
+    StringWriter strWriter = new StringWriter();
+
+    // Mapped convention
+    XMLStreamWriter w = new BadgerFishXMLStreamWriter( strWriter );
+    // XMLStreamWriter w = new BadgerFishXMLStreamWriter(strWriter);
+
+    w.writeStartDocument();
+
+    w.writeStartElement( "fileType" );
+    w.writeAttribute( "dependent", "false" );
+
+    w.writeStartElement( "id" );
+    w.writeCharacters( "Canon Raw" );
+    w.writeEndElement();
+
+    w.writeStartElement( "extension" );
+    w.writeAttribute( "default", "true" );
+    w.writeAttribute( "delimiter", "." );
+    w.writeCharacters( "cr2" );
+    w.writeEndElement();
+
+    w.writeEndElement();
+    w.writeEndDocument();
+
+    w.close();
+    strWriter.close();
+
+    assertEquals( "{\"fileType\":{\"@dependent\":\"false\",\"id\":{\"$\":\"Canon Raw\"},\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}", strWriter.toString() );
+
+  }
+
+  //
 //  "<fileType dependent=\"false\">\n" +
 //  "  <id>Canon Raw</id>\n" +
 //  "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
