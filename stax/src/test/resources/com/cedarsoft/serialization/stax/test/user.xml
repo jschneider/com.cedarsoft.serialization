@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <name>Markus Mustermann</name>
+  <email>test@test.de</email>
+  <email>other@test.de</email>
+  <role id="1">nobody</role>
+  <role id="2">othergroup</role>
+</user>
