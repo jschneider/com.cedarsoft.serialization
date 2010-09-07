@@ -62,7 +62,7 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
 
   @Override
   protected void verifySerialized( @NotNull Entry<Room> entry, @NotNull byte[] serialized ) throws Exception {
-    assertEquals( new String( serialized ), new String( entry.getExpected() ) );
+    assertEquals( new String( entry.getExpected() ), new String( serialized ) );
   }
 
   @DataPoint
@@ -73,6 +73,6 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
     List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
     Room room = new Room( "descr", windows, doors );
 
-    return create( room, "{\"room\":{\"@xmlns\":{\"$\":\"room\\/1.0.0\"},\"description\":{\"$\":\"descr\"},\"windows\":{\"window\":[{\"@width\":\"20.0\",\"@height\":\"30.0\",\"description\":{\"$\":\"asdf\"}},{\"@width\":\"50.0\",\"@height\":\"60.7\",\"description\":{\"$\":\"asdf2\"}}]},\"doors\":{\"door\":[{\"description\":{\"$\":\"asdf\"}},{\"description\":{\"$\":\"asdf2\"}},{\"description\":{\"$\":\"asdf3\"}}]}}}".getBytes() );
+    return create( room, "{\"room\":{\"@xmlns\":{\"$\":\"room\\/1.0.0\"},\"description\":{\"$\":\"descr\"},\"window\":[{\"@width\":\"20.0\",\"@height\":\"30.0\",\"description\":{\"$\":\"asdf\"}},{\"@width\":\"50.0\",\"@height\":\"60.7\",\"description\":{\"$\":\"asdf2\"}}],\"door\":[{\"description\":{\"$\":\"asdf\"}},{\"description\":{\"$\":\"asdf2\"}},{\"description\":{\"$\":\"asdf3\"}}]}}".getBytes() );
   }
 }

@@ -48,15 +48,12 @@ public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
     return
       "<room>\n" +
         "  <description>descr</description>\n" +
-        "  <windows>\n" +
         "    <window width=\"20.0\" height=\"30.0\">\n" +
         "      <description>asdf</description>\n" +
         "    </window>\n" +
         "    <window width=\"50.0\" height=\"60.7\">\n" +
         "      <description>asdf2</description>\n" +
         "    </window>\n" +
-        "  </windows>\n" +
-        "  <doors>\n" +
         "    <door>\n" +
         "      <description>asdf</description>\n" +
         "    </door>\n" +
@@ -66,7 +63,6 @@ public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
         "    <door>\n" +
         "      <description>asdf3</description>\n" +
         "    </door>\n" +
-        "  </doors>\n" +
         "</room>";
   }
 

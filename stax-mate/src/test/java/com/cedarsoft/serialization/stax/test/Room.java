@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.CollectionsMapping;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -136,8 +137,8 @@ public class Room {
       assert isVersionWritable( formatVersion );
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
-      serializeCollectionToElement( object.getWindows(), Window.class, "windows", "window", serializeTo, formatVersion );
-      serializeCollectionToElement( object.getDoors(), Door.class, "doors", "door", serializeTo, formatVersion );
+      serializeCollection( object.getWindows(), Window.class, "window", serializeTo, formatVersion );
+      serializeCollection( object.getDoors(), Door.class, "door", serializeTo, formatVersion );
     }
 
     @NotNull
@@ -146,13 +147,13 @@ public class Room {
       assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
 
-      nextTag( deserializeFrom, "windows" );
-      final List<? extends Window> windows = deserializeCollection( deserializeFrom, Window.class, formatVersion );
+      List<Window> windows = new ArrayList<Window>();
+      List<Door> doors = new ArrayList<Door>();
+      deserializeCollections( deserializeFrom, formatVersion, new CollectionsMapping()
+        .append( Window.class, windows, "window" )
+        .append( Door.class, doors, "door" )
+      );
 
-      nextTag( deserializeFrom, "doors" );
-      final List<? extends Door> doors = deserializeCollection( deserializeFrom, Door.class, formatVersion );
-
-      closeTag( deserializeFrom );
       return new Room( description, windows, doors );
     }
   }

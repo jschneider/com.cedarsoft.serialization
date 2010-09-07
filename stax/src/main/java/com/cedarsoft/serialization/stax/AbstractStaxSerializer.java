@@ -113,24 +113,4 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
       serializeTo.writeEndElement();
     }
   }
-
-  /**
-   * Convenience method to deserialize multiple collections without having to deal with callbacks
-   *
-   * @param deserializeFrom    the object to deserialize from
-   * @param formatVersion      the format version
-   * @param collectionsMapping the collections mapping that holds references to the collections that are filled
-   * @throws XMLStreamException
-   * @throws IOException
-   */
-  protected void deserializeCollections( @NotNull final XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, final CollectionsMapping collectionsMapping ) throws XMLStreamException, IOException {
-    visitChildren( deserializeFrom, new CB() {
-      @Override
-      public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-        CollectionsMapping.Entry entry = collectionsMapping.getEntry( tagName );
-        Object deserialized = deserialize( entry.getType(), formatVersion, deserializeFrom );
-        entry.getTargetCollection().add( deserialized );
-      }
-    } );
-  }
 }
