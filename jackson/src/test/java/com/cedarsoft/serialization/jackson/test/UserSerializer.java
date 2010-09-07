@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,21 +38,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   public void serialize( @NotNull JsonGenerator serializeTo, @NotNull User object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeStringField( PROPERTY_NAME, object.getName() );
 
-    serializeTo.writeArrayFieldStart( PROPERTY_EMAILS );
-    for ( Email email : object.getEmails() ) {
-      serializeTo.writeStartObject();
-      serialize( email, Email.class, serializeTo, formatVersion );
-      serializeTo.writeEndObject();
-    }
-    serializeTo.writeEndArray();
-
-    serializeTo.writeArrayFieldStart( PROPERTY_ROLES );
-    for ( Role role : object.getRoles() ) {
-      serializeTo.writeStartObject();
-      serialize( role, Role.class, serializeTo, formatVersion );
-      serializeTo.writeEndObject();
-    }
-    serializeTo.writeEndArray();
+    serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
+    serializeArray( object.getRoles(), Role.class, PROPERTY_ROLES, serializeTo, formatVersion );
   }
 
   @NotNull
@@ -62,23 +48,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     nextField( deserializeFrom, PROPERTY_NAME );
     String name = deserializeFrom.getText();
 
-    List<Email> mails = new ArrayList<Email>();
-    nextField( deserializeFrom, PROPERTY_EMAILS );
-    nextToken( deserializeFrom, JsonToken.START_OBJECT );
-    mails.add( deserialize( Email.class, formatVersion, deserializeFrom ) );
-    nextToken( deserializeFrom, JsonToken.START_OBJECT );
-    mails.add( deserialize( Email.class, formatVersion, deserializeFrom ) );
-
-    nextToken( deserializeFrom, JsonToken.END_ARRAY );
-
-    List<Role> roles = new ArrayList<Role>();
-    nextField( deserializeFrom, PROPERTY_ROLES );
-    nextToken( deserializeFrom, JsonToken.START_OBJECT );
-    roles.add( deserialize( Role.class, formatVersion, deserializeFrom ) );
-    nextToken( deserializeFrom, JsonToken.START_OBJECT );
-    roles.add( deserialize( Role.class, formatVersion, deserializeFrom ) );
-
-    nextToken( deserializeFrom, JsonToken.END_ARRAY );
+    List<? extends Email> mails = deserializeArray( Email.class, PROPERTY_EMAILS, deserializeFrom, formatVersion );
+    List<? extends Role> roles = deserializeArray( Role.class, PROPERTY_ROLES, deserializeFrom, formatVersion );
 
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
     return new User( name, mails, roles );

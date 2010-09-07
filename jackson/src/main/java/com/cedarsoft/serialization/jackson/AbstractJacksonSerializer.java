@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -94,5 +96,26 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     if ( current != expected ) {
       throw new JsonParseException( "Invalid token. Expected <" + expected + "> but got <" + current + ">", parser.getCurrentLocation() );
     }
+  }
+
+  protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
+    serializeTo.writeArrayFieldStart( propertyName );
+    for ( T element : elements ) {
+      serializeTo.writeStartObject();
+      serialize( element, type, serializeTo, formatVersion );
+      serializeTo.writeEndObject();
+    }
+    serializeTo.writeEndArray();
+  }
+
+  @NotNull
+  protected <T> List<? extends T> deserializeArray( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+    nextField( deserializeFrom, propertyName );
+
+    List<T> deserialized = new ArrayList<T>();
+    while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
+      deserialized.add( deserialize( type, formatVersion, deserializeFrom ) );
+    }
+    return deserialized;
   }
 }
