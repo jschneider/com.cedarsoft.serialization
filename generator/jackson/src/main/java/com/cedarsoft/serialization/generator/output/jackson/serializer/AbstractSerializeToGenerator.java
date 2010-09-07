@@ -29,58 +29,50 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.serializer;
+package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.codegen.NamingSupport;
-import com.cedarsoft.codegen.model.DomainObjectDescriptor;
-import com.cedarsoft.id.NameSpaceSupport;
+import com.cedarsoft.codegen.model.FieldInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.sun.codemodel.JClass;
+import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JInvocation;
-import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
+import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JFieldVar;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public abstract class AbstractXmlGenerator extends AbstractNamespaceBasedGenerator {
+public abstract class AbstractSerializeToGenerator implements SerializeToGenerator {
+  @NotNull
+  protected final CodeGenerator<?> codeGenerator;
+
+  protected AbstractSerializeToGenerator( @NotNull CodeGenerator<?> codeGenerator ) {
+    this.codeGenerator = codeGenerator;
+  }
+
+  @NotNull
+  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull @NonNls String constantName, @NotNull JExpression value ) {
+    return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
+  }
+
+  @NotNull
+  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
+    String constantName = getConstantName( fieldInfo );
+    JExpression value = JExpr.lit( fieldInfo.getSimpleName() );
+    return getConstant( serializerClass, constantName, value );
+  }
 
   /**
-   * Creates a new generator
+   * Returns the constant name
    *
-   * @param codeGenerator the used code generator
-   */
-  protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
-    super( codeGenerator );
-  }
-
-  @Override
-  @NotNull
-  protected JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JMethod constructor = serializerClass.constructor( JMod.PUBLIC );
-    constructor.body()
-      .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
-      .arg( createDefaultVersionRangeInvocation( AbstractXmlGenerator.VERSION, AbstractXmlGenerator.VERSION ) );
-    return constructor;
-  }
-
-  /**
-   * Returns the default element name
-   *
-   * @param domainObjectDescriptor the descriptor
-   * @return the default element name
+   * @param fieldInfo the field info
+   * @return the constant name
    */
   @NotNull
-  @NonNls
-  protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return NamingSupport.createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
+  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+    return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
-
 }

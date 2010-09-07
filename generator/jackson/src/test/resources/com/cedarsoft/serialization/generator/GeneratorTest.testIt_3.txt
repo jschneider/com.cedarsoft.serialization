@@ -1,0 +1,37 @@
+package com.cedarsoft.serialization.generator.staxmate.test;
+
+import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractXmlVersionTest2;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
+import org.junit.Assert;
+import org.junit.experimental.theories.DataPoint;
+
+public class FooSerializerVersionTest
+    extends AbstractXmlVersionTest2 <Foo>
+{
+
+    @DataPoint
+    public final static VersionEntry ENTRY1 = FooSerializerVersionTest.create(Version.valueOf(1, 0, 0), FooSerializerVersionTest.class.getResource("Foo_1.0.0_1.xml"));
+
+    @Override
+    protected Serializer<Foo> getSerializer()
+        throws Exception
+    {
+        return new FooSerializer();
+    }
+
+    @Override
+    protected void verifyDeserialized(Foo deserialized, Version version)
+        throws Exception
+    {
+        Assert.assertEquals(deserialized.getWidth(), "daValue");
+        Assert.assertEquals(deserialized.getHeight(), "daValue");
+        Assert.assertEquals(deserialized.getDescription(), "daValue");
+        Assert.assertEquals(deserialized.getAnInt(), "daValue");
+        Assert.assertEquals(deserialized.getFloatField(), "daValue");
+        Assert.assertEquals(deserialized.getBars(), "daValue");
+        Assert.assertEquals(deserialized.getBar(), "daValue");
+    }
+
+}

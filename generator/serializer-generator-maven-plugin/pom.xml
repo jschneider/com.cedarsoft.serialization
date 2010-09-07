@@ -27,6 +27,10 @@
       <groupId>com.cedarsoft.serialization.generator</groupId>
       <artifactId>stax-mate</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization.generator</groupId>
+      <artifactId>jackson</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>

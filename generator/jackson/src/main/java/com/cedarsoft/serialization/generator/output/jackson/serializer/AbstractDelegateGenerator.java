@@ -29,58 +29,47 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.serializer;
+package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.codegen.NamingSupport;
-import com.cedarsoft.codegen.model.DomainObjectDescriptor;
-import com.cedarsoft.id.NameSpaceSupport;
+import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
-import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public abstract class AbstractXmlGenerator extends AbstractNamespaceBasedGenerator {
+public abstract class AbstractDelegateGenerator extends AbstractSerializeToGenerator {
+  @NonNls
+  public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
+  @NonNls
+  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
+  @NonNls
+  public static final String METHOD_NAME_NEXT_TAG = "nextTag";
+  @NonNls
+  public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
-  /**
-   * Creates a new generator
-   *
-   * @param codeGenerator the used code generator
-   */
-  protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  protected AbstractDelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
     super( codeGenerator );
   }
 
-  @Override
   @NotNull
-  protected JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    JMethod constructor = serializerClass.constructor( JMod.PUBLIC );
-    constructor.body()
-      .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
-      .arg( createDefaultVersionRangeInvocation( AbstractXmlGenerator.VERSION, AbstractXmlGenerator.VERSION ) );
-    return constructor;
+  protected JInvocation createCloseTagInvocation( @NotNull JExpression deserializeFrom ) {
+    return JExpr.invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
   }
 
-  /**
-   * Returns the default element name
-   *
-   * @param domainObjectDescriptor the descriptor
-   * @return the default element name
-   */
   @NotNull
-  @NonNls
-  protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
-    return NamingSupport.createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
+  protected JInvocation createNextTagInvocation( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull FieldDeclarationInfo fieldInfo ) {
+    return JExpr.invoke( METHOD_NAME_NEXT_TAG ).arg( deserializeFrom ).arg( getConstant( serializerClass, fieldInfo ) );
   }
 
+  @NotNull
+  protected JInvocation createAddElementExpression( @NotNull JExpression serializeTo, @NotNull JExpression elementName ) {
+    return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( elementName );
+  }
 }
