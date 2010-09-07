@@ -193,8 +193,10 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     serializeMethod.annotate( Override.class );
     serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO );
     serializeMethod.param( domainType, VAR_NAME_OBJECT );
-    serializeMethod.param( codeGenerator.ref( Version.class ), PARAM_NAME_FORMAT_VERSION );
+    JVar formatVersion = serializeMethod.param( codeGenerator.ref( Version.class ), PARAM_NAME_FORMAT_VERSION );
     serializeMethod._throws( IOException.class )._throws( getExceptionType() );
+
+    serializeMethod.body().invoke( "verifyVersionReadable" ).arg( formatVersion );
 
     for ( Decorator decorator : codeGenerator.getDecorators() ) {
       if ( decorator instanceof GeneratorDecorator ) {
