@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.bench;
 
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory;
@@ -85,6 +86,8 @@ public class XmlParserPerformance {
   public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NonNls
   public static final String CONTENT_SAMPLE_JSON_BADGER = "{\"fileType\":{\"@dependent\":\"false\",\"id\":{\"$\":\"Canon Raw\"},\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
+  @NonNls
+  public static final String CONTENT_SAMPLE_GSON = "{\"dependent\":false,\"id\":\"jpg\",\"extension\":{\"isDefault\":true,\"delimiter\":\".\",\"extension\":\"jpg\"}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
@@ -162,6 +165,8 @@ public class XmlParserPerformance {
     //Needs the plugin to be enabled (in pom.xml)
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
+    System.out.println( "GSon (10%)" );
+    new XmlParserPerformance().benchGson();
     System.out.println( "Json (Mapped)" );
     new XmlParserPerformance().benchJson();
     System.out.println( "Json (Badgerfish)" );
@@ -427,6 +432,24 @@ public class XmlParserPerformance {
           XMLInputFactory inputFactory = new MappedXMLInputFactory( configuration );
 
           benchParse( inputFactory, CONTENT_SAMPLE_JSON );
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchGson() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          Gson gson = new Gson();
+
+          for ( int i = 0; i < MEDIUM; i++ ) {
+            assertNotNull( gson.fromJson( CONTENT_SAMPLE_GSON, com.cedarsoft.serialization.bench.jaxb.FileType.class ) );
+          }
+
         } catch ( Exception e ) {
           throw new RuntimeException( e );
         }
