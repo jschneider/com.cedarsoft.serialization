@@ -41,9 +41,8 @@ public class UserSerializer extends AbstractStaxSerializer<User> {
   public User deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull final Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     String name = getChildText( deserializeFrom, "name" );
 
-    final List<Email> mails = new ArrayList<Email>();
-    final List<Role> roles = new ArrayList<Role>();
-
+    List<Email> mails = new ArrayList<Email>();
+    List<Role> roles = new ArrayList<Role>();
     deserializeCollections( deserializeFrom, formatVersion,
                             new CollectionsMapping()
                               .append( Email.class, mails, EmailSerializer.DEFAULT_ELEMENT_NAME )
@@ -51,16 +50,5 @@ public class UserSerializer extends AbstractStaxSerializer<User> {
     );
 
     return new User( name, mails, roles );
-  }
-
-  protected void deserializeCollections( @NotNull final XMLStreamReader deserializeFrom, @NotNull final Version formatVersion, final CollectionsMapping collectionsMapping ) throws XMLStreamException, IOException {
-    visitChildren( deserializeFrom, new CB() {
-      @Override
-      public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
-        CollectionsMapping.Entry entry = collectionsMapping.getEntry( tagName );
-        Object deserialized = deserialize( entry.getType(), formatVersion, deserializeFrom );
-        entry.getTargetCollection().add( deserialized );
-      }
-    } );
   }
 }
