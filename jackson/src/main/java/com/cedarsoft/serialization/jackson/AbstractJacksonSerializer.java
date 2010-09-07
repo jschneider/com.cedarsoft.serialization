@@ -3,7 +3,7 @@ package com.cedarsoft.serialization.jackson;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.AbstractNameSpaceBasedSerializer;
 import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
@@ -22,14 +22,14 @@ import java.io.OutputStream;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractXmlSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
   public static final String PROPERTY_NS = "@ns";
 
-  protected AbstractJacksonSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
-    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
+  protected AbstractJacksonSerializer( @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( nameSpaceUriBase, formatVersionRange );
   }
 
   @Override

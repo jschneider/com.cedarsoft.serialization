@@ -1,0 +1,22 @@
+{
+  "@ns" : "http://cedarsoft.com/test/user/1.0.0",
+  "id" : "Max Mustermann",
+  "emails" : [
+    {
+      "$" : "test@test.de"
+    },
+    {
+      "$" : "other@test.de"
+    }
+  ],
+  "roles" : [
+    {
+      "id" : 1,
+      "description" : "Nobody"
+    },
+    {
+      "id" : 0,
+      "description" : "Admin"
+    }
+  ]
+}

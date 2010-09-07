@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class EmailSerializer extends AbstractJacksonSerializer<Email> {
   public EmailSerializer() {
-    super( "asdf", "http://cedarsoft.com/test/email", VersionRange.from( 1, 0, 0 ).to() );
+    super( "http://cedarsoft.com/test/email", VersionRange.from( 1, 0, 0 ).to() );
   }
 
   @Override

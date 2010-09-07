@@ -10,20 +10,20 @@ import org.junit.experimental.theories.*;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class EmailSerializerTest extends AbstractSerializerTest2<Email> {
+public class RoleSerializerTest extends AbstractSerializerTest2<Role> {
   @Override
-  protected void verifySerialized( @NotNull Entry<Email> entry, @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @NotNull Entry<Role> entry, @NotNull byte[] serialized ) throws Exception {
     AssertUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
   }
 
   @NotNull
   @Override
-  protected Serializer<Email> getSerializer() throws Exception {
-    return new EmailSerializer();
+  protected Serializer<Role> getSerializer() throws Exception {
+    return new RoleSerializer();
   }
 
   @DataPoint
   public static Entry<?> json() {
-    return create( new Email( "test@test.de" ), "{\"@ns\":\"http://cedarsoft.com/test/email/1.0.0\",\"$\":\"test@test.de\"}".getBytes() );
+    return create( new Role( 7, "nobody" ), RoleSerializerTest.class.getResource( "role.json" ) );
   }
 }
