@@ -31,9 +31,14 @@
 
 package com.cedarsoft.serialization.bench;
 
+import com.cedarsoft.serialization.bench.jaxb.*;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.time.StopWatch;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory;
 import org.codehaus.jettison.mapped.Configuration;
 import org.codehaus.jettison.mapped.MappedXMLInputFactory;
@@ -87,7 +92,9 @@ public class XmlParserPerformance {
   @NonNls
   public static final String CONTENT_SAMPLE_JSON_BADGER = "{\"fileType\":{\"@dependent\":\"false\",\"id\":{\"$\":\"Canon Raw\"},\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
   @NonNls
-  public static final String CONTENT_SAMPLE_GSON = "{\"dependent\":false,\"id\":\"jpg\",\"extension\":{\"isDefault\":true,\"delimiter\":\".\",\"extension\":\"jpg\"}}";
+  public static final String CONTENT_SAMPLE_GSON = "{\"dependent\":false,\"id\":\"Canon Raw\",\"extension\":{\"isDefault\":true,\"delimiter\":\".\",\"extension\":\"cr2\"}}";
+  @NotNull
+  public static final String CONTENT_SAMPLE_JACKSON = "{\"id\":\"Canon Raw\",\"dependent\":false,\"extension\":{\"extension\":\"cr2\",\"default\":true,\"delimiter\":\".\"}}";
   @NotNull
   @NonNls
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
@@ -165,6 +172,10 @@ public class XmlParserPerformance {
     //Needs the plugin to be enabled (in pom.xml)
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
+    System.out.println( "Jackson (Mapper)" );
+    new XmlParserPerformance().benchJacksonMapper();
+    System.out.println( "Jackson (Stream)" );
+    new XmlParserPerformance().benchJackson();
     System.out.println( "GSon (10%)" );
     new XmlParserPerformance().benchGson();
     System.out.println( "Json (Mapped)" );
@@ -423,6 +434,34 @@ public class XmlParserPerformance {
     }, 4 );
   }
 
+  public void benchJackson() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          JsonFactory jsonFactory = new JsonFactory();
+          benchParse( jsonFactory, CONTENT_SAMPLE_GSON );
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
+  public void benchJacksonMapper() {
+    runBenchmark( new Runnable() {
+      @Override
+      public void run() {
+        try {
+          JsonFactory jsonFactory = new JsonFactory();
+          benchParseMapper( jsonFactory, CONTENT_SAMPLE_JACKSON );
+        } catch ( Exception e ) {
+          throw new RuntimeException( e );
+        }
+      }
+    }, 4 );
+  }
+
   public void benchJson() {
     runBenchmark( new Runnable() {
       @Override
@@ -590,6 +629,67 @@ public class XmlParserPerformance {
       assertEquals( XMLStreamReader.END_ELEMENT, parser.nextTag() );
       assertEquals( "fileType", parser.getName().getLocalPart() );
       assertEquals( XMLStreamReader.END_DOCUMENT, parser.next() );
+
+      parser.close();
+
+      FileType type = new FileType( id, new Extension( delimiter, extension, isDefault ), dependent );
+      assertNotNull( type );
+    }
+  }
+
+  private void benchParseMapper( @NotNull JsonFactory factory, @NotNull @NonNls String contentSample ) throws XMLStreamException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    for ( int i = 0; i < BIG; i++ ) {
+      JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
+      assertNotNull( mapper.readValue( parser, com.cedarsoft.serialization.bench.jaxb.FileType.class ) );
+    }
+  }
+
+  private void benchParse( @NotNull JsonFactory factory, @NotNull @NonNls String contentSample ) throws XMLStreamException, IOException {
+    for ( int i = 0; i < BIG; i++ ) {
+      JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
+
+      assertEquals( JsonToken.START_OBJECT, parser.nextToken() );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "dependent", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_FALSE, parser.nextToken() );
+      boolean dependent = parser.getBooleanValue();
+      assertFalse( dependent );
+
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "id", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String id = parser.getText();
+      assertEquals( "Canon Raw", id );
+
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "extension", parser.getCurrentName() );
+      assertEquals( JsonToken.START_OBJECT, parser.nextToken() );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "isDefault", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_TRUE, parser.nextToken() );
+      boolean isDefault = parser.getBooleanValue();
+      assertTrue( isDefault );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "delimiter", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String delimiter = parser.getText();
+      assertEquals( ".", delimiter );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "extension", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String extension = parser.getText();
+      assertEquals( "cr2", extension );
+
+      assertEquals( JsonToken.END_OBJECT, parser.nextToken() );
+      assertEquals( JsonToken.END_OBJECT, parser.nextToken() );
+      assertNull( parser.nextToken() );
 
       parser.close();
 
