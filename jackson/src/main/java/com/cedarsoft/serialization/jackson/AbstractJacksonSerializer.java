@@ -1,8 +1,10 @@
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -20,12 +22,14 @@ import java.io.OutputStream;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractXmlSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
+  @NonNls
+  public static final String PROPERTY_NS = "@ns";
 
-  protected AbstractJacksonSerializer( @NotNull VersionRange formatVersionRange ) {
-    super( formatVersionRange );
+  protected AbstractJacksonSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+    super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
   @Override
@@ -35,9 +39,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
     generator.writeStartObject();
-    //    String nameSpace = getNameSpaceUri();
-    //    generator.writeDefaultNamespace( nameSpace );
-    //Sets the name space
+    String nameSpace = getNameSpaceUri();
+    generator.writeStringField( PROPERTY_NS, nameSpace );
 
     serialize( generator, object, getFormatVersion() );
     generator.writeEndObject();
@@ -48,33 +51,48 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @NotNull
   @Override
   public T deserialize( @NotNull InputStream in ) throws IOException, VersionException {
-    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
+    try {
+      JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
 
-    JsonParser parser = jsonFactory.createJsonParser( in );
+      JsonParser parser = jsonFactory.createJsonParser( in );
+      nextToken( parser, JsonToken.START_OBJECT );
 
-    //todo verify namespace
+      nextField( parser, PROPERTY_NS );
+      Version version = parseAndVerifyNameSpace( parser.getText() );
 
-    nextToken( parser, JsonToken.START_OBJECT );
+      T deserialized = deserialize( parser, version );
 
-    T deserialized = deserialize( parser, getFormatVersion() );
+      if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
+        throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+      }
 
-    if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
-      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+      if ( parser.nextToken() != null ) {
+        throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+      }
+
+      parser.close();
+
+      return deserialized;
+    } catch ( InvalidNamespaceException e ) {
+      throw new IOException( "Could not parse due to " + e.getMessage(), e );
+    }
+  }
+
+  protected void nextField( @NotNull JsonParser parser, @NotNull @NonNls String fieldName ) throws IOException {
+    nextToken( parser, JsonToken.FIELD_NAME );
+    String currentName = parser.getCurrentName();
+
+    if ( !fieldName.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + fieldName + "> but was <" + currentName + ">", parser.getCurrentLocation() );
     }
 
-    if ( parser.nextToken() != null ) {
-      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
-    }
-
-    parser.close();
-
-    return deserialized;
+    parser.nextToken();
   }
 
   protected void nextToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws IOException {
     JsonToken current = parser.nextToken();
     if ( current != expected ) {
-      throw new IllegalStateException( "Invalid token. Expected <" + expected + "> but got <" + current + ">" );
+      throw new JsonParseException( "Invalid token. Expected <" + expected + "> but got <" + current + ">", parser.getCurrentLocation() );
     }
   }
 }

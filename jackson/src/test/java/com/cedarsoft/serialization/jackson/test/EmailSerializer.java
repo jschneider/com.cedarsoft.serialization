@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class EmailSerializer extends AbstractJacksonSerializer<Email> {
   public EmailSerializer() {
-    super( VersionRange.from( 1, 0, 0 ).to() );
+    super( "asdf", "http://cedarsoft.com/test/email", VersionRange.from( 1, 0, 0 ).to() );
   }
 
   @Override
@@ -28,8 +28,7 @@ public class EmailSerializer extends AbstractJacksonSerializer<Email> {
   @NotNull
   @Override
   public Email deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextToken( deserializeFrom, JsonToken.FIELD_NAME );
-    nextToken( deserializeFrom, JsonToken.VALUE_STRING );
+    nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
     try {
       return new Email( deserializeFrom.getText() );
     } finally {

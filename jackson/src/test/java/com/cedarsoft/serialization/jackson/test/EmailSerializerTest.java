@@ -25,6 +25,6 @@ public class EmailSerializerTest extends AbstractSerializerTest2<Email> {
 
   @DataPoint
   public static Entry<?> json() {
-    return create( new Email( "test@test.de" ), "{\"$\":\"test@test.de\"}".getBytes() );
+    return create( new Email( "test@test.de" ), "{\"@ns\":\"http://cedarsoft.com/test/email/1.0.0\",\"$\":\"test@test.de\"}".getBytes() );
   }
 }
