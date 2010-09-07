@@ -1,0 +1,65 @@
+package com.cedarsoft.serialization.jackson.test;
+
+import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.ToString;
+import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.jetbrains.annotations.NotNull;
+import org.junit.*;
+import org.junit.experimental.theories.*;
+
+import static org.junit.Assert.*;
+
+/**
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ */
+public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
+  @NotNull
+  @Override
+  protected BallSerializer getSerializer() throws Exception {
+    return new BallSerializer();
+  }
+
+  @DataPoint
+  public static final Entry<?> ENTRY1 = create(
+    new Ball.TennisBall( 7 ), "{\"@type\" : \"tennisBall\",\"id\" : 7}"
+  );
+
+  @DataPoint
+  public static final Entry<?> ENTRY2 = create(
+    new Ball.BasketBall( "asdf" ), "{\"@type\" : \"basketBall\",\"theId\" : \"asdf\"}" );
+
+
+  @Test
+  public void testAsccii() throws Exception {
+    assertEquals( 2, getSerializer().getSerializingStrategySupport().getVersionMappings().getMappings().size() );
+    assertEquals( "         -->  basketBa  tennisBa\n" +
+      "--------------------------------\n" +
+      "   1.0.0 -->     2.0.0     1.5.0\n" +
+      "   1.1.0 -->     2.0.1     1.5.1\n" +
+      "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException>>() {
+      @NotNull
+      @Override
+      public String convert( @NotNull SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException> object ) {
+        return object.getId();
+      }
+    } ) );
+  }
+
+  @Test
+  public void testVersion() throws Exception {
+    BallSerializer serializer = getSerializer();
+    assertTrue( serializer.isVersionReadable( Version.valueOf( 1, 0, 0 ) ) );
+    assertFalse( serializer.isVersionReadable( Version.valueOf( 1, 2, 1 ) ) );
+    assertFalse( serializer.isVersionReadable( Version.valueOf( 0, 9, 9 ) ) );
+
+    assertTrue( serializer.isVersionWritable( Version.valueOf( 1, 1, 0 ) ) );
+    assertFalse( serializer.isVersionWritable( Version.valueOf( 1, 1, 1 ) ) );
+    assertFalse( serializer.isVersionWritable( Version.valueOf( 1, 0, 9 ) ) );
+  }
+}

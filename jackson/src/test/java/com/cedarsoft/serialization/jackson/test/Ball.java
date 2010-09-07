@@ -31,39 +31,69 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
 /**
- * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ *
  */
-public class EmailSerializer extends AbstractJacksonSerializer<Email> {
-  public EmailSerializer() {
-    super( "http://cedarsoft.com/test/email", VersionRange.from( 1, 0, 0 ).to() );
+public interface Ball {
+  class TennisBall implements Ball {
+    private final int id;
+
+    public TennisBall( int id ) {
+      this.id = id;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+      if ( this == o ) return true;
+      if ( !( o instanceof TennisBall ) ) return false;
+
+      TennisBall that = ( TennisBall ) o;
+
+      if ( id != that.id ) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return id;
+    }
   }
 
-  @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Email object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    serializeTo.writeStringField( FIELD_NAME_DEFAULT_TEXT, object.getMail() );
-  }
+  class BasketBall implements Ball {
+    @NotNull
+    private final String theId;
 
-  @NotNull
-  @Override
-  public Email deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
-    try {
-      return new Email( deserializeFrom.getText() );
-    } finally {
-      nextToken( deserializeFrom, JsonToken.END_OBJECT );
+    public BasketBall( @NotNull String theId ) {
+      this.theId = theId;
+    }
+
+    @NotNull
+    public String getTheId() {
+      return theId;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+      if ( this == o ) return true;
+      if ( !( o instanceof BasketBall ) ) return false;
+
+      BasketBall that = ( BasketBall ) o;
+
+      if ( !theId.equals( that.theId ) ) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return theId.hashCode();
     }
   }
 }

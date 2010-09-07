@@ -50,7 +50,7 @@ import java.util.Collection;
  *
  * @param <T> the type
  */
-public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSerializer<T> {
+public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSerializer<T> {
   @NotNull
   @NonNls
   private static final String ATTRIBUTE_TYPE = "type";
@@ -64,7 +64,7 @@ public class AbstractDelegatingStaxMateSerializer<T> extends AbstractStaxMateSer
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version name
    */
-  public AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractDelegatingStaxMateSerializer( @NotNull String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
     serializingStrategySupport = new SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException>( formatVersionRange );
   }
