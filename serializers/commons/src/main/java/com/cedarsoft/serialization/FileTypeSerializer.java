@@ -62,14 +62,17 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
   @NotNull
   @NonNls
   private static final String ATTRIBUTE_DEFAULT = "default";
+  @NotNull
+  @NonNls
+  public static final String ELEMENT_CONTENT_TYPE = "contentType";
 
   @Inject
   public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "fileType", "http://www.cedarsoft.com/file/type", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "fileType", "http://www.cedarsoft.com/file/type", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
 
     add( extensionSerializer ).responsibleFor( Extension.class )
-      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
-      ;
+      .map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 1, 0, 0 )
+    ;
 
     assert getDelegatesMappings().verify();
   }
@@ -79,6 +82,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependentType() ) );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
+    serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_CONTENT_TYPE ).addCharacters( object.getContentType() );
 
     for ( Extension extension : object.getExtensions() ) {
       SMOutputElement extensionElement = serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION );
@@ -98,7 +102,14 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
     boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
     String id = getChildText( deserializeFrom, ELEMENT_ID );
 
+    String contentType;
+    if ( formatVersion.equals( 1, 0, 0 ) ) {
+      contentType = "application/unknown";
+    } else {
+      contentType = getChildText( deserializeFrom, ELEMENT_CONTENT_TYPE );
+    }
+
     List<? extends Extension> extensions = deserializeCollection( deserializeFrom, Extension.class, formatVersion );
-    return new FileType( id, dependent, extensions );
+    return new FileType( id, contentType, dependent, extensions );
   }
 }

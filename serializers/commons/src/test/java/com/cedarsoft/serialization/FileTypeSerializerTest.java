@@ -37,6 +37,8 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
+import static org.junit.Assert.*;
+
 /**
  *
  */
@@ -47,11 +49,22 @@ public class FileTypeSerializerTest extends AbstractXmlSerializerTest2<FileType>
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 
+  @Override
+  protected void verifyDeserialized( @NotNull FileType deserialized, @NotNull FileType original ) {
+    super.verifyDeserialized( deserialized, original );
+
+    assertEquals( "application/special", deserialized.getContentType() );
+    assertEquals( "TheId", deserialized.getId() );
+    assertEquals( 2, deserialized.getExtensions().size() );
+    assertEquals( ",ext", deserialized.getDefaultExtension().getCombined() );
+  }
+
   @DataPoint
   public static final Entry<?> entry1 = create(
-    new FileType( "TheId", true, new Extension( ",", "ext" ), new Extension( ".", "_ext2" ) ),
+    new FileType( "TheId", "application/special", true, new Extension( ",", "ext" ), new Extension( ".", "_ext2" ) ),
     "<fileType dependent=\"true\">\n" +
       "  <id>TheId</id>\n" +
+      "  <contentType>application/special</contentType>" +
       "  <extension default=\"true\" delimiter=\",\">ext</extension>\n" +
       "  <extension delimiter=\".\">_ext2</extension>\n" +
       "</fileType>" );
