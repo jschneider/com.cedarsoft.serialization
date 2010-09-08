@@ -53,19 +53,19 @@ public class NotNullDecorator implements GeneratorDecorator {
   }
 
   @Override
-  public void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
+  public void decorateSerializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
     annotateParamsWithNotNull( serializeMethod );
   }
 
   @Override
-  public void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
+  public void decorateDeserializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
     deserializeMethod.annotate( notNullAnnotationType );
 
     annotateParamsWithNotNull( deserializeMethod );
   }
 
   @Override
-  public void decorateConstant( @NotNull CodeGenerator<?> codeGenerator, @NotNull JFieldVar constant ) {
+  public void decorateConstant( @NotNull CodeGenerator codeGenerator, @NotNull JFieldVar constant ) {
     constant.annotate( notNullAnnotationType );
   }
 

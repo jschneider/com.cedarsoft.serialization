@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -54,7 +53,7 @@ public abstract class AbstractDelegateGenerator extends AbstractSerializeToGener
   @NonNls
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
-  protected AbstractDelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  protected AbstractDelegateGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

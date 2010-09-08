@@ -39,7 +39,6 @@ import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.I18nAnnotationsDecorator;
 import com.cedarsoft.serialization.generator.output.serializer.NotNullDecorator;
 import com.sun.codemodel.JCodeModel;
@@ -60,7 +59,7 @@ import static org.junit.Assert.*;
  */
 public abstract class AbstractGeneratorTest {
   protected DomainObjectDescriptor domainObjectDescriptor;
-  protected CodeGenerator<XmlDecisionCallback> codeGenerator;
+  protected CodeGenerator codeGenerator;
 
   protected JCodeModel model;
 
@@ -80,7 +79,7 @@ public abstract class AbstractGeneratorTest {
 
     assertEquals( 7, domainObjectDescriptor.getFieldInfos().size() );
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
-    CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( decisionCallback );
+    CodeGenerator codeGenerator = new CodeGenerator( decisionCallback );
     this.codeGenerator = codeGenerator;
     this.codeGenerator.addDecorator( new NotNullDecorator( NotNull.class ) );
     codeGenerator.addDecorator( new I18nAnnotationsDecorator( NonNls.class ) );

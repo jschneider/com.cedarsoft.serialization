@@ -34,7 +34,6 @@ package com.cedarsoft.serialization.generator.output.serializer;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Decorator;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +50,7 @@ public interface GeneratorDecorator extends Decorator {
    * @param serializerClass the serializer class
    * @param serializeMethod the serialize method
    */
-  void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod );
+  void decorateSerializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod );
 
   /**
    * Decorates the deserialize method
@@ -61,5 +60,5 @@ public interface GeneratorDecorator extends Decorator {
    * @param serializerClass   the serializer class
    * @param deserializeMethod the deserialize method
    */
-  void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod );
+  void decorateDeserializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod );
 }

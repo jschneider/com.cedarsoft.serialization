@@ -27,7 +27,7 @@ public abstract class AbstractNamespaceBasedGenerator extends AbstractGenerator<
   @NonNls
   public static final String METHOD_SUPER = "super";
 
-  protected AbstractNamespaceBasedGenerator( CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  protected AbstractNamespaceBasedGenerator( CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

@@ -88,14 +88,14 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
       //The Serializer
       if ( configuration.getCreationMode().isCreate() ) {
         configuration.getLogOut().println( "Generating Serializer:" );
-        CodeGenerator<T> codeGenerator = new CodeGenerator<T>( decisionCallback );
+        CodeGenerator codeGenerator = new CodeGenerator( decisionCallback );
         instantiateGenerator( codeGenerator ).generateSerializer( descriptor );
         codeGenerator.getModel().build( configuration.getDestination(), configuration.getResourcesDestination(), statusPrinter );
       }
 
       //The Serializer Tests
       if ( configuration.getCreationMode().isCreateTests() ) {
-        CodeGenerator<T> testCodeGenerator = new CodeGenerator<T>( decisionCallback );
+        CodeGenerator testCodeGenerator = new CodeGenerator( decisionCallback );
 
         configuration.getLogOut().println( "Generating Serializer Tests:" );
         String serializerClassName = AbstractGenerator.createSerializerClassName( descriptor.getQualifiedName() );
@@ -110,9 +110,9 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
     protected abstract T createDecisionCallback();
 
     @NotNull
-    protected abstract com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<T> instantiateTestGenerator( @NotNull CodeGenerator<T> testCodeGenerator );
+    protected abstract com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<T> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator );
 
     @NotNull
-    protected abstract AbstractGenerator<T> instantiateGenerator( @NotNull CodeGenerator<T> serializerCodeGenerator );
+    protected abstract AbstractGenerator<T> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator );
   }
 }

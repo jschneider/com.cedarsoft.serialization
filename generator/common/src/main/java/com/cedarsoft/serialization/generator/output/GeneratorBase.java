@@ -43,17 +43,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class GeneratorBase<T extends DecisionCallback> {
   @NotNull
-  protected final CodeGenerator<T> codeGenerator;
+  protected final CodeGenerator codeGenerator;
   @NotNull
   protected final JCodeModel codeModel;
 
-  protected GeneratorBase( @NotNull CodeGenerator<T> codeGenerator ) {
+  protected GeneratorBase( @NotNull CodeGenerator codeGenerator ) {
     this.codeGenerator = codeGenerator;
     this.codeModel = codeGenerator.getModel();
   }
 
   @NotNull
-  public final CodeGenerator<T> getCodeGenerator() {
+  public final CodeGenerator getCodeGenerator() {
     return codeGenerator;
   }
 

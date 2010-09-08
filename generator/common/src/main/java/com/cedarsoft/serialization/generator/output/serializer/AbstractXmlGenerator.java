@@ -31,17 +31,10 @@
 
 package com.cedarsoft.serialization.generator.output.serializer;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.NamingSupport;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
-import com.cedarsoft.id.NameSpaceSupport;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import org.jetbrains.annotations.NonNls;
@@ -57,7 +50,7 @@ public abstract class AbstractXmlGenerator extends AbstractNamespaceBasedGenerat
    *
    * @param codeGenerator the used code generator
    */
-  protected AbstractXmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  protected AbstractXmlGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

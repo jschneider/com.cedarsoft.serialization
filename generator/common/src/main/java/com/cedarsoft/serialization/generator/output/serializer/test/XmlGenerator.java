@@ -51,7 +51,7 @@ public class XmlGenerator extends AbstractGenerator<XmlDecisionCallback> {
   @NotNull
   public static final String METHOD_GET_RESOURCE = "getResource";
 
-  public XmlGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public XmlGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

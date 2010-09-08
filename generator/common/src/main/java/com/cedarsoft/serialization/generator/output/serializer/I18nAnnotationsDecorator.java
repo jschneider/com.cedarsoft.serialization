@@ -52,15 +52,15 @@ public class I18nAnnotationsDecorator implements GeneratorDecorator {
   }
 
   @Override
-  public void decorateSerializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
+  public void decorateSerializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
   }
 
   @Override
-  public void decorateDeserializeMethod( @NotNull CodeGenerator<?> codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
+  public void decorateDeserializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
   }
 
   @Override
-  public void decorateConstant( @NotNull CodeGenerator<?> codeGenerator, @NotNull JFieldVar constant ) {
+  public void decorateConstant( @NotNull CodeGenerator codeGenerator, @NotNull JFieldVar constant ) {
     constant.annotate( annotation );
   }
 }

@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldTypeInformation;
 import com.cedarsoft.codegen.ParseExpressionFactory;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -48,7 +47,7 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public abstract class AbstractStringConversionGenerator extends AbstractSerializeToGenerator {
-  protected AbstractStringConversionGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  protected AbstractStringConversionGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

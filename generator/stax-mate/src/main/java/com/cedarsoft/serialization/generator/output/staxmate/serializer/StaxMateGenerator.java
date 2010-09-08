@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
@@ -70,7 +69,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
    *
    * @param codeGenerator the code generator
    */
-  public StaxMateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public StaxMateGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
     generators.add( new AsAttributeGenerator( codeGenerator ) );
     generators.add( new AsElementGenerator( codeGenerator ) );

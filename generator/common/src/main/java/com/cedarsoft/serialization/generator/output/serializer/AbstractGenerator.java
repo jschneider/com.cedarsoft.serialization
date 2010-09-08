@@ -90,7 +90,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NonNls
   public static final String VAR_NAME_OBJECT = "object";
 
-  protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
+  protected AbstractGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

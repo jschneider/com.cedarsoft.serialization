@@ -55,7 +55,7 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
   public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
 
 
-  public AsAttributeGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public AsAttributeGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

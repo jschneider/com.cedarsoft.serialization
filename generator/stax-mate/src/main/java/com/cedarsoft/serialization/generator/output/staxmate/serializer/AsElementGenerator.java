@@ -55,7 +55,7 @@ public class AsElementGenerator extends AbstractStringConversionGenerator {
   @NonNls
   public static final String METHOD_NAME_ADD_ELEMENT_WITH_CHARACTERS = "addElementWithCharacters";
 
-  public AsElementGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public AsElementGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

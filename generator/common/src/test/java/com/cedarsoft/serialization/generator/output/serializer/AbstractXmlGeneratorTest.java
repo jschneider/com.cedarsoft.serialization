@@ -58,7 +58,7 @@ public class AbstractXmlGeneratorTest {
 
   @Before
   public void setup() {
-    generator = new AbstractXmlGenerator( new CodeGenerator<XmlDecisionCallback>( new XmlDecisionCallback() {
+    generator = new AbstractXmlGenerator( new CodeGenerator( new XmlDecisionCallback() {
       @NotNull
       @Override
       public Target getSerializationTarget( @NotNull FieldInfo fieldInfo ) {

@@ -35,7 +35,6 @@ import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.TypeUtils;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -58,7 +57,7 @@ public class CollectionElementGenerator extends AbstractDelegateGenerator {
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE_COLLECTION = "deserializeCollection";
 
-  public CollectionElementGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public CollectionElementGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

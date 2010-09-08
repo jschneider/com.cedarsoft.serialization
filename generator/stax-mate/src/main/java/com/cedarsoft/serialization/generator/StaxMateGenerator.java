@@ -62,13 +62,13 @@ public class StaxMateGenerator extends Generator {
 
     @NotNull
     @Override
-    protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator<XmlDecisionCallback> testCodeGenerator ) {
+    protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator ) {
       return new XmlGenerator( testCodeGenerator );
     }
 
     @NotNull
     @Override
-    protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> serializerCodeGenerator ) {
+    protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator ) {
       return new com.cedarsoft.serialization.generator.output.staxmate.serializer.StaxMateGenerator( serializerCodeGenerator );
     }
   }

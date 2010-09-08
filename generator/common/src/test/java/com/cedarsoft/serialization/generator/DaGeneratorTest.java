@@ -115,14 +115,14 @@ public class DaGeneratorTest {
 
       @NotNull
       @Override
-      protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator<XmlDecisionCallback> testCodeGenerator ) {
+      protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator ) {
         return new XmlGenerator( testCodeGenerator );
       }
 
       @NotNull
       @Override
-      protected com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> serializerCodeGenerator ) {
-        CodeGenerator<XmlDecisionCallback> codeGenerator = new CodeGenerator<XmlDecisionCallback>( new DefaultXmlDecisionCallback() );
+      protected com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator ) {
+        CodeGenerator codeGenerator = new CodeGenerator( new DefaultXmlDecisionCallback() );
         return new AbstractXmlGenerator( codeGenerator ) {
           @NotNull
           @Override

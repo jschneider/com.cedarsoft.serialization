@@ -85,7 +85,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   @NonNls
   public static final String CLASS_NAME_ASSERT = "org.junit.Assert";
 
-  protected AbstractGenerator( @NotNull CodeGenerator<T> codeGenerator ) {
+  protected AbstractGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
