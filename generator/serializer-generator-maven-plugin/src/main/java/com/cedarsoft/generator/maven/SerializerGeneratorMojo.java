@@ -32,12 +32,11 @@
 package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.codegen.AbstractGenerator;
+import com.cedarsoft.serialization.generator.JacksonGenerator;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Generate a Serializer and the corresponding unit tests.
@@ -48,13 +47,45 @@ import java.util.Set;
  * @goal generate
  */
 public class SerializerGeneratorMojo extends AbstractGenerateMojo {
+  /**
+   * The dialect that shall be created.
+   * At the moment those are supported:
+   * <ul>
+   * <li>STAX_MATE</li>
+   * <li>JACKSON</li>
+   * </ul>
+   *
+   * @parameter expression="${dialect}"
+   */
+  protected String target = Target.STAX_MATE.name();
+
   public SerializerGeneratorMojo() {
     super( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
   }
 
   @NotNull
+  public Target getTarget() {
+    return Target.valueOf( target );
+  }
+
+  @NotNull
   @Override
   protected AbstractGenerator createGenerator() {
-    return new StaxMateGenerator();
+    return getTarget().create();
+  }
+
+  public enum Target {
+    STAX_MATE {
+      @Override
+      public AbstractGenerator create() {
+        return new StaxMateGenerator();
+      }},
+    JACKSON {
+      @Override
+      public AbstractGenerator create() {
+        return new JacksonGenerator();
+      }};
+
+    public abstract AbstractGenerator create();
   }
 }

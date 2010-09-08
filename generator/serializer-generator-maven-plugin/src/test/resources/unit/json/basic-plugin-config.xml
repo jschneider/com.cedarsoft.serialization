@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.cedarsoft.serialization.generator</groupId>
+        <artifactId>serializer-generator-maven-plugin</artifactId>
+        <version>2.1.0-SNAPSHOT</version>
+
+        <configuration>
+          <outputDirectory>${basedir}/target/test/unit/target/out</outputDirectory>
+          <resourcesOutputDirectory>${basedir}/target/test/unit/target/resources-out</resourcesOutputDirectory>
+          <testOutputDirectory>${basedir}/target/test/unit/target/test-out</testOutputDirectory>
+          <testResourcesOutputDirectory>${basedir}/target/test/unit/target/test-resources-out</testResourcesOutputDirectory>
+          <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
+          <target>JACKSON</target>
+          <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

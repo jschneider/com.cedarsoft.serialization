@@ -99,7 +99,7 @@ public class JacksonGeneratorTest {
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializer.java" ) );
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializerTest.java" ) );
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.xml" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.json" ) );
 
     assertEquals( "", systemOutRule.getErrAsString() );
 
@@ -121,7 +121,7 @@ public class JacksonGeneratorTest {
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
 
 
-    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.xml" );
+    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.json" );
     assertTrue( resFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_4.txt" ), FileUtils.readFileToString( resFile ).trim() );
   }

@@ -72,9 +72,25 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
     mojo.execute();
 
+    assertEquals( SerializerGeneratorMojo.Target.STAX_MATE, mojo.getTarget() );
 
     assertSerializers( mojo );
     assertTests( mojo );
+  }
+
+  @Test
+  public void testJson() throws Exception {
+    SerializerGeneratorMojo mojo = createVerifiedMojo( "json" );
+
+    assertEquals( 2, mojo.getExcludes().size() );
+    assertTrue( mojo.outputDirectory.getAbsolutePath(), mojo.outputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/out" ) );
+    assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
+    mojo.execute();
+
+    assertEquals( SerializerGeneratorMojo.Target.JACKSON, mojo.getTarget() );
+
+    assertSerializers( mojo );
+    assertTestsJson( mojo );
   }
 
   @Test
@@ -228,6 +244,15 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
                                "unit/basic/DaDomainObjectSerializerTest.java" ) );
     assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory,
                 containsFiles( "unit/basic/DaDomainObject_1.0.0_1.xml"
+                ) );
+  }
+
+  private void assertTestsJson( AbstractGenerateMojo mojo ) {
+    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory,
+                containsFiles( "unit/basic/DaDomainObjectSerializerVersionTest.java",
+                               "unit/basic/DaDomainObjectSerializerTest.java" ) );
+    assertThat( ContainsFileMatcher.toMessage( mojo.testResourcesOutputDirectory ), mojo.testResourcesOutputDirectory,
+                containsFiles( "unit/basic/DaDomainObject_1.0.0_1.json"
                 ) );
   }
 

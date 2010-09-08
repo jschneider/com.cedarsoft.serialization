@@ -36,6 +36,7 @@ import com.cedarsoft.codegen.GeneratorCliSupport;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
+import com.cedarsoft.serialization.generator.output.serializer.test.JsonGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,7 +64,7 @@ public class JacksonGenerator extends Generator {
     @NotNull
     @Override
     protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator ) {
-      return new XmlGenerator( testCodeGenerator );
+      return new JsonGenerator( testCodeGenerator );
     }
 
     @NotNull
