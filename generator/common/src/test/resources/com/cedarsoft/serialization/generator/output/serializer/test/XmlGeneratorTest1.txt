@@ -27,8 +27,8 @@ public class HouseSerializerVersionTest
     protected void verifyDeserialized(House deserialized, Version version)
         throws Exception
     {
-        Assert.assertEquals(deserialized.getRooms(), "daValue");
-        Assert.assertEquals(deserialized.getFrontDoor(), "daValue");
+        Assert.assertEquals("daValue", deserialized.getRooms());
+        Assert.assertEquals("daValue", deserialized.getFrontDoor());
     }
 
 }

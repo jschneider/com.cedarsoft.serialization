@@ -27,13 +27,13 @@ public class FooSerializerVersionTest
     protected void verifyDeserialized(Foo deserialized, Version version)
         throws Exception
     {
-        Assert.assertEquals(deserialized.getWidth(), "daValue");
-        Assert.assertEquals(deserialized.getHeight(), "daValue");
-        Assert.assertEquals(deserialized.getDescription(), "daValue");
-        Assert.assertEquals(deserialized.getAnInt(), "daValue");
-        Assert.assertEquals(deserialized.getFloatField(), "daValue");
-        Assert.assertEquals(deserialized.getBars(), "daValue");
-        Assert.assertEquals(deserialized.getBar(), "daValue");
+        Assert.assertEquals("daValue", deserialized.getWidth());
+        Assert.assertEquals("daValue", deserialized.getHeight());
+        Assert.assertEquals("daValue", deserialized.getDescription());
+        Assert.assertEquals("daValue", deserialized.getAnInt());
+        Assert.assertEquals("daValue", deserialized.getFloatField());
+        Assert.assertEquals("daValue", deserialized.getBars());
+        Assert.assertEquals("daValue", deserialized.getBar());
     }
 
 }

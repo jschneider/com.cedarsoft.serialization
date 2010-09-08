@@ -126,7 +126,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JClass assertClass = codeGenerator.ref( CLASS_NAME_ASSERT );
 
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldInfos() ) {
-      method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( deserialized.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ) ).arg( "daValue" ) );
+      method.body().add( assertClass.staticInvoke( METHOD_NAME_ASSERT_EQUALS ).arg( "daValue" ).arg( deserialized.invoke( fieldInfo.getGetterDeclaration().getSimpleName() ) ) );
     }
   }
 
