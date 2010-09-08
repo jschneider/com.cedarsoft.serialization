@@ -56,12 +56,14 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   @NonNls
   public static final String PROPERTY_ROLES = "roles";
 
-  public UserSerializer( @NotNull EmailSerializer emailSerializer, @NotNull RoleSerializer roleSerializer ) {
+  public UserSerializer( @NotNull EmailSerializer emailSerializer, @NotNull RoleSerializer roleSerializer, @NotNull UserDetailsSerializer userDetailsSerializer ) {
     super( "http://cedarsoft.com/test/user", VersionRange.from( 1, 0, 0 ).to() );
 
     getDelegatesMappings().add( emailSerializer ).responsibleFor( Email.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
     getDelegatesMappings().add( roleSerializer ).responsibleFor( Role.class )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
+    getDelegatesMappings().add( userDetailsSerializer ).responsibleFor( UserDetails.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
   }
 
@@ -72,7 +74,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
     serializeArray( object.getRoles(), Role.class, PROPERTY_ROLES, serializeTo, formatVersion );
 
-    serialize( object.getEmails().get( 0 ), Email.class, "asdf", serializeTo, formatVersion );
+    serialize( object.getUserDetails(), UserDetails.class, "userDetails", serializeTo, formatVersion );
   }
 
   @NotNull
@@ -84,7 +86,9 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     List<? extends Email> mails = deserializeArray( Email.class, PROPERTY_EMAILS, deserializeFrom, formatVersion );
     List<? extends Role> roles = deserializeArray( Role.class, PROPERTY_ROLES, deserializeFrom, formatVersion );
 
+    UserDetails userDetails = deserialize( UserDetails.class, "userDetails", formatVersion, deserializeFrom );
+
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
-    return new User( name, mails, roles );
+    return new User( name, mails, roles, userDetails );
   }
 }

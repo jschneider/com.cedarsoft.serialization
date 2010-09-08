@@ -51,10 +51,15 @@ public class User {
   @NotNull
   private final List<Email> emails = new ArrayList<Email>();
   @NotNull
-  private final UserDetails userDetails = new UserDetails();
+  private final UserDetails userDetails;
 
   public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles ) {
+    this( name, emails, roles, new UserDetails() );
+  }
+
+  public User(  @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles , @NotNull UserDetails userDetails ) {
     this.name = name;
+    this.userDetails = userDetails;
     this.emails.addAll( emails );
     this.roles.addAll( roles );
   }

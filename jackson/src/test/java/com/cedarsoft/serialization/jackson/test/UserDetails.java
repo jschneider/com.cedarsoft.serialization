@@ -15,7 +15,7 @@ public class UserDetails {
 
   @NotNull
   @NonNls
-  private byte[] passwordHash;
+  private byte[] passwordHash = new byte[0];
 
   public UserDetails() {
   }

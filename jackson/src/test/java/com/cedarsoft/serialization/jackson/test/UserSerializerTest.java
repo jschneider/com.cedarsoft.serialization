@@ -31,11 +31,10 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.JsonUtils;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
+import org.apache.commons.codec.binary.Hex;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
@@ -48,11 +47,26 @@ public class UserSerializerTest extends AbstractJsonSerializerTest2 {
   @NotNull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
-    return new UserSerializer( new EmailSerializer(), new RoleSerializer() );
+    return new UserSerializer( new EmailSerializer(), new RoleSerializer(), new UserDetailsSerializer() );
   }
 
   @DataPoint
   public static Entry<?> json() {
+    return create( new User( "Max Mustermann",
+                             Arrays.asList(
+                               new Email( "test@test.de" ),
+                               new Email( "other@test.de" )
+                             ),
+                             Arrays.asList(
+                               new Role( 1, "Nobody" ),
+                               new Role( 0, "Admin" )
+                             ),
+                             new UserDetails( 2351351L, 36351531153L, new String( Hex.encodeHex( "hash".getBytes() ) ).getBytes() )
+    ), UserSerializerTest.class.getResource( "user.withDetails.json" ) );
+  }
+
+  @DataPoint
+  public static Entry<?> noDetails() {
     return create( new User( "Max Mustermann",
                              Arrays.asList(
                                new Email( "test@test.de" ),
