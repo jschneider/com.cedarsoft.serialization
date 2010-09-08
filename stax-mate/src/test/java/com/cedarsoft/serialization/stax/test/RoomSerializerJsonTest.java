@@ -66,7 +66,7 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
 
   @DataPoint
   public static Entry<?> json() {
-    StaxSupport.enableJson();
+    StaxMateSupport.enableJson();
 
     List<Window> windows = Arrays.asList( new Window( "asdf", 20, 30 ), new Window( "asdf2", 50, 60.7 ) );
     List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
