@@ -43,7 +43,7 @@ import java.util.Arrays;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class UserSerializerTest extends AbstractJsonSerializerTest2 {
+public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
   @NotNull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
