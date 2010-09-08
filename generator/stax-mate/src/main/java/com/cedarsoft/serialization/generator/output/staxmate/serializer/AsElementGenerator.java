@@ -85,6 +85,6 @@ public class AsElementGenerator extends AbstractStringConversionGenerator {
       return false;
     }
 
-    return codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ELEMENT;
+    return ( ( XmlDecisionCallback ) codeGenerator.getDecisionCallback() ).getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ELEMENT;
   }
 }

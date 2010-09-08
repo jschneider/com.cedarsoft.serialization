@@ -93,6 +93,6 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
       return false;
     }
 
-    return codeGenerator.getDecisionCallback().getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ATTRIBUTE;
+    return ( ( XmlDecisionCallback ) codeGenerator.getDecisionCallback() ).getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ATTRIBUTE;
   }
 }
