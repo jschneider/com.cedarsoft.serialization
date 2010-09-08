@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
@@ -47,9 +46,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractSerializeToGenerator implements SerializeToGenerator {
   @NotNull
-  protected final CodeGenerator<?> codeGenerator;
+  protected final CodeGenerator codeGenerator;
 
-  protected AbstractSerializeToGenerator( @NotNull CodeGenerator<?> codeGenerator ) {
+  protected AbstractSerializeToGenerator( @NotNull CodeGenerator codeGenerator ) {
     this.codeGenerator = codeGenerator;
   }
 

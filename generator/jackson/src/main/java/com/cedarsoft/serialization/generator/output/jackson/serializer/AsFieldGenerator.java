@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -53,7 +52,7 @@ import org.jetbrains.annotations.NotNull;
  * Generates an attribute
  */
 public class AsFieldGenerator extends AbstractSerializeToGenerator {
-  public AsFieldGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public AsFieldGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

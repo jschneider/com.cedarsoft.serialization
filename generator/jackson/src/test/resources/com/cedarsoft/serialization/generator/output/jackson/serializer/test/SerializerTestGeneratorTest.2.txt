@@ -1,19 +1,19 @@
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.FooSerializerTest.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.test.FooSerializerTest.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.staxmate.test;
+package com.cedarsoft.serialization.generator.test;
 
 import java.util.Arrays;
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerTest
-    extends AbstractXmlSerializerTest2 <Foo>
+    extends AbstractJsonSerializerTest2 <Foo>
 {
 
     @DataPoint
-    public final static Entry<? extends Foo> ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), FooSerializerTest.class.getResource("Foo_1.0.0_1.xml"));
+    public final static Entry<? extends Foo> ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), FooSerializerTest.class.getResource("Foo_1.0.0_1.json"));
 
     @Override
     protected Serializer<Foo> getSerializer()
@@ -23,7 +23,6 @@ public class FooSerializerTest
     }
 
 }
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.Foo_1.0.0_1.xml-----------------------------------
-<?xml version="1.0"?>
-<foo>
-</foo>
+-----------------------------------com.cedarsoft.serialization.generator.test.Foo_1.0.0_1.json-----------------------------------
+{
+}

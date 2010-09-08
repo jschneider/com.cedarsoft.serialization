@@ -1,0 +1,37 @@
+-----------------------------------com.cedarsoft.serialization.generator.parsing.test.HouseSerializerVersionTest.java-----------------------------------
+
+package com.cedarsoft.serialization.generator.parsing.test;
+
+import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractJsonVersionTest2;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.VersionEntry;
+import org.junit.Assert;
+import org.junit.experimental.theories.DataPoint;
+
+public class HouseSerializerVersionTest
+    extends AbstractJsonVersionTest2 <House>
+{
+
+    @DataPoint
+    public final static VersionEntry ENTRY1 = HouseSerializerVersionTest.create(Version.valueOf(1, 0, 0), HouseSerializerVersionTest.class.getResource("House_1.0.0_1.json"));
+
+    @Override
+    protected Serializer<House> getSerializer()
+        throws Exception
+    {
+        return new HouseSerializer();
+    }
+
+    @Override
+    protected void verifyDeserialized(House deserialized, Version version)
+        throws Exception
+    {
+        Assert.assertEquals(deserialized.getRooms(), "daValue");
+        Assert.assertEquals(deserialized.getFrontDoor(), "daValue");
+    }
+
+}
+-----------------------------------com.cedarsoft.serialization.generator.parsing.test.House_1.0.0_1.json-----------------------------------
+{
+}

@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractNamespaceBasedGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
@@ -72,7 +71,7 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
    *
    * @param codeGenerator the code generator
    */
-  public JacksonGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public JacksonGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
     generators.add( new AsFieldGenerator( codeGenerator ) );
     generators.add( new ArrayElementGenerator( codeGenerator ) );

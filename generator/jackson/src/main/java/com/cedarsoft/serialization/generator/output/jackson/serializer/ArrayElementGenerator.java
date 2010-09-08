@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -59,7 +58,7 @@ public class ArrayElementGenerator extends AbstractDelegateGenerator {
   @NonNls
   public static final String METHOD_NAME_DESERIALIZE = "deserializeArray";
 
-  public ArrayElementGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public ArrayElementGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

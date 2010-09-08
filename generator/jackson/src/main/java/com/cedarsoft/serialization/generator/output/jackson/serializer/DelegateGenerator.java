@@ -36,7 +36,6 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -58,7 +57,7 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
   @NonNls
   public static final String METHOD_NAME_SERIALIZE = "serialize";
 
-  public DelegateGenerator( @NotNull CodeGenerator<XmlDecisionCallback> codeGenerator ) {
+  public DelegateGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 

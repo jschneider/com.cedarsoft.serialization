@@ -1,47 +1,47 @@
------------------------------------com.cedarsoft.serialization.generator.staxmate.test.FooSerializer.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.test.FooSerializer.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.staxmate.test;
+package com.cedarsoft.serialization.generator.test;
 
 import java.io.IOException;
 import java.util.List;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.codehaus.staxmate.out.SMOutputElement;
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 public class FooSerializer
-    extends AbstractStaxMateSerializer<Foo>
+    extends AbstractJacksonSerializer<Foo>
 {
 
     @NotNull
     @NonNls
-    public final static String ATTRIBUTE_WIDTH = "width";
+    public final static String PROPERTY_WIDTH = "width";
     @NotNull
     @NonNls
-    public final static String ATTRIBUTE_HEIGHT = "height";
+    public final static String PROPERTY_HEIGHT = "height";
     @NotNull
     @NonNls
-    public final static String ELEMENT_DESCRIPTION = "description";
+    public final static String PROPERTY_DESCRIPTION = "description";
     @NotNull
     @NonNls
-    public final static String ELEMENT_ANINT = "anInt";
+    public final static String PROPERTY_ANINT = "anInt";
     @NotNull
     @NonNls
-    public final static String ELEMENT_FLOATFIELD = "floatField";
+    public final static String PROPERTY_FLOATFIELD = "floatField";
     @NotNull
     @NonNls
-    public final static String ELEMENT_BARS = "bars";
+    public final static String PROPERTY_BARS = "bars";
     @NotNull
     @NonNls
-    public final static String ELEMENT_BAR = "bar";
+    public final static String PROPERTY_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {
-        super("foo", "http://cedarsoft.com/serialization/generator/staxmate/test/foo", VersionRange.from(1, 0, 0).to(1, 0, 0));
+        super("http://cedarsoft.com/serialization/generator/test/foo", VersionRange.from(1, 0, 0).to(1, 0, 0));
         add(barSerializer).responsibleFor(Bar.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         assert getDelegatesMappings().verify();
     }
@@ -49,56 +49,60 @@ public class FooSerializer
     @Override
     public void serialize(
         @NotNull
-        SMOutputElement serializeTo,
+        JsonGenerator serializeTo,
         @NotNull
         Foo object,
         @NotNull
         Version formatVersion)
-        throws IOException, XMLStreamException
+        throws IOException, JsonProcessingException
     {
+        verifyVersionReadable(formatVersion);
         //width
-        serializeTo.addAttribute(ATTRIBUTE_WIDTH, String.valueOf(object.getWidth()));
+        serializeTo.writeNumberField(PROPERTY_WIDTH, object.getWidth());
         //height
-        serializeTo.addAttribute(ATTRIBUTE_HEIGHT, String.valueOf(object.getHeight()));
+        serializeTo.writeNumberField(PROPERTY_HEIGHT, object.getHeight());
         //description
-        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_DESCRIPTION, object.getDescription());
+        serializeTo.writeStringField(PROPERTY_DESCRIPTION, object.getDescription());
         //anInt
-        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_ANINT, String.valueOf(object.getAnInt()));
+        serializeTo.writeNumberField(PROPERTY_ANINT, object.getAnInt());
         //floatField
-        serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_FLOATFIELD, String.valueOf(object.getFloatField()));
+        serializeTo.writeNumberField(PROPERTY_FLOATFIELD, object.getFloatField());
         //bars
-        serializeCollectionToElement(object.getBars(), Bar.class, ELEMENT_BARS, serializeTo, formatVersion);
+        serializeArray(object.getBars(), Bar.class, PROPERTY_BARS, serializeTo, formatVersion);
         //bar
-        serialize(object.getBar(), Bar.class, serializeTo.addElement(serializeTo.getNamespace(), ELEMENT_BAR), formatVersion);
+        serialize(object.getBar(), Bar.class, PROPERTY_BAR, serializeTo, formatVersion);
     }
 
     @Override
     @NotNull
     public Foo deserialize(
         @NotNull
-        XMLStreamReader deserializeFrom,
+        JsonParser deserializeFrom,
         @NotNull
         Version formatVersion)
-        throws VersionException, IOException, XMLStreamException
+        throws VersionException, IOException, JsonProcessingException
     {
         //width
-        double width = Double.parseDouble(deserializeFrom.getAttributeValue(null, ATTRIBUTE_WIDTH));
+        nextField(deserializeFrom, PROPERTY_WIDTH);
+        double width = deserializeFrom.getDoubleValue();
         //height
-        int height = Integer.parseInt(deserializeFrom.getAttributeValue(null, ATTRIBUTE_HEIGHT));
+        nextField(deserializeFrom, PROPERTY_HEIGHT);
+        int height = deserializeFrom.getIntValue();
         //description
-        String description = getChildText(deserializeFrom, ELEMENT_DESCRIPTION);
+        nextField(deserializeFrom, PROPERTY_DESCRIPTION);
+        String description = deserializeFrom.getText();
         //anInt
-        Integer anInt = Integer.parseInt(getChildText(deserializeFrom, ELEMENT_ANINT));
+        nextField(deserializeFrom, PROPERTY_ANINT);
+        Integer anInt = deserializeFrom.getIntValue();
         //floatField
-        float floatField = Float.parseFloat(getChildText(deserializeFrom, ELEMENT_FLOATFIELD));
+        nextField(deserializeFrom, PROPERTY_FLOATFIELD);
+        float floatField = deserializeFrom.getFloatValue();
         //bars
-        nextTag(deserializeFrom, ELEMENT_BARS);
-        List<? extends Bar> bars = deserializeCollection(deserializeFrom, Bar.class, formatVersion);
+        List<? extends Bar> bars = deserializeArray(Bar.class, PROPERTY_BARS, deserializeFrom, formatVersion);
         //bar
-        nextTag(deserializeFrom, ELEMENT_BAR);
-        Bar bar = deserialize(Bar.class, formatVersion, deserializeFrom);
+        Bar bar = deserialize(Bar.class, PROPERTY_BAR, formatVersion, deserializeFrom);
         //Finally closing element
-        closeTag(deserializeFrom);
+        closeObject(deserializeFrom);
         //Constructing the deserialized object
         Foo object = new Foo(description, width, height, anInt, bars);
         object.setFloatField(floatField);
