@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.JsonUtils;
 import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
@@ -42,8 +43,6 @@ import org.junit.experimental.theories.*;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  *
@@ -62,7 +61,7 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
 
   @Override
   protected void verifySerialized( @NotNull Entry<Room> entry, @NotNull byte[] serialized ) throws Exception {
-    assertEquals( new String( entry.getExpected() ), new String( serialized ) );
+    JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
   }
 
   @DataPoint
