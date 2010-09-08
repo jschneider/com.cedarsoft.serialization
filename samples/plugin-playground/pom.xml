@@ -20,6 +20,10 @@
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>stax-mate</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>jackson</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>com.cedarsoft.serialization</groupId>
