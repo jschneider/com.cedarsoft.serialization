@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.jackson.test;
 
 import com.cedarsoft.JsonUtils;
+import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
@@ -41,12 +42,7 @@ import org.junit.experimental.theories.*;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class EmailSerializerTest extends AbstractSerializerTest2<Email> {
-  @Override
-  protected void verifySerialized( @NotNull Entry<Email> entry, @NotNull byte[] serialized ) throws Exception {
-    JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
-  }
-
+public class EmailSerializerTest extends AbstractJsonSerializerTest2<Email> {
   @NotNull
   @Override
   protected Serializer<Email> getSerializer() throws Exception {

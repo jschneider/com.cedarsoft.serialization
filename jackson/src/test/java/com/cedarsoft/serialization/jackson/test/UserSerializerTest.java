@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.jackson.test;
 
 import com.cedarsoft.JsonUtils;
+import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
@@ -43,12 +44,7 @@ import java.util.Arrays;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class UserSerializerTest extends AbstractSerializerTest2<User> {
-  @Override
-  protected void verifySerialized( @NotNull Entry<User> entry, @NotNull byte[] serialized ) throws Exception {
-    JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
-  }
-
+public class UserSerializerTest extends AbstractJsonSerializerTest2 {
   @NotNull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
