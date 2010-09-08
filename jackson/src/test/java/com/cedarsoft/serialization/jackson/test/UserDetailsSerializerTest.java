@@ -31,73 +31,26 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import org.jetbrains.annotations.NonNls;
+import com.cedarsoft.crypt.Algorithm;
+import com.cedarsoft.crypt.HashCalculator;
+import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import org.junit.experimental.theories.*;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class User {
+public class UserDetailsSerializerTest extends AbstractJsonSerializerTest2<UserDetails> {
   @NotNull
-  @NonNls
-  private final String name;
-  @NotNull
-  private final List<Role> roles = new ArrayList<Role>();
-  @NotNull
-  private final List<Email> emails = new ArrayList<Email>();
-  @NotNull
-  private final UserDetails userDetails = new UserDetails();
-
-  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles ) {
-    this.name = name;
-    this.emails.addAll( emails );
-    this.roles.addAll( roles );
-  }
-
-  @NotNull
-  public UserDetails getUserDetails() {
-    return userDetails;
-  }
-
-  @NotNull
-  public String getName() {
-    return name;
-  }
-
-  @NotNull
-  public List<? extends Role> getRoles() {
-    return Collections.unmodifiableList( roles );
-  }
-
-  @NotNull
-  public List<? extends Email> getEmails() {
-    return Collections.unmodifiableList( emails );
-  }
-
   @Override
-  public boolean equals( Object o ) {
-    if ( this == o ) return true;
-    if ( o == null || getClass() != o.getClass() ) return false;
-
-    User user = ( User ) o;
-
-    if ( !emails.equals( user.emails ) ) return false;
-    if ( !name.equals( user.name ) ) return false;
-    if ( !roles.equals( user.roles ) ) return false;
-
-    return true;
+  protected Serializer<UserDetails> getSerializer() throws Exception {
+    return new UserDetailsSerializer();
   }
 
-  @Override
-  public int hashCode() {
-    int result = name.hashCode();
-    result = 31 * result + roles.hashCode();
-    result = 31 * result + emails.hashCode();
-    return result;
+  @DataPoint
+  public static Entry<?> json() {
+    return create( new UserDetails( 73511399L, 73511333L, HashCalculator.calculate( Algorithm.SHA512, "thePass" ).getValue() ), UserDetailsSerializerTest.class.getResource( "userDetails.json" ) );
   }
 }
