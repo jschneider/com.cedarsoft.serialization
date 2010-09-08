@@ -90,8 +90,8 @@
 
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-lgpl</artifactId>
-      <version>1.5.6</version>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.6.0</version>
     </dependency>
 
     <dependency>
