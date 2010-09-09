@@ -59,7 +59,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
-  public static final String PROPERTY_NS = "@ns";
+  public static final String PROPERTY_NS = "@type";
 
   protected AbstractJacksonSerializer( @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
     super( nameSpaceUriBase, formatVersionRange );

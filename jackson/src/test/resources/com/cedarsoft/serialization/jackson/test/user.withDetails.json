@@ -1,5 +1,5 @@
 {
-  "@ns" : "http://cedarsoft.com/test/user/1.0.0",
+  "@type" : "http://cedarsoft.com/test/user/1.0.0",
   "id" : "Max Mustermann",
   "emails" : [
     {
