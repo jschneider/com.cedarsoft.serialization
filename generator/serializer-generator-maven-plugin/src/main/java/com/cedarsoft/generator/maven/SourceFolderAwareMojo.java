@@ -31,12 +31,15 @@
 
 package com.cedarsoft.generator.maven;
 
+import com.cedarsoft.codegen.parser.Classpath;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -86,13 +89,33 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
    */
   protected Prompter prompter;
 
+
+  @SuppressWarnings( "unchecked" )
+  @NotNull
+  protected List<? extends String> getCompileClasspathElements() throws DependencyResolutionRequiredException {
+    List elements = getProject().getCompileClasspathElements();
+    if ( elements == null ) {
+      return Collections.emptyList();
+    }
+    return elements;
+  }
+
+  @SuppressWarnings( "unchecked" )
+  protected List<? extends String> getTestCompileClasspathElements() throws DependencyResolutionRequiredException {
+    List elements = getProject().getTestClasspathElements();
+    if ( elements == null ) {
+      return Collections.emptyList();
+    }
+    return elements;
+  }
+
   protected Prompter getPrompter() {
     return prompter;
   }
 
   @NotNull
   protected File getTestSourceRoot() throws MojoExecutionException {
-    if ( testSourceRoots.isEmpty() ) {
+    if ( testSourceRoots == null || testSourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No test compile source roots available" );
     }
     return new File( testSourceRoots.get( 0 ) );
@@ -100,7 +123,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
 
   @NotNull
   protected File getSourceRoot() throws MojoExecutionException {
-    if ( sourceRoots.isEmpty() ) {
+    if ( sourceRoots == null || sourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No compile source roots available" );
     }
     return new File( sourceRoots.get( 0 ) );
@@ -108,7 +131,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
 
   @NotNull
   protected File getResourcesRoot() throws MojoExecutionException {
-    if ( resources.isEmpty() ) {
+    if ( resources == null || resources.isEmpty() ) {
       throw new MojoExecutionException( "No resource roots available" );
     }
     return new File( resources.get( 0 ).getDirectory() );
@@ -116,9 +139,43 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
 
   @NotNull
   protected File getTestResourcesRoot() throws MojoExecutionException {
-    if ( testResources.isEmpty() ) {
+    if ( testResources == null || testResources.isEmpty() ) {
       throw new MojoExecutionException( "No test resource roots available" );
     }
     return new File( testResources.get( 0 ).getDirectory() );
+  }
+
+  @NotNull
+  protected Classpath buildClassPath() throws MojoExecutionException {
+    Classpath classpath = new Classpath();
+
+    try {
+      for ( String classpathElement : getCompileClasspathElements() ) {
+        File element = new File( classpathElement );
+        getLog().debug( "Adding classpath element: " + element.getAbsolutePath() );
+        classpath.add( element );
+      }
+    } catch ( DependencyResolutionRequiredException e ) {
+      throw new MojoExecutionException( e.getMessage(), e );
+    }
+
+    return classpath;
+  }
+
+  @NotNull
+  protected Classpath buildTestClassPath() throws MojoExecutionException {
+    Classpath classpath = new Classpath();
+
+    try {
+      for ( String classpathElement : getTestCompileClasspathElements() ) {
+        File element = new File( classpathElement );
+        getLog().debug( "Adding classpath element: " + element.getAbsolutePath() );
+        classpath.add( element );
+      }
+    } catch ( DependencyResolutionRequiredException e ) {
+      throw new MojoExecutionException( e.getMessage(), e );
+    }
+
+    return classpath;
   }
 }

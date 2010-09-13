@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.DecisionCallback;
 import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
@@ -77,6 +78,10 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
       }
 
       for ( ClassDeclaration classDeclaration : result.getClassDeclarations() ) {
+        if ( TypeUtils.isInner( classDeclaration ) ) {
+          continue;
+        }
+
         DomainObjectDescriptor descriptor = new DomainObjectDescriptorFactory( classDeclaration ).create();
         generate( descriptor, configuration, statusPrinter );
       }

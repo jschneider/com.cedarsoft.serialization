@@ -33,6 +33,7 @@ package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.codegen.AbstractGenerator;
 import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.google.common.collect.Sets;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -49,13 +50,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Generate a Serializer and the corresponding unit tests.
- * <p/>
- * All files are generated within <i>target/generated-sources</i>.
- * So no source files are overwritten by this goal.
- */
-public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
+public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
   /**
    * The pattern path to the domain classes the serializers (and tests) are generated for.
    *
@@ -68,22 +63,22 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
    * A list of exclusion filters for the generator.
    * The default excludes contain:
    * <ul>
-   * <li>**&#47;*Serializer.java</li>
-   * <li>**&#47;*Test.java</li>
+   * <li>**&#47*Test.java/li>
+   * <li>**&#47;*Jaxb*.java</li>
    * </ul>
    * <p/>
    * Those excludes are useful to avoid recursive creation of serializers and tests.
    *
    * @parameter
    */
-  protected Set<String> excludes = new HashSet<String>();
+  protected Set<String> excludes = Sets.newHashSet( "**/*Test.java", "**/*Jaxb*.java" );
 
   /**
-   * Whether to create the serializer
+   * Whether to create the production classes
    *
-   * @parameter expression="${createSerializers}"
+   * @parameter expression="${createClasses}"
    */
-  protected boolean createSerializers = true;
+  protected boolean createClasses = true;
   /**
    * Whether to create the tests
    *
@@ -91,12 +86,15 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
    */
   protected boolean createTests = true;
 
+  protected AbstractGenerateMojo() {
+  }
+
   protected AbstractGenerateMojo( @NotNull @NonNls Collection<? extends String> defaultExcludes ) {
     this.excludes.addAll( defaultExcludes );
   }
 
-  protected boolean createSerializers() {
-    return createSerializers;
+  protected boolean createClasses() {
+    return createClasses;
   }
 
   protected boolean createTests() {
@@ -115,7 +113,7 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    getLog().info( "Serializer Generator Mojo" );
+    getLog().info( "Generator Mojo" );
     getLog().info( "-------------------------" );
 
     if ( getDomainSourceFilePattern() == null ) {
@@ -124,8 +122,11 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
 
     prepareOutputDirectories();
 
+    getLog().debug( "Sources dir: " + getSourceRoot().getAbsolutePath() );
     getLog().debug( "Output Dir: " + getOutputDirectory().getAbsolutePath() );
+    getLog().debug( "Resources output Dir: " + getResourcesOutputDirectory().getAbsolutePath() );
     getLog().debug( "Test output Dir: " + getTestOutputDirectory().getAbsolutePath() );
+    getLog().debug( "Test resources output Dir: " + getTestResourcesOutputDirectory().getAbsolutePath() );
 
     PrintWriter printWriter = new PrintWriter( new LogWriter( getLog() ) );
     try {
@@ -138,7 +139,7 @@ public abstract class AbstractGenerateMojo extends OutputFoldersAwareMojo {
       for ( File domainClassSourceFile : domainSourceFiles ) {
         getLog().info( "\t" + domainClassSourceFile.getPath() );
       }
-      GeneratorConfiguration configuration = new GeneratorConfiguration( domainSourceFiles, getOutputDirectory(), getResourcesOutputDirectory(), getTestOutputDirectory(), getTestResourcesOutputDirectory(), null, printWriter, GeneratorConfiguration.CreationMode.get( createSerializers(), createTests() ) );
+      GeneratorConfiguration configuration = new GeneratorConfiguration( domainSourceFiles, getOutputDirectory(), getResourcesOutputDirectory(), getTestOutputDirectory(), getTestResourcesOutputDirectory(), buildClassPath(), printWriter, GeneratorConfiguration.CreationMode.get( createClasses(), createTests() ) );
       createGenerator().run( configuration );
     } catch ( Exception e ) {
       throw new MojoExecutionException( "Generation failed due to: " + e.getMessage(), e );
