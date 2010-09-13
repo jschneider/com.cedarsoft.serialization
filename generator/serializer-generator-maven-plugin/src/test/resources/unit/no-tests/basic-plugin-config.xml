@@ -16,7 +16,11 @@
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
 
           <createTests>false</createTests>
-          <createSerializers>true</createSerializers>
+          <createClasses>true</createClasses>
+
+          <sourceRoots>
+            <sourceRoot>${basedir}/src/test/resources</sourceRoot>
+          </sourceRoots>
         </configuration>
       </plugin>
     </plugins>

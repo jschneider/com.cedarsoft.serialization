@@ -15,9 +15,13 @@
           <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
 
           <createTests>true</createTests>
-          <createSerializers>false</createSerializers>
+          <createClasses>false</createClasses>
 
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
+
+          <sourceRoots>
+            <sourceRoot>${basedir}/src/test/resources</sourceRoot>
+          </sourceRoots>
         </configuration>
       </plugin>
 

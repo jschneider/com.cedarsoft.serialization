@@ -60,7 +60,7 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
   protected String dialect = Target.STAX_MATE.name();
 
   public SerializerGeneratorMojo() {
-    super( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
+    super( Arrays.asList( "**/*Serializer.java" ) );
   }
 
   @NotNull
@@ -79,12 +79,14 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
       @Override
       public AbstractGenerator create() {
         return new StaxMateGenerator();
-      }},
+      }
+    },
     JACKSON {
       @Override
       public AbstractGenerator create() {
         return new JacksonGenerator();
-      }};
+      }
+    };
 
     public abstract AbstractGenerator create();
   }

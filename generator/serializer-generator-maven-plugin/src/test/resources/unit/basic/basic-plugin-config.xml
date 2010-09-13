@@ -14,6 +14,10 @@
           <testResourcesOutputDirectory>${basedir}/target/test/unit/target/test-resources-out</testResourcesOutputDirectory>
           <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
+
+          <sourceRoots>
+            <sourceRoot>${basedir}/src/test/resources</sourceRoot>
+          </sourceRoots>
         </configuration>
       </plugin>
     </plugins>

@@ -71,7 +71,7 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
    *
    * @parameter
    */
-  protected Set<String> excludes = Sets.newHashSet( "**/*Test.java", "**/*Jaxb*.java" );
+  protected Set<String> excludes = Sets.newHashSet( "**/*Test.java" );
 
   /**
    * Whether to create the production classes
