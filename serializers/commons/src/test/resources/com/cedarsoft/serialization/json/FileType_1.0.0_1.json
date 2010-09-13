@@ -1,0 +1,15 @@
+{
+  "extensions" : [
+    {
+      "delimiter" : ".",
+      "extension" : "jpg"
+    },
+    {
+      "delimiter" : ".",
+      "extension" : "ccx"
+    }
+  ],
+  "id" : "id",
+  "dependentType" : true,
+  "contentType" : "contentType"
+}
