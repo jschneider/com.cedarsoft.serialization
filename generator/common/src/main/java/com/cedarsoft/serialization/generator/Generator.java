@@ -71,7 +71,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
     public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       PrintStream statusPrinter = new PrintStream( new WriterOutputStream( configuration.getLogOut() ) );
 
-      Result result = Parser.parse( null, configuration.getDomainSourceFiles() );
+      Result result = Parser.parse( configuration.getClasspath(), configuration.getDomainSourceFiles() );
 
       if ( result.getClassDeclarations().isEmpty() ) {
         throw new IllegalStateException( "No class declarations found" );
