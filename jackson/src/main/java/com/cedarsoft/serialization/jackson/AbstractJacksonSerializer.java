@@ -107,21 +107,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       if ( includeNameSpace() ) {
         nextField( parser, PROPERTY_NS );
         version = parseAndVerifyNameSpace( parser.getText() );
-      }else{
+      } else {
         version = getFormatVersion();
       }
 
       T deserialized = deserialize( parser, version );
 
-      if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
-        throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
-      }
-
-      if ( parser.nextToken() != null ) {
-        throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
-      }
-
-      parser.close();
+      closeParser( parser );
 
       return deserialized;
     } catch ( InvalidNamespaceException e ) {
@@ -129,7 +121,19 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
-  protected void nextField( @NotNull JsonParser parser, @NotNull @NonNls String fieldName ) throws IOException {
+  public static void closeParser( @NotNull JsonParser parser ) throws IOException {
+    if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
+      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+    }
+
+    if ( parser.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+    }
+
+    parser.close();
+  }
+
+  public static void nextField( @NotNull JsonParser parser, @NotNull @NonNls String fieldName ) throws IOException {
     nextToken( parser, JsonToken.FIELD_NAME );
     String currentName = parser.getCurrentName();
 
@@ -140,14 +144,14 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     parser.nextToken();
   }
 
-  protected void nextToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws IOException {
+  public static void nextToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws IOException {
     JsonToken current = parser.nextToken();
     if ( current != expected ) {
       throw new JsonParseException( "Invalid token. Expected <" + expected + "> but got <" + current + ">", parser.getCurrentLocation() );
     }
   }
 
-  protected void closeObject( @NotNull JsonParser deserializeFrom ) throws IOException {
+  public static void closeObject( @NotNull JsonParser deserializeFrom ) throws IOException {
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
   }
 
