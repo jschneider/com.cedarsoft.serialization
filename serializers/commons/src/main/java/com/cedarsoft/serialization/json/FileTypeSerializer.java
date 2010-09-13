@@ -66,34 +66,24 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   public void serialize( @NotNull JsonGenerator serializeTo, @NotNull FileType object, @NotNull Version formatVersion )
     throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
-    //extensions
-    serializeArray( object.getExtensions(), Extension.class, PROPERTY_EXTENSIONS, serializeTo, formatVersion );
-    //id
     serializeTo.writeStringField( PROPERTY_ID, object.getId() );
-    //dependentType
     serializeTo.writeBooleanField( PROPERTY_DEPENDENTTYPE, object.isDependentType() );
-    //contentType
     serializeTo.writeStringField( PROPERTY_CONTENTTYPE, object.getContentType() );
+    serializeArray( object.getExtensions(), Extension.class, PROPERTY_EXTENSIONS, serializeTo, formatVersion );
   }
 
   @NotNull
   @Override
   public FileType deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
-    //extensions
-    List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
-    //id
     nextField( deserializeFrom, PROPERTY_ID );
     String id = deserializeFrom.getText();
-    //dependentType
     nextField( deserializeFrom, PROPERTY_DEPENDENTTYPE );
     boolean dependentType = deserializeFrom.getBooleanValue();
-    //contentType
     nextField( deserializeFrom, PROPERTY_CONTENTTYPE );
     String contentType = deserializeFrom.getText();
-    //Finally closing element
+    List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
     closeObject( deserializeFrom );
-    //Constructing the deserialized object
     return new FileType( id, contentType, dependentType, extensions );
   }
 

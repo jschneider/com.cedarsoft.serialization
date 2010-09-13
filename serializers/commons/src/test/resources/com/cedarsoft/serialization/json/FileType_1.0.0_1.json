@@ -1,4 +1,7 @@
 {
+  "id" : "id",
+  "dependentType" : true,
+  "contentType" : "contentType",
   "extensions" : [
     {
       "delimiter" : ".",
@@ -8,8 +11,5 @@
       "delimiter" : ".",
       "extension" : "ccx"
     }
-  ],
-  "id" : "id",
-  "dependentType" : true,
-  "contentType" : "contentType"
+  ]
 }
