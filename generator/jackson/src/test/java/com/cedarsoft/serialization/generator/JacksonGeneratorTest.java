@@ -131,7 +131,7 @@ public class JacksonGeneratorTest {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ) );
-    Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.StaxGeneratorRunner();
+    Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.JacksonGeneratorRunner();
     runner.generate( configuration );
 
 
@@ -148,7 +148,7 @@ public class JacksonGeneratorTest {
     File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
-    Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.StaxGeneratorRunner();
+    Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.JacksonGeneratorRunner();
     runner.generate( configuration );
 
     File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/test/FooSerializer.java" );

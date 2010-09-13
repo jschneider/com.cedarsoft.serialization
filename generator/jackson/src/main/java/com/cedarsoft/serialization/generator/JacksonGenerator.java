@@ -51,10 +51,10 @@ public class JacksonGenerator extends Generator {
   @NotNull
   @Override
   protected String getRunnerClassName() {
-    return "com.cedarsoft.serialization.generator.JacksonGenerator$StaxGeneratorRunner";
+    return "com.cedarsoft.serialization.generator.JacksonGenerator$JacksonGeneratorRunner";
   }
 
-  public static class StaxGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
+  public static class JacksonGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
     @NotNull
     @Override
     protected XmlDecisionCallback createDecisionCallback() {
