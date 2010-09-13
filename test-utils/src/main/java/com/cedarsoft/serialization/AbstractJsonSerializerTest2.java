@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] expectedJson ) throws Exception {
-    String expectedWithNamespace = addNameSpace( (( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) getSerializer()).getNameSpaceUri(), expectedJson );
+    String expectedWithNamespace = addNameSpace( ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) getSerializer() ).getNameSpaceUri(), expectedJson );
     JsonUtils.assertJsonEquals( expectedWithNamespace, new String( current ) );
   }
 
@@ -63,10 +63,9 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
   @NonNls
   public static String addNameSpace( @NotNull @NonNls String nameSpaceUri, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
     JsonNode tree = new ObjectMapper().readTree( new String( xmlBytes ) );
-    ( ( ObjectNode ) tree ).put( "@type", nameSpaceUri );
 
     Map<String, JsonNode> newProps = new LinkedHashMap<String, JsonNode>();
-    newProps.put( "@type", new TextNode( nameSpaceUri ) );
+    newProps.put( "@ns", new TextNode( nameSpaceUri ) );
 
     Iterator<Map.Entry<String, JsonNode>> nodeIterator = ( ( ObjectNode ) tree ).getFields();
     while ( nodeIterator.hasNext() ) {
