@@ -54,6 +54,7 @@ import java.util.List;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ * @param <T> the type
  */
 public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   @NonNls
