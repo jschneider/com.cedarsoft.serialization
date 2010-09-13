@@ -74,24 +74,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
 
     generator.writeStartObject();
 
-    if ( includeNameSpace() ) {
-      String nameSpace = getNameSpaceUri();
-      generator.writeStringField( PROPERTY_NS, nameSpace );
-    }
+    String nameSpace = getNameSpaceUri();
+    generator.writeStringField( PROPERTY_NS, nameSpace );
 
     serialize( generator, object, getFormatVersion() );
     generator.writeEndObject();
 
     generator.close();
-  }
-
-  /**
-   * May be overridden to skip inclusion of namespace
-   *
-   * @return whether to include the namespace (must be a constant value that will never ever change for this serializer)!
-   */
-  protected boolean includeNameSpace() {
-    return true;
   }
 
   @NotNull
@@ -103,13 +92,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       JsonParser parser = jsonFactory.createJsonParser( in );
       nextToken( parser, JsonToken.START_OBJECT );
 
-      Version version;
-      if ( includeNameSpace() ) {
-        nextField( parser, PROPERTY_NS );
-        version = parseAndVerifyNameSpace( parser.getText() );
-      } else {
-        version = getFormatVersion();
-      }
+      nextField( parser, PROPERTY_NS );
+      Version version = parseAndVerifyNameSpace( parser.getText() );
 
       T deserialized = deserialize( parser, version );
 
