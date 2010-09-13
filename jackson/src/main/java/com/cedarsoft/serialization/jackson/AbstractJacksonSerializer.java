@@ -53,8 +53,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  * @param <T> the type
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   @NonNls
@@ -73,13 +73,25 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
     generator.writeStartObject();
-    String nameSpace = getNameSpaceUri();
-    generator.writeStringField( PROPERTY_NS, nameSpace );
+
+    if ( includeNameSpace() ) {
+      String nameSpace = getNameSpaceUri();
+      generator.writeStringField( PROPERTY_NS, nameSpace );
+    }
 
     serialize( generator, object, getFormatVersion() );
     generator.writeEndObject();
 
     generator.close();
+  }
+
+  /**
+   * May be overridden to skip inclusion of namespace
+   *
+   * @return whether to include the namespace (must be a constant value that will never ever change for this serializer)!
+   */
+  protected boolean includeNameSpace() {
+    return true;
   }
 
   @NotNull
@@ -91,8 +103,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       JsonParser parser = jsonFactory.createJsonParser( in );
       nextToken( parser, JsonToken.START_OBJECT );
 
-      nextField( parser, PROPERTY_NS );
-      Version version = parseAndVerifyNameSpace( parser.getText() );
+      Version version;
+      if ( includeNameSpace() ) {
+        nextField( parser, PROPERTY_NS );
+        version = parseAndVerifyNameSpace( parser.getText() );
+      }else{
+        version = getFormatVersion();
+      }
 
       T deserialized = deserialize( parser, version );
 
