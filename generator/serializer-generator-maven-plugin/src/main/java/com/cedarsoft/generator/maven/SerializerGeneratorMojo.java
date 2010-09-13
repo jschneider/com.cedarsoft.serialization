@@ -57,21 +57,21 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
    *
    * @parameter expression="${dialect}"
    */
-  protected String target = Target.STAX_MATE.name();
+  protected String dialect = Target.STAX_MATE.name();
 
   public SerializerGeneratorMojo() {
     super( Arrays.asList( "**/*Serializer.java", "**/*Test*.java" ) );
   }
 
   @NotNull
-  public Target getTarget() {
-    return Target.valueOf( target );
+  public Target getDialect() {
+    return Target.valueOf( dialect );
   }
 
   @NotNull
   @Override
   protected AbstractGenerator createGenerator() {
-    return getTarget().create();
+    return getDialect().create();
   }
 
   public enum Target {

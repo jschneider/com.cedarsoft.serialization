@@ -72,7 +72,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
     mojo.execute();
 
-    assertEquals( SerializerGeneratorMojo.Target.STAX_MATE, mojo.getTarget() );
+    assertEquals( SerializerGeneratorMojo.Target.STAX_MATE, mojo.getDialect() );
 
     assertSerializers( mojo );
     assertTests( mojo );
@@ -87,7 +87,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     assertTrue( mojo.testOutputDirectory.getAbsolutePath(), mojo.testOutputDirectory.getAbsolutePath().endsWith( "target/test/unit/target/test-out" ) );
     mojo.execute();
 
-    assertEquals( SerializerGeneratorMojo.Target.JACKSON, mojo.getTarget() );
+    assertEquals( SerializerGeneratorMojo.Target.JACKSON, mojo.getDialect() );
 
     assertSerializers( mojo );
     assertTestsJson( mojo );

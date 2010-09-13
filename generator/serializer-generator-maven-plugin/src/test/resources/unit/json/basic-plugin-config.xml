@@ -13,7 +13,7 @@
           <testOutputDirectory>${basedir}/target/test/unit/target/test-out</testOutputDirectory>
           <testResourcesOutputDirectory>${basedir}/target/test/unit/target/test-resources-out</testResourcesOutputDirectory>
           <domainSourceFilePattern>src/test/resources/unit/basic/DaDomainObject.java</domainSourceFilePattern>
-          <target>JACKSON</target>
+          <dialect>JACKSON</dialect>
           <projectArtifact implementation="org.apache.maven.plugin.testing.stubs.ArtifactStub" />
         </configuration>
       </plugin>
