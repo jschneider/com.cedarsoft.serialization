@@ -39,8 +39,7 @@ import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
-public class FileTypeSerializerTest
-  extends AbstractJsonSerializerTest2<FileType> {
+public class FileTypeSerializerTest extends AbstractJsonSerializerTest2<FileType> {
 
   @DataPoint
   public static final Entry<? extends FileType> ENTRY1 = AbstractSerializerTest2.create(
