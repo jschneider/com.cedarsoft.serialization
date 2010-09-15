@@ -67,9 +67,6 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
 
-    serializeTo.writeArrayFieldStart( "daArray" );
-    serializeTo.writeString( "daString" );
-
     serializeTo.writeStringField( PROPERTY_ID, object.getId() );
     serializeTo.writeBooleanField( PROPERTY_DEPENDENTTYPE, object.isDependentType() );
     serializeTo.writeStringField( PROPERTY_CONTENTTYPE, object.getContentType() );
