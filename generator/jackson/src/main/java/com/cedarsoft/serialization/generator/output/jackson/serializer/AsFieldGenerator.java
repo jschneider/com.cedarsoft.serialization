@@ -127,6 +127,10 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
       return deserializeFrom.invoke( "getFloatValue" );
     }
 
+    if ( fieldInfo.isType( Long.TYPE ) || fieldInfo.isType( Long.class ) ) {
+      return deserializeFrom.invoke( "getLongValue" );
+    }
+
     throw new IllegalArgumentException( "Invalid field info " + fieldInfo );
   }
 
