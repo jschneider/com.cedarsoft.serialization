@@ -47,7 +47,7 @@ import java.io.ByteArrayOutputStream;
 /**
  *
  */
-public class JacksonStringSerializerTest extends AbstractJsonSerializerTest2<String> {
+public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   @Override
   protected boolean addNameSpace() {
     return false;
@@ -55,8 +55,8 @@ public class JacksonStringSerializerTest extends AbstractJsonSerializerTest2<Str
 
   @NotNull
   @Override
-  protected JacksonStringSerializer getSerializer() throws Exception {
-    return new JacksonStringSerializer();
+  protected StringSerializer getSerializer() throws Exception {
+    return new StringSerializer();
   }
 
   @Test

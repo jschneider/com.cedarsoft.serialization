@@ -44,8 +44,8 @@ import java.io.IOException;
 /**
  *
  */
-public class JacksonStringSerializer extends AbstractJacksonSerializer<String> {
-  public JacksonStringSerializer() {
+public class StringSerializer extends AbstractJacksonSerializer<String> {
+  public StringSerializer() {
     super( "http://sun.com/java.lang.string", VersionRange.single( 1, 0, 0 ) );
   }
 
