@@ -1,12 +1,8 @@
 {
   "id" : "Max Mustermann",
   "emails" : [
-    {
-      "$" : "test@test.de"
-    },
-    {
-      "$" : "other@test.de"
-    }
+    "test@test.de",
+    "other@test.de"
   ],
   "roles" : [
     {

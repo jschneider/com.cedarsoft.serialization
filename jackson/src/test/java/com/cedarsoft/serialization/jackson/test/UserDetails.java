@@ -103,4 +103,13 @@ public class UserDetails {
     result = 31 * result + Arrays.hashCode( passwordHash );
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "UserDetails{" +
+      "registrationDate=" + registrationDate +
+      ", lastLogin=" + lastLogin +
+      ", passwordHash=" + passwordHash +
+      '}';
+  }
 }

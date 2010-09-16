@@ -31,9 +31,7 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.JsonUtils;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +49,11 @@ public class EmailSerializerTest extends AbstractJsonSerializerTest2<Email> {
 
   @DataPoint
   public static Entry<?> json() {
-    return create( new Email( "test@test.de" ), "{\"$\":\"test@test.de\"}".getBytes() );
+    return create( new Email( "test@test.de" ), "\"test@test.de\"".getBytes() );
+  }
+
+  @Override
+  protected boolean addNameSpace() {
+    return false;
   }
 }

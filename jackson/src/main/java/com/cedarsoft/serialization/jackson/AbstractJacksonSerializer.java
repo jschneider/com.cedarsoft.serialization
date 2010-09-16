@@ -56,7 +56,7 @@ import java.util.List;
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
@@ -72,13 +72,17 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
 
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
-    generator.writeStartObject();
-
-    String nameSpace = getNameSpaceUri();
-    generator.writeStringField( PROPERTY_NS, nameSpace );
+    if ( isObjectType() ) {
+      generator.writeStartObject();
+      String nameSpace = getNameSpaceUri();
+      generator.writeStringField( PROPERTY_NS, nameSpace );
+    }
 
     serialize( generator, object, getFormatVersion() );
-    generator.writeEndObject();
+
+    if ( isObjectType() ) {
+      generator.writeEndObject();
+    }
 
     generator.close();
   }
@@ -90,14 +94,25 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
 
       JsonParser parser = jsonFactory.createJsonParser( in );
-      nextToken( parser, JsonToken.START_OBJECT );
 
-      nextField( parser, PROPERTY_NS );
-      Version version = parseAndVerifyNameSpace( parser.getText() );
+      Version version;
+      if ( isObjectType() ) {
+        nextToken( parser, JsonToken.START_OBJECT );
+
+        nextField( parser, PROPERTY_NS );
+        version = parseAndVerifyNameSpace( parser.getText() );
+      } else {
+        parser.nextToken();
+        version = getFormatVersion();
+      }
 
       T deserialized = deserialize( parser, version );
 
-      closeParser( parser );
+      if ( isObjectType() ) {
+        closeParserInObject( parser );
+      } else {
+        ensureParserClosed( parser );
+      }
 
       return deserialized;
     } catch ( InvalidNamespaceException e ) {
@@ -105,11 +120,14 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
-  public static void closeParser( @NotNull JsonParser parser ) throws IOException {
+  public static void closeParserInObject( @NotNull JsonParser parser ) throws IOException {
     if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
       throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
     }
+    ensureParserClosed( parser );
+  }
 
+  private static void ensureParserClosed( @NotNull JsonParser parser ) throws IOException {
     if ( parser.nextToken() != null ) {
       throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
     }
@@ -140,11 +158,20 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   }
 
   protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
+    JacksonSerializer<? super T, JsonGenerator, JsonParser, JsonProcessingException> serializer = ( JacksonSerializer<? super T, JsonGenerator, JsonParser, JsonProcessingException> ) delegatesMappings.getSerializer( type );
+    Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
+
     serializeTo.writeArrayFieldStart( propertyName );
     for ( T element : elements ) {
-      serializeTo.writeStartObject();
-      serialize( element, type, serializeTo, formatVersion );
-      serializeTo.writeEndObject();
+      if ( serializer.isObjectType() ) {
+        serializeTo.writeStartObject();
+      }
+
+      serializer.serialize( serializeTo, element, delegateVersion );
+
+      if ( serializer.isObjectType() ) {
+        serializeTo.writeEndObject();
+      }
     }
     serializeTo.writeEndArray();
   }
@@ -169,5 +196,10 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   protected <T> T deserialize( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull Version formatVersion, @NotNull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
     nextField( deserializeFrom, propertyName );
     return deserialize( type, formatVersion, deserializeFrom );
+  }
+
+  @Override
+  public boolean isObjectType() {
+    return true;
   }
 }

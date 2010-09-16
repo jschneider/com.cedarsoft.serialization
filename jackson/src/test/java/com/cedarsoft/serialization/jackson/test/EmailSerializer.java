@@ -53,17 +53,17 @@ public class EmailSerializer extends AbstractJacksonSerializer<Email> {
 
   @Override
   public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Email object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    serializeTo.writeStringField( FIELD_NAME_DEFAULT_TEXT, object.getMail() );
+    serializeTo.writeString( object.getMail() );
   }
 
   @NotNull
   @Override
   public Email deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
-    try {
-      return new Email( deserializeFrom.getText() );
-    } finally {
-      nextToken( deserializeFrom, JsonToken.END_OBJECT );
-    }
+    return new Email( deserializeFrom.getText() );
+  }
+
+  @Override
+  public boolean isObjectType() {
+    return false;
   }
 }

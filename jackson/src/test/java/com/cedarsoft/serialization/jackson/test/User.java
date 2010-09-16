@@ -105,4 +105,14 @@ public class User {
     result = 31 * result + emails.hashCode();
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "name='" + name + '\'' +
+      ", roles=" + roles +
+      ", emails=" + emails +
+      ", userDetails=" + userDetails +
+      '}';
+  }
 }

@@ -73,4 +73,12 @@ public class Role {
   public int hashCode() {
     return id;
   }
+
+  @Override
+  public String toString() {
+    return "Role{" +
+      "id=" + id +
+      ", description='" + description + '\'' +
+      '}';
+  }
 }
