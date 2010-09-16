@@ -57,14 +57,23 @@ import java.io.IOException;
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] exectedXml ) throws Exception {
-    String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
-    AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
+    if ( addNameSpace() ) {
+      String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
+      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
+    } else {
+      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current ) );
+    }
   }
 
   @Override
   protected void verifySerialized( @NotNull Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
     verify( serialized, entry.getExpected() );
   }
+
+  protected boolean addNameSpace() {
+    return true;
+  }
+
 
   @NotNull
   @NonNls
