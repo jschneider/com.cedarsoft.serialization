@@ -91,7 +91,7 @@ public abstract class AbstractSerializerTest2<T> {
    * @param original     the original
    */
   protected void verifyDeserialized( @NotNull T deserialized, @NotNull T original ) {
-    assertEquals( deserialized, original );
+    assertEquals( original, deserialized );
     assertThat( deserialized, is( new ReflectionEquals( original ) ) );
   }
 
