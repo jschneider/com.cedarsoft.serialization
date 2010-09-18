@@ -159,7 +159,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
-  private static void ensureParserClosed( @NotNull JsonParser parser ) throws IOException {
+  public static void ensureParserClosed( @NotNull JsonParser parser ) throws IOException {
     if ( parser.nextToken() != null ) {
       throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
     }

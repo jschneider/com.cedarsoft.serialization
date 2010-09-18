@@ -35,12 +35,17 @@ import com.cedarsoft.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import static org.junit.Assert.*;
+
 
 /**
  *
@@ -55,6 +60,17 @@ public class JacksonTest {
     jsonFactory = JacksonSupport.getJsonFactory();
     out = new ByteArrayOutputStream();
     generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+  }
+
+  @Test
+  public void testNull() throws Exception {
+    generator.writeNull();
+    verifyGenerator( "null" );
+
+    JsonParser parser = jsonFactory.createJsonParser( "null" );
+    assertEquals( null, parser.getCurrentToken() );
+    assertEquals( JsonToken.VALUE_NULL, parser.nextToken() );
+    assertEquals( null, parser.nextToken() );
   }
 
   @Test
