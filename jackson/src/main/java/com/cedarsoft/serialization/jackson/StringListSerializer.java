@@ -31,55 +31,52 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
+import com.cedarsoft.VersionException;
+import com.cedarsoft.VersionRange;
 import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.JsonToken;
 import org.jetbrains.annotations.NotNull;
-import org.junit.*;
-import org.junit.experimental.theories.*;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-
-import static org.fest.assertions.Assertions.assertThat;
+import java.util.List;
 
 /**
  *
  */
-public class StringCollectionSerializerTest extends AbstractJsonSerializerTest2<Collection<? extends String>> {
+public class StringListSerializer extends AbstractJacksonSerializer<List<? extends String>> {
+  public StringListSerializer() {
+    super( "http://sun.com/java.lang.string", VersionRange.single( 1, 0, 0 ) );
+  }
+
   @Override
-  protected boolean addNameSpace() {
-    return false;
+  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull List<? extends String> object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    serializeTo.writeStartArray();
+
+    for ( String current : object ) {
+      serializeTo.writeString( current );
+    }
+
+    serializeTo.writeEndArray();
   }
 
   @NotNull
   @Override
-  protected StringCollectionSerializer getSerializer() throws Exception {
-    return new StringCollectionSerializer();
+  public List<? extends String> deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    List<String> deserialized = new ArrayList<String>();
+    while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
+      deserialized.add( deserializeFrom.getText() );
+    }
+
+    return deserialized;
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Collection<? extends String> deserialized, @NotNull Collection<? extends String> original ) {
-    assertThat( deserialized ).isEqualTo( original );
+  public boolean isObjectType() {
+    return false;
   }
-
-  @Test
-  public void testIt() throws Exception {
-    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
-
-    getSerializer().serialize( generator, Arrays.asList( "a", "b", "c" ), Version.valueOf( 1, 0, 0 ) );
-
-    generator.close();
-    JsonUtils.assertJsonEquals( "[ \"a\", \"b\", \"c\" ]", out.toString() );
-  }
-
-  @DataPoint
-  public static final Entry<?> ENTRY1 = create( Arrays.asList( "a", "b", "c" ), "[ \"a\", \"b\", \"c\" ]" );
 }
