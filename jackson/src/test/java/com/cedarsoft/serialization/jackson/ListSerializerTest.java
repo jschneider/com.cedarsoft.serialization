@@ -42,17 +42,18 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 /**
  *
  */
-public class StringListSerializerTest extends AbstractJsonSerializerTest2<List<? extends String>> {
+public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? extends Object>> {
   @Override
   protected boolean addNameSpace() {
     return false;
@@ -60,12 +61,20 @@ public class StringListSerializerTest extends AbstractJsonSerializerTest2<List<?
 
   @NotNull
   @Override
-  protected StringListSerializer getSerializer() throws Exception {
-    return new StringListSerializer();
+  protected ListSerializer getSerializer() throws Exception {
+    return new ListSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends String> deserialized, @NotNull List<? extends String> original ) {
+  protected void verifyDeserialized( @NotNull List<? extends Object> deserialized, @NotNull List<? extends Object> original ) {
+    assertEquals( original.size(), deserialized.size() );
+
+    for ( int i = 0, deserialized1Size = deserialized.size(); i < deserialized1Size; i++ ) {
+      Object deserializedElement = deserialized.get( i );
+      Object originalElement = original.get( i );
+
+      assertEquals( originalElement, deserializedElement );
+    }
     assertThat( deserialized ).isEqualTo( original );
   }
 
@@ -75,12 +84,26 @@ public class StringListSerializerTest extends AbstractJsonSerializerTest2<List<?
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
-    getSerializer().serialize( generator, Arrays.asList( "a", "b", "c" ), Version.valueOf( 1, 0, 0 ) );
+    getSerializer().serialize( generator, Arrays.asList( "a", "b", "c", 42, 3.141, false, null ), Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals( "[ \"a\", \"b\", \"c\" ]", out.toString() );
+    JsonUtils.assertJsonEquals( "[ \"a\", \"b\", \"c\", 42, 3.141, false, null ]", out.toString() );
+
+    List<? extends Object> deserialized = getSerializer().deserialize( new ByteArrayInputStream( out.toByteArray() ) );
+    assertEquals( 7, deserialized.size() );
+    assertEquals( "a", deserialized.get( 0 ) );
+    assertEquals( "b", deserialized.get( 1 ) );
+    assertEquals( "c", deserialized.get( 2 ) );
+    assertEquals( 42, deserialized.get( 3 ) );
+    assertEquals( 3.141, deserialized.get( 4 ) );
+    assertEquals( false, deserialized.get( 5 ) );
+    assertEquals( null, deserialized.get( 6 ) );
   }
 
   @DataPoint
-  public static final Entry<?> ENTRY1 = create( Arrays.asList( "a", "b", "c" ), "[ \"a\", \"b\", \"c\" ]" );
+  public static final Entry<?> ENTRY1 = create( Arrays.asList( "a", "b", "c", 54, 234.0, 32.0, false ), "[ \"a\", \"b\", \"c\", 54, 234.0, 32.0, false ]" );
+
+  @DataPoint
+  public static final Entry<?> ONLY_STRINGS = create( Arrays.asList( "a", "b", "c" ), "[ \"a\", \"b\", \"c\" ]" );
+
 }

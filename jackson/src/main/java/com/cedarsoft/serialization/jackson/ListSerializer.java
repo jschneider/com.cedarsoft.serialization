@@ -39,26 +39,40 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  *
  */
-public class StringListSerializer extends AbstractJacksonSerializer<List<? extends String>> {
-  public StringListSerializer() {
+public class ListSerializer extends AbstractJacksonSerializer<List<? extends Object>> {
+  public ListSerializer() {
     super( "http://sun.com/java.lang.string", VersionRange.single( 1, 0, 0 ) );
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull List<? extends String> object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull List<? extends Object> object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeStartArray();
 
-    for ( String current : object ) {
-      serializeTo.writeString( current );
+    for ( Object current : object ) {
+      if ( current == null ) {
+        serializeTo.writeNull();
+      } else if ( current instanceof Integer ) {
+        serializeTo.writeNumber( ( Integer ) current );
+      } else if ( current instanceof Float ) {
+        serializeTo.writeNumber( ( Float ) current );
+      } else if ( current instanceof Double ) {
+        serializeTo.writeNumber( ( Double ) current );
+      } else if ( current instanceof Long ) {
+        serializeTo.writeNumber( ( Long ) current );
+      } else if ( current instanceof Boolean ) {
+        serializeTo.writeBoolean( ( Boolean ) current );
+      } else {
+        serializeTo.writeString( String.valueOf( current ) );
+      }
     }
 
     serializeTo.writeEndArray();
@@ -66,13 +80,34 @@ public class StringListSerializer extends AbstractJacksonSerializer<List<? exten
 
   @NotNull
   @Override
-  public List<? extends String> deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    List<String> deserialized = new ArrayList<String>();
+  public List<? extends Object> deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    List<Object> deserialized = new ArrayList<Object>();
     while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
-      deserialized.add( deserializeFrom.getText() );
+      deserialized.add( deserializeElement( deserializeFrom ) );
     }
 
     return deserialized;
+  }
+
+  @Nullable
+  protected Object deserializeElement( @NotNull JsonParser deserializeFrom ) throws IOException {
+    //noinspection EnumSwitchStatementWhichMissesCases
+    switch ( deserializeFrom.getCurrentToken() ) {
+      case VALUE_STRING:
+        return deserializeFrom.getText();
+      case VALUE_NUMBER_INT:
+        return deserializeFrom.getIntValue();
+      case VALUE_NUMBER_FLOAT:
+        return deserializeFrom.getDoubleValue();
+      case VALUE_TRUE:
+        return true;
+      case VALUE_FALSE:
+        return false;
+      case VALUE_NULL:
+        return null;
+    }
+
+    return deserializeFrom.getText();
   }
 
   @Override
