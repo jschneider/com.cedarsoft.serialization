@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
  */
-public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> {
+public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> implements NameSpaceAware {
   @NotNull
   @NonNls
   protected final String nameSpaceUriBase;
@@ -72,6 +72,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri
    */
+  @Override
   @NotNull
   @NonNls
   public String getNameSpaceUri() {
@@ -83,6 +84,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri base
    */
+  @Override
   @NonNls
   @NotNull
   public String getNameSpaceUriBase() {
@@ -135,6 +137,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
+  @Override
   @NotNull
   public Version parseAndVerifyNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space

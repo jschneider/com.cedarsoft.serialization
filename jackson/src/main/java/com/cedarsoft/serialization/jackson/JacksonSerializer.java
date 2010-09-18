@@ -32,10 +32,12 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.serialization.InvalidNamespaceException;
+import com.cedarsoft.serialization.NameSpaceAware;
 import com.cedarsoft.serialization.PluggableSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -43,7 +45,7 @@ import java.io.IOException;
 /**
  * @param <T> the type of object this serializer is able to (de)serialize
  */
-public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException>, NameSpaceAware {
   /**
    * Whether it is an object type. If true, the object braces are generated where necessary.
    *
