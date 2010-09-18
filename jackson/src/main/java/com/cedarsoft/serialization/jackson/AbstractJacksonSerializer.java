@@ -189,7 +189,12 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   }
 
   public static void nextToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws IOException {
-    JsonToken current = parser.nextToken();
+    parser.nextToken();
+    verifyCurrentToken( parser, expected );
+  }
+
+  public static void verifyCurrentToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws JsonParseException {
+    JsonToken current = parser.getCurrentToken();
     if ( current != expected ) {
       throw new JsonParseException( "Invalid token. Expected <" + expected + "> but got <" + current + ">", parser.getCurrentLocation() );
     }
