@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Serializes a collection into a json array
  */
 public class ListSerializer extends AbstractJacksonSerializer<List<? extends Object>> {
   public ListSerializer() {
@@ -57,40 +57,48 @@ public class ListSerializer extends AbstractJacksonSerializer<List<? extends Obj
   public void serialize( @NotNull JsonGenerator serializeTo, @NotNull List<? extends Object> object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeStartArray();
 
-    for ( Object current : object ) {
-      if ( current == null ) {
-        serializeTo.writeNull();
-      } else if ( current instanceof Integer ) {
-        serializeTo.writeNumber( ( Integer ) current );
-      } else if ( current instanceof Float ) {
-        serializeTo.writeNumber( ( Float ) current );
-      } else if ( current instanceof Double ) {
-        serializeTo.writeNumber( ( Double ) current );
-      } else if ( current instanceof Long ) {
-        serializeTo.writeNumber( ( Long ) current );
-      } else if ( current instanceof Boolean ) {
-        serializeTo.writeBoolean( ( Boolean ) current );
-      } else {
-        serializeTo.writeString( String.valueOf( current ) );
-      }
+    for ( int i = 0; i < object.size(); i++ ) {
+      Object current = object.get( i );
+      serializeElement( serializeTo, current, i );
     }
 
     serializeTo.writeEndArray();
+  }
+
+  protected void serializeElement( @NotNull JsonGenerator serializeTo, @Nullable Object element, int index ) throws IOException {
+    if ( element == null ) {
+      serializeTo.writeNull();
+    } else if ( element instanceof Integer ) {
+      serializeTo.writeNumber( ( Integer ) element );
+    } else if ( element instanceof Float ) {
+      serializeTo.writeNumber( ( Float ) element );
+    } else if ( element instanceof Double ) {
+      serializeTo.writeNumber( ( Double ) element );
+    } else if ( element instanceof Long ) {
+      serializeTo.writeNumber( ( Long ) element );
+    } else if ( element instanceof Boolean ) {
+      serializeTo.writeBoolean( ( Boolean ) element );
+    } else {
+      serializeTo.writeString( String.valueOf( element ) );
+    }
   }
 
   @NotNull
   @Override
   public List<? extends Object> deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     List<Object> deserialized = new ArrayList<Object>();
+
+    int index = 0;
     while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
-      deserialized.add( deserializeElement( deserializeFrom ) );
+      deserialized.add( deserializeElement( deserializeFrom, index ) );
+      index++;
     }
 
     return deserialized;
   }
 
   @Nullable
-  protected Object deserializeElement( @NotNull JsonParser deserializeFrom ) throws IOException {
+  protected Object deserializeElement( @NotNull JsonParser deserializeFrom, int index ) throws IOException {
     //noinspection EnumSwitchStatementWhichMissesCases
     switch ( deserializeFrom.getCurrentToken() ) {
       case VALUE_STRING:
