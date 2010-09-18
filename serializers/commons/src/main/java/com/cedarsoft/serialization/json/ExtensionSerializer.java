@@ -69,10 +69,10 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
   public Extension deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //delimiter
-    nextField( deserializeFrom, PROPERTY_DELIMITER );
+    nextFieldValue( deserializeFrom, PROPERTY_DELIMITER );
     String delimiter = deserializeFrom.getText();
     //extension
-    nextField( deserializeFrom, PROPERTY_EXTENSION );
+    nextFieldValue( deserializeFrom, PROPERTY_EXTENSION );
     String extension = deserializeFrom.getText();
     //Finally closing element
     closeObject( deserializeFrom );

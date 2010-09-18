@@ -80,7 +80,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   @NotNull
   @Override
   public User deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextField( deserializeFrom, PROPERTY_NAME );
+    nextFieldValue( deserializeFrom, PROPERTY_NAME );
     String name = deserializeFrom.getText();
 
     List<? extends Email> mails = deserializeArray( Email.class, PROPERTY_EMAILS, deserializeFrom, formatVersion );

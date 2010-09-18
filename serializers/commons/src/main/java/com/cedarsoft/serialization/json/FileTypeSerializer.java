@@ -77,11 +77,11 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   @Override
   public FileType deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
-    nextField( deserializeFrom, PROPERTY_ID );
+    nextFieldValue( deserializeFrom, PROPERTY_ID );
     String id = deserializeFrom.getText();
-    nextField( deserializeFrom, PROPERTY_DEPENDENTTYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_DEPENDENTTYPE );
     boolean dependentType = deserializeFrom.getBooleanValue();
-    nextField( deserializeFrom, PROPERTY_CONTENTTYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_CONTENTTYPE );
     String contentType = deserializeFrom.getText();
     List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
     closeObject( deserializeFrom );

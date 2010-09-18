@@ -72,13 +72,13 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
   @Override
   public UserDetails deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     try {
-      nextField( deserializeFrom, PROPERTY_REGISTRATION_DATE );
+      nextFieldValue( deserializeFrom, PROPERTY_REGISTRATION_DATE );
       long registrationDate = deserializeFrom.getLongValue();
 
-      nextField( deserializeFrom, PROPERTY_LAST_LOGIN );
+      nextFieldValue( deserializeFrom, PROPERTY_LAST_LOGIN );
       long lastLogin = deserializeFrom.getLongValue();
 
-      nextField( deserializeFrom, PROPERTY_PASSWORD_HASH );
+      nextFieldValue( deserializeFrom, PROPERTY_PASSWORD_HASH );
       String passwordHash = deserializeFrom.getText();
 
       nextToken( deserializeFrom, JsonToken.END_OBJECT );

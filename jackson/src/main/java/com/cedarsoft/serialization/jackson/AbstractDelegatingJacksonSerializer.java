@@ -79,7 +79,7 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
   public T deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
 
-    nextField( deserializeFrom, PROPERTY_TYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_TYPE );
     String type = deserializeFrom.getText();
 
     if ( type == null ) {

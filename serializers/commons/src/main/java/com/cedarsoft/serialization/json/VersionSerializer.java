@@ -68,7 +68,7 @@ public class VersionSerializer extends AbstractJacksonSerializer<Version> {
   public Version deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //major
-    nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
+    nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
     String version = deserializeFrom.getText();
     closeObject( deserializeFrom );
     return Version.parse( version );

@@ -54,19 +54,19 @@ public class FooSerializer
         throws VersionException, IOException, JsonProcessingException
     {
         //width
-        nextField(deserializeFrom, PROPERTY_WIDTH);
+        nextFieldValue(deserializeFrom, PROPERTY_WIDTH);
         double width = deserializeFrom.getDoubleValue();
         //height
-        nextField(deserializeFrom, PROPERTY_HEIGHT);
+        nextFieldValue(deserializeFrom, PROPERTY_HEIGHT);
         int height = deserializeFrom.getIntValue();
         //description
-        nextField(deserializeFrom, PROPERTY_DESCRIPTION);
+        nextFieldValue(deserializeFrom, PROPERTY_DESCRIPTION);
         String description = deserializeFrom.getText();
         //anInt
-        nextField(deserializeFrom, PROPERTY_ANINT);
+        nextFieldValue(deserializeFrom, PROPERTY_ANINT);
         Integer anInt = deserializeFrom.getIntValue();
         //floatField
-        nextField(deserializeFrom, PROPERTY_FLOATFIELD);
+        nextFieldValue(deserializeFrom, PROPERTY_FLOATFIELD);
         float floatField = deserializeFrom.getFloatValue();
         //bars
         List<? extends Bar> bars = deserializeArray(Bar.class, PROPERTY_BARS, deserializeFrom, formatVersion);

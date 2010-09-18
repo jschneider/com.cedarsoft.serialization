@@ -99,7 +99,7 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
   @Override
   public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    JStatement nextFieldStatement = JExpr.invoke( "nextField" ).arg( deserializeFrom ).arg( constant );
+    JStatement nextFieldStatement = JExpr.invoke( "nextFieldValue" ).arg( deserializeFrom ).arg( constant );
 
     JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
     return new Expressions( readExpression, nextFieldStatement );

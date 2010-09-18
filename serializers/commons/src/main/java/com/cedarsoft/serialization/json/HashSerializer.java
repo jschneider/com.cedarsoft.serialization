@@ -67,10 +67,10 @@ public class HashSerializer extends AbstractJacksonSerializer<Hash> {
   @NotNull
   @Override
   public Hash deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
-    nextField( deserializeFrom, PROPERTY_ALGORITHM );
+    nextFieldValue( deserializeFrom, PROPERTY_ALGORITHM );
     Algorithm algorithm = Algorithm.getAlgorithm( deserializeFrom.getText() );
 
-    nextField( deserializeFrom, PROPERTY_VALUE );
+    nextFieldValue( deserializeFrom, PROPERTY_VALUE );
     String hex = deserializeFrom.getText();
 
     closeObject( deserializeFrom );

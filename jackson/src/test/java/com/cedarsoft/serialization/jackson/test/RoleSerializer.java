@@ -66,10 +66,10 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
   @NotNull
   @Override
   public Role deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextField( deserializeFrom, PROPERTY_ID );
+    nextFieldValue( deserializeFrom, PROPERTY_ID );
     int id = deserializeFrom.getIntValue();
 
-    nextField( deserializeFrom, PROPERTY_DESCRIPTION );
+    nextFieldValue( deserializeFrom, PROPERTY_DESCRIPTION );
     String description = deserializeFrom.getText();
 
     nextToken( deserializeFrom, JsonToken.END_OBJECT );

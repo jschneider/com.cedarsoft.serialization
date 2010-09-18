@@ -76,16 +76,16 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
   public VersionRange deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //min
-    nextField( deserializeFrom, PROPERTY_MIN );
+    nextFieldValue( deserializeFrom, PROPERTY_MIN );
     Version min = Version.parse( deserializeFrom.getText() );
     //max
-    nextField( deserializeFrom, PROPERTY_MAX );
+    nextFieldValue( deserializeFrom, PROPERTY_MAX );
     Version max = Version.parse( deserializeFrom.getText() );
     //includeLower
-    nextField( deserializeFrom, PROPERTY_INCLUDELOWER );
+    nextFieldValue( deserializeFrom, PROPERTY_INCLUDELOWER );
     boolean includeLower = deserializeFrom.getBooleanValue();
     //includeUpper
-    nextField( deserializeFrom, PROPERTY_INCLUDEUPPER );
+    nextFieldValue( deserializeFrom, PROPERTY_INCLUDEUPPER );
     boolean includeUpper = deserializeFrom.getBooleanValue();
     //Finally closing element
     closeObject( deserializeFrom );

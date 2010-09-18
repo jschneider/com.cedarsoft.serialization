@@ -64,7 +64,7 @@ public class BaseNameSerializer extends AbstractJacksonSerializer<BaseName> {
   public BaseName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //name
-    nextField( deserializeFrom, PROPERTY_NAME );
+    nextFieldValue( deserializeFrom, PROPERTY_NAME );
     String name = deserializeFrom.getText();
     //Finally closing element
     closeObject( deserializeFrom );

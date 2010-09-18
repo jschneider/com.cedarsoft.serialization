@@ -42,7 +42,7 @@ public abstract class AbstractDelegateGenerator extends AbstractSerializeToGener
   @NonNls
   public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
   @NonNls
-  public static final String METHOD_NAME_NEXT_TAG = "nextField";
+  public static final String METHOD_NAME_NEXT_TAG = "nextFieldValue";
   @NonNls
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 

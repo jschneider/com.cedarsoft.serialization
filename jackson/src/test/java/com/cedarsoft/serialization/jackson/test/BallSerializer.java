@@ -83,10 +83,10 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
 
       int id;
       if ( formatVersion.equals( Version.valueOf( 1, 5, 0 ) ) ) {
-        nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
+        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
         id = deserializeFrom.getIntValue();
       } else {
-        nextField( deserializeFrom, "id" );
+        nextFieldValue( deserializeFrom, "id" );
         id = deserializeFrom.getIntValue();
       }
       closeObject( deserializeFrom );
@@ -116,10 +116,10 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
 
       String theId;
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
-        nextField( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
+        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
         theId = deserializeFrom.getText();
       } else {
-        nextField( deserializeFrom, "theId" );
+        nextFieldValue( deserializeFrom, "theId" );
         theId = deserializeFrom.getText();
       }
       closeObject( deserializeFrom );

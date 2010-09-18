@@ -72,12 +72,14 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
     serialize( object, generator );
+    generator.close();
   }
 
   /**
    * Serializes the object to the given serializeTo.
    * <p/>
-   * The serializer is responsible for writing start/close object/array brackets if necessary
+   * The serializer is responsible for writing start/close object/array brackets if necessary.
+   * This method also writes the @ns property.
    *
    * @param object      the object that is serialized
    * @param serializeTo the serialize to object
@@ -95,8 +97,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     if ( isObjectType() ) {
       serializeTo.writeEndObject();
     }
-
-    serializeTo.close();
   }
 
   @NotNull
@@ -109,7 +109,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       T deserialized = deserialize( parser );
 
       ensureParserClosed( parser );
-
       return deserialized;
     } catch ( InvalidNamespaceException e ) {
       throw new IOException( "Could not parse due to " + e.getMessage(), e );
@@ -117,7 +116,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   }
 
   /**
-   * Deserializes the object from the given parser
+   * Deserializes the object from the given parser.
+   * This method deserializes the @ns property.
    *
    * @param parser the parser
    * @return the deserialized object
@@ -131,7 +131,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     if ( isObjectType() ) {
       nextToken( parser, JsonToken.START_OBJECT );
 
-      nextField( parser, PROPERTY_NS );
+      nextFieldValue( parser, PROPERTY_NS );
       version = parseAndVerifyNameSpace( parser.getText() );
     } else {
       parser.nextToken();
@@ -167,6 +167,26 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     parser.close();
   }
 
+  /**
+   * Verifies the next field has the given name and prepares for read (by calling parser.nextToken).
+   *
+   * @param parser    the parser
+   * @param fieldName the field name
+   * @throws IOException
+   */
+  public static void nextFieldValue( @NotNull JsonParser parser, @NotNull @NonNls String fieldName ) throws IOException {
+    nextField( parser, fieldName );
+    parser.nextToken();
+  }
+
+  /**
+   * Verifies that the next field starts.
+   * When the content of the field shall be accessed, it is necessary to call parser.nextToken() afterwards.
+   *
+   * @param parser    the parser
+   * @param fieldName the field name
+   * @throws IOException
+   */
   public static void nextField( @NotNull JsonParser parser, @NotNull @NonNls String fieldName ) throws IOException {
     nextToken( parser, JsonToken.FIELD_NAME );
     String currentName = parser.getCurrentName();
@@ -174,8 +194,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     if ( !fieldName.equals( currentName ) ) {
       throw new JsonParseException( "Invalid field. Expected <" + fieldName + "> but was <" + currentName + ">", parser.getCurrentLocation() );
     }
-
-    parser.nextToken();
   }
 
   public static void nextToken( @NotNull JsonParser parser, @NotNull JsonToken expected ) throws IOException {
@@ -210,7 +228,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
 
   @NotNull
   protected <T> List<? extends T> deserializeArray( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException {
-    nextField( deserializeFrom, propertyName );
+    nextFieldValue( deserializeFrom, propertyName );
 
     List<T> deserialized = new ArrayList<T>();
     while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
@@ -226,7 +244,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   }
 
   protected <T> T deserialize( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull Version formatVersion, @NotNull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
-    nextField( deserializeFrom, propertyName );
+    nextFieldValue( deserializeFrom, propertyName );
     return deserialize( type, formatVersion, deserializeFrom );
   }
 
