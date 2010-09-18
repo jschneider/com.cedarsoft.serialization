@@ -155,7 +155,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws XMLStreamException
    */
   @NotNull
-  protected String getText( @NotNull XMLStreamReader reader ) throws XMLStreamException {
+  public static String getText( @NotNull XMLStreamReader reader ) throws XMLStreamException {
     StringBuilder content = new StringBuilder();
 
     int result;
