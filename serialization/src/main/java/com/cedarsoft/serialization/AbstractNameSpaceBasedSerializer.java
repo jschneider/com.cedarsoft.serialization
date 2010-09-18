@@ -105,10 +105,9 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
       throw new VersionException( "No version information found" );
     }
 
-    String[] parts = namespaceURI.split( "/" );
-    String last = parts[parts.length - 1];
-
-    return Version.parse( last );
+    int index = namespaceURI.lastIndexOf( "/" );
+    String versionString = namespaceURI.substring( index + 1 );
+    return Version.parse( versionString );
   }
 
   /**
