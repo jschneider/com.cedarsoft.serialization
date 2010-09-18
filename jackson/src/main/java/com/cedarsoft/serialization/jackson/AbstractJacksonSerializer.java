@@ -69,22 +69,34 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   @Override
   public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
+    serialize( object, generator );
+  }
+
+  /**
+   * Serializes the object to the given serializeTo.
+   * <p/>
+   * The serializer is responsible for writing start/close object/array brackets if necessary
+   *
+   * @param object      the object that is serialized
+   * @param serializeTo the serialize to object
+   * @throws IOException
+   */
+  public void serialize( @NotNull T object, @NotNull JsonGenerator serializeTo ) throws IOException {
     if ( isObjectType() ) {
-      generator.writeStartObject();
+      serializeTo.writeStartObject();
       String nameSpace = getNameSpaceUri();
-      generator.writeStringField( PROPERTY_NS, nameSpace );
+      serializeTo.writeStringField( PROPERTY_NS, nameSpace );
     }
 
-    serialize( generator, object, getFormatVersion() );
+    serialize( serializeTo, object, getFormatVersion() );
 
     if ( isObjectType() ) {
-      generator.writeEndObject();
+      serializeTo.writeEndObject();
     }
 
-    generator.close();
+    serializeTo.close();
   }
 
   @NotNull
@@ -92,27 +104,11 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   public T deserialize( @NotNull InputStream in ) throws IOException, VersionException {
     try {
       JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-
       JsonParser parser = jsonFactory.createJsonParser( in );
 
-      Version version;
-      if ( isObjectType() ) {
-        nextToken( parser, JsonToken.START_OBJECT );
+      T deserialized = deserialize( parser );
 
-        nextField( parser, PROPERTY_NS );
-        version = parseAndVerifyNameSpace( parser.getText() );
-      } else {
-        parser.nextToken();
-        version = getFormatVersion();
-      }
-
-      T deserialized = deserialize( parser, version );
-
-      if ( isObjectType() ) {
-        ensureParserClosedObject( parser );
-      } else {
-        ensureParserClosed( parser );
-      }
+      ensureParserClosed( parser );
 
       return deserialized;
     } catch ( InvalidNamespaceException e ) {
@@ -120,11 +116,47 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
+  /**
+   * Deserializes the object from the given parser
+   *
+   * @param parser the parser
+   * @return the deserialized object
+   *
+   * @throws IOException
+   * @throws InvalidNamespaceException
+   */
+  @NotNull
+  public T deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException {
+    Version version;
+    if ( isObjectType() ) {
+      nextToken( parser, JsonToken.START_OBJECT );
+
+      nextField( parser, PROPERTY_NS );
+      version = parseAndVerifyNameSpace( parser.getText() );
+    } else {
+      parser.nextToken();
+      version = getFormatVersion();
+    }
+
+    T deserialized = deserialize( parser, version );
+
+    if ( isObjectType() ) {
+      ensureObjectClosed( parser );
+    }
+
+    return deserialized;
+  }
+
+  @Deprecated
   public static void ensureParserClosedObject( @NotNull JsonParser parser ) throws IOException {
+    ensureObjectClosed( parser );
+    ensureParserClosed( parser );
+  }
+
+  public static void ensureObjectClosed( @NotNull JsonParser parser ) throws JsonParseException {
     if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
       throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
     }
-    ensureParserClosed( parser );
   }
 
   private static void ensureParserClosed( @NotNull JsonParser parser ) throws IOException {
