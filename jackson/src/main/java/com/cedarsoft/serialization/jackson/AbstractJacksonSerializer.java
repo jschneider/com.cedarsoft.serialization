@@ -109,7 +109,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       T deserialized = deserialize( parser, version );
 
       if ( isObjectType() ) {
-        closeParserInObject( parser );
+        ensureParserClosedObject( parser );
       } else {
         ensureParserClosed( parser );
       }
@@ -120,16 +120,16 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
-  public static void closeParserInObject( @NotNull JsonParser parser ) throws IOException {
+  public static void ensureParserClosedObject( @NotNull JsonParser parser ) throws IOException {
     if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
-      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+      throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
     }
     ensureParserClosed( parser );
   }
 
   private static void ensureParserClosed( @NotNull JsonParser parser ) throws IOException {
     if ( parser.nextToken() != null ) {
-      throw new JsonParseException( "No consumed everything", parser.getCurrentLocation() );
+      throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
     }
 
     parser.close();
