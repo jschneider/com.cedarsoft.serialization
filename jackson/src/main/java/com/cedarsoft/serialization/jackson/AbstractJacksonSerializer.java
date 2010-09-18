@@ -56,7 +56,7 @@ import java.util.List;
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
@@ -81,21 +81,22 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
    * The serializer is responsible for writing start/close object/array brackets if necessary.
    * This method also writes the @ns property.
    *
-   * @param object      the object that is serialized
-   * @param serializeTo the serialize to object
+   * @param object    the object that is serialized
+   * @param generator the serialize to object
    * @throws IOException
    */
-  public void serialize( @NotNull T object, @NotNull JsonGenerator serializeTo ) throws IOException {
+  @Override
+  public void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException {
     if ( isObjectType() ) {
-      serializeTo.writeStartObject();
+      generator.writeStartObject();
       String nameSpace = getNameSpaceUri();
-      serializeTo.writeStringField( PROPERTY_NS, nameSpace );
+      generator.writeStringField( PROPERTY_NS, nameSpace );
     }
 
-    serialize( serializeTo, object, getFormatVersion() );
+    serialize( generator, object, getFormatVersion() );
 
     if ( isObjectType() ) {
-      serializeTo.writeEndObject();
+      generator.writeEndObject();
     }
   }
 
@@ -115,16 +116,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
     }
   }
 
-  /**
-   * Deserializes the object from the given parser.
-   * This method deserializes the @ns property.
-   *
-   * @param parser the parser
-   * @return the deserialized object
-   *
-   * @throws IOException
-   * @throws InvalidNamespaceException
-   */
+  @Override
   @NotNull
   public T deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException {
     Version version;
@@ -208,7 +200,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   }
 
   protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
-    JacksonSerializer<? super T, JsonGenerator, JsonParser, JsonProcessingException> serializer = ( JacksonSerializer<? super T, JsonGenerator, JsonParser, JsonProcessingException> ) delegatesMappings.getSerializer( type );
+    JacksonSerializer<? super T> serializer = ( JacksonSerializer<? super T> ) delegatesMappings.getSerializer( type );
     Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
 
     serializeTo.writeArrayFieldStart( propertyName );

@@ -31,14 +31,47 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.InvalidNamespaceException;
 import com.cedarsoft.serialization.PluggableSerializer;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 /**
  * @param <T> the type of object this serializer is able to (de)serialize
- * @param <S> the object to serialize to (e.g. a dom element or stream)
- * @param <D> the object to deserialize from ((e.g. a dom element or stream)
- * @param <E> the exception that might be thrown
  */
-public interface JacksonSerializer<T, S, D, E extends Throwable> extends PluggableSerializer<T, S, D, E> {
+public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+  /**
+   * Whether it is an object type. If true, the object braces are generated where necessary.
+   *
+   * @return whether it is an object type
+   */
   boolean isObjectType();
+
+  /**
+   * Serializes the object to the given generator.
+   * The serializer is responsible for writing start/close object/array brackets if necessary.
+   * This method also writes the @ns property.
+   *
+   * @param object    the object
+   * @param generator the generator
+   * @throws IOException
+   */
+  void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException, JsonProcessingException;
+
+  /**
+   * Deserializes the object from the given parser.
+   * This method deserializes the @ns property.
+   *
+   * @param parser the parser
+   * @return the deserialized object
+   *
+   * @throws IOException
+   * @throws InvalidNamespaceException
+   */
+  @NotNull
+  T deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException, JsonProcessingException;
 }
