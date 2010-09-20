@@ -33,6 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import org.apache.commons.io.IOUtils;
+import org.fest.reflect.core.Reflection;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -86,7 +87,12 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
     @NotNull
     @Override
     public byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception {
-      return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes();
+      boolean isObjectType = Reflection.method( "isObjectType" ).withReturnType( Boolean.TYPE ).in( serializer ).invoke();
+      if ( isObjectType ) {
+        return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes();
+      } else {
+        return json;
+      }
     }
   }
 }
