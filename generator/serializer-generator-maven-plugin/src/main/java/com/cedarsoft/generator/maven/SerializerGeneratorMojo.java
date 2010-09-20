@@ -55,6 +55,7 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
    * <li>JACKSON</li>
    * </ul>
    *
+   * @required
    * @parameter expression="${dialect}"
    */
   protected String dialect = Target.STAX_MATE.name();
