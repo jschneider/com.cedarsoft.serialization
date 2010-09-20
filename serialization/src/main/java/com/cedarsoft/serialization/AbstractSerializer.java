@@ -129,8 +129,8 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   // Delegate methods to the DelegatesMappings
 
   @NotNull
-  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> sdePluggableSerializer ) {
-    return delegatesMappings.add( sdePluggableSerializer );
+  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> pluggableSerializer ) {
+    return delegatesMappings.add( pluggableSerializer );
   }
 
   public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S deserializeTo, @NotNull Version formatVersion ) throws E, IOException {
