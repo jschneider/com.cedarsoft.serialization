@@ -48,8 +48,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  * @param <T> the type
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJacksonSerializer<T> {
   @NotNull
@@ -83,7 +83,7 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
     String type = deserializeFrom.getText();
 
     if ( type == null ) {
-      throw new JsonParseException( "No type attribute found. Cannot find strategy.", deserializeFrom.getCurrentLocation() );
+      throw new JsonParseException( "Attribute" + PROPERTY_TYPE + " not found. Cannot find strategy.", deserializeFrom.getCurrentLocation() );
     }
 
     SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( type );
