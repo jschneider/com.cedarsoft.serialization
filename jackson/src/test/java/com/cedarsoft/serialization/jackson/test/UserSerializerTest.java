@@ -61,6 +61,7 @@ public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
                                new Role( 1, "Nobody" ),
                                new Role( 0, "Admin" )
                              ),
+                             new Email( "single" ),
                              new UserDetails( 2351351L, 36351531153L, new String( Hex.encodeHex( "hash".getBytes() ) ).getBytes() )
     ), UserSerializerTest.class.getResource( "user.withDetails.json" ) );
   }
@@ -75,7 +76,8 @@ public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
                              Arrays.asList(
                                new Role( 1, "Nobody" ),
                                new Role( 0, "Admin" )
-                             )
+                             ),
+                             new Email( "single" )
     ), UserSerializerTest.class.getResource( "user.json" ) );
   }
 }

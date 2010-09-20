@@ -18,5 +18,6 @@
     "registrationDate" : 0,
     "id" : 0,
     "passwordHash" : ""
-  }
+  },
+  "singleEmail" : "single"
 }

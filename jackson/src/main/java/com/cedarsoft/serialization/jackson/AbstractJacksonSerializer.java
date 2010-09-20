@@ -229,7 +229,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
-    JacksonSerializer<? super T> serializer = ( JacksonSerializer<? super T> ) delegatesMappings.getSerializer( type );
+    JacksonSerializer<? super T> serializer = getSerializer( type );
     Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
 
     serializeTo.writeArrayFieldStart( propertyName );
@@ -258,15 +258,31 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     return deserialized;
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator deserializeTo, @NotNull Version formatVersion ) throws JsonProcessingException, IOException {
-    deserializeTo.writeObjectFieldStart( propertyName );
-    serialize( object, type, deserializeTo, formatVersion );
-    deserializeTo.writeEndObject();
+  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws JsonProcessingException, IOException {
+    JacksonSerializer<? super T> serializer = getSerializer( type );
+    Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
+    if ( serializer.isObjectType() ) {
+      serializeTo.writeObjectFieldStart( propertyName );
+    } else {
+      serializeTo.writeFieldName( propertyName );
+    }
+
+    serializer.serialize( serializeTo, object, delegateVersion );
+
+    if ( serializer.isObjectType() ) {
+      serializeTo.writeEndObject();
+    }
   }
 
   protected <T> T deserialize( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull Version formatVersion, @NotNull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, propertyName );
     return deserialize( type, formatVersion, deserializeFrom );
+  }
+
+  @NotNull
+  @Override
+  public <T> JacksonSerializer<? super T> getSerializer( @NotNull Class<T> type ) {
+    return ( JacksonSerializer<? super T> ) super.getSerializer( type );
   }
 
   @Override

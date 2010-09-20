@@ -17,5 +17,6 @@
     "registrationDate" : 2351351,
     "id" : 36351531153,
     "passwordHash" : "3638363137333638"
-  }
+  },
+  "singleEmail" : "single"
 }

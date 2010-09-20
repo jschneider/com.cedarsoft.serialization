@@ -75,6 +75,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     serializeArray( object.getRoles(), Role.class, PROPERTY_ROLES, serializeTo, formatVersion );
 
     serialize( object.getUserDetails(), UserDetails.class, "userDetails", serializeTo, formatVersion );
+    serialize( object.getSingleEmail(), Email.class, "singleEmail", serializeTo, formatVersion );
   }
 
   @NotNull
@@ -87,8 +88,9 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     List<? extends Role> roles = deserializeArray( Role.class, PROPERTY_ROLES, deserializeFrom, formatVersion );
 
     UserDetails userDetails = deserialize( UserDetails.class, "userDetails", formatVersion, deserializeFrom );
+    Email singleEmail = deserialize( Email.class, "singleEmail", formatVersion, deserializeFrom );
 
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
-    return new User( name, mails, roles, userDetails );
+    return new User( name, mails, roles, singleEmail, userDetails );
   }
 }

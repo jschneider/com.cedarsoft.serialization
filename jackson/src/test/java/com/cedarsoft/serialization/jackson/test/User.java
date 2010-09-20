@@ -52,16 +52,24 @@ public class User {
   private final List<Email> emails = new ArrayList<Email>();
   @NotNull
   private final UserDetails userDetails;
+  @NotNull
+  private final Email singleEmail;
 
-  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles ) {
-    this( name, emails, roles, new UserDetails() );
+  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles, @NotNull Email singleEmail ) {
+    this( name, emails, roles, singleEmail, new UserDetails() );
   }
 
-  public User(  @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles , @NotNull UserDetails userDetails ) {
+  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles, @NotNull Email singleEmail, @NotNull UserDetails userDetails ) {
     this.name = name;
+    this.singleEmail = singleEmail;
     this.userDetails = userDetails;
     this.emails.addAll( emails );
     this.roles.addAll( roles );
+  }
+
+  @NotNull
+  public Email getSingleEmail() {
+    return singleEmail;
   }
 
   @NotNull
