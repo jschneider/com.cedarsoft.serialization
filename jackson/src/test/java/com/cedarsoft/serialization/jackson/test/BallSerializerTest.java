@@ -58,12 +58,12 @@ public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
 
   @DataPoint
   public static final Entry<?> ENTRY1 = create(
-    new Ball.TennisBall( 7 ), "{\"@type\" : \"tennisBall\",\"id\" : 7}"
+    new Ball.TennisBall( 7 ), "{\"@subtype\" : \"tennisBall\",\"id\" : 7}"
   );
 
   @DataPoint
   public static final Entry<?> ENTRY2 = create(
-    new Ball.BasketBall( "asdf" ), "{\"@type\" : \"basketBall\",\"theId\" : \"asdf\"}" );
+    new Ball.BasketBall( "asdf" ), "{\"@subtype\" : \"basketBall\",\"theId\" : \"asdf\"}" );
 
 
   @Test

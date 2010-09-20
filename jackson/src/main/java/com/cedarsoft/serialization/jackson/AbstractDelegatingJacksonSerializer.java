@@ -54,7 +54,7 @@ import java.util.Collection;
 public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJacksonSerializer<T> {
   @NotNull
   @NonNls
-  private static final String PROPERTY_TYPE = "@type";
+  private static final String PROPERTY_SUB_TYPE = "@subtype";
   @NotNull
   protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> serializingStrategySupport;
 
@@ -69,7 +69,7 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
 
     SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( object );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
-    serializeTo.writeStringField( PROPERTY_TYPE, strategy.getId() );
+    serializeTo.writeStringField( PROPERTY_SUB_TYPE, strategy.getId() );
 
     strategy.serialize( serializeTo, object, resolvedVersion );
   }
@@ -79,11 +79,11 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
   public T deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
 
-    nextFieldValue( deserializeFrom, PROPERTY_TYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_SUB_TYPE );
     String type = deserializeFrom.getText();
 
     if ( type == null ) {
-      throw new JsonParseException( "Attribute" + PROPERTY_TYPE + " not found. Cannot find strategy.", deserializeFrom.getCurrentLocation() );
+      throw new JsonParseException( "Attribute" + PROPERTY_SUB_TYPE + " not found. Cannot find strategy.", deserializeFrom.getCurrentLocation() );
     }
 
     SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( type );

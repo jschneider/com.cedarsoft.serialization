@@ -62,12 +62,12 @@ public class BallSerializerVersionTest extends AbstractJsonVersionTest2<Ball> {
   }
 
   @DataPoint
-  public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 1, 0 ), "{\"@type\" : \"tennisBall\",\"id\" : 7}" );
+  public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 1, 0 ), "{\"@subtype\" : \"tennisBall\",\"id\" : 7}" );
   @DataPoint
-  public static final VersionEntry ENTRY3 = create( Version.valueOf( 1, 1, 0 ), "{\"@type\" : \"basketBall\",\"theId\" : \"asdf\"}" );
+  public static final VersionEntry ENTRY3 = create( Version.valueOf( 1, 1, 0 ), "{\"@subtype\" : \"basketBall\",\"theId\" : \"asdf\"}" );
 
   @DataPoint
-  public static final VersionEntry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "{\"@type\" : \"tennisBall\",\"$\" : 7}" );
+  public static final VersionEntry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "{\"@subtype\" : \"tennisBall\",\"$\" : 7}" );
   @DataPoint
-  public static final VersionEntry ENTRY4 = create( Version.valueOf( 1, 0, 0 ), "{\"@type\" : \"basketBall\",\"$\" : \"asdf\"}" );
+  public static final VersionEntry ENTRY4 = create( Version.valueOf( 1, 0, 0 ), "{\"@subtype\" : \"basketBall\",\"$\" : \"asdf\"}" );
 }
