@@ -39,11 +39,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  * @param <T> the type of object this serializer is able to (de)serialize
  * @param <S> the object to serialize to
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> implements NameSpaceAware {
   @NotNull
@@ -84,7 +84,6 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri base
    */
-  @Override
   @NonNls
   @NotNull
   public String getNameSpaceUriBase() {
@@ -113,17 +112,18 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
   /**
    * Verifies the namespace uri
    *
-   * @param namespaceURI the namespace uri
+   * @param namespace the namespace uri
    * @throws InvalidNamespaceException if the namespace is invalid
    * @throws VersionException          the if the version does not fit the expected range
    */
-  protected void verifyNamespaceUri( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
-    if ( namespaceURI == null || namespaceURI.trim().length() == 0 ) {
+  @Override
+  public void verifyNamespaceUri( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException {
+    if ( namespace == null || namespace.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
     }
     String expectedBase = getNameSpaceUriBase();
-    if ( !namespaceURI.startsWith( expectedBase ) ) {
-      throw new InvalidNamespaceException( namespaceURI, expectedBase + "/$VERSION>" );
+    if ( !namespace.startsWith( expectedBase ) ) {
+      throw new InvalidNamespaceException( namespace, expectedBase + "/$VERSION>" );
     }
   }
 
@@ -136,7 +136,6 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
-  @Override
   @NotNull
   public Version parseAndVerifyNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space

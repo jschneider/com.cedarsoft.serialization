@@ -35,7 +35,9 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractNameSpaceBasedSerializer;
+import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.InvalidNamespaceException;
+import com.cedarsoft.serialization.NameSpaceAware;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -56,14 +58,21 @@ import java.util.List;
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBasedSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
   public static final String PROPERTY_NS = "@ns";
+  @NonNls
+  public static final String PROPERTY_VERSION = "@version";
 
-  protected AbstractJacksonSerializer( @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
-    super( nameSpaceUriBase, formatVersionRange );
+  @NotNull
+  @NonNls
+  private final String nameSpace;
+
+  protected AbstractJacksonSerializer( @NonNls @NotNull String nameSpace, @NotNull VersionRange formatVersionRange ) {
+    super( formatVersionRange );
+    this.nameSpace = nameSpace;
   }
 
   @Override
@@ -89,8 +98,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
   public void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException {
     if ( isObjectType() ) {
       generator.writeStartObject();
-      String nameSpace = getNameSpaceUri();
       generator.writeStringField( PROPERTY_NS, nameSpace );
+      generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
     }
 
     serialize( generator, object, getFormatVersion() );
@@ -124,7 +133,11 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractNameSpaceBase
       nextToken( parser, JsonToken.START_OBJECT );
 
       nextFieldValue( parser, PROPERTY_NS );
-      version = parseAndVerifyNameSpace( parser.getText() );
+      String readNs = parser.getText();
+      verifyNamespaceUri( readNs );
+      nextFieldValue( parser, PROPERTY_VERSION );
+      version = Version.parse( parser.getText() );
+      verifyVersionReadable( version );
     } else {
       parser.nextToken();
       version = getFormatVersion();
