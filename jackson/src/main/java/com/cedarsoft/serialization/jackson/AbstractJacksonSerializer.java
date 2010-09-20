@@ -34,10 +34,8 @@ package com.cedarsoft.serialization.jackson;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractNameSpaceBasedSerializer;
 import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.InvalidNamespaceException;
-import com.cedarsoft.serialization.NameSpaceAware;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -134,7 +132,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
       nextFieldValue( parser, PROPERTY_NS );
       String readNs = parser.getText();
-      verifyNamespaceUri( readNs );
+      verifyNamespace( readNs );
       nextFieldValue( parser, PROPERTY_VERSION );
       version = Version.parse( parser.getText() );
       verifyVersionReadable( version );

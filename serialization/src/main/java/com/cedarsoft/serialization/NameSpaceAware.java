@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public interface NameSpaceAware {
   @NotNull
   @NonNls
-  String getNameSpaceUri();
+  String getNameSpace();
 
   /**
    * Verifies the name space
@@ -20,5 +20,5 @@ public interface NameSpaceAware {
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
-  void verifyNamespaceUri( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException;
+  void verifyNamespace( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException;
 }

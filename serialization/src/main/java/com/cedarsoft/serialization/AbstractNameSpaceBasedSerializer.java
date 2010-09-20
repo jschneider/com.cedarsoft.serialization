@@ -48,11 +48,11 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> implements NameSpaceAware {
   @NotNull
   @NonNls
-  protected final String nameSpaceUriBase;
+  protected final String nameSpaceBase;
 
-  protected AbstractNameSpaceBasedSerializer( @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractNameSpaceBasedSerializer( @NonNls @NotNull String nameSpaceBase, @NotNull VersionRange formatVersionRange ) {
     super( formatVersionRange );
-    this.nameSpaceUriBase = nameSpaceUriBase;
+    this.nameSpaceBase = nameSpaceBase;
   }
 
   /**
@@ -63,8 +63,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    */
   @NotNull
   @NonNls
-  protected String createNameSpaceUri( @NotNull Version formatVersion ) {
-    return getNameSpaceUriBase() + "/" + formatVersion.format();
+  protected String createNameSpace( @NotNull Version formatVersion ) {
+    return getNameSpaceBase() + "/" + formatVersion.format();
   }
 
   /**
@@ -75,8 +75,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
   @Override
   @NotNull
   @NonNls
-  public String getNameSpaceUri() {
-    return createNameSpaceUri( getFormatVersion() );
+  public String getNameSpace() {
+    return createNameSpace( getFormatVersion() );
   }
 
   /**
@@ -86,8 +86,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    */
   @NonNls
   @NotNull
-  public String getNameSpaceUriBase() {
-    return nameSpaceUriBase;
+  public String getNameSpaceBase() {
+    return nameSpaceBase;
   }
 
   /**
@@ -99,7 +99,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws IllegalArgumentException
    */
   @NotNull
-  public static Version parseVersionFromNamespaceUri( @Nullable @NonNls String namespaceURI ) throws IllegalArgumentException, VersionException {
+  public static Version parseVersionFromNamespace( @Nullable @NonNls String namespaceURI ) throws IllegalArgumentException, VersionException {
     if ( namespaceURI == null || namespaceURI.length() == 0 ) {
       throw new VersionException( "No version information found" );
     }
@@ -117,11 +117,11 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws VersionException          the if the version does not fit the expected range
    */
   @Override
-  public void verifyNamespaceUri( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException {
+  public void verifyNamespace( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
     }
-    String expectedBase = getNameSpaceUriBase();
+    String expectedBase = getNameSpaceBase();
     if ( !namespace.startsWith( expectedBase ) ) {
       throw new InvalidNamespaceException( namespace, expectedBase + "/$VERSION>" );
     }
@@ -139,10 +139,10 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
   @NotNull
   public Version parseAndVerifyNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space
-    verifyNamespaceUri( namespaceURI );
+    verifyNamespace( namespaceURI );
 
     //Parse and verify the version
-    Version formatVersion = parseVersionFromNamespaceUri( namespaceURI );
+    Version formatVersion = parseVersionFromNamespace( namespaceURI );
     verifyVersionReadable( formatVersion );
     return formatVersion;
   }

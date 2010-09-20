@@ -228,7 +228,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 
-    if ( doesNamespaceFit( reader, getNameSpaceUri() ) ) {
+    if ( doesNamespaceFit( reader, getNameSpace() ) ) {
       throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
     }
 

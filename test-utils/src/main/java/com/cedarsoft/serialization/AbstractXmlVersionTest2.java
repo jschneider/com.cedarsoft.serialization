@@ -58,12 +58,12 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
    */
   @NotNull
   protected static byte[] processXml( @NotNull @NonNls String xml, @NotNull Version version, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
-    return processXml( xml, serializer.createNameSpaceUri( version ) );
+    return processXml( xml, serializer.createNameSpace( version ) );
   }
 
   @NotNull
   protected static byte[] processXml( @NotNull @NonNls byte[] xml, @NotNull Version version, @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
-    return processXml( xml, serializer.createNameSpaceUri( version ) );
+    return processXml( xml, serializer.createNameSpace( version ) );
   }
 
   @NotNull

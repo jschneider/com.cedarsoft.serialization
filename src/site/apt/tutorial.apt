@@ -107,7 +107,7 @@
 
   * <String defaultElementName>: The name for the root element, if this serializers is not used as delegate. For delegating serializers that value is not used.
 
-  * <String nameSpaceUriBase>: The nameSpaceUriBase is extended with the version number represents the name space within the xml.
+  * <String nameSpaceBase>: The nameSpaceBase is extended with the version number represents the name space within the xml.
 
   * <VersionRange formatVersionRange>: The supported format version range. The upper bound represents the format that is written.
     All Versions within the range can be read.

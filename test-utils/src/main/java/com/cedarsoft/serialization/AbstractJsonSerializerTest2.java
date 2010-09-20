@@ -56,7 +56,7 @@ import java.util.Map;
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] expectedJson ) throws Exception {
     if ( addNameSpace() ) {
-      String expectedWithNamespace = addNameSpace( ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) getSerializer() ).getNameSpaceUri(), expectedJson );
+      String expectedWithNamespace = addNameSpace( ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) getSerializer() ).getNameSpace(), expectedJson );
       JsonUtils.assertJsonEquals( expectedWithNamespace, new String( current ) );
     } else {
       JsonUtils.assertJsonEquals( new String( expectedJson ), new String( current ) );

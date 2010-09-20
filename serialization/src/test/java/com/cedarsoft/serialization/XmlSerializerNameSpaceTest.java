@@ -47,8 +47,8 @@ public class XmlSerializerNameSpaceTest {
 
   @Test
   public void testParseVersion() {
-    assertEquals( new Version( 1, 0, 0 ), AbstractXmlSerializer.parseVersionFromNamespaceUri( "http://www.cedarsoft.com/serialization/XmlSerializerNameSpaceTest/1.0.0" ) );
-    assertEquals( new Version( 2, 5, 1 ), AbstractXmlSerializer.parseVersionFromNamespaceUri( "http://www.lang.java/String/2.5.1" ) );
-    assertEquals( new Version( 2, 5, 1, "asdf" ), AbstractXmlSerializer.parseVersionFromNamespaceUri( "http://www.lang.java/String/2.5.1-asdf" ) );
+    assertEquals( new Version( 1, 0, 0 ), AbstractXmlSerializer.parseVersionFromNamespace( "http://www.cedarsoft.com/serialization/XmlSerializerNameSpaceTest/1.0.0" ) );
+    assertEquals( new Version( 2, 5, 1 ), AbstractXmlSerializer.parseVersionFromNamespace( "http://www.lang.java/String/2.5.1" ) );
+    assertEquals( new Version( 2, 5, 1, "asdf" ), AbstractXmlSerializer.parseVersionFromNamespace( "http://www.lang.java/String/2.5.1-asdf" ) );
   }
 }

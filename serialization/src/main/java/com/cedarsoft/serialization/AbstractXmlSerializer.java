@@ -53,11 +53,11 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
-   * @param nameSpaceUriBase   the base for the namespace uri
+   * @param nameSpaceBase   the base for the namespace uri
    * @param formatVersionRange the version range. The max value is used when written.
    */
-  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
-    super( nameSpaceUriBase, formatVersionRange );
+  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceBase, @NotNull VersionRange formatVersionRange ) {
+    super( nameSpaceBase, formatVersionRange );
     this.defaultElementName = defaultElementName;
   }
 

@@ -58,12 +58,12 @@ public class DaAbstractXmlSerializerTest {
 
   @Test
   public void testNs() throws InvalidNamespaceException {
-    serializer.verifyNamespaceUri( "nsBase" );
-    serializer.verifyNamespaceUri( "nsBaseADDITIONAL" );
+    serializer.verifyNamespace( "nsBase" );
+    serializer.verifyNamespace( "nsBaseADDITIONAL" );
 
     expectedException.expect( InvalidNamespaceException.class );
     expectedException.expectMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/$VERSION>>" );
-    serializer.verifyNamespaceUri( "WrongnsBaseWRONG" );
+    serializer.verifyNamespace( "WrongnsBaseWRONG" );
   }
 
   public static class MySerializer extends AbstractXmlSerializer<String, StringBuffer, String, IOException> {

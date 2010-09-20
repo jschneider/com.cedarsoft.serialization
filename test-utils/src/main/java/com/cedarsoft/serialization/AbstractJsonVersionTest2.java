@@ -86,7 +86,7 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
     @NotNull
     @Override
     public byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception {
-      String nameSpaceUri = ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) serializer ).createNameSpaceUri( version );
+      String nameSpaceUri = ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) serializer ).createNameSpace( version );
       return AbstractJsonSerializerTest2.addNameSpace( nameSpaceUri, json ).getBytes();
     }
   }

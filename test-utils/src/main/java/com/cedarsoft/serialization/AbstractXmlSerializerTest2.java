@@ -78,7 +78,7 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   @NotNull
   @NonNls
   public static String addNameSpace( @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
-    return addNameSpace( serializer.createNameSpaceUri( serializer.getFormatVersion() ), xmlBytes );
+    return addNameSpace( serializer.createNameSpace( serializer.getFormatVersion() ), xmlBytes );
   }
 
   public static String addNameSpace( @NotNull @NonNls String nameSpaceUri, @NotNull @NonNls byte[] xml ) throws JDOMException, IOException {
