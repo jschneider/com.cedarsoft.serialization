@@ -56,7 +56,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
   /**
    * Serializes the object to the given generator.
    * The serializer is responsible for writing start/close object/array brackets if necessary.
-   * This method also writes the @ns property.
+   * This method also writes the @type property.
    *
    * @param object    the object
    * @param generator the generator
@@ -66,7 +66,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
 
   /**
    * Deserializes the object from the given parser.
-   * This method deserializes the @ns property.
+   * This method deserializes the @type property.
    *
    * @param parser the parser
    * @return the deserialized object

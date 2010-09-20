@@ -60,7 +60,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @NonNls
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   @NonNls
-  public static final String PROPERTY_NS = "@ns";
+  public static final String PROPERTY_TYPE = "@type";
   @NonNls
   public static final String PROPERTY_VERSION = "@version";
 
@@ -86,7 +86,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * Serializes the object to the given serializeTo.
    * <p/>
    * The serializer is responsible for writing start/close object/array brackets if necessary.
-   * This method also writes the @ns property.
+   * This method also writes the @type property.
    *
    * @param object    the object that is serialized
    * @param generator the serialize to object
@@ -96,7 +96,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException {
     if ( isObjectType() ) {
       generator.writeStartObject();
-      generator.writeStringField( PROPERTY_NS, nameSpace );
+      generator.writeStringField( PROPERTY_TYPE, nameSpace );
       generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     if ( isObjectType() ) {
       nextToken( parser, JsonToken.START_OBJECT );
 
-      nextFieldValue( parser, PROPERTY_NS );
+      nextFieldValue( parser, PROPERTY_TYPE );
       String readNs = parser.getText();
       verifyNamespace( readNs );
       nextFieldValue( parser, PROPERTY_VERSION );

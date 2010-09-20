@@ -73,7 +73,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
     JsonNode tree = new ObjectMapper().readTree( new String( xmlBytes ) );
 
     Map<String, JsonNode> newProps = new LinkedHashMap<String, JsonNode>();
-    newProps.put( "@ns", new TextNode( nameSpaceUri ) );
+    newProps.put( "@type", new TextNode( nameSpaceUri ) );
 
     Iterator<Map.Entry<String, JsonNode>> nodeIterator = ( ( ObjectNode ) tree ).getFields();
     while ( nodeIterator.hasNext() ) {
