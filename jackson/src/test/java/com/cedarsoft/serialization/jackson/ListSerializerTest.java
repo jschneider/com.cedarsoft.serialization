@@ -55,7 +55,7 @@ import static org.junit.Assert.*;
  */
 public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? extends Object>> {
   @Override
-  protected boolean addNameSpace() {
+  protected boolean addTypeInformation() {
     return false;
   }
 

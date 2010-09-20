@@ -31,21 +31,22 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.VersionException;
 import com.cedarsoft.serialization.InvalidNamespaceException;
-import com.cedarsoft.serialization.NameSpaceAware;
 import com.cedarsoft.serialization.PluggableSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
 /**
  * @param <T> the type of object this serializer is able to (de)serialize
  */
-public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException>, NameSpaceAware {
+public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
   /**
    * Whether it is an object type. If true, the object braces are generated where necessary.
    *
@@ -72,8 +73,26 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @return the deserialized object
    *
    * @throws IOException
-   * @throws InvalidNamespaceException
    */
   @NotNull
-  T deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException, JsonProcessingException;
+  T deserialize( @NotNull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException;
+
+  /**
+   * Returns the type
+   *
+   * @return the type
+   */
+  @NotNull
+  @NonNls
+  String getType();
+
+  /**
+   * Verifies the name space
+   *
+   * @param namespace the name space
+   * @throws InvalidNamespaceException
+   * @throws VersionException
+   */
+  void verifyType( @Nullable @NonNls String type ) throws InvalidTypeException;
+
 }

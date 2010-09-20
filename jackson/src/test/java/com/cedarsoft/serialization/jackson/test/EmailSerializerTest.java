@@ -53,7 +53,7 @@ public class EmailSerializerTest extends AbstractJsonSerializerTest2<Email> {
   }
 
   @Override
-  protected boolean addNameSpace() {
+  protected boolean addTypeInformation() {
     return false;
   }
 }

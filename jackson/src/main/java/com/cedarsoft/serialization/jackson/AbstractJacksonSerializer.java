@@ -35,7 +35,6 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -45,6 +44,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,11 +66,24 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @NotNull
   @NonNls
-  private final String nameSpace;
+  private final String type;
 
-  protected AbstractJacksonSerializer( @NonNls @NotNull String nameSpace, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractJacksonSerializer( @NonNls @NotNull String type, @NotNull VersionRange formatVersionRange ) {
     super( formatVersionRange );
-    this.nameSpace = nameSpace;
+    this.type = type;
+  }
+
+  @NotNull
+  @Override
+  public String getType() {
+    return type;
+  }
+
+  @Override
+  public void verifyType( @Nullable @NonNls String type ) throws InvalidTypeException {
+    if ( !this.type.equals( type ) ) {
+      throw new InvalidTypeException( type, this.type );
+    }
   }
 
   @Override
@@ -96,7 +109,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException {
     if ( isObjectType() ) {
       generator.writeStartObject();
-      generator.writeStringField( PROPERTY_TYPE, nameSpace );
+      generator.writeStringField( PROPERTY_TYPE, type );
       generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
     }
 
@@ -118,21 +131,21 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
       ensureParserClosed( parser );
       return deserialized;
-    } catch ( InvalidNamespaceException e ) {
+    } catch ( InvalidTypeException e ) {
       throw new IOException( "Could not parse due to " + e.getMessage(), e );
     }
   }
 
   @Override
   @NotNull
-  public T deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException {
+  public T deserialize( @NotNull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
     Version version;
     if ( isObjectType() ) {
       nextToken( parser, JsonToken.START_OBJECT );
 
       nextFieldValue( parser, PROPERTY_TYPE );
       String readNs = parser.getText();
-      verifyNamespace( readNs );
+      verifyType( readNs );
       nextFieldValue( parser, PROPERTY_VERSION );
       version = Version.parse( parser.getText() );
       verifyVersionReadable( version );

@@ -32,10 +32,12 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.JsonUtils;
+import com.cedarsoft.Version;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.TextNode;
+import org.fest.reflect.core.Reflection;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,25 +57,45 @@ import java.util.Map;
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] expectedJson ) throws Exception {
-    if ( addNameSpace() ) {
-      String expectedWithNamespace = addNameSpace( ( ( AbstractNameSpaceBasedSerializer<?, ?, ?, ?> ) getSerializer() ).getNameSpace(), expectedJson );
+    if ( addTypeInformation() ) {
+      String expectedWithNamespace = addTypeInformation( expectedJson );
       JsonUtils.assertJsonEquals( expectedWithNamespace, new String( current ) );
     } else {
       JsonUtils.assertJsonEquals( new String( expectedJson ), new String( current ) );
     }
   }
 
-  protected boolean addNameSpace() {
+  @NotNull
+  @NonNls
+  public String addTypeInformation( @NotNull @NonNls byte[] expectedJson ) throws Exception {
+    Serializer<T> serializer = getSerializer();
+    return addTypeInformation( serializer, expectedJson );
+  }
+
+  @NotNull
+  @NonNls
+  protected static String getType( @NotNull Serializer<?> serializer ) {
+    return Reflection.method( "getType" ).withReturnType( String.class ).in( serializer ).invoke();
+  }
+
+  @NotNull
+  @NonNls
+  public static String addTypeInformation( @NotNull Serializer<?> serializer, @NotNull @NonNls byte[] expectedJson ) throws Exception {
+    return addTypeInformation( getType( serializer ), serializer.getFormatVersion(), expectedJson );
+  }
+
+  protected boolean addTypeInformation() {
     return true;
   }
 
   @NotNull
   @NonNls
-  public static String addNameSpace( @NotNull @NonNls String nameSpaceUri, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
+  public static String addTypeInformation( @NotNull @NonNls String type, @NotNull Version version, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
     JsonNode tree = new ObjectMapper().readTree( new String( xmlBytes ) );
 
     Map<String, JsonNode> newProps = new LinkedHashMap<String, JsonNode>();
-    newProps.put( "@type", new TextNode( nameSpaceUri ) );
+    newProps.put( "@type", new TextNode( type ) );
+    newProps.put( "@version", new TextNode( version.format() ) );
 
     Iterator<Map.Entry<String, JsonNode>> nodeIterator = ( ( ObjectNode ) tree ).getFields();
     while ( nodeIterator.hasNext() ) {

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  *
  */
+@Deprecated
 public interface NameSpaceAware {
   @NotNull
   @NonNls

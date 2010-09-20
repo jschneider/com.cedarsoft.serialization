@@ -49,7 +49,7 @@ import java.io.ByteArrayOutputStream;
  */
 public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   @Override
-  protected boolean addNameSpace() {
+  protected boolean addTypeInformation() {
     return false;
   }
 

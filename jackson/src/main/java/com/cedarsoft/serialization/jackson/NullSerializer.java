@@ -34,7 +34,6 @@ package com.cedarsoft.serialization.jackson;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.InvalidNamespaceException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
@@ -69,7 +68,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
 
   @Nullable
   @Override
-  public Void deserialize( @NotNull JsonParser parser ) throws IOException, InvalidNamespaceException {
+  public Void deserialize( @NotNull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
     nextToken( parser, JsonToken.VALUE_NULL );
     return null;
   }
