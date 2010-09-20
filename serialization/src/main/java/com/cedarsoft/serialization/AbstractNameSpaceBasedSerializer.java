@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <E> the exception that might be thrown
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> implements NameSpaceAware {
+public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> {
   @NotNull
   @NonNls
   protected final String nameSpaceBase;
@@ -72,7 +72,6 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri
    */
-  @Override
   @NotNull
   @NonNls
   public String getNameSpace() {
@@ -116,7 +115,6 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException if the namespace is invalid
    * @throws VersionException          the if the version does not fit the expected range
    */
-  @Override
   public void verifyNamespace( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
