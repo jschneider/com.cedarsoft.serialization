@@ -44,33 +44,24 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class BaseNameSerializer extends AbstractJacksonSerializer<BaseName> {
-
-  public static final String PROPERTY_NAME = "name";
-
   public BaseNameSerializer() {
-    super( "http://cedarsoft.com/file/base-name", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "base-name", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull BaseName object, @NotNull Version formatVersion )
-    throws IOException, JsonProcessingException {
+  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull BaseName object, @NotNull Version formatVersion ) throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
-    //name
-    serializeTo.writeStringField( PROPERTY_NAME, object.getName() );
+    serializeTo.writeString( object.getName() );
   }
 
   @NotNull
   @Override
-  public BaseName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
-    throws VersionException, IOException, JsonProcessingException {
-    //name
-    nextFieldValue( deserializeFrom, PROPERTY_NAME );
-    String name = deserializeFrom.getText();
-    //Finally closing element
-    closeObject( deserializeFrom );
-    //Constructing the deserialized object
-    BaseName object = new BaseName( name );
-    return object;
+  public BaseName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
+    return new BaseName( deserializeFrom.getText() );
   }
 
+  @Override
+  public boolean isObjectType() {
+    return false;
+  }
 }
