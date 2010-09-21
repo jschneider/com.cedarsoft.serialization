@@ -38,8 +38,7 @@ import com.cedarsoft.serialization.Serializer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
-public class VersionSerializerTest
-  extends AbstractJsonSerializerTest2<Version> {
+public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> {
 
   @DataPoint
   public static final Entry<? extends Version> ENTRY1 = VersionSerializerTest.create(
