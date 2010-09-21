@@ -58,7 +58,7 @@ public abstract class AbstractNamespaceBasedGenerator extends AbstractGenerator<
   @NonNls
   public static final String METHOD_SUPER = "super";
 
-  protected AbstractNamespaceBasedGenerator( CodeGenerator codeGenerator ) {
+  protected AbstractNamespaceBasedGenerator( @NotNull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
