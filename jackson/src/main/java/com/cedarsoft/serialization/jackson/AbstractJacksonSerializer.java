@@ -231,11 +231,19 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
   }
 
-  protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
+  protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
+    serializeArray( elements, type, null, serializeTo, formatVersion );
+  }
+
+  protected <T> void serializeArray( @NotNull Iterable<? extends T> elements, @NotNull Class<T> type, @Nullable @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws IOException {
     JacksonSerializer<? super T> serializer = getSerializer( type );
     Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
 
-    serializeTo.writeArrayFieldStart( propertyName );
+    if ( propertyName == null ) {
+      serializeTo.writeStartArray();
+    } else {
+      serializeTo.writeArrayFieldStart( propertyName );
+    }
     for ( T element : elements ) {
       if ( serializer.isObjectType() ) {
         serializeTo.writeStartObject();
@@ -251,8 +259,16 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   @NotNull
-  protected <T> List<? extends T> deserializeArray( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException {
-    nextFieldValue( deserializeFrom, propertyName );
+  protected <T> List<? extends T> deserializeArray( @NotNull Class<T> type, @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+    return deserializeArray( type, null, deserializeFrom, formatVersion );
+  }
+
+  protected <T> List<? extends T> deserializeArray( @NotNull Class<T> type, @Nullable @NonNls String propertyName, @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException {
+    if ( propertyName == null ) {
+      assert deserializeFrom.getCurrentToken() == JsonToken.START_ARRAY;
+    } else {
+      nextFieldValue( deserializeFrom, propertyName );
+    }
 
     List<T> deserialized = new ArrayList<T>();
     while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
