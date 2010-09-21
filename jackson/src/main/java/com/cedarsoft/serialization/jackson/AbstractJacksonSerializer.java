@@ -277,13 +277,19 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     return deserialized;
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws JsonProcessingException, IOException {
+  public <T> void serialize( @Nullable T object, @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull JsonGenerator serializeTo, @NotNull Version formatVersion ) throws JsonProcessingException, IOException {
+    serializeTo.writeFieldName( propertyName );
+
+    //Fast exit if the value is null
+    if ( object == null ) {
+      serializeTo.writeNull();
+      return;
+    }
+
     JacksonSerializer<? super T> serializer = getSerializer( type );
     Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
     if ( serializer.isObjectType() ) {
-      serializeTo.writeObjectFieldStart( propertyName );
-    } else {
-      serializeTo.writeFieldName( propertyName );
+      serializeTo.writeStartObject();
     }
 
     serializer.serialize( serializeTo, object, delegateVersion );
@@ -293,6 +299,18 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
   }
 
+  @Nullable
+  protected <T> T deserializeNullable( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull Version formatVersion, @NotNull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
+    nextFieldValue( deserializeFrom, propertyName );
+
+    if ( deserializeFrom.getCurrentToken() == JsonToken.VALUE_NULL ) {
+      return null;
+    }
+
+    return deserialize( type, formatVersion, deserializeFrom );
+  }
+
+  @NotNull
   protected <T> T deserialize( @NotNull Class<T> type, @NotNull @NonNls String propertyName, @NotNull Version formatVersion, @NotNull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, propertyName );
     return deserialize( type, formatVersion, deserializeFrom );
