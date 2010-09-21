@@ -63,6 +63,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public static final String PROPERTY_TYPE = "@type";
   @NonNls
   public static final String PROPERTY_VERSION = "@version";
+  @NotNull
+  @NonNls
+  public static final String PROPERTY_SUB_TYPE = "@subtype";
 
   @NotNull
   @NonNls
