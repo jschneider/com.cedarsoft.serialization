@@ -36,6 +36,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
+import com.cedarsoft.file.FileTypeRegistry;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
@@ -86,6 +87,33 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
     closeObject( deserializeFrom );
     return new FileType( id, contentType, dependentType, extensions );
+  }
+
+  public static class Referenced extends AbstractJacksonSerializer<FileType> {
+    @NotNull
+    private final FileTypeRegistry fileTypeRegistry;
+
+    public Referenced( @NotNull FileTypeRegistry fileTypeRegistry ) {
+      super( "file-type", VersionRange.single( 1, 0, 0 ) );
+      this.fileTypeRegistry = fileTypeRegistry;
+    }
+
+    @Override
+    public boolean isObjectType() {
+      return false;
+    }
+
+    @Override
+    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+      serializeTo.writeString( object.getId() );
+    }
+
+    @NotNull
+    @Override
+    public FileType deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+      String id = deserializeFrom.getText();
+      return fileTypeRegistry.valueOf( id );
+    }
   }
 
 }
