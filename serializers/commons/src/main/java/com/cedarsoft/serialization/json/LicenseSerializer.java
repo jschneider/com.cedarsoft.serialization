@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class LicenseSerializer extends AbstractJacksonSerializer<License> {
-
   @NonNls
   public static final String PROPERTY_ID = "id";
   @NonNls
@@ -58,18 +57,15 @@ public class LicenseSerializer extends AbstractJacksonSerializer<License> {
   @NotNull
   @Override
   public License deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
-    boolean creativeCommons = false;
+    //If there is a subtype it *must* be cc
     nextToken( deserializeFrom, JsonToken.FIELD_NAME );
     if ( deserializeFrom.getCurrentName().equals( PROPERTY_SUB_TYPE ) ) {
       nextToken( deserializeFrom, JsonToken.VALUE_STRING );
       String subType = deserializeFrom.getText();
 
-      if ( subType.equals( SUB_TYPE_CC ) ) {
-        creativeCommons = true;
-      } else {
+      if ( !subType.equals( SUB_TYPE_CC ) ) {
         throw new IllegalStateException( "Invalid sub type: " + subType );
       }
-
       nextField( deserializeFrom, PROPERTY_ID );
     }
 
@@ -92,11 +88,10 @@ public class LicenseSerializer extends AbstractJacksonSerializer<License> {
     //Finally closing element
     closeObject( deserializeFrom );
 
-
     //Constructing the deserialized object
-    if ( creativeCommons ) {
-      return CreativeCommonsLicense.get( id );
-    }else{
+    try {
+      return License.get( id );
+    } catch ( IllegalArgumentException ignore ) {
       return new License( id, name, url );
     }
   }
