@@ -42,15 +42,15 @@ import java.net.URL;
 
 /**
  * It is necessary to define at least one DataPoint
- * <pre>&#064;DataPoint<br/>public static final VersionEntry ENTRY1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;xml/&gt;&quot; );</pre>
+ * <pre>&#064;DataPoint<br/>public static final VersionEntry ENTRY1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;json/&gt;&quot; );</pre>
  *
  * @param <T> the type
  */
 public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T> {
 
   @NotNull
-  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls String xml ) {
-    return new JsonVersionEntry( version, xml );
+  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls String json ) {
+    return new JsonVersionEntry( version, json );
   }
 
   @NotNull

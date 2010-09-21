@@ -54,7 +54,7 @@ import java.util.Collection;
 public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJacksonSerializer<T> {
   @NotNull
   @NonNls
-  private static final String PROPERTY_SUB_TYPE = "@subtype";
+  public static final String PROPERTY_SUB_TYPE = "@subtype";
   @NotNull
   protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> serializingStrategySupport;
 
