@@ -57,12 +57,16 @@ import java.util.Map;
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] expectedJson ) throws Exception {
+    String expectedAsString = new String( expectedJson );
     if ( addTypeInformation() ) {
-      String expectedWithNamespace = addTypeInformation( expectedJson );
-      JsonUtils.assertJsonEquals( expectedWithNamespace, new String( current ) );
-    } else {
-      JsonUtils.assertJsonEquals( new String( expectedJson ), new String( current ) );
+      try {
+        expectedAsString = addTypeInformation( expectedJson );
+      } catch ( Exception e ) {
+        System.err.println( "WARNING. Could not add type information due to " + e.getMessage() );
+      }
     }
+
+    JsonUtils.assertJsonEquals( expectedAsString, new String( current ) );
   }
 
   @NotNull
