@@ -52,9 +52,9 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   @NonNls
   public static final String PROPERTY_ID = "id";
   @NonNls
-  public static final String PROPERTY_DEPENDENTTYPE = "dependentType";
+  public static final String PROPERTY_DEPENDENT_TYPE = "dependentType";
   @NonNls
-  public static final String PROPERTY_CONTENTTYPE = "contentType";
+  public static final String PROPERTY_CONTENT_TYPE = "contentType";
 
   public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
     super( "file-type", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
@@ -68,8 +68,8 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     verifyVersionReadable( formatVersion );
 
     serializeTo.writeStringField( PROPERTY_ID, object.getId() );
-    serializeTo.writeBooleanField( PROPERTY_DEPENDENTTYPE, object.isDependentType() );
-    serializeTo.writeStringField( PROPERTY_CONTENTTYPE, object.getContentType() );
+    serializeTo.writeBooleanField( PROPERTY_DEPENDENT_TYPE, object.isDependentType() );
+    serializeTo.writeStringField( PROPERTY_CONTENT_TYPE, object.getContentType() );
     serializeArray( object.getExtensions(), Extension.class, PROPERTY_EXTENSIONS, serializeTo, formatVersion );
   }
 
@@ -79,9 +79,9 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     throws VersionException, IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, PROPERTY_ID );
     String id = deserializeFrom.getText();
-    nextFieldValue( deserializeFrom, PROPERTY_DEPENDENTTYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_DEPENDENT_TYPE );
     boolean dependentType = deserializeFrom.getBooleanValue();
-    nextFieldValue( deserializeFrom, PROPERTY_CONTENTTYPE );
+    nextFieldValue( deserializeFrom, PROPERTY_CONTENT_TYPE );
     String contentType = deserializeFrom.getText();
     List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
     closeObject( deserializeFrom );
