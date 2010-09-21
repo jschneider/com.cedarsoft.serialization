@@ -53,7 +53,7 @@ public class HashSerializer extends AbstractJacksonSerializer<Hash> {
   public static final String PROPERTY_VALUE = "hex";
 
   public HashSerializer() {
-    super( "http://cedarsoft.com/crypt/hash", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "hash", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
 
   @Override

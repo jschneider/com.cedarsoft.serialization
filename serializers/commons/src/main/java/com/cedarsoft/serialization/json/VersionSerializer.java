@@ -54,7 +54,7 @@ public class VersionSerializer extends AbstractJacksonSerializer<Version> {
   public static final String PROPERTY_SUFFIX = "suffix";
 
   public VersionSerializer() {
-    super( "http://cedarsoft.com/version", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "version", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
 
   @Override

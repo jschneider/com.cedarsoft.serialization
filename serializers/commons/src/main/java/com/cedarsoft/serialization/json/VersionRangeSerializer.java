@@ -54,7 +54,7 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
   public static final String PROPERTY_INCLUDEUPPER = "includeUpper";
 
   public VersionRangeSerializer() {
-    super( "http://cedarsoft.com/version-range", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "version-range", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
 
   @Override

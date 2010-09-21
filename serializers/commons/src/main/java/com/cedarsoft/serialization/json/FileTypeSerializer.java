@@ -57,7 +57,7 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   public static final String PROPERTY_CONTENTTYPE = "contentType";
 
   public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
-    super( "http://cedarsoft.com/file/file-type", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "file-type", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( extensionSerializer ).responsibleFor( Extension.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
     assert getDelegatesMappings().verify();
   }

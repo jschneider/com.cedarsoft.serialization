@@ -51,7 +51,7 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
   public static final String PROPERTY_EXTENSION = "extension";
 
   public ExtensionSerializer() {
-    super( "http://cedarsoft.com/file/extension", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+    super( "extension", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
 
   @Override
