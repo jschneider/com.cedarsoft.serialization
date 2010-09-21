@@ -1,0 +1,9 @@
+{
+  "@type" : "file-name",
+  "@version" : "1.0.0",
+  "baseName" : "baseName",
+  "extension" : {
+    "delimiter" : ".",
+    "extension" : "extension"
+  }
+}
