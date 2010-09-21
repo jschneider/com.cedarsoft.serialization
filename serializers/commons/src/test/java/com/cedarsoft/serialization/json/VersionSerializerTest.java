@@ -42,12 +42,16 @@ public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> 
 
   @DataPoint
   public static final Entry<? extends Version> ENTRY1 = VersionSerializerTest.create(
-    new Version( 42, 42, 42, "suffix" ),
-    VersionSerializerTest.class.getResource( "Version_1.0.0_1.json" ) );
+    new Version( 42, 42, 42, "suffix" ), "\"42.42.42-suffix\"" );
 
   @NotNull
   @Override
   protected Serializer<Version> getSerializer() throws Exception {
     return new VersionSerializer();
+  }
+
+  @Override
+  protected boolean addTypeInformation() {
+    return false;
   }
 }
