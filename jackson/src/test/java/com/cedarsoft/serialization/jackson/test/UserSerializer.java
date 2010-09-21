@@ -57,7 +57,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   public static final String PROPERTY_ROLES = "roles";
 
   public UserSerializer( @NotNull EmailSerializer emailSerializer, @NotNull RoleSerializer roleSerializer, @NotNull UserDetailsSerializer userDetailsSerializer ) {
-    super( "http://cedarsoft.com/test/user", VersionRange.from( 1, 0, 0 ).to() );
+    super( "user", VersionRange.from( 1, 0, 0 ).to() );
 
     getDelegatesMappings().add( emailSerializer ).responsibleFor( Email.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );

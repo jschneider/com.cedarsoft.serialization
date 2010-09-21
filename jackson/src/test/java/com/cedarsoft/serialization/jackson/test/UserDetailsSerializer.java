@@ -58,7 +58,7 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
   public static final String PROPERTY_PASSWORD_HASH = "passwordHash";
 
   public UserDetailsSerializer() {
-    super( "http://cedarsoft.com/test/role", VersionRange.from( 1, 0, 0 ).to() );
+    super( "user-details", VersionRange.from( 1, 0, 0 ).to() );
   }
 
   @Override

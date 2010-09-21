@@ -54,7 +54,7 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
   public static final String PROPERTY_DESCRIPTION = "description";
 
   public RoleSerializer() {
-    super( "http://cedarsoft.com/test/role", VersionRange.from( 1, 0, 0 ).to() );
+    super( "role", VersionRange.from( 1, 0, 0 ).to() );
   }
 
   @Override

@@ -50,7 +50,7 @@ import java.util.List;
  */
 public class ListSerializer extends AbstractJacksonSerializer<List<? extends Object>> {
   public ListSerializer() {
-    super( "http://sun.com/java.lang.string", VersionRange.single( 1, 0, 0 ) );
+    super( "list", VersionRange.single( 1, 0, 0 ) );
   }
 
   @Override

@@ -52,7 +52,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   public static final NullSerializer INSTANCE = new NullSerializer();
 
   public NullSerializer() {
-    super( "http://sun.com/java.lang.null", VersionRange.single( 1, 0, 0 ) );
+    super( "void", VersionRange.single( 1, 0, 0 ) );
   }
 
   @Override
