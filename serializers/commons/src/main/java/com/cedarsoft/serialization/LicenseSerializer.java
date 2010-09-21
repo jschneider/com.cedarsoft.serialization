@@ -44,8 +44,9 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
 /**
- *
+ * TODO: Does not work! Missing URL and sub class support!
  */
+@Deprecated
 public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<License> {
   @NotNull
   @NonNls
