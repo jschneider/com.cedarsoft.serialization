@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
+import com.cedarsoft.codegen.NamingSupport;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldWithInitializationInfo;
@@ -76,6 +77,21 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
     generators.add( new AsFieldGenerator( codeGenerator ) );
     generators.add( new ArrayElementGenerator( codeGenerator ) );
     generators.add( new DelegateGenerator( codeGenerator ) );
+  }
+
+  @NotNull
+  @Override
+  protected String getNamespace( @NotNull @NonNls String domainObjectType ) {
+    int lastIndex = domainObjectType.lastIndexOf( '.' );
+
+    String simpleName;
+    if ( lastIndex == -1 ) {
+      simpleName = domainObjectType;
+    } else {
+      simpleName = domainObjectType.substring( lastIndex + 1 );
+    }
+
+    return NamingSupport.createXmlElementName( simpleName );
   }
 
   @NotNull

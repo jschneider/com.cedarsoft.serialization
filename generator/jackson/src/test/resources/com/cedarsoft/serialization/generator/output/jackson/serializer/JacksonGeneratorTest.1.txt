@@ -41,7 +41,7 @@ public class FooSerializer
     public final static String PROPERTY_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {
-        super("http://cedarsoft.com/serialization/generator/test/foo", VersionRange.from(1, 0, 0).to(1, 0, 0));
+        super("foo", VersionRange.from(1, 0, 0).to(1, 0, 0));
         add(barSerializer).responsibleFor(Bar.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         assert getDelegatesMappings().verify();
     }
