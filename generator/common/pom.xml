@@ -48,7 +48,7 @@
 
     <dependency>
       <groupId>com.google.guava</groupId>
-      <artifactId>guava-io</artifactId>
+      <artifactId>guava</artifactId>
     </dependency>
 
     <dependency>
