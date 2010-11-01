@@ -59,6 +59,12 @@
       <artifactId>plexus-container-default</artifactId>
       <version>1.5.4</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.collections</groupId>
+          <artifactId>google-collections</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
 
