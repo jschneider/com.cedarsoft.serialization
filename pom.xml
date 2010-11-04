@@ -202,8 +202,8 @@
   </dependencies>
 
   <properties>
-    <currentStableVersion>2.0.1</currentStableVersion>
-    <currentDevelopmentVersion>2.1.0-SNAPSHOT</currentDevelopmentVersion>
+    <currentStableVersion>2.1.0</currentStableVersion>
+    <currentDevelopmentVersion>2.1.1-SNAPSHOT</currentDevelopmentVersion>
     <commons.version>3.0.1</commons.version>
   </properties>
 
