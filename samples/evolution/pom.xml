@@ -94,7 +94,6 @@
             -hide java.*
 
             -outputencoding UTF-8
-            <!---quiet-->
           </additionalparam>
 
           <useStandardDocletOptions>true</useStandardDocletOptions>
