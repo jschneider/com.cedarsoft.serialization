@@ -54,7 +54,7 @@
         </dependencies>
 
         <configuration>
-          <descriptor>all.xml</descriptor>
+          <descriptor>src/assembly/all.xml</descriptor>
         </configuration>
         
         <executions>

@@ -50,7 +50,7 @@
           <finalName>generator</finalName>
           <appendAssemblyId>true</appendAssemblyId>
           <descriptors>
-            <descriptor>all.xml</descriptor>
+            <descriptor>src/assembly/all.xml</descriptor>
           </descriptors>
           <archive>
             <manifest>
