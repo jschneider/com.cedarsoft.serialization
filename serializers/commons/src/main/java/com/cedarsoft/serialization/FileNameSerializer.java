@@ -37,11 +37,11 @@ import com.cedarsoft.file.BaseName;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.google.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;

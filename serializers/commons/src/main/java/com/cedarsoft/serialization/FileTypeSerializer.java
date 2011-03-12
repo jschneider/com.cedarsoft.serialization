@@ -36,7 +36,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
