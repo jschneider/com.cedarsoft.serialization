@@ -209,7 +209,7 @@
   <properties>
     <currentStableVersion>2.1.0</currentStableVersion>
     <currentDevelopmentVersion>2.1.1-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>4.0.0-SNAPSHOT</commons.version>
+    <commons.version>4.0.0</commons.version>
   </properties>
 
   <repositories>
