@@ -37,7 +37,7 @@ import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;

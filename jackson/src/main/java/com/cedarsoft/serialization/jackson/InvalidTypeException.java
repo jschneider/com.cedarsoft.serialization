@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.jackson;
 
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 

@@ -36,7 +36,7 @@ import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
