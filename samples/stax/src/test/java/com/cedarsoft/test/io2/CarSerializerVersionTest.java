@@ -39,9 +39,9 @@ import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;

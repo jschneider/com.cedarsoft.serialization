@@ -32,10 +32,8 @@
 package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.io.OutputStream;
 

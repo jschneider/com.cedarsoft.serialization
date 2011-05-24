@@ -38,9 +38,9 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;

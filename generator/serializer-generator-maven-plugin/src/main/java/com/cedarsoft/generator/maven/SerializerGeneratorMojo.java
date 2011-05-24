@@ -34,8 +34,8 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.codegen.AbstractGenerator;
 import com.cedarsoft.serialization.generator.JacksonGenerator;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**

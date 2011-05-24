@@ -34,10 +34,10 @@ package com.cedarsoft.serialization.demo2;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

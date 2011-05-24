@@ -35,7 +35,6 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

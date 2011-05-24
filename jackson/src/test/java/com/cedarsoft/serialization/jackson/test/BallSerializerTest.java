@@ -40,9 +40,10 @@ import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 

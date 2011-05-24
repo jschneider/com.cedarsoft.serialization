@@ -39,9 +39,9 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.apache.commons.io.IOUtils;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;

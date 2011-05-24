@@ -36,7 +36,6 @@ import org.apache.commons.io.IOUtils;
 import org.jdom.JDOMException;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.net.URL;
 

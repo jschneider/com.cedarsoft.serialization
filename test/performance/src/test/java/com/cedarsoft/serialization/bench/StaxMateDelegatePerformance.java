@@ -40,7 +40,6 @@ import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -50,7 +49,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  *

@@ -32,11 +32,11 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 

@@ -40,7 +40,6 @@ import org.codehaus.jackson.node.TextNode;
 import org.fest.reflect.core.Reflection;
 
 import javax.annotation.Nonnull;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;

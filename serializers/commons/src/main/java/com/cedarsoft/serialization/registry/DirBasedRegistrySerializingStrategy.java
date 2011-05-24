@@ -34,7 +34,6 @@ package com.cedarsoft.serialization.registry;
 import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;
-
 import java.io.File;
 import java.io.IOException;
 

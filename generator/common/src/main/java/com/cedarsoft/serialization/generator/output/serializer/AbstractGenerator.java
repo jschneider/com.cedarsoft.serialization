@@ -54,7 +54,6 @@ import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

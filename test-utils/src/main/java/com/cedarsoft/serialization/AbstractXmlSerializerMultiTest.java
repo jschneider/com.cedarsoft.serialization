@@ -34,7 +34,6 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 
 /**

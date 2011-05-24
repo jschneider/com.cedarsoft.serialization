@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.generator.test;
 
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

@@ -35,11 +35,10 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.app.Application;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import javax.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
-
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;

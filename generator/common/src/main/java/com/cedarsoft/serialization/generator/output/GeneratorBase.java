@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator.output;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.DecisionCallback;
 import com.sun.codemodel.JCodeModel;
+
 import javax.annotation.Nonnull;
 
 /**

@@ -37,9 +37,9 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;

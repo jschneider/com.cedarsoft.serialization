@@ -36,8 +36,8 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 
 /**

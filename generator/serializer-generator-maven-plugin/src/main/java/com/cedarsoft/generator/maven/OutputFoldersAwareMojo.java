@@ -35,8 +35,8 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 /**

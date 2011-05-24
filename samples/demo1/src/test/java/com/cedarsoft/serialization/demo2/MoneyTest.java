@@ -33,10 +33,10 @@ package com.cedarsoft.serialization.demo2;
 
 import com.cedarsoft.AssertUtils;
 import com.thoughtworks.xstream.XStream;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -46,8 +46,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import static com.cedarsoft.AssertUtils.assertEquals;
 
 /**
  *

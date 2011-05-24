@@ -31,17 +31,15 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.ZoneInfoSerializer;
 import org.joda.time.DateTimeZone;
-
-import static org.junit.Assert.*;
-
 import org.junit.*;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 /**
  *

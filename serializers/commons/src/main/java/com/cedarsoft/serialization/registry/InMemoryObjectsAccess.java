@@ -35,7 +35,6 @@ import com.cedarsoft.StillContainedException;
 import com.cedarsoft.serialization.NotFoundException;
 
 import javax.annotation.Nonnull;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

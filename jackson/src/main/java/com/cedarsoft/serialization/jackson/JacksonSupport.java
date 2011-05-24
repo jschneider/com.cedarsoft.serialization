@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.jackson;
 
 import org.codehaus.jackson.JsonFactory;
+
 import javax.annotation.Nonnull;
 
 /**

@@ -34,10 +34,10 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -31,7 +31,6 @@
 
 package com.cedarsoft.serialization.bench;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
@@ -39,7 +38,6 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;

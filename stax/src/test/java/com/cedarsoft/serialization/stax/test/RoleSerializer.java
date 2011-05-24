@@ -37,7 +37,6 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 
 import javax.annotation.Nonnull;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;

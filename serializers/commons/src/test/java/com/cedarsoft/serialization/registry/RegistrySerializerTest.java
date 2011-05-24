@@ -39,9 +39,9 @@ import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  *

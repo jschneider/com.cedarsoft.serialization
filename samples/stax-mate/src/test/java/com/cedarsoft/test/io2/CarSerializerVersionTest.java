@@ -40,10 +40,10 @@ import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 
 import static org.junit.Assert.*;

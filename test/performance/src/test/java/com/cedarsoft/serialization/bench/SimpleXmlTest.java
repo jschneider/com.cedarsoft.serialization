@@ -32,9 +32,9 @@
 package com.cedarsoft.serialization.bench;
 
 import com.cedarsoft.AssertUtils;
+import org.junit.*;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.junit.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

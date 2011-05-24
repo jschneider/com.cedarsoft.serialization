@@ -38,8 +38,8 @@ import com.cedarsoft.serialization.jackson.AbstractDelegatingJacksonSerializer;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializingStrategy;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**

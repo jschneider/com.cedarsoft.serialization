@@ -47,10 +47,10 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;

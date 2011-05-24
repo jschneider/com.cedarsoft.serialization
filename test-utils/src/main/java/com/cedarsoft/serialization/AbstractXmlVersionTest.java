@@ -34,7 +34,6 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 
 import javax.annotation.Nonnull;
-
 import java.util.HashMap;
 import java.util.Map;
 

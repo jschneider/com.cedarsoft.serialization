@@ -34,7 +34,6 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.serialization.bench.jaxb.Extension;
 import com.cedarsoft.serialization.bench.jaxb.FileType;
 import com.google.gson.Gson;
-
 import org.junit.*;
 
 import static org.junit.Assert.*;

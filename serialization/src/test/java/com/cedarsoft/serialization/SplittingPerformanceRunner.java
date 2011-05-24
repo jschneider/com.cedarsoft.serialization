@@ -33,8 +33,8 @@ package com.cedarsoft.serialization;
 
 import com.google.common.base.Splitter;
 import org.apache.commons.lang.time.StopWatch;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 

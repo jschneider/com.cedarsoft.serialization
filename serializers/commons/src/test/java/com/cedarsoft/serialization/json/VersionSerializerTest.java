@@ -35,8 +35,9 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> {
 

@@ -34,9 +34,9 @@ package com.cedarsoft.serialization.ui;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Comparator;
 

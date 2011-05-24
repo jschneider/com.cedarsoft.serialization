@@ -34,8 +34,9 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

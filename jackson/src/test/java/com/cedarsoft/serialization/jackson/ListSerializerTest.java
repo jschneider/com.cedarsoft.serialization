@@ -38,10 +38,10 @@ import com.cedarsoft.serialization.Entry;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;

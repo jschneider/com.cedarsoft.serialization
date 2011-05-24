@@ -33,8 +33,9 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.file.FileType;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 

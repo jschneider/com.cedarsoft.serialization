@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.VersionMappingTest;
 import com.cedarsoft.serialization.DelegatesMappings;
+import com.cedarsoft.serialization.VersionMappingTest;
 import org.junit.*;
 
 import java.io.IOException;

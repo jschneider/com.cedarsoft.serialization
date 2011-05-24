@@ -38,9 +38,9 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 

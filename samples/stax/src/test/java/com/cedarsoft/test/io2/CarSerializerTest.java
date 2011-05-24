@@ -38,8 +38,8 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.util.Arrays;
 

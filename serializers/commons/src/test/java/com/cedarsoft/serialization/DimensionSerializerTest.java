@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization;
 
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.awt.Dimension;
 
 import static org.junit.Assert.*;

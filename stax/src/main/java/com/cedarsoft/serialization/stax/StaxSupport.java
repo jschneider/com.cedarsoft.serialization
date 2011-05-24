@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.stax;
 
 
 import javax.annotation.Nonnull;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;

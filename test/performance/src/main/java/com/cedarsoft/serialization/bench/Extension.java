@@ -32,12 +32,10 @@
 package com.cedarsoft.serialization.bench;
 
 
-import javax.annotation.Nonnull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.annotation.Nonnull;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 

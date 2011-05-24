@@ -33,14 +33,14 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  *

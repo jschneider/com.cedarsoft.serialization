@@ -31,9 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

@@ -35,8 +35,8 @@ import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 

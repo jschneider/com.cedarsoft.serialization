@@ -31,15 +31,12 @@
 
 package com.cedarsoft.serialization.bench;
 
-import org.codehaus.jettison.AbstractXMLStreamWriter;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLStreamWriter;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 import org.junit.*;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.IOException;
 import java.io.StringWriter;
 
 import static org.junit.Assert.*;

@@ -34,8 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 

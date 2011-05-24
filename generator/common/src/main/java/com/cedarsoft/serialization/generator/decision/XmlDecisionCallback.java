@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.generator.decision;
 
 import com.cedarsoft.codegen.DecisionCallback;
 import com.cedarsoft.codegen.model.FieldInfo;
+
 import javax.annotation.Nonnull;
 
 /**

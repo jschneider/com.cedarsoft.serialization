@@ -35,7 +35,6 @@ import com.google.common.base.Splitter;
 import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.io.Writer;
 

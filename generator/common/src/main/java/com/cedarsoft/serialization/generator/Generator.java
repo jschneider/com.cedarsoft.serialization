@@ -44,8 +44,8 @@ import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator
 import com.google.common.collect.Lists;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.mirror.declaration.ClassDeclaration;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;

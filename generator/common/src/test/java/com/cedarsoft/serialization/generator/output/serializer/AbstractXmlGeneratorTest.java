@@ -42,9 +42,9 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.StringWriter;
 import java.util.Map;
 

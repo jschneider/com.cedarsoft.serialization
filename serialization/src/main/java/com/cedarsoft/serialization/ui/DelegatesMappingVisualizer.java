@@ -35,7 +35,6 @@ import com.cedarsoft.serialization.DelegatesMappings;
 import com.cedarsoft.serialization.ToString;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.util.Comparator;
 

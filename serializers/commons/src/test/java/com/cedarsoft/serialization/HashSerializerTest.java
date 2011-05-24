@@ -35,13 +35,11 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
-import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 /**
  *

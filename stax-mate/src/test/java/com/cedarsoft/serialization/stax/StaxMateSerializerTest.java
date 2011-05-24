@@ -38,10 +38,10 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;

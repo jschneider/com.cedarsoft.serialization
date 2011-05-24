@@ -32,10 +32,8 @@
 package com.cedarsoft.serialization.generator.decision;
 
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.sun.istack.NotNull;
 
 import javax.annotation.Nonnull;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;

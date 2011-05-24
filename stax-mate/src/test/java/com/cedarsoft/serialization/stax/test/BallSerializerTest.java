@@ -38,10 +38,10 @@ import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 

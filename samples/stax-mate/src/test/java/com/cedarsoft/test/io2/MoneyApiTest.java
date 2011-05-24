@@ -40,9 +40,9 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;

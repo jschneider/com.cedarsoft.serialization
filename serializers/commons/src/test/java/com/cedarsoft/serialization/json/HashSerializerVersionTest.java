@@ -37,9 +37,10 @@ import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 public class HashSerializerVersionTest
   extends AbstractJsonVersionTest2<Hash> {

@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.stax;
 
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
+
 import javax.annotation.Nonnull;
 
 /**

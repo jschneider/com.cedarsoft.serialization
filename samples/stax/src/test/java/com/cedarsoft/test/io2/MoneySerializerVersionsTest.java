@@ -35,8 +35,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -36,11 +36,10 @@ import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.StaxMateSupport;
-import com.cedarsoft.serialization.stax.StaxSupport;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 

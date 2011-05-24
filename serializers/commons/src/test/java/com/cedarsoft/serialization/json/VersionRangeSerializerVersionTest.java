@@ -36,9 +36,10 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 public class VersionRangeSerializerVersionTest
   extends AbstractJsonVersionTest2<VersionRange> {

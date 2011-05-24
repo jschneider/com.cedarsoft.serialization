@@ -37,10 +37,10 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;

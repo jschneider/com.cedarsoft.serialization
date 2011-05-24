@@ -35,9 +35,9 @@ import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.codec.binary.Hex;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**

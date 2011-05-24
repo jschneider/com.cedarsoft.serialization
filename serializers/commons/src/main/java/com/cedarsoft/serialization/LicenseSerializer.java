@@ -38,7 +38,6 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;

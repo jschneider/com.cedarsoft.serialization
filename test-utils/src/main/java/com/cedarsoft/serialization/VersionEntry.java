@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
+
 import javax.annotation.Nonnull;
 
 /**

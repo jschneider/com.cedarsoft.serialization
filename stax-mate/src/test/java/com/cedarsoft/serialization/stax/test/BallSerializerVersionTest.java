@@ -35,8 +35,9 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 

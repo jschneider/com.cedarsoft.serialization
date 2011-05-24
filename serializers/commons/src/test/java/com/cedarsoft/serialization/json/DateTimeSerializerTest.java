@@ -34,10 +34,11 @@ package com.cedarsoft.serialization.json;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 

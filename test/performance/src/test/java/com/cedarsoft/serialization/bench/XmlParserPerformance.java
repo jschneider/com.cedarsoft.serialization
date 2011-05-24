@@ -31,7 +31,6 @@
 
 package com.cedarsoft.serialization.bench;
 
-import com.cedarsoft.serialization.bench.jaxb.*;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.time.StopWatch;
@@ -46,8 +45,6 @@ import org.codehaus.staxmate.SMInputFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-
-import javax.annotation.Nonnull;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
@@ -55,6 +52,7 @@ import org.junit.*;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import javax.annotation.Nonnull;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;

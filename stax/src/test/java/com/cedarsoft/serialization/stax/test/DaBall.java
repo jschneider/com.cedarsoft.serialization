@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.stax.test;
 
 
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

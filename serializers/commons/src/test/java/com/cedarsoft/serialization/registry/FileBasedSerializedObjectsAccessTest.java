@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.TestUtils;
-import com.cedarsoft.serialization.registry.FileBasedObjectsAccess;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.*;

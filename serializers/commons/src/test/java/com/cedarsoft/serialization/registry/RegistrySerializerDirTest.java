@@ -36,13 +36,10 @@ import com.cedarsoft.TestUtils;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
-import com.cedarsoft.serialization.registry.DirBasedRegistrySerializingStrategy;
-import com.cedarsoft.serialization.registry.RegistrySerializer;
 import org.apache.commons.io.FileUtils;
-
-import javax.annotation.Nonnull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;

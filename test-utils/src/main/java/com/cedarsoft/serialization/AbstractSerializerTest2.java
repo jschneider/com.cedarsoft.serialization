@@ -32,12 +32,11 @@
 package com.cedarsoft.serialization;
 
 import org.apache.commons.io.IOUtils;
-
-import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

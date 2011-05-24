@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.generator.output.staxmate.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
-import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.TypeUtils;
+import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -45,7 +45,6 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 
 /**

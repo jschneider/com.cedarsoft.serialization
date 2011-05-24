@@ -41,7 +41,6 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 
 /**

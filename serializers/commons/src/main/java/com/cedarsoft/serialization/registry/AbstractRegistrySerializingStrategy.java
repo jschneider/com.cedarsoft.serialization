@@ -32,7 +32,6 @@
 package com.cedarsoft.serialization.registry;
 
 import javax.annotation.Nonnull;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -46,7 +46,6 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 
 /**

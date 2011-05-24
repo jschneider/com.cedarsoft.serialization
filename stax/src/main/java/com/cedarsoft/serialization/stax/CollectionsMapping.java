@@ -33,7 +33,6 @@ package com.cedarsoft.serialization.stax;
 
 
 import javax.annotation.Nonnull;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

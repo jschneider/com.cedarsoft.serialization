@@ -38,7 +38,6 @@ import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.serialization.stax.CollectionsMapping;
 
 import javax.annotation.Nonnull;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;

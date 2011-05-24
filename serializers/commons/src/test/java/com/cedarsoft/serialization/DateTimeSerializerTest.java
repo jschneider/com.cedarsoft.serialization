@@ -34,8 +34,6 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.DateTimeZoneRule;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-
-import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -44,6 +42,7 @@ import org.junit.*;
 import org.junit.experimental.theories.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 

@@ -34,6 +34,7 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
+
 import javax.annotation.Nonnull;
 
 /**

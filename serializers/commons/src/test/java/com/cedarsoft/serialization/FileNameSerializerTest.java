@@ -34,10 +34,10 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.xml.XmlCommons;
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 

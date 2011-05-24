@@ -37,6 +37,7 @@ import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback
 import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
+
 import javax.annotation.Nonnull;
 
 /**

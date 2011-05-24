@@ -32,20 +32,15 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
-import com.google.common.collect.Maps;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLOutputFactory;
-import org.codehaus.jettison.mapped.Configuration;
-import org.codehaus.jettison.mapped.MappedXMLOutputFactory;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
-import org.codehaus.staxmate.out.SMGlobalNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
-
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -53,7 +48,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;

@@ -39,11 +39,11 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**

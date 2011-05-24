@@ -32,11 +32,9 @@
 package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
-import com.cedarsoft.serialization.registry.AbstractRegistrySerializingStrategy;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import javax.annotation.Nonnull;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;

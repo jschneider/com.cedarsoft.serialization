@@ -41,7 +41,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import javax.annotation.Nonnull;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 

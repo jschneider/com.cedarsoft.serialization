@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization;
 
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

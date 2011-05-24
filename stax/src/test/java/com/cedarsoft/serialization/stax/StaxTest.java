@@ -32,11 +32,10 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
-
-import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;

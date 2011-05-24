@@ -37,10 +37,9 @@ import com.cedarsoft.serialization.PluggableSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-
-import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
