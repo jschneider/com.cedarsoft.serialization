@@ -44,6 +44,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
@@ -52,6 +53,7 @@ public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
   @NonNls
   public static final String PROPERTY_EXTENSION = "extension";
 
+  @Inject
   public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
     super( "file-name", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( baseNameSerializer ).responsibleFor( BaseName.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
@@ -68,6 +70,7 @@ public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
     serialize( object.getExtension(), Extension.class, PROPERTY_EXTENSION, serializeTo, formatVersion );
   }
 
+  @NotNull
   @Override
   public FileName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     //baseName

@@ -42,6 +42,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class ApplicationSerializer extends AbstractJacksonSerializer<Application> {
@@ -50,6 +51,11 @@ public class ApplicationSerializer extends AbstractJacksonSerializer<Application
   @NonNls
   public static final String PROPERTY_VERSION = "version";
 
+  /**
+   * @param versionSerializer the version serializer
+   * @noinspection TypeMayBeWeakened
+   */
+  @Inject
   public ApplicationSerializer( @NotNull VersionSerializer versionSerializer ) {
     super( "application", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( versionSerializer ).responsibleFor( Version.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );

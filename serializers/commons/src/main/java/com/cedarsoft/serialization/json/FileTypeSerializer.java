@@ -44,6 +44,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   @NonNls
   public static final String PROPERTY_CONTENT_TYPE = "contentType";
 
+  @Inject
   public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
     super( "file-type", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( extensionSerializer ).responsibleFor( Extension.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
