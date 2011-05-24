@@ -35,14 +35,14 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  *
  */
 public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();

@@ -33,14 +33,14 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.app.Application;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  *
  */
 public class ApplicationSerializerTest extends AbstractXmlSerializerTest2<Application> {
-  @NotNull
+  @Nonnull
   @Override
   protected ApplicationSerializer getSerializer() {
     return new ApplicationSerializer( new VersionSerializer() );

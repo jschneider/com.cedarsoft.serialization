@@ -34,14 +34,14 @@ package com.cedarsoft.serialization.jackson.test;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class EmailSerializerTest extends AbstractJsonSerializerTest2<Email> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Email> getSerializer() throws Exception {
     return new EmailSerializer();

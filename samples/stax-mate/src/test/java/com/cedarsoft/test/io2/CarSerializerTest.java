@@ -39,7 +39,7 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import java.awt.Color;
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
     MoneySerializer moneySerializer = new MoneySerializer();
@@ -64,7 +64,7 @@ public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
     CarSerializerTest.class.getResourceAsStream( "car3.xml" ) );
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Car original ) {
+  protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Car original ) {
     assertEquals( original.getColor(), deserialized.getColor() );
     assertEquals( original.getBasePrice(), deserialized.getBasePrice() );
     //.... (and much more)

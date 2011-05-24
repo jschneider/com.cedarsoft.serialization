@@ -36,8 +36,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.File;
@@ -196,8 +196,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     }
   }
 
-  @NotNull
-  private SerializerGeneratorMojo createVerifiedMojo( @NotNull @NonNls String name ) throws Exception {
+  @Nonnull
+  private SerializerGeneratorMojo createVerifiedMojo( @Nonnull  String name ) throws Exception {
     SerializerGeneratorMojo mojo = createMojo( name );
 
     assertNotNull( mojo.projectArtifact );
@@ -220,8 +220,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     FileUtils.deleteQuietly( mojo.testResourcesOutputDirectory );
   }
 
-  @NotNull
-  private SerializerGeneratorMojo createMojo( @NotNull @NonNls String name ) throws Exception {
+  @Nonnull
+  private SerializerGeneratorMojo createMojo( @Nonnull  String name ) throws Exception {
     File testPom = new File( getBasedir(), "src/test/resources/unit/" + name + "/basic-plugin-config.xml" );
     assertTrue( testPom.exists() );
     SerializerGeneratorMojo mojo = ( SerializerGeneratorMojo ) lookupMojo( "generate", testPom );

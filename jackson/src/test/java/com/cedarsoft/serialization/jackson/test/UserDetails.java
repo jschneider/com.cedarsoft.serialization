@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 
@@ -44,14 +44,14 @@ public class UserDetails {
 
   private long lastLogin;
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private byte[] passwordHash = new byte[0];
 
   public UserDetails() {
   }
 
-  public UserDetails( long registrationDate, long lastLogin, @NotNull byte[] passwordHash ) {
+  public UserDetails( long registrationDate, long lastLogin, @Nonnull byte[] passwordHash ) {
     this.registrationDate = registrationDate;
     this.lastLogin = lastLogin;
     this.passwordHash = passwordHash;
@@ -73,12 +73,12 @@ public class UserDetails {
     this.lastLogin = lastLogin;
   }
 
-  @NotNull
+  @Nonnull
   public byte[] getPasswordHash() {
     return passwordHash;
   }
 
-  public void setPasswordHash( @NotNull byte[] passwordHash ) {
+  public void setPasswordHash( @Nonnull byte[] passwordHash ) {
     this.passwordHash = passwordHash;
   }
 

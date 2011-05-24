@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.registry.StreamBasedObjectsAccess;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,22 +46,22 @@ import java.io.OutputStream;
  * @param <T> the type
  */
 public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
-  @NotNull
+  @Nonnull
   private final Serializer<T> serializer;
 
-  public SerializerBasedRegistrySerializingStrategy( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer ) {
+  public SerializerBasedRegistrySerializingStrategy( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer ) {
     super( objectsAccess );
     this.serializer = serializer;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public T deserialize( @NotNull @NonNls String id ) throws IOException {
+  public T deserialize( @Nonnull  String id ) throws IOException {
     return serializer.deserialize( objectsAccess.getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull  String id ) throws IOException {
     OutputStream out = objectsAccess.openOut( id );
     try {
       serializer.serialize( object, out );
@@ -71,7 +71,7 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
   }
 
   @Override
-  public void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void update( @Nonnull T object, @Nonnull  String id ) throws IOException {
     OutputStream out = objectsAccess.openOutForUpdate( id );
     try {
       serializer.serialize( object, out );
@@ -81,11 +81,11 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
   }
 
   @Override
-  public void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void remove( @Nonnull T object, @Nonnull  String id ) throws IOException {
     objectsAccess.delete( id );
   }
 
-  @NotNull
+  @Nonnull
   public Serializer<T> getSerializer() {
     return serializer;
   }

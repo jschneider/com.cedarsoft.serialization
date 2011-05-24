@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.ui;
 
 import com.cedarsoft.serialization.DelegatesMappings;
 import com.cedarsoft.serialization.ToString;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -43,15 +43,15 @@ import java.util.Comparator;
  *
  */
 public class DelegatesMappingVisualizer {
-  @NotNull
+  @Nonnull
   private final DelegatesMappings<?, ?, ?> mappings;
 
-  public DelegatesMappingVisualizer( @NotNull DelegatesMappings<?, ?, ?> mappings ) {
+  public DelegatesMappingVisualizer( @Nonnull DelegatesMappings<?, ?, ?> mappings ) {
     this.mappings = mappings;
   }
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public String visualize() throws IOException {
     VersionMappingsVisualizer<Class<?>> visualizer = new VersionMappingsVisualizer<Class<?>>( mappings.getVersionMappings(), new Comparator<Class<?>>() {
       @Override
@@ -59,9 +59,9 @@ public class DelegatesMappingVisualizer {
         return o1.getName().compareTo( o2.getName() );
       }
     }, new ToString<Class<?>>() {
-      @NotNull
+      @Nonnull
       @Override
-      public String convert( @NotNull Class<?> object ) {
+      public String convert( @Nonnull Class<?> object ) {
         String[] parts = object.getName().split( "\\." );
         return parts[parts.length - 1];
       }
@@ -69,13 +69,13 @@ public class DelegatesMappingVisualizer {
     return visualizer.visualize();
   }
 
-  @NotNull
-  public static DelegatesMappingVisualizer create( @NotNull DelegatesMappings<?, ?, ?> mappings ) {
+  @Nonnull
+  public static DelegatesMappingVisualizer create( @Nonnull DelegatesMappings<?, ?, ?> mappings ) {
     return new DelegatesMappingVisualizer( mappings );
   }
 
-  @NotNull
-  public static String toString( @NotNull DelegatesMappings<?, ?, ?> mappings ) throws IOException {
+  @Nonnull
+  public static String toString( @Nonnull DelegatesMappings<?, ?, ?> mappings ) throws IOException {
     return new DelegatesMappingVisualizer( mappings ).visualize();
   }
 }

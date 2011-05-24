@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.generator.output;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.DecisionCallback;
 import com.sun.codemodel.JCodeModel;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Abstract base class for all types of generators
@@ -42,22 +42,22 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> the type of the decision callback
  */
 public abstract class GeneratorBase<T extends DecisionCallback> {
-  @NotNull
+  @Nonnull
   protected final CodeGenerator codeGenerator;
-  @NotNull
+  @Nonnull
   protected final JCodeModel codeModel;
 
-  protected GeneratorBase( @NotNull CodeGenerator codeGenerator ) {
+  protected GeneratorBase( @Nonnull CodeGenerator codeGenerator ) {
     this.codeGenerator = codeGenerator;
     this.codeModel = codeGenerator.getModel();
   }
 
-  @NotNull
+  @Nonnull
   public final CodeGenerator getCodeGenerator() {
     return codeGenerator;
   }
 
-  @NotNull
+  @Nonnull
   public final JCodeModel getCodeModel() {
     return codeModel;
   }

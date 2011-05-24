@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.AssertUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ import java.util.List;
 @Deprecated
 public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializerMultiTest<T> {
   @Override
-  protected void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull List<? extends byte[]> serialized ) throws Exception {
     List<? extends String> expected = getExpectedSerialized();
 
     int index = 0;
@@ -68,7 +68,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
    *
    * @return the expected serialized string
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   protected abstract List<? extends String> getExpectedSerialized() throws Exception;
 }

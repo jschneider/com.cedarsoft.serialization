@@ -32,38 +32,38 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractJacksonSerializingStrategy<T> extends AbstractJacksonSerializer<T> implements JacksonSerializingStrategy<T> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final String id;
-  @NotNull
+  @Nonnull
   private final Class<? extends T> supportedType;
 
-  protected AbstractJacksonSerializingStrategy( @NotNull String id, @NonNls @NotNull String type, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractJacksonSerializingStrategy( @Nonnull String id,  @Nonnull String type, @Nonnull Class<? extends T> supportedType, @Nonnull VersionRange formatVersionRange ) {
     super( type, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public String getId() {
     return id;
   }
 
   @Override
-  public boolean supports( @NotNull Object object ) {
+  public boolean supports( @Nonnull Object object ) {
     return supportedType.isAssignableFrom( object.getClass() );
   }
 
-  @NotNull
+  @Nonnull
   public Class<? extends T> getSupportedType() {
     return supportedType;
   }

@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.jackson.AbstractDelegatingJacksonSerializer;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializingStrategy;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -71,14 +71,14 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Ball.TennisBall object, @NotNull Version formatVersion ) throws IOException {
+    public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Ball.TennisBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
       serializeTo.writeNumberField( "id", object.getId() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.TennisBall deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException {
+    public Ball.TennisBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
       verifyVersionReadable( formatVersion );
 
       int id;
@@ -104,14 +104,14 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Ball.BasketBall object, @NotNull Version formatVersion ) throws IOException {
+    public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Ball.BasketBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
       serializeTo.writeStringField( "theId", String.valueOf( object.getTheId() ) );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.BasketBall deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException {
+    public Ball.BasketBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
       verifyVersionReadable( formatVersion );
 
       String theId;

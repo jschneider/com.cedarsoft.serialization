@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -50,14 +50,14 @@ public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Version object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Version object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addCharacters( object.toString() );
   }
 
   @Override
-  @NotNull
-  public Version deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  @Nonnull
+  public Version deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String text = getText( deserializeFrom );
     return Version.parse( text );

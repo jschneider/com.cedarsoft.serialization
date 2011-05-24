@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.bench.jaxb;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -58,11 +58,11 @@ public class FileType implements Serializable {
   @Attribute( name = "dependent" )
   private boolean dependent;
   @Element( name = "id" )
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private String id;
   @Element( name = "extension" )
-  @NotNull
+  @Nonnull
   private Extension extension;
 
   /**
@@ -74,13 +74,13 @@ public class FileType implements Serializable {
     this.extension = null;
   }
 
-  public FileType( @Element( name = "id" ) @NotNull String id, @Element( name = "extension" ) @NotNull Extension extension, @Attribute( name = "dependent" ) boolean dependent ) {
+  public FileType( @Element( name = "id" ) @Nonnull String id, @Element( name = "extension" ) @Nonnull Extension extension, @Attribute( name = "dependent" ) boolean dependent ) {
     this.dependent = dependent;
     this.id = id;
     this.extension = extension;
   }
 
-  @NotNull
+  @Nonnull
   public Extension getExtension() {
     return extension;
   }
@@ -89,7 +89,7 @@ public class FileType implements Serializable {
     return dependent;
   }
 
-  @NotNull
+  @Nonnull
   public String getId() {
     return id;
   }
@@ -98,11 +98,11 @@ public class FileType implements Serializable {
     this.dependent = dependent;
   }
 
-  public void setId( @NotNull String id ) {
+  public void setId( @Nonnull String id ) {
     this.id = id;
   }
 
-  public void setExtension( @NotNull Extension extension ) {
+  public void setExtension( @Nonnull Extension extension ) {
     this.extension = extension;
   }
 }

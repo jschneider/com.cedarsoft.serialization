@@ -37,7 +37,7 @@ import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.ByteArrayInputStream;
@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
  *
  */
 public class NullSerializerTest {
-  @NotNull
+  @Nonnull
   protected NullSerializer getSerializer() throws Exception {
     return new NullSerializer();
   }

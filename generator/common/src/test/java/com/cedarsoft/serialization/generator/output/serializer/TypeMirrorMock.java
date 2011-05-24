@@ -33,16 +33,16 @@ package com.cedarsoft.serialization.generator.output.serializer;
 
 import com.sun.mirror.type.ReferenceType;
 import com.sun.mirror.util.TypeVisitor;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public class TypeMirrorMock implements ReferenceType {
-  @NotNull
+  @Nonnull
   private final Class<?> type;
 
-  public TypeMirrorMock( @NotNull Class<?> type ) {
+  public TypeMirrorMock( @Nonnull Class<?> type ) {
     this.type = type;
   }
 

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -72,8 +72,8 @@ public abstract class AbstractSerializerMultiTest<T> {
     verifyDeserialized( deserialized );
   }
 
-  @NotNull
-  private List<? extends byte[]> serialize( @NotNull Serializer<T> serializer, @NotNull Iterable<? extends T> objectsToSerialize ) throws IOException {
+  @Nonnull
+  private List<? extends byte[]> serialize( @Nonnull Serializer<T> serializer, @Nonnull Iterable<? extends T> objectsToSerialize ) throws IOException {
     List<byte[]> serialized = new ArrayList<byte[]>();
 
     int index = 0;
@@ -88,8 +88,8 @@ public abstract class AbstractSerializerMultiTest<T> {
     return serialized;
   }
 
-  @NotNull
-  protected byte[] serialize( @NotNull Serializer<T> serializer, @NotNull T objectToSerialize ) throws IOException {
+  @Nonnull
+  protected byte[] serialize( @Nonnull Serializer<T> serializer, @Nonnull T objectToSerialize ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( objectToSerialize, out );
     return out.toByteArray();
@@ -100,7 +100,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    *
    * @return the serializer
    */
-  @NotNull
+  @Nonnull
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
@@ -110,14 +110,14 @@ public abstract class AbstractSerializerMultiTest<T> {
    * @throws SAXException
    * @throws IOException
    */
-  protected abstract void verifySerialized( @NotNull List<? extends byte[]> serialized ) throws Exception;
+  protected abstract void verifySerialized( @Nonnull List<? extends byte[]> serialized ) throws Exception;
 
   /**
    * Creates the object to serialize
    *
    * @return the object to serialize
    */
-  @NotNull
+  @Nonnull
   protected abstract Iterable<? extends T> createObjectsToSerialize() throws Exception;
 
   /**
@@ -126,7 +126,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    *
    * @param deserialized the deserialized object
    */
-  protected void verifyDeserialized( @NotNull List<? extends T> deserialized ) throws Exception {
+  protected void verifyDeserialized( @Nonnull List<? extends T> deserialized ) throws Exception {
     int index = 0;
     for ( T currentExpected : createObjectsToSerialize() ) {
       assertEquals( deserialized.get( index ), currentExpected );

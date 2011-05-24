@@ -39,8 +39,8 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -48,9 +48,9 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class RoleSerializer extends AbstractJacksonSerializer<Role> {
-  @NonNls
+
   public static final String PROPERTY_ID = "id";
-  @NonNls
+
   public static final String PROPERTY_DESCRIPTION = "description";
 
   public RoleSerializer() {
@@ -58,14 +58,14 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Role object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Role object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeNumberField( PROPERTY_ID, object.getId() );
     serializeTo.writeStringField( PROPERTY_DESCRIPTION, object.getDescription() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Role deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public Role deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     nextFieldValue( deserializeFrom, PROPERTY_ID );
     int id = deserializeFrom.getIntValue();
 

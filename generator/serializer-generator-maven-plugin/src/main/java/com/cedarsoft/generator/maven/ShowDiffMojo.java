@@ -37,8 +37,8 @@ import com.google.common.collect.Lists;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.FileUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,10 +60,10 @@ public class ShowDiffMojo extends SourceFolderAwareMojo {
    *
    * @parameter expression="${diffCommand}"
    */
-  @NonNls
+
   private String diffCommand = "diff {0} {1}";
 
-  @NonNls
+
   protected String getDiffCommand() {
     return diffCommand;
   }
@@ -109,8 +109,8 @@ public class ShowDiffMojo extends SourceFolderAwareMojo {
     }
   }
 
-  @NotNull
-  protected List<String> showDiffs( @NotNull File sourceDirectory, @NotNull File targetDir ) throws MojoExecutionException, IOException, InterruptedException {
+  @Nonnull
+  protected List<String> showDiffs( @Nonnull File sourceDirectory, @Nonnull File targetDir ) throws MojoExecutionException, IOException, InterruptedException {
     if ( !sourceDirectory.exists() || sourceDirectory.list().length == 0 ) {
       getLog().warn( "No generated files found in " + sourceDirectory.getPath() );
       getLog().warn( "Call the <generate> goal first." );
@@ -140,16 +140,16 @@ public class ShowDiffMojo extends SourceFolderAwareMojo {
     return skippedFiles;
   }
 
-  private void showDiff( @NotNull File src, @NotNull File generated ) throws IOException, InterruptedException {
+  private void showDiff( @Nonnull File src, @Nonnull File generated ) throws IOException, InterruptedException {
     String commandLine = buildCommandLine( src.getAbsolutePath(), generated.getAbsolutePath() );
     getLog().info( "Executing <" + commandLine + ">" );
     Executer executer = new Executer( new ProcessBuilder( Lists.newArrayList( Splitter.on( " " ).split( commandLine ) ) ), true );
     executer.execute();
   }
 
-  @NotNull
-  @NonNls
-  public String buildCommandLine( @NotNull @NonNls String firstPath, @NotNull @NonNls String secondPath ) {
+  @Nonnull
+
+  public String buildCommandLine( @Nonnull  String firstPath, @Nonnull  String secondPath ) {
     return MessageFormat.format( getDiffCommand(), firstPath, secondPath );
   }
 }

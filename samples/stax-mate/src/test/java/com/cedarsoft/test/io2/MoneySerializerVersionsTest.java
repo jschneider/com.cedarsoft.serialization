@@ -36,7 +36,7 @@ import com.cedarsoft.serialization.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
@@ -45,7 +45,7 @@ import static org.junit.Assert.*;
  *
  */
 public class MoneySerializerVersionsTest extends AbstractXmlVersionTest2<Money> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();
@@ -57,7 +57,7 @@ public class MoneySerializerVersionsTest extends AbstractXmlVersionTest2<Money> 
   public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 0, 1 ), "<money cents=\"799\" />" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Money deserialized, @NotNull Version version ) {
+  protected void verifyDeserialized( @Nonnull Money deserialized, @Nonnull Version version ) {
     assertEquals( new Money( 7, 99 ), deserialized );
   }
 }

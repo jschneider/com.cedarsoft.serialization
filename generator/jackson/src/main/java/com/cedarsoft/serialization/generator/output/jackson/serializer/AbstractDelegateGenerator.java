@@ -32,21 +32,21 @@
 package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public abstract class AbstractDelegateGenerator extends AbstractSerializeToGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
-  @NonNls
+
   public static final String METHOD_NAME_NEXT_TAG = "nextFieldValue";
-  @NonNls
+
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
-  protected AbstractDelegateGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractDelegateGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 }

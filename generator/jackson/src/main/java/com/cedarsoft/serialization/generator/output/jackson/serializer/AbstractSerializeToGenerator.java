@@ -38,27 +38,27 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public abstract class AbstractSerializeToGenerator implements SerializeToGenerator {
-  @NotNull
+  @Nonnull
   protected final CodeGenerator codeGenerator;
 
-  protected AbstractSerializeToGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractSerializeToGenerator( @Nonnull CodeGenerator codeGenerator ) {
     this.codeGenerator = codeGenerator;
   }
 
-  @NotNull
-  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull @NonNls String constantName, @NotNull JExpression value ) {
+  @Nonnull
+  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull  String constantName, @Nonnull JExpression value ) {
     return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
   }
 
-  @NotNull
-  protected JFieldVar getConstant( @NotNull JDefinedClass serializerClass, @NotNull FieldInfo fieldInfo ) {
+  @Nonnull
+  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull FieldInfo fieldInfo ) {
     String constantName = getConstantName( fieldInfo );
     JExpression value = JExpr.lit( fieldInfo.getSimpleName() );
     return getConstant( serializerClass, constantName, value );
@@ -70,8 +70,8 @@ public abstract class AbstractSerializeToGenerator implements SerializeToGenerat
    * @param fieldInfo the field info
    * @return the constant name
    */
-  @NotNull
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+  @Nonnull
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
     return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

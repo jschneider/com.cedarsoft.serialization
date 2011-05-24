@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -75,7 +75,7 @@ public abstract class AbstractVersionTest<T> {
    *
    * @return the serializer
    */
-  @NotNull
+  @Nonnull
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
@@ -83,7 +83,7 @@ public abstract class AbstractVersionTest<T> {
    *
    * @return a map containing the version and the serialized object
    */
-  @NotNull
+  @Nonnull
   protected abstract Map<? extends Version, ? extends byte[]> getSerialized() throws Exception;
 
   /**
@@ -92,5 +92,5 @@ public abstract class AbstractVersionTest<T> {
    * @param deserialized the deserialized object
    * @param version      the version
    */
-  protected abstract void verifyDeserialized( @NotNull T deserialized, @NotNull Version version ) throws Exception;
+  protected abstract void verifyDeserialized( @Nonnull T deserialized, @Nonnull Version version ) throws Exception;
 }

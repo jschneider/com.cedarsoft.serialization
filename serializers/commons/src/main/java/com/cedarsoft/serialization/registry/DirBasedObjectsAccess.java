@@ -34,8 +34,8 @@ package com.cedarsoft.serialization.registry;
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.serialization.registry.AbstractRegistrySerializingStrategy;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -48,11 +48,11 @@ import java.util.Set;
  * Implementation that is based on simple files.
  */
 public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrategy.ObjectsAccess {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final File baseDir;
 
-  public DirBasedObjectsAccess( @NotNull File baseDir ) {
+  public DirBasedObjectsAccess( @Nonnull File baseDir ) {
     assert baseDir.exists();
     assert baseDir.isDirectory();
 
@@ -66,7 +66,7 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
    *
    * @throws FileNotFoundException
    */
-  @NotNull
+  @Nonnull
   @Override
   public Set<? extends String> getIds() throws IOException {
     assert baseDir.exists();
@@ -83,8 +83,8 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
     return ids;
   }
 
-  @NotNull
-  public File addDirectory( @NotNull @NonNls String id ) throws StillContainedException {
+  @Nonnull
+  public File addDirectory( @Nonnull  String id ) throws StillContainedException {
     File dir = getDirInternal( id );
     if ( dir.exists() ) {
       throw new StillContainedException( id );
@@ -94,8 +94,8 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
     return dir;
   }
 
-  @NotNull
-  public File getDirectory( @NotNull @NonNls String id ) throws FileNotFoundException {
+  @Nonnull
+  public File getDirectory( @Nonnull  String id ) throws FileNotFoundException {
     File directory = getDirInternal( id );
     if ( !directory.exists() ) {
       throw new FileNotFoundException( "No dir found for <" + id + "> at " + directory.getAbsolutePath() );
@@ -103,12 +103,12 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
     return directory;
   }
 
-  @NotNull
-  private File getDirInternal( @NotNull @NonNls String id ) {
+  @Nonnull
+  private File getDirInternal( @Nonnull  String id ) {
     return new File( baseDir, id );
   }
 
-  @NotNull
+  @Nonnull
   public File getBaseDir() {
     return baseDir;
   }

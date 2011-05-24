@@ -38,7 +38,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ import java.io.InputStream;
  *
  */
 public class NullSerializer extends AbstractJacksonSerializer<Void> {
-  @NotNull
+  @Nonnull
   public static final NullSerializer INSTANCE = new NullSerializer();
 
   public NullSerializer() {
@@ -56,26 +56,26 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @Nullable Void object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nullable Void object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeNull();
   }
 
   @Nullable
   @Override
-  public Void deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public Void deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     throw new UnsupportedOperationException();
   }
 
   @Nullable
   @Override
-  public Void deserialize( @NotNull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+  public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
     nextToken( parser, JsonToken.VALUE_NULL );
     return null;
   }
 
   @Nullable
   @Override
-  public Void deserialize( @NotNull InputStream in ) throws IOException, VersionException {
+  public Void deserialize( @Nonnull InputStream in ) throws IOException, VersionException {
     return null;
   }
 

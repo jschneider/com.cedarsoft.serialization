@@ -36,7 +36,7 @@ import com.cedarsoft.codegen.Decorator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Decorators can be used to generate additional code (e.g. annotations, comments etc.)
@@ -50,7 +50,7 @@ public interface GeneratorDecorator extends Decorator {
    * @param serializerClass the serializer class
    * @param serializeMethod the serialize method
    */
-  void decorateSerializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod );
+  void decorateSerializeMethod( @Nonnull CodeGenerator codeGenerator, @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod );
 
   /**
    * Decorates the deserialize method
@@ -60,5 +60,5 @@ public interface GeneratorDecorator extends Decorator {
    * @param serializerClass   the serializer class
    * @param deserializeMethod the deserialize method
    */
-  void decorateDeserializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod );
+  void decorateDeserializeMethod( @Nonnull CodeGenerator codeGenerator, @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod );
 }

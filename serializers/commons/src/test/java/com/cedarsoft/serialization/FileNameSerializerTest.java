@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.xml.XmlCommons;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -47,7 +47,7 @@ import static org.junit.Assert.*;
  *
  */
 public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<FileName> getSerializer() {
     return new FileNameSerializer( new BaseNameSerializer(), new ExtensionSerializer() );
@@ -60,7 +60,7 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName>
     "</fileName>" );
 
   @Override
-  protected void verifySerialized( @NotNull Entry<FileName> entry, @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull Entry<FileName> entry, @Nonnull byte[] serialized ) throws Exception {
     super.verifySerialized( entry, serialized );
     assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
   }

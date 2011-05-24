@@ -35,7 +35,7 @@ import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,14 +44,14 @@ import java.util.List;
  *
  */
 public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Extra> getSerializer() {
     //This serializer uses a delegate
     return new ExtraSerializer( new MoneySerializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Iterable<? extends Extra> createObjectsToSerialize() {
     return Arrays.asList(
@@ -60,7 +60,7 @@ public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
     );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(

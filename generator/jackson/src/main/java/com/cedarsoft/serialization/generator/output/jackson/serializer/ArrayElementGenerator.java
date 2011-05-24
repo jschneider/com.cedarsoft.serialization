@@ -44,8 +44,8 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.List;
 
@@ -53,18 +53,18 @@ import java.util.List;
  * Generates a new element
  */
 public class ArrayElementGenerator extends AbstractDelegateGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_SERIALIZE = "serializeArray";
-  @NonNls
+
   public static final String METHOD_NAME_DESERIALIZE = "deserializeArray";
 
-  public ArrayElementGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public ArrayElementGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
-  @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
+  @Nonnull
+  public JInvocation createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
     generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
 
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
@@ -81,8 +81,8 @@ public class ArrayElementGenerator extends AbstractDelegateGenerator {
   }
 
   @Override
-  @NotNull
-  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  @Nonnull
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
@@ -90,23 +90,23 @@ public class ArrayElementGenerator extends AbstractDelegateGenerator {
     return new Expressions( expression );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
     JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
     JClass list = codeGenerator.getModel().ref( List.class );
     return list.narrow( collectionType.wildcard() );
   }
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return fieldInfo.isCollectionType();
   }
 
   @Override
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+  @Nonnull
+
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
     return "PROPERTY_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

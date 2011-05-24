@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -77,7 +77,7 @@ public abstract class AbstractSerializerTest<T> {
    *
    * @return the serializer
    */
-  @NotNull
+  @Nonnull
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
@@ -87,14 +87,14 @@ public abstract class AbstractSerializerTest<T> {
    * @throws SAXException
    * @throws IOException
    */
-  protected abstract void verifySerialized( @NotNull byte[] serialized ) throws Exception;
+  protected abstract void verifySerialized( @Nonnull byte[] serialized ) throws Exception;
 
   /**
    * Creates the object to serialize
    *
    * @return the object to serialize
    */
-  @NotNull
+  @Nonnull
   protected abstract T createObjectToSerialize() throws Exception;
 
   /**
@@ -103,7 +103,7 @@ public abstract class AbstractSerializerTest<T> {
    *
    * @param deserialized the deserialized object
    */
-  protected void verifyDeserialized( @NotNull T deserialized ) throws Exception  {
+  protected void verifyDeserialized( @Nonnull T deserialized ) throws Exception  {
     assertEquals( deserialized, createObjectToSerialize() );
   }
 }

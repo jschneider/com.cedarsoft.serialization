@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.demo2;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -101,7 +101,7 @@ public class MoneyXstreamLegacyTest {
     assertEquals( 701, deserialize( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream(), Version.LEGACY ).getCents() );
   }
 
-  private static Money deserialize( @NotNull InputStream serialized, Version version ) throws XMLStreamException {
+  private static Money deserialize( @Nonnull InputStream serialized, Version version ) throws XMLStreamException {
     //Boilerplate
     XMLInputFactory factory = XMLInputFactory.newInstance();
     XMLStreamReader reader = factory.createXMLStreamReader( serialized );

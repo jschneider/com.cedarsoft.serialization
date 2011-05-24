@@ -44,25 +44,25 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public class DelegateGenerator extends AbstractDelegateGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_DESERIALIZE = "deserialize";
-  @NonNls
+
   public static final String METHOD_NAME_SERIALIZE = "serialize";
 
-  public DelegateGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public DelegateGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
+  public JStatement createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
     //Add serializer to constructor
     generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) );
 
@@ -78,9 +78,9 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
       ;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
 
     JClass type = codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
@@ -88,14 +88,14 @@ public class DelegateGenerator extends AbstractDelegateGenerator {
     return new Expressions( expression, nextTagExpression );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
   }
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return true;
   }
 }

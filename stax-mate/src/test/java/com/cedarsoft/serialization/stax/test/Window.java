@@ -37,7 +37,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -101,7 +101,7 @@ public class Window {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Window object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
       serializeTo.addAttribute( "height", String.valueOf( object.getHeight() ) );
@@ -109,9 +109,9 @@ public class Window {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Window deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
         double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );

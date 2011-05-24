@@ -36,8 +36,8 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -47,8 +47,8 @@ import java.io.IOException;
  *
  */
 public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ATTRIBUTE_DELIMITER = "delimiter";
 
   public ExtensionSerializer() {
@@ -56,15 +56,15 @@ public class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Extension object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
     serializeTo.addCharacters( object.getExtension() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Extension deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );
     if ( delimiter == null ) {

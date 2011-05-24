@@ -38,8 +38,8 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -48,14 +48,14 @@ import java.io.IOException;
  *
  */
 public class ColorSerializer extends AbstractJacksonSerializer<Color> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String PROPERTY_RED = "red";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String PROPERTY_GREEN = "green";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String PROPERTY_BLUE = "blue";
 
   public ColorSerializer() {
@@ -63,15 +63,15 @@ public class ColorSerializer extends AbstractJacksonSerializer<Color> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Color object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Color object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeNumberField( PROPERTY_RED, object.getRed() );
     serializeTo.writeNumberField( PROPERTY_GREEN, object.getGreen() );
     serializeTo.writeNumberField( PROPERTY_BLUE, object.getBlue() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Color deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public Color deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
     //red
     nextFieldValue( deserializeFrom, PROPERTY_RED );

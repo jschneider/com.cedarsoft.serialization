@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.file.FileType;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
@@ -42,14 +42,14 @@ import static org.junit.Assert.*;
  *
  */
 public class FileTypeSerializerVersionTest extends AbstractXmlVersionTest2<FileType> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<FileType> getSerializer() throws Exception {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull FileType deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull FileType deserialized, @Nonnull Version version ) throws Exception {
     assertEquals( "TheId", deserialized.getId() );
     assertEquals( 2, deserialized.getExtensions().size() );
     assertEquals( "ext", deserialized.getExtensions().get( 0 ).getExtension() );

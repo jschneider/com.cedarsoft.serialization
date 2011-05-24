@@ -52,8 +52,8 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,29 +68,29 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   /**
    * The suffix used for generated serializers
    */
-  @NonNls
-  @NotNull
+
+  @Nonnull
   public static final String SERIALIZER_CLASS_NAME_SUFFIX = "Serializer";
   /**
    * The name of the serialize method
    */
-  @NonNls
+
   public static final String METHOD_NAME_SERIALIZE = "serialize";
   /**
    * The name of the deserialize method
    */
-  @NonNls
+
   public static final String METHOD_NAME_DESERIALIZE = "deserialize";
-  @NonNls
+
   public static final String METHOD_NAME_DESERIALIZE_FROM = "deserializeFrom";
-  @NonNls
+
   public static final String PARAM_NAME_FORMAT_VERSION = "formatVersion";
-  @NonNls
+
   public static final String PARAM_NAME_SERIALIZE_TO = "serializeTo";
-  @NonNls
+
   public static final String VAR_NAME_OBJECT = "object";
 
-  protected AbstractGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
@@ -100,8 +100,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param domainType the domain type
    * @return the class the serializer extends
    */
-  @NotNull
-  protected abstract JClass createSerializerExtendsExpression( @NotNull JClass domainType );
+  @Nonnull
+  protected abstract JClass createSerializerExtendsExpression( @Nonnull JClass domainType );
 
   /**
    * Creates the class name for the serializer
@@ -109,9 +109,9 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param domainClassName the class name of the domain object that is serialized
    * @return the created class name for the serializer
    */
-  @NotNull
-  @NonNls
-  public static String createSerializerClassName( @NotNull @NonNls String domainClassName ) {
+  @Nonnull
+
+  public static String createSerializerClassName( @Nonnull  String domainClassName ) {
     return domainClassName + SERIALIZER_CLASS_NAME_SUFFIX;
   }
 
@@ -123,8 +123,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    *
    * @throws JClassAlreadyExistsException
    */
-  @NotNull
-  public JDefinedClass generateSerializer( @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+  @Nonnull
+  public JDefinedClass generateSerializer( @Nonnull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
 
     //the class
@@ -147,13 +147,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return serializerClass;
   }
 
-  protected void finishConstructor( @NotNull JDefinedClass serializerClass, @NotNull JMethod constructor ) {
+  protected void finishConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod constructor ) {
     if ( constructor.listParams().length > 0 ) {
       constructor.body().directStatement( "assert getDelegatesMappings().verify();" );
     }
   }
 
-  protected void constructDeserializedObject( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JMethod deserializeMethod, @NotNull Map<FieldWithInitializationInfo, JVar> fieldToVar ) {
+  protected void constructDeserializedObject( @Nonnull DomainObjectDescriptor domainObjectDescriptor, @Nonnull JMethod deserializeMethod, @Nonnull Map<FieldWithInitializationInfo, JVar> fieldToVar ) {
     deserializeMethod.body().directStatement( "//Constructing the deserialized object" );
 
     //Now create the constructor for the deserializeMethod
@@ -184,11 +184,11 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param domainObjectDescriptor the domain object descriptor
    * @return the created constructor
    */
-  @NotNull
-  protected abstract JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor );
+  @Nonnull
+  protected abstract JMethod createConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull DomainObjectDescriptor domainObjectDescriptor );
 
-  @NotNull
-  protected JMethod createSerializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
+  @Nonnull
+  protected JMethod createSerializeMethodStub( @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass ) {
     JMethod serializeMethod = serializerClass.method( JMod.PUBLIC, Void.TYPE, METHOD_NAME_SERIALIZE );
     serializeMethod.annotate( Override.class );
     serializeMethod.param( getSerializeToType(), PARAM_NAME_SERIALIZE_TO );
@@ -207,8 +207,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return serializeMethod;
   }
 
-  @NotNull
-  protected JMethod createDeserializeMethodStub( @NotNull JType domainType, @NotNull JDefinedClass serializerClass ) {
+  @Nonnull
+  protected JMethod createDeserializeMethodStub( @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass ) {
     JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
     deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM );
     deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION );
@@ -224,8 +224,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return deserializeMethod;
   }
 
-  @NotNull
-  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  @Nonnull
+  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @Nonnull DomainObjectDescriptor domainObjectDescriptor, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JMethod deserializeMethod ) {
     Map<FieldWithInitializationInfo, JVar> fieldToVar = Maps.newHashMap();
 
     //Extract the parameters for the serialize method
@@ -247,7 +247,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return fieldToVar;
   }
 
-  public void addDelegatingSerializerToConstructor( @NotNull JDefinedClass serializerClass, @NotNull JClass fieldType ) {
+  public void addDelegatingSerializerToConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull JClass fieldType ) {
     JType fieldSerializerType = getSerializerRefFor( fieldType );
 
     JMethod constructor = ( JMethod ) serializerClass.constructors().next();
@@ -270,8 +270,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
       .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) );
   }
 
-  @NotNull
-  protected JClass getSerializerRefFor( @NotNull JType type ) {
+  @Nonnull
+  protected JClass getSerializerRefFor( @Nonnull JType type ) {
     return codeGenerator.ref( type.fullName() + "Serializer" );
   }
 
@@ -280,7 +280,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    *
    * @return the exception type
    */
-  @NotNull
+  @Nonnull
   protected abstract Class<?> getExceptionType();
 
   /**
@@ -288,7 +288,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    *
    * @return the type of the serialize from object
    */
-  @NotNull
+  @Nonnull
   protected abstract Class<?> getSerializeFromType();
 
   /**
@@ -296,7 +296,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    *
    * @return the type of the serializeTo type
    */
-  @NotNull
+  @Nonnull
   protected abstract Class<?> getSerializeToType();
 
   /**
@@ -309,8 +309,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param fieldInfo         the field info
    * @return the var holding the deserialized value
    */
-  @NotNull
-  protected abstract JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
+  @Nonnull
+  protected abstract JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo );
 
   /**
    * Appends the serialize statement
@@ -322,5 +322,5 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param formatVersion    the format version
    * @param fieldInfo        the field info
    */
-  protected abstract void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo );
+  protected abstract void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo );
 }

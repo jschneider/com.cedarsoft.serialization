@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.serialization.NotFoundException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,13 +50,13 @@ import java.util.Set;
  *
  */
 public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final Map<String, byte[]> serialized = new HashMap<String, byte[]>();
 
   @Override
-  @NotNull
-  public InputStream getInputStream( @NotNull @NonNls String id ) {
+  @Nonnull
+  public InputStream getInputStream( @Nonnull  String id ) {
     byte[] found = serialized.get( id );
     if ( found == null ) {
       throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
@@ -64,15 +64,15 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
     return new ByteArrayInputStream( found );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Set<? extends String> getIds() throws IOException {
     return serialized.keySet();
   }
 
   @Override
-  @NotNull
-  public OutputStream openOut( @NotNull @NonNls final String id ) {
+  @Nonnull
+  public OutputStream openOut( @Nonnull  final String id ) {
     byte[] stored = serialized.get( id );
     if ( stored != null ) {
       throw new StillContainedException( id );
@@ -88,7 +88,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public OutputStream openOutForUpdate( @NotNull @NonNls final String id ) throws NotFoundException, FileNotFoundException {
+  public OutputStream openOutForUpdate( @Nonnull  final String id ) throws NotFoundException, FileNotFoundException {
     byte[] stored = serialized.get( id );
     if ( stored == null ) {
       throw new NotFoundException( id );
@@ -104,7 +104,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public void delete( @NotNull @NonNls String id ) throws NotFoundException {
+  public void delete( @Nonnull  String id ) throws NotFoundException {
     byte[] bytes = serialized.remove( id );
     if ( bytes == null ) {
       throw new NotFoundException( "id" );

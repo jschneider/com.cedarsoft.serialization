@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.stax.test;
 
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,31 +43,31 @@ import java.util.List;
  *
  */
 public class House {
-  @NotNull
+  @Nonnull
   private final List<Room> rooms = new ArrayList<Room>();
 
-  @NotNull
+  @Nonnull
   private final Door frontDoor;
 
-  public House( @NotNull Door frontDoor ) {
+  public House( @Nonnull Door frontDoor ) {
     this.frontDoor = frontDoor;
   }
 
-  public House( @NotNull Door frontDoor, @NotNull Collection<? extends Room> rooms ) {
+  public House( @Nonnull Door frontDoor, @Nonnull Collection<? extends Room> rooms ) {
     this.frontDoor = frontDoor;
     this.rooms.addAll( rooms );
   }
 
-  public void addRoom( @NotNull Room room ) {
+  public void addRoom( @Nonnull Room room ) {
     this.rooms.add( room );
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Room> getRooms() {
     return Collections.unmodifiableList( rooms );
   }
 
-  @NotNull
+  @Nonnull
   public Door getFrontDoor() {
     return frontDoor;
   }

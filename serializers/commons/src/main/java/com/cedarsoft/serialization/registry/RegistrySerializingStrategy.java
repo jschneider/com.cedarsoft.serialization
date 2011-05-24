@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.registry;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -51,8 +51,8 @@ public interface RegistrySerializingStrategy<T> {
    *
    * @throws IOException
    */
-  @NotNull
-  T deserialize( @NotNull @NonNls String id ) throws IOException;
+  @Nonnull
+  T deserialize( @Nonnull  String id ) throws IOException;
 
   /**
    * Serialize the object
@@ -61,11 +61,11 @@ public interface RegistrySerializingStrategy<T> {
    * @param id     the id
    * @throws IOException
    */
-  void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+  void serialize( @Nonnull T object, @Nonnull  String id ) throws IOException;
 
-  void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+  void update( @Nonnull T object, @Nonnull  String id ) throws IOException;
 
-  void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException;
+  void remove( @Nonnull T object, @Nonnull  String id ) throws IOException;
 
   /**
    * Deserializes all
@@ -74,6 +74,6 @@ public interface RegistrySerializingStrategy<T> {
    *
    * @throws IOException
    */
-  @NotNull
+  @Nonnull
   Collection<? extends T> deserialize() throws IOException;
 }

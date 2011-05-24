@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
@@ -40,7 +40,7 @@ import org.junit.experimental.theories.*;
  */
 public class VersionSerializerTest extends AbstractXmlSerializerTest2<Version> {
   @Override
-  @NotNull
+  @Nonnull
   protected VersionSerializer getSerializer() {
     return new VersionSerializer();
   }

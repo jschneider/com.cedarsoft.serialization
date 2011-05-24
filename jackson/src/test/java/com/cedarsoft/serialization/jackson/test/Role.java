@@ -31,19 +31,19 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class Role {
   private final int id;
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final String description;
 
-  public Role( int id, @NotNull String description ) {
+  public Role( int id, @Nonnull String description ) {
     this.id = id;
     this.description = description;
   }
@@ -52,7 +52,7 @@ public class Role {
     return id;
   }
 
-  @NotNull
+  @Nonnull
   public String getDescription() {
     return description;
   }

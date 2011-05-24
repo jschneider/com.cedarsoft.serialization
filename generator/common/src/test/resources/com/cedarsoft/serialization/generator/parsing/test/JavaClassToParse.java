@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.parsing.test;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -35,7 +35,7 @@ public class JavaClassToParse {
   }
 
   public static class InnerStaticClass extends ArrayList<String> implements EventListener, Comparable<InnerStaticClass> {
-    @NotNull
+    @Nonnull
     private final List<String> stringList = new ArrayList<String>();
     private final List<? extends String> wildStringList = new ArrayList<String>();
 
@@ -44,7 +44,7 @@ public class JavaClassToParse {
     public InnerStaticClass( int num ) {
     }
 
-    @NotNull
+    @Nonnull
     public List<String> getStringList() {
       return stringList;
     }

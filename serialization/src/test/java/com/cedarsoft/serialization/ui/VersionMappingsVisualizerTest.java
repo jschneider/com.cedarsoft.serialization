@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.ui;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.IOException;
@@ -95,9 +95,9 @@ public class VersionMappingsVisualizerTest {
           return o1.getName().compareTo( o2.getName() );
         }
       }, new ToString<Class<?>>() {
-        @NotNull
+        @Nonnull
         @Override
-        public String convert( @NotNull Class<?> object ) {
+        public String convert( @Nonnull Class<?> object ) {
           String[] parts = object.getName().split( "\\." );
           return parts[parts.length - 1];
         }

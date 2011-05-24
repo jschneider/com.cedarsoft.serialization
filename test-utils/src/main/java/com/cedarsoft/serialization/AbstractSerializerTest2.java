@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization;
 
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
@@ -55,7 +55,7 @@ import static org.junit.Assert.*;
 @RunWith( Theories.class )
 public abstract class AbstractSerializerTest2<T> {
   @Theory
-  public void testSerializer( @NotNull Entry<T> entry ) throws Exception {
+  public void testSerializer( @Nonnull Entry<T> entry ) throws Exception {
     Serializer<T> serializer = getSerializer();
 
     //Serialize
@@ -67,21 +67,21 @@ public abstract class AbstractSerializerTest2<T> {
     verifyDeserialized( serializer.deserialize( new ByteArrayInputStream( serialized ) ), entry.getObject() );
   }
 
-  @NotNull
-  protected byte[] serialize( @NotNull Serializer<T> serializer, @NotNull T objectToSerialize ) throws IOException {
+  @Nonnull
+  protected byte[] serialize( @Nonnull Serializer<T> serializer, @Nonnull T objectToSerialize ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( objectToSerialize, out );
     return out.toByteArray();
   }
 
-  protected abstract void verifySerialized( @NotNull Entry<T> entry, @NotNull byte[] serialized ) throws Exception;
+  protected abstract void verifySerialized( @Nonnull Entry<T> entry, @Nonnull byte[] serialized ) throws Exception;
 
   /**
    * Returns the serializer
    *
    * @return the serializer
    */
-  @NotNull
+  @Nonnull
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
@@ -90,18 +90,18 @@ public abstract class AbstractSerializerTest2<T> {
    * @param deserialized the deserialized object
    * @param original     the original
    */
-  protected void verifyDeserialized( @NotNull T deserialized, @NotNull T original ) {
+  protected void verifyDeserialized( @Nonnull T deserialized, @Nonnull T original ) {
     assertEquals( original, deserialized );
     assertThat( deserialized, is( new ReflectionEquals( original ) ) );
   }
 
-  @NotNull
-  public static <T> Entry<? extends T> create( @NotNull T object, @NotNull @NonNls byte[] expected ) {
+  @Nonnull
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  byte[] expected ) {
     return new Entry<T>( object, expected );
   }
 
-  @NotNull
-  public static <T> Entry<? extends T> create( @NotNull T object, @NotNull @NonNls URL expected ) {
+  @Nonnull
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  URL expected ) {
     try {
       return new Entry<T>( object, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
@@ -109,8 +109,8 @@ public abstract class AbstractSerializerTest2<T> {
     }
   }
 
-  @NotNull
-  public static <T> Entry<? extends T> create( @NotNull T object, @NotNull @NonNls InputStream expected ) {
+  @Nonnull
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  InputStream expected ) {
     try {
       return new Entry<T>( object, IOUtils.toByteArray( expected ) );
     } catch ( IOException e ) {

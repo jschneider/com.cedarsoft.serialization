@@ -35,8 +35,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -51,12 +51,12 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<List<String>> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<List<String>> getSerializer() {
     return new AbstractStaxMateSerializer<List<String>>( "aString", "http://aString", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull List<String> object, @NotNull Version formatVersion ) throws XMLStreamException {
+      public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull List<String> object, @Nonnull Version formatVersion ) throws XMLStreamException {
         assert isVersionWritable( formatVersion );
         for ( String s : object ) {
           serializeTo.addElement( serializeTo.getNamespace(), "string" ).addCharacters( s );
@@ -66,8 +66,8 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
       }
 
       @Override
-      @NotNull
-      public List<String> deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
+      @Nonnull
+      public List<String> deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
         assert isVersionReadable( formatVersion );
         final List<String> strings = new ArrayList<String>();
 
@@ -75,7 +75,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
 
         visitChildren( deserializeFrom, new CB() {
           @Override
-          public void tagEntered( @NotNull XMLStreamReader deserializeFrom, @NotNull @NonNls String tagName ) throws XMLStreamException, IOException {
+          public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull  String tagName ) throws XMLStreamException, IOException {
             if ( tagName.equals( "description" ) ) {
               assertEquals( "descr", getText( deserializeFrom ) );
               called[0] = true;
@@ -92,13 +92,13 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
     };
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected List<String> createObjectToSerialize() {
     return Arrays.asList( "1", "2", "3" );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<aString><string>1</string><string>2</string><string>3</string><description>descr</description></aString>";

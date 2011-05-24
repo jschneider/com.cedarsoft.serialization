@@ -39,7 +39,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.jetbrains.annotations.NonNls;
+
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class JacksonTest {
-  @NonNls
+
   public static final String JSON = "{\"id\":\"Canon Raw\",\"dependent\":false,\"extension\":{\"extension\":\"cr2\",\"default\":true,\"delimiter\":\".\"}}";
   private JsonFactory jsonFactory;
 

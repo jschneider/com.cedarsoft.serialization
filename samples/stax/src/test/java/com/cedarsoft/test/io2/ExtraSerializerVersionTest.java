@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.util.HashMap;
@@ -50,13 +50,13 @@ import static org.junit.Assert.*;
  * Testing the new version.
  */
 public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Extra> getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Map<? extends Version, ? extends String> getSerializedXml() {
     Map<Version, String> map = new HashMap<Version, String>();
@@ -75,7 +75,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Extra deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Extra deserialized, @Nonnull Version version ) throws Exception {
     assertEquals( "Metallic", deserialized.getDescription() );
     assertEquals( deserialized.getPrice(), new Money( 400, 01 ) );
   }

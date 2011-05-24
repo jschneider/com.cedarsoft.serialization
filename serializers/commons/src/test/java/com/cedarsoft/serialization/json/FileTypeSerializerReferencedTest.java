@@ -36,7 +36,7 @@ import com.cedarsoft.file.FileTypeRegistry;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 public class FileTypeSerializerReferencedTest extends AbstractJsonSerializerTest2<FileType> {
@@ -47,7 +47,7 @@ public class FileTypeSerializerReferencedTest extends AbstractJsonSerializerTest
     "\"Canon Raw\""
   );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<FileType> getSerializer() throws Exception {
     return new FileTypeSerializer.Referenced( new FileTypeRegistry() );

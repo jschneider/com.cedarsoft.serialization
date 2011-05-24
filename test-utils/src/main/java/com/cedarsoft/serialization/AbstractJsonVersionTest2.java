@@ -34,8 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import org.apache.commons.io.IOUtils;
 import org.fest.reflect.core.Reflection;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,13 +48,13 @@ import java.net.URL;
  */
 public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T> {
 
-  @NotNull
-  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls String json ) {
+  @Nonnull
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull  String json ) {
     return new JsonVersionEntry( version, json );
   }
 
-  @NotNull
-  protected static VersionEntry create( @NotNull Version version, @NotNull @NonNls URL expected ) {
+  @Nonnull
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull  URL expected ) {
     try {
       return new JsonVersionEntry( version, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
@@ -63,30 +63,30 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
   }
 
   public static class JsonVersionEntry implements VersionEntry {
-    @NotNull
+    @Nonnull
     private final Version version;
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private final byte[] json;
 
-    public JsonVersionEntry( @NotNull Version version, @NotNull @NonNls String json ) {
+    public JsonVersionEntry( @Nonnull Version version, @Nonnull  String json ) {
       this( version, json.getBytes() );
     }
 
-    public JsonVersionEntry( @NotNull Version version, @NotNull @NonNls byte[] json ) {
+    public JsonVersionEntry( @Nonnull Version version, @Nonnull  byte[] json ) {
       this.version = version;
       this.json = json;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Version getVersion() {
       return version;
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception {
+    public byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception {
       boolean isObjectType = Reflection.method( "isObjectType" ).withReturnType( Boolean.TYPE ).in( serializer ).invoke();
       if ( isObjectType ) {
         return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes();

@@ -39,8 +39,8 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -56,7 +56,7 @@ import java.io.IOException;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] exectedXml ) throws Exception {
+  protected void verify(  @Nonnull byte[] current, @Nonnull  byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
       AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
@@ -66,7 +66,7 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   }
 
   @Override
-  protected void verifySerialized( @NotNull Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull Entry<T> entry, @Nonnull byte[] serialized ) throws Exception {
     verify( serialized, entry.getExpected() );
   }
 
@@ -75,13 +75,13 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   }
 
 
-  @NotNull
-  @NonNls
-  public static String addNameSpace( @NotNull AbstractXmlSerializer<?, ?, ?, ?> serializer, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
+  @Nonnull
+
+  public static String addNameSpace( @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer, @Nonnull  byte[] xmlBytes ) throws Exception {
     return addNameSpace( serializer.createNameSpace( serializer.getFormatVersion() ), xmlBytes );
   }
 
-  public static String addNameSpace( @NotNull @NonNls String nameSpaceUri, @NotNull @NonNls byte[] xml ) throws JDOMException, IOException {
+  public static String addNameSpace( @Nonnull  String nameSpaceUri, @Nonnull  byte[] xml ) throws JDOMException, IOException {
     Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml ) );
 
     Element root = doc.getRootElement();
@@ -94,15 +94,15 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
     return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc );
   }
 
-  public static void addNameSpaceRecursively( @NotNull Element element, @NotNull Namespace namespace ) {
+  public static void addNameSpaceRecursively( @Nonnull Element element, @Nonnull Namespace namespace ) {
     element.setNamespace( namespace );
     for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
       addNameSpaceRecursively( child, namespace );
     }
   }
 
-  @NotNull
-  protected static <T> Entry<? extends T> create( @NotNull T object, @NotNull @NonNls String expected ) {
+  @Nonnull
+  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  String expected ) {
     return new Entry<T>( object, expected.getBytes() );
   }
 }

@@ -41,8 +41,8 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -52,16 +52,16 @@ import java.util.Collection;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJacksonSerializer<T> {
-  @NotNull
+  @Nonnull
   protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> serializingStrategySupport;
 
-  protected AbstractDelegatingJacksonSerializer( @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractDelegatingJacksonSerializer(  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceUriBase, formatVersionRange );
     this.serializingStrategySupport = new SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException>( formatVersionRange );
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull T object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionWritable( formatVersion );
 
     SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( object );
@@ -71,9 +71,9 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
     strategy.serialize( serializeTo, object, resolvedVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public T deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public T deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
 
     nextFieldValue( deserializeFrom, PROPERTY_SUB_TYPE );
@@ -88,17 +88,17 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
     return strategy.deserialize( deserializeFrom, resolvedVersion );
   }
 
-  @NotNull
+  @Nonnull
   public Collection<? extends SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException>> getStrategies() {
     return serializingStrategySupport.getStrategies();
   }
 
-  @NotNull
-  public VersionMapping addStrategy( @NotNull SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy ) {
+  @Nonnull
+  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy ) {
     return serializingStrategySupport.addStrategy( strategy );
   }
 
-  @NotNull
+  @Nonnull
   public SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> getSerializingStrategySupport() {
     return serializingStrategySupport;
   }

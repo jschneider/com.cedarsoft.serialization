@@ -41,21 +41,21 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class LicenseSerializer extends AbstractJacksonSerializer<License> {
-  @NonNls
+
   public static final String PROPERTY_ID = "id";
-  @NonNls
+
   public static final String PROPERTY_NAME = "name";
-  @NonNls
+
   public static final String PROPERTY_URL = "url";
-  @NonNls
+
   public static final String SUB_TYPE_CC = "cc";
 
   public LicenseSerializer() {
@@ -63,7 +63,7 @@ public class LicenseSerializer extends AbstractJacksonSerializer<License> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull License object, @NotNull Version formatVersion ) throws IOException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull License object, @Nonnull Version formatVersion ) throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
 
     if ( object instanceof CreativeCommonsLicense ) {
@@ -85,9 +85,9 @@ public class LicenseSerializer extends AbstractJacksonSerializer<License> {
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public License deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
+  public License deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     //If there is a subtype it *must* be cc
     nextToken( deserializeFrom, JsonToken.FIELD_NAME );
     if ( deserializeFrom.getCurrentName().equals( PROPERTY_SUB_TYPE ) ) {

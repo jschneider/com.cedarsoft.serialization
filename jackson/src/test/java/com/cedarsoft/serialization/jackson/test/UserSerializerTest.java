@@ -35,7 +35,7 @@ import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.codec.binary.Hex;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ import java.util.Arrays;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
     return new UserSerializer( new EmailSerializer(), new RoleSerializer(), new UserDetailsSerializer() );

@@ -38,7 +38,7 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -49,14 +49,14 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
     MoneySerializer moneySerializer = new MoneySerializer();
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return
@@ -75,14 +75,14 @@ public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
         "</car>";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Car createObjectToSerialize() throws Exception {
     return new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) );
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Car deserialized ) throws Exception {
     assertEquals( Color.ORANGE, deserialized.getColor() );
     assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
     //.... (and much more)

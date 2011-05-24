@@ -37,8 +37,8 @@ import com.cedarsoft.app.Application;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import javax.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -48,16 +48,16 @@ import java.io.IOException;
  *
  */
 public class ApplicationSerializer extends AbstractStaxMateSerializer<Application> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ELEMENT_VERSION = "version";
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ELEMENT_NAME = "name";
 
   @Inject
-  public ApplicationSerializer( @NotNull VersionSerializer versionSerializer ) {
+  public ApplicationSerializer( @Nonnull VersionSerializer versionSerializer ) {
     super( "application", "http://www.cedarsoft.com/app/appliaction", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
 
     add( versionSerializer ).responsibleFor( Version.class )
@@ -67,7 +67,7 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Application object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Application object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
 
@@ -76,8 +76,8 @@ public class ApplicationSerializer extends AbstractStaxMateSerializer<Applicatio
   }
 
   @Override
-  @NotNull
-  public Application deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  @Nonnull
+  public Application deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );
 

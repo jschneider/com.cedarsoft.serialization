@@ -36,7 +36,7 @@ import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -52,7 +52,7 @@ public class BaseNameSerializerVersionTest extends AbstractJsonVersionTest2<Base
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull BaseName deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull BaseName deserialized, @Nonnull Version version ) throws Exception {
     Assert.assertEquals( "daName", deserialized.getName() );
   }
 }

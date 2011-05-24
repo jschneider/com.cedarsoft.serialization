@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.Entry;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -53,7 +53,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected StringSerializer getSerializer() throws Exception {
     return new StringSerializer();

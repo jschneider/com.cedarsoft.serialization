@@ -50,8 +50,8 @@ import com.sun.codemodel.JVar;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +61,10 @@ import java.util.Map;
  * Generator for stax mate based parsers
  */
 public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_CLOSE_OBJECT = "closeObject";
 
-  @NotNull
+  @Nonnull
   private final List<SerializeToGenerator> generators = new ArrayList<SerializeToGenerator>();
 
   /**
@@ -72,16 +72,16 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
    *
    * @param codeGenerator the code generator
    */
-  public JacksonGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public JacksonGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
     generators.add( new AsFieldGenerator( codeGenerator ) );
     generators.add( new ArrayElementGenerator( codeGenerator ) );
     generators.add( new DelegateGenerator( codeGenerator ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected String getNamespace( @NotNull @NonNls String domainObjectType ) {
+  protected String getNamespace( @Nonnull  String domainObjectType ) {
     int lastIndex = domainObjectType.lastIndexOf( '.' );
 
     String simpleName;
@@ -94,9 +94,9 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
     return NamingSupport.createXmlElementName( simpleName );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  protected JMethod createConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JMethod constructor = serializerClass.constructor( JMod.PUBLIC );
     constructor.body()
       .invoke( METHOD_SUPER ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
@@ -104,9 +104,9 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
     return constructor;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @Nonnull DomainObjectDescriptor domainObjectDescriptor, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JMethod deserializeMethod ) {
     try {
       return super.fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
     } finally {
@@ -118,8 +118,8 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
   }
 
   @Override
-  @NotNull
-  protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  @Nonnull
+  protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
     deserializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
 
@@ -141,39 +141,39 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
   }
 
   @Override
-  protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  protected void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
     serializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
     serializeMethod.body().add( serializeToHandler.createAddToSerializeToExpression( this, serializerClass, serializeTo, fieldInfo, object, formatVersion ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
+  protected JClass createSerializerExtendsExpression( @Nonnull JClass domainType ) {
     return codeGenerator.ref( AbstractJacksonSerializer.class ).narrow( domainType );
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getExceptionType() {
     return JsonProcessingException.class;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getSerializeFromType() {
     return JsonParser.class;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getSerializeToType() {
     return JsonGenerator.class;
   }
 
-  @NotNull
-  protected SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
+  @Nonnull
+  protected SerializeToGenerator getGenerator( @Nonnull FieldDeclarationInfo fieldInfo ) {
     for ( SerializeToGenerator generator : generators ) {
       if ( generator.canHandle( fieldInfo ) ) {
         return generator;

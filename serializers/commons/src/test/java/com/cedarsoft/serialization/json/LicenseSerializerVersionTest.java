@@ -36,7 +36,7 @@ import com.cedarsoft.license.License;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -50,7 +50,7 @@ public class LicenseSerializerVersionTest extends AbstractJsonVersionTest2<Licen
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull License deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull License deserialized, @Nonnull Version version ) throws Exception {
     Assert.assertSame( License.GPL_3, deserialized );
   }
 }

@@ -32,16 +32,16 @@
 package com.cedarsoft.serialization.jackson;
 
 import org.codehaus.jackson.JsonFactory;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class JacksonSupport {
-  @NotNull
+  @Nonnull
   private static final JsonFactory JSON_FACTORY = new JsonFactory();
 
-  @NotNull
+  @Nonnull
   public static JsonFactory getJsonFactory() {
     return JSON_FACTORY;
   }

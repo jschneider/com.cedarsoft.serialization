@@ -35,8 +35,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 import org.codehaus.plexus.util.FileUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +91,7 @@ public class CommitMojo extends SourceFolderAwareMojo {
     }
   }
 
-  protected void commit( @NotNull File sourceDirectory, @NotNull File targetDir ) throws MojoExecutionException, IOException {
+  protected void commit( @Nonnull File sourceDirectory, @Nonnull File targetDir ) throws MojoExecutionException, IOException {
     if ( !sourceDirectory.exists() || sourceDirectory.list().length == 0 ) {
       getLog().warn( "No generated files found in " + sourceDirectory.getPath() );
       getLog().warn( "Call <generate> goal first." );
@@ -109,7 +109,7 @@ public class CommitMojo extends SourceFolderAwareMojo {
       File target = new File( targetDir, relative );
       if ( target.exists() ) {
         try {
-          @NonNls
+
           String answer = getPrompter().prompt( relative + " still exists. Really overwrite?", "no" );
 
           if ( answer.equalsIgnoreCase( "yes" ) ) {

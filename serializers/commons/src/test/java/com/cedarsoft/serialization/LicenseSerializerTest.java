@@ -33,14 +33,14 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.license.License;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  *
  */
 public class LicenseSerializerTest extends AbstractXmlSerializerTest2<License> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<License> getSerializer() {
     return new LicenseSerializer();

@@ -42,26 +42,26 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Generates an attribute
  */
 public class AsAttributeGenerator extends AbstractStringConversionGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
-  @NonNls
+
   public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
 
 
-  public AsAttributeGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public AsAttributeGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
-  @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
+  @Nonnull
+  public JInvocation createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
@@ -70,9 +70,9 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
       .arg( objectAsString );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
   }
@@ -81,14 +81,14 @@ public class AsAttributeGenerator extends AbstractStringConversionGenerator {
    * @noinspection RefusedBequest
    */
   @Override
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+  @Nonnull
+
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
     return "ATTRIBUTE_" + fieldInfo.getSimpleName().toUpperCase();
   }
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     if ( !super.canHandle( fieldInfo ) ) {
       return false;
     }

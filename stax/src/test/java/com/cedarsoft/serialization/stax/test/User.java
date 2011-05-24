@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,31 +43,31 @@ import java.util.List;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class User {
-  @NotNull
-  @NonNls
+  @Nonnull
+  
   private final String name;
-  @NotNull
+  @Nonnull
   private final List<Role> roles = new ArrayList<Role>();
-  @NotNull
+  @Nonnull
   private final List<Email> emails = new ArrayList<Email>();
 
-  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles ) {
+  public User( @Nonnull String name, @Nonnull Collection<? extends Email> emails, Collection<? extends Role> roles ) {
     this.name = name;
     this.emails.addAll( emails );
     this.roles.addAll( roles );
   }
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return name;
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Role> getRoles() {
     return Collections.unmodifiableList( roles );
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Email> getEmails() {
     return Collections.unmodifiableList( emails );
   }

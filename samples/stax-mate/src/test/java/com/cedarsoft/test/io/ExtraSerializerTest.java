@@ -36,14 +36,14 @@ import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  *
  */
 public class ExtraSerializerTest extends AbstractXmlSerializerTest2<Extra> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Extra> getSerializer() {
     //This serializer uses a delegate

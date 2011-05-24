@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.AssertUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -55,8 +55,8 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxTest {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
     "<fileType dependent=\"false\">\n" +
     "  <id>Canon Raw</id>\n" +

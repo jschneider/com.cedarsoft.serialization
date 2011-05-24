@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import java.awt.Dimension;
@@ -42,7 +42,7 @@ import static org.junit.Assert.*;
  *
  */
 public class DimensionSerializerTest extends AbstractXmlSerializerTest2<Dimension> {
-  @NotNull
+  @Nonnull
   @Override
   protected DimensionSerializer getSerializer() {
     return new DimensionSerializer();
@@ -52,7 +52,7 @@ public class DimensionSerializerTest extends AbstractXmlSerializerTest2<Dimensio
   public static final Entry<?> entry1 = create( new Dimension( 1600, 600 ), "<dimension>1600x600</dimension>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Dimension deserialized, @NotNull Dimension original ) {
+  protected void verifyDeserialized( @Nonnull Dimension deserialized, @Nonnull Dimension original ) {
     assertEquals( 1600, deserialized.width );
     assertEquals( 600, deserialized.height );
   }

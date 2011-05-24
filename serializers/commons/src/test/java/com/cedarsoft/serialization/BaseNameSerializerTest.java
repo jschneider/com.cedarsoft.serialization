@@ -33,14 +33,14 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  *
  */
 public class BaseNameSerializerTest extends AbstractXmlSerializerTest2<BaseName> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<BaseName> getSerializer() {
     return new BaseNameSerializer();

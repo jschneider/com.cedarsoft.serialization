@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -55,7 +55,7 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * @param formatVersion the format version
    * @throws E
    */
-  void serialize( @NotNull S serializeTo, @NotNull T object, @NotNull Version formatVersion ) throws IOException, VersionException, E;
+  void serialize( @Nonnull S serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
 
   /**
    * Deserializes the object from the given document
@@ -68,6 +68,6 @@ public interface PluggableSerializer<T, S, D, E extends Throwable> extends Seria
    * @throws IOException
    * @throws E
    */
-  @NotNull
-  T deserialize( @NotNull D deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, E;
+  @Nonnull
+  T deserialize( @Nonnull D deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
 }

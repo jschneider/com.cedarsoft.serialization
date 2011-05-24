@@ -34,14 +34,14 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class RoleSerializerTest extends AbstractXmlSerializerTest2<Role> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Role> getSerializer() throws Exception {
     return new RoleSerializer();

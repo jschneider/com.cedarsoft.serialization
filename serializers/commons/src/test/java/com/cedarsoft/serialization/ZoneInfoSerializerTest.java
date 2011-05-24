@@ -37,7 +37,7 @@ import org.joda.time.DateTimeZone;
 import static org.junit.Assert.*;
 
 import org.junit.*;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -55,7 +55,7 @@ public class ZoneInfoSerializerTest {
     testRound( DateTimeZone.forID( "America/New_York" ) );
   }
 
-  private static void testRound( @NotNull DateTimeZone zone ) throws IOException {
+  private static void testRound( @Nonnull DateTimeZone zone ) throws IOException {
     ZoneInfoSerializer serializer = new ZoneInfoSerializer();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();

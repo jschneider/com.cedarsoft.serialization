@@ -38,7 +38,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Interface that is able to create statements that are directly related to the <code>serializeTo</code> and <code>deserializeFrom</code>
@@ -56,8 +56,8 @@ public interface SerializeToGenerator {
    * @param formatVersion    the format version
    * @return the created statement
    */
-  @NotNull
-  JStatement createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, @NotNull JVar formatVersion );
+  @Nonnull
+  JStatement createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, @Nonnull JVar formatVersion );
 
   /**
    * Creates an expression that is used to read an object (as String) from <code>deserializeFrom</code>
@@ -69,11 +69,11 @@ public interface SerializeToGenerator {
    * @param fieldInfo       the field info   @return the expression that returns the object as string  @return the created statement     @return the created expression
    * @return the created expressions
    */
-  @NotNull
-  Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  @Nonnull
+  Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo );
 
-  @NotNull
-  JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo );
+  @Nonnull
+  JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo );
 
   /**
    * Whether this generator is able to handle the given field
@@ -81,5 +81,5 @@ public interface SerializeToGenerator {
    * @param fieldInfo the field info
    * @return true if this generator is able to handle that field, false otherwise
    */
-  boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo );
+  boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo );
 }

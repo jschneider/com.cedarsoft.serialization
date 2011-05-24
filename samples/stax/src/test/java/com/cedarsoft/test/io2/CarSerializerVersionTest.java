@@ -39,7 +39,7 @@ import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.awt.Color;
@@ -52,14 +52,14 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
     MoneySerializer moneySerializer = new MoneySerializer();
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Map<? extends Version, ? extends String> getSerializedXml() {
     Map<Version, String> map = new HashMap<Version, String>();
@@ -95,7 +95,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Version version ) throws Exception {
     assertEquals( Color.ORANGE, deserialized.getColor() );
     assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
     //.... (and much more)

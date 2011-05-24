@@ -31,13 +31,13 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import java.awt.Color;
 
 public class ColorSerializerTest extends AbstractXmlSerializerTest2<Color> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Color> getSerializer() throws Exception {
     return new ColorSerializer();

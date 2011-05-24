@@ -36,7 +36,7 @@ import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -46,14 +46,14 @@ public class ExtensionSerializerVersionTest
   @DataPoint
   public static final VersionEntry ENTRY1 = ExtensionSerializerVersionTest.create( Version.valueOf( 1, 0, 0 ), ExtensionSerializerVersionTest.class.getResource( "Extension_1.0.0_1.json" ) );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Extension> getSerializer() throws Exception {
     return new ExtensionSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Extension deserialized, @NotNull Version version )
+  protected void verifyDeserialized( @Nonnull Extension deserialized, @Nonnull Version version )
     throws Exception {
     Assert.assertEquals( "daDelimiter", deserialized.getDelimiter() );
     Assert.assertEquals( "daExtension", deserialized.getExtension() );

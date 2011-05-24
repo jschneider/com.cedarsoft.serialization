@@ -39,7 +39,7 @@ import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import javax.xml.stream.XMLStreamException;
@@ -65,22 +65,22 @@ public class RegistrySerializerTest {
     access = new InMemoryObjectsAccess();
     serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull String object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionWritable( formatVersion );
         serializeTo.writeCharacters( object );
       }
 
-      @NotNull
+      @Nonnull
       @Override
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public String deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         return getText( deserializeFrom );
       }
 
     }, new RegistrySerializer.IdResolver<String>() {
       @Override
-      @NotNull
-      public String getId( @NotNull String object ) {
+      @Nonnull
+      public String getId( @Nonnull String object ) {
         return object;
       }
     } );
@@ -180,8 +180,8 @@ public class RegistrySerializerTest {
 
   private static class MyRegistryFactory implements RegistryFactory<String, Registry<String>> {
     @Override
-    @NotNull
-    public Registry<String> createRegistry( @NotNull List<? extends String> objects, @NotNull Comparator<String> comparator ) {
+    @Nonnull
+    public Registry<String> createRegistry( @Nonnull List<? extends String> objects, @Nonnull Comparator<String> comparator ) {
       return new DefaultRegistry<String>( objects, comparator );
     }
   }

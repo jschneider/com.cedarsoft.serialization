@@ -35,7 +35,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 
@@ -131,7 +131,7 @@ public abstract class OutputFoldersAwareMojo extends AbstractMojo {
     }
   }
 
-  @NotNull
+  @Nonnull
   public File getTestOutputDirectory() throws MojoExecutionException {
     if ( _getTestOutputDirectory() == null ) {
       throw new MojoExecutionException( "test output directory not set" );
@@ -139,7 +139,7 @@ public abstract class OutputFoldersAwareMojo extends AbstractMojo {
     return _getTestOutputDirectory();
   }
 
-  @NotNull
+  @Nonnull
   public File getOutputDirectory() throws MojoExecutionException {
     if ( _getOutputDirectory() == null ) {
       throw new MojoExecutionException( "output directory not set" );
@@ -161,7 +161,7 @@ public abstract class OutputFoldersAwareMojo extends AbstractMojo {
     return _getTestResourcesOutputDirectory();
   }
 
-  @NotNull
+  @Nonnull
   protected File getBaseDir() {
     return getProject().getBasedir();
   }

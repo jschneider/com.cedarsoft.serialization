@@ -37,7 +37,7 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.lang.annotation.Annotation;
 
@@ -45,31 +45,31 @@ import java.lang.annotation.Annotation;
  *
  */
 public class NotNullDecorator implements GeneratorDecorator {
-  @NotNull
+  @Nonnull
   private final Class<? extends Annotation> notNullAnnotationType;
 
-  public NotNullDecorator( @NotNull Class<? extends Annotation> notNullAnnotationType ) {
+  public NotNullDecorator( @Nonnull Class<? extends Annotation> notNullAnnotationType ) {
     this.notNullAnnotationType = notNullAnnotationType;
   }
 
   @Override
-  public void decorateSerializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod ) {
+  public void decorateSerializeMethod( @Nonnull CodeGenerator codeGenerator, @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod ) {
     annotateParamsWithNotNull( serializeMethod );
   }
 
   @Override
-  public void decorateDeserializeMethod( @NotNull CodeGenerator codeGenerator, @NotNull JType domainType, @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod ) {
+  public void decorateDeserializeMethod( @Nonnull CodeGenerator codeGenerator, @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod ) {
     deserializeMethod.annotate( notNullAnnotationType );
 
     annotateParamsWithNotNull( deserializeMethod );
   }
 
   @Override
-  public void decorateConstant( @NotNull CodeGenerator codeGenerator, @NotNull JFieldVar constant ) {
+  public void decorateConstant( @Nonnull CodeGenerator codeGenerator, @Nonnull JFieldVar constant ) {
     constant.annotate( notNullAnnotationType );
   }
 
-  protected void annotateParamsWithNotNull( @NotNull JMethod method ) {
+  protected void annotateParamsWithNotNull( @Nonnull JMethod method ) {
     for ( JVar param : method.listParams() ) {
       param.annotate( notNullAnnotationType );
     }

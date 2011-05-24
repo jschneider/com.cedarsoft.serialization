@@ -37,8 +37,8 @@ import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.NotFoundException;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ import java.util.List;
  * @param <R> the registry for the given type
  */
 public class RegistrySerializer<T, R extends Registry<T>> {
-  @NotNull
+  @Nonnull
   private final IdResolver<T> idResolver;
   @Nullable
   private final Comparator<T> comparator;
@@ -69,7 +69,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver    the id resolver
    */
   @Deprecated
-  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver ) {
+  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver ) {
     this( objectsAccess, serializer, idResolver, null );
   }
 
@@ -82,7 +82,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param comparator    the (optional) comparator
    */
   @Deprecated
-  public RegistrySerializer( @NotNull StreamBasedObjectsAccess objectsAccess, @NotNull Serializer<T> serializer, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public RegistrySerializer( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( new SerializerBasedRegistrySerializingStrategy( objectsAccess, serializer ), idResolver, comparator );
   }
 
@@ -92,7 +92,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param serializingStrategy the serializing strategy
    * @param idResolver          the id resolver
    */
-  public RegistrySerializer( @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver ) {
+  public RegistrySerializer( @Nonnull RegistrySerializingStrategy<T> serializingStrategy, @Nonnull IdResolver<T> idResolver ) {
     this( serializingStrategy, idResolver, null );
   }
 
@@ -103,13 +103,13 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver          the id resolver
    * @param comparator          the (optional) comparator
    */
-  public RegistrySerializer( @NotNull RegistrySerializingStrategy<T> serializingStrategy, @NotNull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public RegistrySerializer( @Nonnull RegistrySerializingStrategy<T> serializingStrategy, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this.serializingStrategy = serializingStrategy;
     this.idResolver = idResolver;
     this.comparator = comparator;
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends T> deserialize() throws IOException {
     List<T> objects = new ArrayList<T>( serializingStrategy.deserialize() );
 
@@ -128,15 +128,15 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @throws IOException
    * @throws StillContainedException
    */
-  public void serialize( @NotNull T object ) throws StillContainedException, IOException {
+  public void serialize( @Nonnull T object ) throws StillContainedException, IOException {
     serializingStrategy.serialize( object, getId( object ) );
   }
 
-  public void update( @NotNull T object ) throws NotFoundException, IOException {
+  public void update( @Nonnull T object ) throws NotFoundException, IOException {
     serializingStrategy.update( object, getId( object ) );
   }
 
-  public void remove( @NotNull T object ) throws NotFoundException, IOException {
+  public void remove( @Nonnull T object ) throws NotFoundException, IOException {
     serializingStrategy.remove( object, getId( object ) );
   }
 
@@ -148,8 +148,8 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    *
    * @throws IOException
    */
-  @NotNull
-  public R createConnectedRegistry( @NotNull RegistryFactory<T, ? extends R> factory ) throws IOException {
+  @Nonnull
+  public R createConnectedRegistry( @Nonnull RegistryFactory<T, ? extends R> factory ) throws IOException {
     List<? extends T> objects = deserialize();
     R registry = factory.createRegistry( objects, new Comparator<T>() {
       @Override
@@ -160,7 +160,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
     registry.addListener( new DefaultRegistry.Listener<T>() {
       @Override
-      public void objectStored( @NotNull T object ) {
+      public void objectStored( @Nonnull T object ) {
         try {
           serialize( object );
         } catch ( IOException e ) {
@@ -169,7 +169,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
       }
 
       @Override
-      public void objectRemoved( @NotNull T object ) {
+      public void objectRemoved( @Nonnull T object ) {
         try {
           remove( object );
         } catch ( IOException e ) {
@@ -178,7 +178,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
       }
 
       @Override
-      public void objectUpdated( @NotNull T object ) {
+      public void objectUpdated( @Nonnull T object ) {
         try {
           update( object );
         } catch ( IOException e ) {
@@ -189,14 +189,14 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     return registry;
   }
 
-  @NotNull
-  @NonNls
-  protected String getId( @NotNull T object ) {
+  @Nonnull
+
+  protected String getId( @Nonnull T object ) {
     return idResolver.getId( object );
   }
 
   @Deprecated
-  @NotNull
+  @Nonnull
   public Serializer<T> getSerializer() {
     if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy ) {
       return ( ( SerializerBasedRegistrySerializingStrategy ) serializingStrategy ).getSerializer();
@@ -205,12 +205,12 @@ public class RegistrySerializer<T, R extends Registry<T>> {
     throw new UnsupportedOperationException( "Invalid call for this strategy <" + serializingStrategy + ">" );
   }
 
-  @NotNull
+  @Nonnull
   public RegistrySerializingStrategy<T> getSerializingStrategy() {
     return serializingStrategy;
   }
 
-  @NotNull
+  @Nonnull
   public IdResolver<T> getIdResolver() {
     return idResolver;
   }
@@ -227,9 +227,9 @@ public class RegistrySerializer<T, R extends Registry<T>> {
      * @param object the object
      * @return the id
      */
-    @NotNull
-    @NonNls
-    String getId( @NotNull T object );
+    @Nonnull
+
+    String getId( @Nonnull T object );
   }
 
 }

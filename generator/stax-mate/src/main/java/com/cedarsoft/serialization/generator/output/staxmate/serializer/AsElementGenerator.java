@@ -41,27 +41,27 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Generates a new element
  */
 public class AsElementGenerator extends AbstractStringConversionGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_GET_CHILD_TEXT = "getChildText";
-  @NonNls
+
   public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
-  @NonNls
+
   public static final String METHOD_NAME_ADD_ELEMENT_WITH_CHARACTERS = "addElementWithCharacters";
 
-  public AsElementGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public AsElementGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
-  @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
+  @Nonnull
+  public JInvocation createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
@@ -72,15 +72,15 @@ public class AsElementGenerator extends AbstractStringConversionGenerator {
       .arg( objectAsString );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     return JExpr.invoke( METHOD_NAME_GET_CHILD_TEXT ).arg( deserializeFrom ).arg( constant );
   }
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     if ( !super.canHandle( fieldInfo ) ) {
       return false;
     }

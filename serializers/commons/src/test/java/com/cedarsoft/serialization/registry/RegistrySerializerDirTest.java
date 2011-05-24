@@ -39,8 +39,8 @@ import com.cedarsoft.registry.RegistryFactory;
 import com.cedarsoft.serialization.registry.DirBasedRegistrySerializingStrategy;
 import com.cedarsoft.serialization.registry.RegistrySerializer;
 import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.File;
@@ -66,21 +66,21 @@ public class RegistrySerializerDirTest {
 
     access = new DirBasedObjectsAccess( baseDir );
     serializer = new RegistrySerializer<String, Registry<String>>( new DirBasedRegistrySerializingStrategy<String>( access ) {
-      @NotNull
+      @Nonnull
       @Override
-      protected String deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
+      protected String deserialize( @Nonnull  String id, @Nonnull File dir ) throws IOException {
         return FileUtils.readFileToString( new File( dir, "data" ) );
       }
 
       @Override
-      protected void serialize( @NotNull String object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException {
+      protected void serialize( @Nonnull String object, @Nonnull  String id, @Nonnull File dir ) throws IOException {
         File data = new File( dir, "data" );
         FileUtils.writeStringToFile( data, object );
       }
     }, new RegistrySerializer.IdResolver<String>() {
       @Override
-      @NotNull
-      public String getId( @NotNull String object ) {
+      @Nonnull
+      public String getId( @Nonnull String object ) {
         return object;
       }
     } );
@@ -175,8 +175,8 @@ public class RegistrySerializerDirTest {
 
   private static class MyRegistryFactory implements RegistryFactory<String, Registry<String>> {
     @Override
-    @NotNull
-    public Registry<String> createRegistry( @NotNull List<? extends String> objects, @NotNull Comparator<String> comparator ) {
+    @Nonnull
+    public Registry<String> createRegistry( @Nonnull List<? extends String> objects, @Nonnull Comparator<String> comparator ) {
       return new DefaultRegistry<String>( objects, comparator );
     }
   }

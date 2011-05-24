@@ -37,8 +37,8 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -48,8 +48,8 @@ import java.io.IOException;
  *
  */
 public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ATTRIBUTE_ALGORITHM = "algorithm";
 
   public HashSerializer() {
@@ -57,15 +57,15 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Hash object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Hash object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_ALGORITHM, object.getAlgorithm().name() );
     serializeTo.addCharacters( object.getValueAsHex() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Hash deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public Hash deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String algorithm = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ALGORITHM );
     String valueAsHex = getText( deserializeFrom );

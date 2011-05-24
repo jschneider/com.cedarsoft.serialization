@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  *
  */
 public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
-  @NotNull
+  @Nonnull
   @Override
   protected BallSerializer getSerializer() throws Exception {
     return new BallSerializer();
@@ -74,9 +74,9 @@ public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
       "   1.0.0 -->     2.0.0     1.5.0\n" +
       "   1.1.0 -->     2.0.1     1.5.1\n" +
       "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
-      @NotNull
+      @Nonnull
       @Override
-      public String convert( @NotNull SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
         return object.getId();
       }
     } ) );

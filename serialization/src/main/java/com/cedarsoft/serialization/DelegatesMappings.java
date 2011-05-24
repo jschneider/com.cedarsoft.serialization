@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,28 +50,28 @@ import java.util.SortedSet;
  * @param <E> the exception that might be thrown
  */
 public class DelegatesMappings<S, D, E extends Throwable> {
-  @NotNull
+  @Nonnull
   private final Map<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
 
-  @NotNull
+  @Nonnull
   private final VersionMappings<Class<?>> versionMappings;
 
-  public DelegatesMappings( @NotNull VersionRange versionRange ) {
+  public DelegatesMappings( @Nonnull VersionRange versionRange ) {
     versionMappings = new VersionMappings<Class<?>>( versionRange );
   }
 
-  @NotNull
-  public <T> FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> serializer ) {
+  @Nonnull
+  public <T> FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E> serializer ) {
     return new FluentFactory<T>( serializer );
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S outputElement, @NotNull Version formatVersion ) throws E, IOException {
+  public <T> void serialize( @Nonnull T object, @Nonnull Class<T> type, @Nonnull S outputElement, @Nonnull Version formatVersion ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     serializer.serialize( outputElement, object, versionMappings.resolveVersion( type, formatVersion ) );
   }
 
-  @NotNull
-  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
+  @Nonnull
+  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @Nonnull Class<T> type ) {
     PluggableSerializer<? super T, S, D, E> serializer = ( PluggableSerializer<? super T, S, D, E> ) serializers.get( type );
     if ( serializer == null ) {
       throw new IllegalArgumentException( "No serializer found for <" + type.getName() + ">" );
@@ -79,8 +79,8 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return serializer;
   }
 
-  @NotNull
-  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
+  @Nonnull
+  public <T> T deserialize( @Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull D deserializeFrom ) throws E, IOException {
     PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
     return type.cast( serializer.deserialize( deserializeFrom, versionMappings.resolveVersion( type, formatVersion ) ) );
   }
@@ -92,9 +92,9 @@ public class DelegatesMappings<S, D, E extends Throwable> {
    */
   public boolean verify() throws VersionException {
     versionMappings.verify( new ToString<Class<?>>() {
-      @NotNull
+      @Nonnull
       @Override
-      public String convert( @NotNull Class<?> object ) {
+      public String convert( @Nonnull Class<?> object ) {
         return object.getName();
       }
     } );
@@ -112,46 +112,46 @@ public class DelegatesMappings<S, D, E extends Throwable> {
     return true;
   }
 
-  @NotNull
+  @Nonnull
   public Map<? extends Class<?>, ? extends VersionMapping> getMappings() {
     return versionMappings.getMappings();
   }
 
-  @NotNull
-  public <T> Version resolveVersion( @NotNull Class<? extends T> key, @NotNull Version version ) {
+  @Nonnull
+  public <T> Version resolveVersion( @Nonnull Class<? extends T> key, @Nonnull Version version ) {
     return versionMappings.resolveVersion( key, version );
   }
 
-  @NotNull
-  public VersionMapping getMapping( @NotNull Class<?> key ) {
+  @Nonnull
+  public VersionMapping getMapping( @Nonnull Class<?> key ) {
     return versionMappings.getMapping( key );
   }
 
-  @NotNull
+  @Nonnull
   public SortedSet<Version> getMappedVersions() {
     return versionMappings.getMappedVersions();
   }
 
-  @NotNull
+  @Nonnull
   public VersionRange getVersionRange() {
     return versionMappings.getVersionRange();
   }
 
-  @NotNull
+  @Nonnull
   public VersionMappings<Class<?>> getVersionMappings() {
     return versionMappings;
   }
 
   public class FluentFactory<T> {
-    @NotNull
+    @Nonnull
     private final PluggableSerializer<? super T, S, D, E> serializer;
 
-    public FluentFactory( @NotNull PluggableSerializer<? super T, S, D, E> serializer ) {
+    public FluentFactory( @Nonnull PluggableSerializer<? super T, S, D, E> serializer ) {
       this.serializer = serializer;
     }
 
-    @NotNull
-    public VersionMapping responsibleFor( @NotNull Class<? extends T> key ) {
+    @Nonnull
+    public VersionMapping responsibleFor( @Nonnull Class<? extends T> key ) {
       VersionRange targetVersionRange = serializer.getFormatVersionRange();
       VersionMapping mapping = versionMappings.addMapping( key, targetVersionRange );
 

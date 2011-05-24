@@ -39,7 +39,7 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -55,13 +55,13 @@ public class DateTimeSerializer extends AbstractJacksonSerializer<DateTime> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull DateTime object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull DateTime object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeString( createFormatter().print( object ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DateTime deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public DateTime deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
     String text = deserializeFrom.getText();
 
@@ -81,7 +81,7 @@ public class DateTimeSerializer extends AbstractJacksonSerializer<DateTime> {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   static DateTimeFormatter createFormatter() {
     return ISODateTimeFormat.basicDateTime();
   }

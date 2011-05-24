@@ -36,8 +36,8 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.license.License;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -48,11 +48,11 @@ import java.io.IOException;
  */
 @Deprecated
 public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<License> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ATTRIBUTE_ID = "id";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ELEMENT_NAME = "name";
 
   public LicenseSerializer() {
@@ -60,15 +60,15 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull License object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull License object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_ID, object.getId() );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_NAME ).addCharacters( object.getName() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public License deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public License deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String id = deserializeFrom.getAttributeValue( null, ATTRIBUTE_ID );
     String name = getChildText( deserializeFrom, ELEMENT_NAME );

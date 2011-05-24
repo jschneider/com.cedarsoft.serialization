@@ -39,7 +39,7 @@ import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.awt.Color;
@@ -53,7 +53,7 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() {
     MoneySerializer moneySerializer = new MoneySerializer();
@@ -61,7 +61,7 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Iterable<? extends Car> createObjectsToSerialize() {
     return Arrays.asList(
@@ -70,7 +70,7 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
     );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected List<? extends String> getExpectedSerialized() throws Exception {
     return Arrays.asList(
@@ -80,7 +80,7 @@ public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Car> deserialized ) {
+  protected void verifyDeserialized( @Nonnull List<? extends Car> deserialized ) {
     //We don't implement equals in the car, therefore compare manually
     //    super.verifyDeserialized( deserialized );
 

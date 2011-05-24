@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.google.common.base.Splitter;
 import org.apache.commons.lang.time.StopWatch;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Iterator;
 import java.util.concurrent.Callable;
@@ -44,7 +44,7 @@ import static org.junit.Assert.*;
  *
  */
 public class SplittingPerformanceRunner {
-  @NotNull
+  @Nonnull
   public static final Splitter SPLITTER = Splitter.on( "/" );
   public static final Splitter DOT_SPLITTER = Splitter.on( "." );
 
@@ -100,7 +100,7 @@ public class SplittingPerformanceRunner {
     } );
   }
 
-  private static void run( @NotNull String description, @NotNull Callable<String> callable ) throws Exception {
+  private static void run( @Nonnull String description, @Nonnull Callable<String> callable ) throws Exception {
     //Warmup
     for ( int i = 0; i < 1000; i++ ) {
       assertEquals( "1.0.0", callable.call() );

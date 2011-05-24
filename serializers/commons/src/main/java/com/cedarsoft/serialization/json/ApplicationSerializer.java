@@ -39,16 +39,17 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.io.IOException;
 
 public class ApplicationSerializer extends AbstractJacksonSerializer<Application> {
-  @NonNls
+
   public static final String PROPERTY_NAME = "name";
-  @NonNls
+
   public static final String PROPERTY_VERSION = "version";
 
   /**
@@ -56,14 +57,14 @@ public class ApplicationSerializer extends AbstractJacksonSerializer<Application
    * @noinspection TypeMayBeWeakened
    */
   @Inject
-  public ApplicationSerializer( @NotNull VersionSerializer versionSerializer ) {
+  public ApplicationSerializer( @Nonnull VersionSerializer versionSerializer ) {
     super( "application", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( versionSerializer ).responsibleFor( Version.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
     assert getDelegatesMappings().verify();
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Application object, @NotNull Version formatVersion ) throws IOException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Application object, @Nonnull Version formatVersion ) throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
     //name
     serializeTo.writeStringField( PROPERTY_NAME, object.getName() );
@@ -71,9 +72,9 @@ public class ApplicationSerializer extends AbstractJacksonSerializer<Application
     serialize( object.getVersion(), Version.class, PROPERTY_VERSION, serializeTo, formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Application deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
+  public Application deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     //name
     nextFieldValue( deserializeFrom, PROPERTY_NAME );
     String name = deserializeFrom.getText();

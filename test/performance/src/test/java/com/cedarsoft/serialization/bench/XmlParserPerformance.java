@@ -46,8 +46,8 @@ import org.codehaus.staxmate.SMInputFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
@@ -79,32 +79,32 @@ public class XmlParserPerformance {
   public static final int MEDIUM = SMALL * 10;
   public static final int BIG = MEDIUM * 10;
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
     "<fileType dependent=\"false\">\n" +
     "  <id>Canon Raw</id>\n" +
     "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
     "</fileType>";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE_JSON = "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
-  @NonNls
+
   public static final String CONTENT_SAMPLE_JSON_BADGER = "{\"fileType\":{\"@dependent\":\"false\",\"id\":{\"$\":\"Canon Raw\"},\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}";
-  @NonNls
+
   public static final String CONTENT_SAMPLE_GSON = "{\"dependent\":false,\"id\":\"Canon Raw\",\"extension\":{\"isDefault\":true,\"delimiter\":\".\",\"extension\":\"cr2\"}}";
-  @NotNull
+  @Nonnull
   public static final String CONTENT_SAMPLE_JACKSON = "{\"id\":\"Canon Raw\",\"dependent\":false,\"extension\":{\"extension\":\"cr2\",\"default\":true,\"delimiter\":\".\"}}";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
     "  <id>Canon Raw</id>\n" +
     "  <extension default=\"true\" delimiter=\".\">\n" +
     "    <extension>cr2</extension>\n" +
     "  </extension>\n" +
     "</fileType>";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE_JAXB =
     "<fileType xmlns=\"http://test.cedarsoft.com/fileType\" dependent=\"false\">\n" +
       "  <id>Canon Raw</id>\n" +
@@ -112,8 +112,8 @@ public class XmlParserPerformance {
       "    <extension>cr2</extension>\n" +
       "  </extension>\n" +
       "</fileType>";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE_JIBX =
     "<fileType xmlns=\"http://cedarsoft.com/serialization/bench/jaxb\" dependent=\"false\">\n" +
       " <id>Canon Raw</id>\n" +
@@ -132,7 +132,7 @@ public class XmlParserPerformance {
     assertEquals( CONTENT_SAMPLE_XSTREAM, xStream.toXML( fileType ) );
   }
 
-  @NotNull
+  @Nonnull
   private XStream createConfiguredXStream() {
     XStream xStream = new XStream();
     xStream.alias( "fileType", FileType.class );
@@ -596,7 +596,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParse( XMLInputFactory inputFactory, @NotNull @NonNls String contentSample ) throws XMLStreamException {
+  private void benchParse( XMLInputFactory inputFactory, @Nonnull  String contentSample ) throws XMLStreamException {
     for ( int i = 0; i < BIG; i++ ) {
       XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( contentSample ) );
 
@@ -637,7 +637,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParseMapper( @NotNull JsonFactory factory, @NotNull @NonNls String contentSample ) throws XMLStreamException, IOException {
+  private void benchParseMapper( @Nonnull JsonFactory factory, @Nonnull  String contentSample ) throws XMLStreamException, IOException {
     ObjectMapper mapper = new ObjectMapper();
     for ( int i = 0; i < BIG; i++ ) {
       JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
@@ -645,7 +645,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParse( @NotNull JsonFactory factory, @NotNull @NonNls String contentSample ) throws XMLStreamException, IOException {
+  private void benchParse( @Nonnull JsonFactory factory, @Nonnull  String contentSample ) throws XMLStreamException, IOException {
     for ( int i = 0; i < BIG; i++ ) {
       JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
 
@@ -699,7 +699,7 @@ public class XmlParserPerformance {
   }
 
 
-  private void runBenchmark( @NotNull Runnable runnable, final int count ) {
+  private void runBenchmark( @Nonnull Runnable runnable, final int count ) {
     //Warmup
     runnable.run();
     runnable.run();

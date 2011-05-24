@@ -11,33 +11,33 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class FooSerializer
     extends AbstractJacksonSerializer<Foo>
 {
 
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_WIDTH = "width";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_HEIGHT = "height";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_DESCRIPTION = "description";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_ANINT = "anInt";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_FLOATFIELD = "floatField";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_BARS = "bars";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String PROPERTY_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {
@@ -48,11 +48,11 @@ public class FooSerializer
 
     @Override
     public void serialize(
-        @NotNull
+        @Nonnull
         JsonGenerator serializeTo,
-        @NotNull
+        @Nonnull
         Foo object,
-        @NotNull
+        @Nonnull
         Version formatVersion)
         throws IOException, JsonProcessingException
     {
@@ -74,11 +74,11 @@ public class FooSerializer
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public Foo deserialize(
-        @NotNull
+        @Nonnull
         JsonParser deserializeFrom,
-        @NotNull
+        @Nonnull
         Version formatVersion)
         throws VersionException, IOException, JsonProcessingException
     {

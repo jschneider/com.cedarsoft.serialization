@@ -38,8 +38,8 @@ import com.cedarsoft.file.FileType;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import javax.inject.Inject;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -50,24 +50,24 @@ import java.util.List;
  *
  */
 public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ATTRIBUTE_DEPENDENT = "dependent";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ELEMENT_ID = "id";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ELEMENT_EXTENSION = "extension";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String ATTRIBUTE_DEFAULT = "default";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_CONTENT_TYPE = "contentType";
 
   @Inject
-  public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
+  public FileTypeSerializer( @Nonnull ExtensionSerializer extensionSerializer ) {
     super( "fileType", "http://www.cedarsoft.com/file/type", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 1 ) ) );
 
     add( extensionSerializer ).responsibleFor( Extension.class )
@@ -78,7 +78,7 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull FileType object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependentType() ) );
     serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
@@ -95,9 +95,9 @@ public class FileTypeSerializer extends AbstractStaxMateSerializer<FileType> {
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public FileType deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
     String id = getChildText( deserializeFrom, ELEMENT_ID );

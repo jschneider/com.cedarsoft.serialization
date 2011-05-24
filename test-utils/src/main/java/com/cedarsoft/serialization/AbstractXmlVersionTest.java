@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 @Deprecated
 public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
-  @NotNull
+  @Nonnull
   @Override
   protected final Map<? extends Version, ? extends byte[]> getSerialized() throws Exception {
     Map<Version, byte[]> serializedMap = new HashMap<Version, byte[]>();
@@ -64,8 +64,8 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
    * @param version the version
    * @return the byte array using the xml string
    */
-  @NotNull
-  protected byte[] processXml( @NotNull @NonNls final String xml, @NotNull Version version ) throws Exception {
+  @Nonnull
+  protected byte[] processXml( @Nonnull  final String xml, @Nonnull Version version ) throws Exception {
     String nameSpace = ( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() ).createNameSpace( version );
     return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
   }
@@ -75,6 +75,6 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
    *
    * @return a map containing the serialized xmls
    */
-  @NotNull
+  @Nonnull
   protected abstract Map<? extends Version, ? extends String> getSerializedXml();
 }

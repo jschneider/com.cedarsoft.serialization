@@ -33,8 +33,8 @@ package com.cedarsoft.generator.maven;
 
 import com.google.common.base.Splitter;
 import org.apache.maven.plugin.logging.Log;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -43,16 +43,16 @@ import java.io.Writer;
  *
  */
 public class LogWriter extends Writer {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final StringBuffer buffer = new StringBuffer();
-  @NotNull
+  @Nonnull
   private final Log log;
 
-  LogWriter( @NotNull Log log ) {
+  LogWriter( @Nonnull Log log ) {
     this.log = log;
   }
 

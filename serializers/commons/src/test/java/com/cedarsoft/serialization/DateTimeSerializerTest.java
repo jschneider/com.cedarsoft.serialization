@@ -34,8 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.DateTimeZoneRule;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,13 +53,13 @@ import static org.junit.Assert.*;
  *
  */
 public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime> {
-  @NotNull
+  @Nonnull
   protected static final DateTimeZone ZONE = DateTimeZone.forID( "America/New_York" );
 
   @Rule
   public final DateTimeZoneRule zoneRule = new DateTimeZoneRule( ZONE );
 
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<DateTime> getSerializer() {
     return new DateTimeSerializer();
@@ -69,7 +69,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
   public static final Entry<?> entry1 = create( new DateTime( 2009, 5, 1, 2, 2, 5, 4, ZONE ), "<dateTime>20090501T020205.004-0400</dateTime>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull DateTime deserialized, @NotNull DateTime original ) {
+  protected void verifyDeserialized( @Nonnull DateTime deserialized, @Nonnull DateTime original ) {
     assertEqualsDateTime( deserialized, original );
   }
 
@@ -79,7 +79,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
     verifyFormatter( 966351113153L, "20000815T105153.153-0400" );
   }
 
-  private void verifyFormatter( long instant, @NotNull @NonNls String text ) {
+  private void verifyFormatter( long instant, @Nonnull  String text ) {
     assertEquals( DateTimeSerializer.createFormatter().print( instant ), text );
     assertEquals( DateTimeSerializer.createFormatter().parseDateTime( text ).getMillis(), instant );
   }
@@ -129,7 +129,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
     verifyZone( "WET" );
   }
 
-  private byte[] verifyZone( @NotNull @NonNls String id ) throws IOException {
+  private byte[] verifyZone( @Nonnull  String id ) throws IOException {
     DateTimeZone zone = DateTimeZone.forID( id );
     assertEquals( zone.getID(), id );
 
@@ -142,7 +142,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
   }
 
 
-  static void assertEqualsDateTime( @NotNull DateTime dateTime, @NotNull DateTime deserialized ) {
+  static void assertEqualsDateTime( @Nonnull DateTime dateTime, @Nonnull DateTime deserialized ) {
     assertEquals( deserialized + " vs " + dateTime, deserialized.getMillis(), dateTime.getMillis() );
     assertEquals( deserialized.getZone().getOffset( deserialized.getMillis() ), dateTime.getZone().getOffset( deserialized.getMillis() ) );
   }

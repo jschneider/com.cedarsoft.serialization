@@ -45,20 +45,20 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Generates an attribute
  */
 public class AsFieldGenerator extends AbstractSerializeToGenerator {
-  public AsFieldGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public AsFieldGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
-  @NotNull
-  public JInvocation createAddToSerializeToExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression serializeTo, @NotNull FieldDeclarationInfo fieldInfo, @NotNull JVar object, JVar formatVersion ) {
+  @Nonnull
+  public JInvocation createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
     JInvocation getter = codeGenerator.createGetterInvocation( object, fieldInfo );
@@ -84,20 +84,20 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
     throw new IllegalArgumentException( "Invalid field: " + fieldInfo );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return codeGenerator.ref( fieldInfo.getType().toString() );
   }
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return TypeUtils.isSimpleType( fieldInfo.getType() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
     JStatement nextFieldStatement = JExpr.invoke( "nextFieldValue" ).arg( deserializeFrom ).arg( constant );
 
@@ -105,8 +105,8 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
     return new Expressions( readExpression, nextFieldStatement );
   }
 
-  @NotNull
-  public JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  @Nonnull
+  public JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     if ( fieldInfo.isType( String.class ) ) {
       return deserializeFrom.invoke( "getText" );
     }
@@ -138,9 +138,9 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
    * @noinspection RefusedBequest
    */
   @Override
-  @NotNull
-  @NonNls
-  protected String getConstantName( @NotNull FieldInfo fieldInfo ) {
+  @Nonnull
+
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
     return "PROPERTY_" + fieldInfo.getSimpleName().toUpperCase();
   }
 

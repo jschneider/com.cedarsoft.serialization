@@ -34,7 +34,7 @@ package com.cedarsoft.test.io;
 import com.cedarsoft.serialization.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Model;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,14 +43,14 @@ import java.util.List;
  *
  */
 public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Model> getSerializer() {
     //We create a serializer. This one is very easy. But sometimes it needs a little bit of work...
     return new ModelSerializer();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Iterable<? extends Model> createObjectsToSerialize() {
     //Just create a few examples of objects that shall be serialized
@@ -62,7 +62,7 @@ public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
     );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected List<? extends String> getExpectedSerialized() throws Exception {
     //We just return the sole part of the xml that should be compared.
@@ -78,7 +78,7 @@ public class ModelSerializerTest extends AbstractXmlSerializerMultiTest<Model> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Model> deserialized ) throws Exception {
+  protected void verifyDeserialized( @Nonnull List<? extends Model> deserialized ) throws Exception {
     //We *might* override this method and verify the deserialized objects on our own
     //The default implementation simply calls "equals" for each single object.
     super.verifyDeserialized( deserialized );

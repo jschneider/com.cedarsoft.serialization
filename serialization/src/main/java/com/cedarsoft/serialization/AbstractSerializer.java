@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionMismatchException;
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,10 +48,10 @@ import java.io.IOException;
  * @param <E> the exception that might be thrown
  */
 public abstract class AbstractSerializer<T, S, D, E extends Throwable> implements PluggableSerializer<T, S, D, E> {
-  @NotNull
+  @Nonnull
   private final VersionRange formatVersionRange;
 
-  @NotNull
+  @Nonnull
   protected final DelegatesMappings<S, D, E> delegatesMappings;
 
   /**
@@ -59,13 +59,13 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    *
    * @param formatVersionRange the version range. The max value is used as format version when written.
    */
-  protected AbstractSerializer( @NotNull VersionRange formatVersionRange ) {
+  protected AbstractSerializer( @Nonnull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
     this.delegatesMappings = new DelegatesMappings<S, D, E>( formatVersionRange );
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public Version getFormatVersion() {
     return formatVersionRange.getMax();
   }
@@ -75,13 +75,13 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    *
    * @param formatVersion the format version
    */
-  protected void verifyVersionReadable( @NotNull Version formatVersion ) {
+  protected void verifyVersionReadable( @Nonnull Version formatVersion ) {
     if ( !isVersionReadable( formatVersion ) ) {
       throw new VersionMismatchException( getFormatVersionRange(), formatVersion );
     }
   }
 
-  public boolean isVersionReadable( @NotNull Version formatVersion ) {
+  public boolean isVersionReadable( @Nonnull Version formatVersion ) {
     return getFormatVersionRange().contains( formatVersion );
   }
 
@@ -90,18 +90,18 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    *
    * @param formatVersion the format version
    */
-  protected void verifyVersionWritable( @NotNull Version formatVersion ) {
+  protected void verifyVersionWritable( @Nonnull Version formatVersion ) {
     if ( !isVersionWritable( formatVersion ) ) {
       throw new VersionMismatchException( getFormatVersion(), formatVersion );
     }
   }
 
-  public boolean isVersionWritable( @NotNull Version formatVersion ) {
+  public boolean isVersionWritable( @Nonnull Version formatVersion ) {
     return getFormatVersion().equals( formatVersion );
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public VersionRange getFormatVersionRange() {
     return formatVersionRange;
   }
@@ -114,36 +114,36 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    *
    * @throws IOException
    */
-  @NotNull
-  public byte[] serializeToByteArray( @NotNull T object ) throws IOException {
+  @Nonnull
+  public byte[] serializeToByteArray( @Nonnull T object ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serialize( object, out );
     return out.toByteArray();
   }
 
-  @NotNull
+  @Nonnull
   public DelegatesMappings<S, D, E> getDelegatesMappings() {
     return delegatesMappings;
   }
 
   // Delegate methods to the DelegatesMappings
 
-  @NotNull
-  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @NotNull PluggableSerializer<? super T, S, D, E> pluggableSerializer ) {
+  @Nonnull
+  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E> pluggableSerializer ) {
     return delegatesMappings.add( pluggableSerializer );
   }
 
-  public <T> void serialize( @NotNull T object, @NotNull Class<T> type, @NotNull S deserializeTo, @NotNull Version formatVersion ) throws E, IOException {
+  public <T> void serialize( @Nonnull T object, @Nonnull Class<T> type, @Nonnull S deserializeTo, @Nonnull Version formatVersion ) throws E, IOException {
     delegatesMappings.serialize( object, type, deserializeTo, formatVersion );
   }
 
-  @NotNull
-  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
+  @Nonnull
+  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @Nonnull Class<T> type ) {
     return delegatesMappings.getSerializer( type );
   }
 
-  @NotNull
-  public <T> T deserialize( @NotNull Class<T> type, @NotNull Version formatVersion, @NotNull D deserializeFrom ) throws E, IOException {
+  @Nonnull
+  public <T> T deserialize( @Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull D deserializeFrom ) throws E, IOException {
     return delegatesMappings.deserialize( type, formatVersion, deserializeFrom );
   }
 
@@ -153,7 +153,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    * @param delegate              the delegate
    * @param expectedFormatVersion the expected format version
    */
-  protected static void verifyDelegatingSerializerVersion( @NotNull Serializer<?> delegate, @NotNull Version expectedFormatVersion ) {
+  protected static void verifyDelegatingSerializerVersion( @Nonnull Serializer<?> delegate, @Nonnull Version expectedFormatVersion ) {
     Version actualVersion = delegate.getFormatVersion();
     if ( !actualVersion.equals( expectedFormatVersion ) ) {
       throw new IllegalArgumentException( "Invalid versions. Expected <" + expectedFormatVersion + "> but was <" + actualVersion + ">" );

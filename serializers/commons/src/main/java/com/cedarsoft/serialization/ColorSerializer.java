@@ -36,8 +36,8 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -45,14 +45,14 @@ import java.awt.Color;
 import java.io.IOException;
 
 public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_RED = "red";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_GREEN = "green";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_BLUE = "blue";
 
   public ColorSerializer() {
@@ -60,7 +60,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Color object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Color object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
 
     //red
@@ -71,9 +71,9 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
     serializeTo.addElementWithCharacters( serializeTo.getNamespace(), ELEMENT_BLUE, String.valueOf( object.getBlue() ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Color deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, XMLStreamException {
+  public Color deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     //red
     int red = Integer.parseInt( getChildText( deserializeFrom, ELEMENT_RED ) );

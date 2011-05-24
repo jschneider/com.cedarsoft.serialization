@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.serialization.bench.jaxb.Extension;
 import com.cedarsoft.serialization.bench.jaxb.FileType;
 import com.google.gson.Gson;
-import org.jetbrains.annotations.NonNls;
+
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -43,7 +43,7 @@ import static org.junit.Assert.*;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class GsonTest {
-  @NonNls
+
   public static final String FILE_TYPE = "{\"dependent\":false,\"id\":\"jpg\",\"extension\":{\"isDefault\":true,\"delimiter\":\".\",\"extension\":\"jpg\"}}";
 
   @Test

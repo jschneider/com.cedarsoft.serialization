@@ -33,8 +33,8 @@ package com.cedarsoft.serialization.registry;
 
 import com.cedarsoft.StillContainedException;
 import com.cedarsoft.serialization.NotFoundException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -50,10 +50,10 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
    * @throws FileNotFoundException
    * @throws StillContainedException if an object with the given id is still contained
    */
-  @NotNull
-  OutputStream openOut( @NotNull @NonNls String id ) throws StillContainedException, FileNotFoundException;
+  @Nonnull
+  OutputStream openOut( @Nonnull  String id ) throws StillContainedException, FileNotFoundException;
 
-  OutputStream openOutForUpdate( @NotNull @NonNls String id ) throws NotFoundException, FileNotFoundException;
+  OutputStream openOutForUpdate( @Nonnull  String id ) throws NotFoundException, FileNotFoundException;
 
   /**
    * Returns the input stream
@@ -63,8 +63,8 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
    *
    * @throws FileNotFoundException
    */
-  @NotNull
-  InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException;
+  @Nonnull
+  InputStream getInputStream( @Nonnull  String id ) throws FileNotFoundException;
 
-  void delete( @NotNull @NonNls String id ) throws NotFoundException;
+  void delete( @Nonnull  String id ) throws NotFoundException;
 }

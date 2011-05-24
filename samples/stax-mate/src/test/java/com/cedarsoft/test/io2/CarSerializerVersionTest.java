@@ -40,7 +40,7 @@ import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() throws Exception {
     MoneySerializer moneySerializer = new MoneySerializer();
@@ -90,7 +90,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
       "</car>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Version version ) throws Exception {
     assertEquals( Color.ORANGE, deserialized.getColor() );
     assertEquals( deserialized.getBasePrice(), new Money( 19000, 0 ) );
     //.... (and much more)

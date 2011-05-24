@@ -41,32 +41,32 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
 public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
-  @NonNls
+
   public static final String PROPERTY_EXTENSIONS = "extensions";
-  @NonNls
+
   public static final String PROPERTY_ID = "id";
-  @NonNls
+
   public static final String PROPERTY_DEPENDENT_TYPE = "dependentType";
-  @NonNls
+
   public static final String PROPERTY_CONTENT_TYPE = "contentType";
 
   @Inject
-  public FileTypeSerializer( @NotNull ExtensionSerializer extensionSerializer ) {
+  public FileTypeSerializer( @Nonnull ExtensionSerializer extensionSerializer ) {
     super( "file-type", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( extensionSerializer ).responsibleFor( Extension.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
     assert getDelegatesMappings().verify();
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull FileType object, @NotNull Version formatVersion )
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull FileType object, @Nonnull Version formatVersion )
     throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
 
@@ -76,9 +76,9 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     serializeArray( object.getExtensions(), Extension.class, PROPERTY_EXTENSIONS, serializeTo, formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public FileType deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
+  public FileType deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, PROPERTY_ID );
     String id = deserializeFrom.getText();
@@ -92,10 +92,10 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   }
 
   public static class Referenced extends AbstractJacksonSerializer<FileType> {
-    @NotNull
+    @Nonnull
     private final FileTypeRegistry fileTypeRegistry;
 
-    public Referenced( @NotNull FileTypeRegistry fileTypeRegistry ) {
+    public Referenced( @Nonnull FileTypeRegistry fileTypeRegistry ) {
       super( "file-type", VersionRange.single( 1, 0, 0 ) );
       this.fileTypeRegistry = fileTypeRegistry;
     }
@@ -106,13 +106,13 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     }
 
     @Override
-    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull FileType object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
       serializeTo.writeString( object.getId() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public FileType deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    public FileType deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
       String id = deserializeFrom.getText();
       return fileTypeRegistry.valueOf( id );
     }

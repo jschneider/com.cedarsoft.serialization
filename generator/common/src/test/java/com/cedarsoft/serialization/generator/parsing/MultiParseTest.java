@@ -37,7 +37,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sun.mirror.declaration.ClassDeclaration;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.File;
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  *
  */
 public class MultiParseTest {
-  @NotNull
+  @Nonnull
   public static final List<URL> classes = ImmutableList.of(
     MultiParseTest.class.getResource( "test/Door.java" ),
     MultiParseTest.class.getResource( "test/House.java" ),

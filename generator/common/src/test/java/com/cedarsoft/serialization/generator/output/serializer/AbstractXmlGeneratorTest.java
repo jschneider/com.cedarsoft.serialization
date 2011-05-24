@@ -42,7 +42,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.StringWriter;
@@ -59,50 +59,50 @@ public class AbstractXmlGeneratorTest {
   @Before
   public void setup() {
     generator = new AbstractXmlGenerator( new CodeGenerator( new XmlDecisionCallback() {
-      @NotNull
+      @Nonnull
       @Override
-      public Target getSerializationTarget( @NotNull FieldInfo fieldInfo ) {
+      public Target getSerializationTarget( @Nonnull FieldInfo fieldInfo ) {
         throw new UnsupportedOperationException();
       }
     } ) ) {
-      @NotNull
+      @Nonnull
       @Override
-      protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
+      protected JClass createSerializerExtendsExpression( @Nonnull JClass domainType ) {
         throw new UnsupportedOperationException();
       }
 
-      @NotNull
+      @Nonnull
       @Override
-      protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+      protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @Nonnull DomainObjectDescriptor domainObjectDescriptor, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JMethod deserializeMethod ) {
         throw new UnsupportedOperationException();
       }
 
-      @NotNull
+      @Nonnull
       @Override
       protected Class<?> getExceptionType() {
         throw new UnsupportedOperationException();
       }
 
-      @NotNull
+      @Nonnull
       @Override
       protected Class<?> getSerializeFromType() {
         throw new UnsupportedOperationException();
       }
 
-      @NotNull
+      @Nonnull
       @Override
       protected Class<?> getSerializeToType() {
         throw new UnsupportedOperationException();
       }
 
-      @NotNull
+      @Nonnull
       @Override
-      protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
         throw new UnsupportedOperationException();
       }
 
       @Override
-      protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+      protected void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
         throw new UnsupportedOperationException();
       }
     };

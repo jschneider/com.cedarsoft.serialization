@@ -34,8 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -46,11 +46,11 @@ import org.jetbrains.annotations.Nullable;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   protected final String nameSpaceBase;
 
-  protected AbstractNameSpaceBasedSerializer( @NonNls @NotNull String nameSpaceBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractNameSpaceBasedSerializer(  @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
     super( formatVersionRange );
     this.nameSpaceBase = nameSpaceBase;
   }
@@ -61,9 +61,9 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @param formatVersion the format version
    * @return the namespace uri
    */
-  @NotNull
-  @NonNls
-  protected String createNameSpace( @NotNull Version formatVersion ) {
+  @Nonnull
+
+  protected String createNameSpace( @Nonnull Version formatVersion ) {
     return getNameSpaceBase() + "/" + formatVersion.format();
   }
 
@@ -72,8 +72,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public String getNameSpace() {
     return createNameSpace( getFormatVersion() );
   }
@@ -83,8 +83,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @return the name space uri base
    */
-  @NonNls
-  @NotNull
+
+  @Nonnull
   public String getNameSpaceBase() {
     return nameSpaceBase;
   }
@@ -97,8 +97,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @throws IllegalArgumentException
    */
-  @NotNull
-  public static Version parseVersionFromNamespace( @Nullable @NonNls String namespaceURI ) throws IllegalArgumentException, VersionException {
+  @Nonnull
+  public static Version parseVersionFromNamespace( @Nullable  String namespaceURI ) throws IllegalArgumentException, VersionException {
     if ( namespaceURI == null || namespaceURI.length() == 0 ) {
       throw new VersionException( "No version information found" );
     }
@@ -115,7 +115,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException if the namespace is invalid
    * @throws VersionException          the if the version does not fit the expected range
    */
-  public void verifyNamespace( @Nullable @NonNls String namespace ) throws InvalidNamespaceException, VersionException {
+  public void verifyNamespace( @Nullable  String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
     }
@@ -134,8 +134,8 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
-  @NotNull
-  public Version parseAndVerifyNameSpace( @Nullable @NonNls String namespaceURI ) throws InvalidNamespaceException, VersionException {
+  @Nonnull
+  public Version parseAndVerifyNameSpace( @Nullable  String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space
     verifyNamespace( namespaceURI );
 

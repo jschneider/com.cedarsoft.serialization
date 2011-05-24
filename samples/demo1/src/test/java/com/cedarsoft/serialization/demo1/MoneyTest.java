@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.demo1;
 
 import com.thoughtworks.xstream.XStream;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -53,9 +53,9 @@ import static org.junit.Assert.*;
  *
  */
 public class MoneyTest {
-  @NotNull
+  @Nonnull
   public static final URL EXPECTED = MoneyTest.class.getResource( "money.xml" );
-  @NotNull
+  @Nonnull
   public static final URL EXPECTED_ATTRIBUTE = MoneyTest.class.getResource( "money_attribute.xml" );
 
   private XStream xStream;
@@ -101,7 +101,7 @@ public class MoneyTest {
     assertEquals( 7.01, deserialize( EXPECTED.openStream() ).getAmount(), 0 );
   }
 
-  private static String serialize( @NotNull Money money ) throws XMLStreamException {
+  private static String serialize( @Nonnull Money money ) throws XMLStreamException {
     //Boilerplate
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter( out );
@@ -119,7 +119,7 @@ public class MoneyTest {
     return out.toString();
   }
 
-  private static Money deserialize( @NotNull InputStream serialized ) throws XMLStreamException {
+  private static Money deserialize( @Nonnull InputStream serialized ) throws XMLStreamException {
     //Boilerplate
     XMLInputFactory factory = XMLInputFactory.newInstance();
     XMLStreamReader reader = factory.createXMLStreamReader( serialized );

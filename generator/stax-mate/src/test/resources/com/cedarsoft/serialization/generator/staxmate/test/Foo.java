@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ public class Foo {
   private final Integer anInt;
   private float floatField;
 
-  @NotNull
+  @Nonnull
   private final List<Bar> bars = new ArrayList<Bar>();
 
   private Bar bar = new Bar( 1 );
@@ -44,7 +44,7 @@ public class Foo {
     this.bars.addAll( bars );
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Bar> getBars() {
     return Collections.unmodifiableList( bars );
   }

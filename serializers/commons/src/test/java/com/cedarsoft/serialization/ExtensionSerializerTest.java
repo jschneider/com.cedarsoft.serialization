@@ -33,7 +33,7 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -46,7 +46,7 @@ import static org.junit.Assert.assertEquals;
  *
  */
 public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extension> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<Extension> getSerializer() {
     return new ExtensionSerializer();

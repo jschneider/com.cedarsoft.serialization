@@ -37,7 +37,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractDelegatingStaxMateSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -72,14 +72,14 @@ public class BallSerializer extends AbstractDelegatingStaxMateSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Ball.TennisBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Ball.TennisBall object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       verifyVersionReadable( formatVersion );
       serializeTo.addAttribute( "id", String.valueOf( object.getId() ) );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.TennisBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Ball.TennisBall deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       verifyVersionReadable( formatVersion );
 
       int id;
@@ -103,14 +103,14 @@ public class BallSerializer extends AbstractDelegatingStaxMateSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Ball.BasketBall object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Ball.BasketBall object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       verifyVersionReadable( formatVersion );
       serializeTo.addAttribute( "theId", String.valueOf( object.getTheId() ) );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.BasketBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Ball.BasketBall deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       verifyVersionReadable( formatVersion );
 
       String theId;

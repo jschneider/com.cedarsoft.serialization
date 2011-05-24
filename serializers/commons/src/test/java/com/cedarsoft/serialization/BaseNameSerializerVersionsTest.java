@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -44,14 +44,14 @@ import static org.junit.Assert.*;
  *
  */
 public class BaseNameSerializerVersionsTest extends AbstractXmlVersionTest2<BaseName> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<BaseName> getSerializer() {
     return new BaseNameSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull BaseName deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull BaseName deserialized, @Nonnull Version version ) throws Exception {
     assertThat( deserialized.getName(), is( "asdf" ) );
   }
 

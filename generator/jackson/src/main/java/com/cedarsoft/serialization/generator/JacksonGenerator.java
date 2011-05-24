@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.JsonGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -48,28 +48,28 @@ public class JacksonGenerator extends Generator {
     new GeneratorCliSupport( new JacksonGenerator(), "ser-gen" ).run( args );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getRunnerClassName() {
     return "com.cedarsoft.serialization.generator.JacksonGenerator$JacksonGeneratorRunner";
   }
 
   public static class JacksonGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
-    @NotNull
+    @Nonnull
     @Override
     protected XmlDecisionCallback createDecisionCallback() {
       return new DefaultXmlDecisionCallback( "id" );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator ) {
+    protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @Nonnull CodeGenerator testCodeGenerator ) {
       return new JsonGenerator( testCodeGenerator );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator ) {
+    protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @Nonnull CodeGenerator serializerCodeGenerator ) {
       return new com.cedarsoft.serialization.generator.output.jackson.serializer.JacksonGenerator( serializerCodeGenerator );
     }
   }

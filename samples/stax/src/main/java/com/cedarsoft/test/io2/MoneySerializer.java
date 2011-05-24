@@ -36,7 +36,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -60,7 +60,7 @@ public class MoneySerializer extends AbstractStaxSerializer<Money> {
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Money object, Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Money object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.writeAttribute( "cents", String.valueOf( object.getCents() ) );
     //We use an attribute - just because it is possible...

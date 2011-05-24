@@ -38,8 +38,8 @@ import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileName;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
@@ -50,15 +50,15 @@ import java.io.IOException;
  * Serializer for file names
  */
 public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_EXTENSION = "extension";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String ELEMENT_BASE_NAME = "baseName";
 
   @Inject
-  public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
+  public FileNameSerializer( @Nonnull BaseNameSerializer baseNameSerializer, @Nonnull ExtensionSerializer extensionSerializer ) {
     super( "fileName", "http://www.cedarsoft.com/file/fileName", VersionRange.from( 1, 0, 0 ).to() );
 
     add( extensionSerializer ).responsibleFor( Extension.class )
@@ -73,15 +73,15 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileName object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull FileName object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serialize( object.getBaseName(), BaseName.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_BASE_NAME ), formatVersion );
     serialize( object.getExtension(), Extension.class, serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_EXTENSION ), formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public FileName deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public FileName deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     nextTag( deserializeFrom, ELEMENT_BASE_NAME );
     BaseName baseName = deserialize( BaseName.class, formatVersion, deserializeFrom );

@@ -39,36 +39,36 @@ import com.sun.codemodel.JClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.fmt.JTextFile;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public class JsonGenerator extends AbstractGenerator<XmlDecisionCallback> {
-  @NonNls
-  @NotNull
+
+  @Nonnull
   public static final String METHOD_GET_RESOURCE = "getResource";
 
-  public JsonGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public JsonGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
+  protected JClass createExtendsClass( @Nonnull JClass domainType, @Nonnull JClass serializerClass ) {
     return codeGenerator.ref( AbstractJsonSerializerTest2.class ).narrow( domainType );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass ) {
+  protected JClass createVersionExtendsClass( @Nonnull JClass domainType, @Nonnull JClass serializerClass ) {
     return codeGenerator.ref( AbstractJsonVersionTest2.class ).narrow( domainType );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType ) {
+  protected JExpression createExpectedExpression( @Nonnull JClass testClass, @Nonnull JClass domainType ) {
     String resourceName = domainType.name() + "_1.0.0_1.json";
 
     JPackage testClassPackage = testClass._package();
@@ -81,9 +81,9 @@ public class JsonGenerator extends AbstractGenerator<XmlDecisionCallback> {
     return testClass.dotclass().invoke( METHOD_GET_RESOURCE ).arg( resourceName );
   }
 
-  @NotNull
-  @NonNls
-  private String createSampleContent( @NotNull JClass domainType ) {
+  @Nonnull
+
+  private String createSampleContent( @Nonnull JClass domainType ) {
     return "{\n}";
   }
 }

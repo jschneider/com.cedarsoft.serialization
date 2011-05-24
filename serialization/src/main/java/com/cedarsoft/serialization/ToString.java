@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Converts objects to strings
@@ -46,7 +46,7 @@ public interface ToString<T> {
    * @param object the object
    * @return the string representation
    */
-  @NotNull
-  @NonNls
-  String convert( @NotNull T object );
+  @Nonnull
+
+  String convert( @Nonnull T object );
 }

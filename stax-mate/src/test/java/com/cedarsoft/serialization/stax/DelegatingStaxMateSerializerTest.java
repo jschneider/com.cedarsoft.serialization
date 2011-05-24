@@ -40,7 +40,7 @@ import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -62,14 +62,14 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   public void setUp() throws Exception {
     AbstractStaxMateSerializingStrategy<Integer> intSerializer = new AbstractStaxMateSerializingStrategy<Integer>( "int", "asdf", Integer.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Integer object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         serializeTo.addCharacters( object.toString() );
 
       }
 
       @Override
-      @NotNull
-      public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      @Nonnull
+      public Integer deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         getText( deserializeFrom );
         return 1;
@@ -78,15 +78,15 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
     AbstractStaxMateSerializingStrategy<Double> doubleSerializer = new AbstractStaxMateSerializingStrategy<Double>( "double", "asdf", Double.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Double object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Double object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionWritable( formatVersion );
         serializeTo.addCharacters( object.toString() );
 
       }
 
       @Override
-      @NotNull
-      public Double deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+      @Nonnull
+      public Double deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionReadable( formatVersion );
         getText( deserializeFrom );
         return 2.0;
@@ -95,19 +95,19 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     serializer = new MySerializer( intSerializer, doubleSerializer );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<Number> getSerializer() {
     return serializer;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Number createObjectToSerialize() {
     return 1;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -115,7 +115,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Number deserialized ) {
+  protected void verifyDeserialized( @Nonnull Number deserialized ) {
     assertEquals( 1, deserialized );
   }
 
@@ -140,9 +140,9 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
         return o1.getId().compareTo( o2.getId() );
       }
     }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
-      @NotNull
+      @Nonnull
       @Override
-      public String convert( @NotNull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
         return object.getId();
       }
     } );

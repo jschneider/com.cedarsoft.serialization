@@ -38,8 +38,8 @@ import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -98,7 +98,7 @@ public class StaxMateDelegatePerformance {
     }, 4 );
   }
 
-  private void benchRoundTrip( XMLInputFactory staxFactory, @NotNull AbstractStaxMateSerializer<FileType> serializer ) throws IOException {
+  private void benchRoundTrip( XMLInputFactory staxFactory, @Nonnull AbstractStaxMateSerializer<FileType> serializer ) throws IOException {
     FileType fileType = new FileType( "jpg", new Extension( ".", "jpg", true ), false );
 
     for ( int i = 0; i < COUNT; i++ ) {
@@ -110,7 +110,7 @@ public class StaxMateDelegatePerformance {
     }
   }
 
-  private void runBenchmark( @NotNull Runnable runnable, final int count ) {
+  private void runBenchmark( @Nonnull Runnable runnable, final int count ) {
     //Warmup
     runnable.run();
     runnable.run();
@@ -135,18 +135,18 @@ public class StaxMateDelegatePerformance {
   }
 
   public static class FileTypeSerializerDelegates extends AbstractStaxMateSerializer<FileType> {
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ATTRIBUTE_DEPENDENT = "dependent";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ELEMENT_ID = "id";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ELEMENT_EXTENSION = "extension";
 
 
-    public FileTypeSerializerDelegates( @NotNull ExtensionSerializer extensionSerializer ) {
+    public FileTypeSerializerDelegates( @Nonnull ExtensionSerializer extensionSerializer ) {
       super( "fileType", "http://collustra.cedarsoft.com/fileType", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
 
       add( extensionSerializer ).responsibleFor( Extension.class )
@@ -157,7 +157,7 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull FileType object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
@@ -165,9 +165,9 @@ public class StaxMateDelegatePerformance {
       serialize( object.getExtension(), Extension.class, extensionElement, formatVersion );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public FileType deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
@@ -183,29 +183,29 @@ public class StaxMateDelegatePerformance {
   }
 
   public static class FileTypeSerializerHardCoded extends AbstractStaxMateSerializer<FileType> {
-    @NotNull
+    @Nonnull
     private static final Version EXTENSION_FORMAT_VERSION = new Version( 1, 0, 0 );
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ATTRIBUTE_DEPENDENT = "dependent";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ELEMENT_ID = "id";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ELEMENT_EXTENSION = "extension";
 
-    @NotNull
+    @Nonnull
     private final ExtensionSerializer extensionSerializer;
 
-    public FileTypeSerializerHardCoded( @NotNull ExtensionSerializer extensionSerializer ) {
+    public FileTypeSerializerHardCoded( @Nonnull ExtensionSerializer extensionSerializer ) {
       super( "fileType", "http://collustra.cedarsoft.com/fileType", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
       this.extensionSerializer = extensionSerializer;
       AbstractSerializer.verifyDelegatingSerializerVersion( extensionSerializer, EXTENSION_FORMAT_VERSION );
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull FileType object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull FileType object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       serializeTo.addAttribute( ATTRIBUTE_DEPENDENT, String.valueOf( object.isDependent() ) );
       serializeTo.addElement( serializeTo.getNamespace(), ELEMENT_ID ).addCharacters( object.getId() );
 
@@ -213,9 +213,9 @@ public class StaxMateDelegatePerformance {
       extensionSerializer.serialize( extensionElement, object.getExtension(), EXTENSION_FORMAT_VERSION );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public FileType deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public FileType deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean dependent = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEPENDENT ) );
       String id = getChildText( deserializeFrom, ELEMENT_ID );
@@ -231,11 +231,11 @@ public class StaxMateDelegatePerformance {
   }
 
   public static class ExtensionSerializer extends AbstractStaxMateSerializer<Extension> {
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ATTRIBUTE_DELIMITER = "delimiter";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private static final String ATTRIBUTE_DEFAULT = "default";
 
     public ExtensionSerializer() {
@@ -243,16 +243,16 @@ public class StaxMateDelegatePerformance {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Extension object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Extension object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addAttribute( ATTRIBUTE_DEFAULT, String.valueOf( object.isDefault() ) );
       serializeTo.addAttribute( ATTRIBUTE_DELIMITER, object.getDelimiter() );
       serializeTo.addCharacters( object.getExtension() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Extension deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public Extension deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       boolean isDefault = Boolean.parseBoolean( deserializeFrom.getAttributeValue( null, ATTRIBUTE_DEFAULT ) );
       String delimiter = deserializeFrom.getAttributeValue( null, ATTRIBUTE_DELIMITER );

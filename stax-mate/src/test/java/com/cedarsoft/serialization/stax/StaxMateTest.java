@@ -41,8 +41,8 @@ import org.codehaus.staxmate.SMOutputFactory;
 import org.codehaus.staxmate.out.SMGlobalNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -62,8 +62,8 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateTest {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static final String CONTENT_SAMPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
     "<fileType dependent=\"false\">\n" +
     "  <id>Canon Raw</id>\n" +

@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> {
@@ -44,7 +44,7 @@ public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> 
   public static final Entry<? extends Version> ENTRY1 = VersionSerializerTest.create(
     new Version( 42, 42, 42, "suffix" ), "\"42.42.42-suffix\"" );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Version> getSerializer() throws Exception {
     return new VersionSerializer();

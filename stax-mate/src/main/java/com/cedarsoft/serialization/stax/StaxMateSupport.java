@@ -33,13 +33,13 @@ package com.cedarsoft.serialization.stax;
 
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Support class for stax mate
  */
 public class StaxMateSupport {
-  @NotNull
+  @Nonnull
   static final ThreadLocal<SMInputFactory> SM_INPUT_FACTORY = new ThreadLocal<SMInputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
@@ -47,7 +47,7 @@ public class StaxMateSupport {
       return new SMInputFactory( StaxSupport.XML_INPUT_FACTORY.get() );
     }
   };
-  @NotNull
+  @Nonnull
   static final ThreadLocal<SMOutputFactory> SM_OUTPUT_FACTORY = new ThreadLocal<SMOutputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
@@ -64,7 +64,7 @@ public class StaxMateSupport {
    *
    * @return the cached sm output factory
    */
-  @NotNull
+  @Nonnull
   public static SMOutputFactory getSmOutputFactory() {
     return SM_OUTPUT_FACTORY.get();
   }
@@ -74,7 +74,7 @@ public class StaxMateSupport {
    *
    * @return the cached sm input factory
    */
-  @NotNull
+  @Nonnull
   public static SMInputFactory getSmInputFactory() {
     return SM_INPUT_FACTORY.get();
   }

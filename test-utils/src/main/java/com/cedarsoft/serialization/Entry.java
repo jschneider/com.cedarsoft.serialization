@@ -31,20 +31,20 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * An entry for a test pair
  */
 public class Entry<T> {
-  @NotNull
+  @Nonnull
   private final T object;
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final byte[] expected;
 
-  public Entry( @NotNull T object, @NotNull @NonNls byte[] expected ) {
+  public Entry( @Nonnull T object, @Nonnull  byte[] expected ) {
     this.object = object;
     this.expected = expected;
   }
@@ -54,7 +54,7 @@ public class Entry<T> {
    *
    * @return the domain object that is serialized
    */
-  @NotNull
+  @Nonnull
   public byte[] getExpected() {
     return expected;
   }
@@ -64,7 +64,7 @@ public class Entry<T> {
    *
    * @return the expected serialized object
    */
-  @NotNull
+  @Nonnull
   public T getObject() {
     return object;
   }

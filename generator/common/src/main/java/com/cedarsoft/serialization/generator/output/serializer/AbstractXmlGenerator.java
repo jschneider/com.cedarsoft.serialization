@@ -37,8 +37,8 @@ import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -50,13 +50,13 @@ public abstract class AbstractXmlGenerator extends AbstractNamespaceBasedGenerat
    *
    * @param codeGenerator the used code generator
    */
-  protected AbstractXmlGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractXmlGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
-  @NotNull
-  protected JMethod createConstructor( @NotNull JDefinedClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  @Nonnull
+  protected JMethod createConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JMethod constructor = serializerClass.constructor( JMod.PUBLIC );
     constructor.body()
       .invoke( METHOD_SUPER ).arg( getDefaultElementName( domainObjectDescriptor ) ).arg( getNamespace( domainObjectDescriptor.getQualifiedName() ) )
@@ -70,9 +70,9 @@ public abstract class AbstractXmlGenerator extends AbstractNamespaceBasedGenerat
    * @param domainObjectDescriptor the descriptor
    * @return the default element name
    */
-  @NotNull
-  @NonNls
-  protected String getDefaultElementName( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  @Nonnull
+
+  protected String getDefaultElementName( @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     return NamingSupport.createXmlElementName( domainObjectDescriptor.getClassDeclaration().getSimpleName() );
   }
 

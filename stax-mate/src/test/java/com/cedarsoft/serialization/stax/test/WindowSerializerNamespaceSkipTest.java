@@ -37,7 +37,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import javax.xml.stream.XMLStreamException;
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  *
  */
 public class WindowSerializerNamespaceSkipTest {
-  @NotNull
+  @Nonnull
   protected Serializer<Window> getSerializer() throws Exception {
     return new DaSkippingSerializer();
   }
@@ -81,7 +81,7 @@ public class WindowSerializerNamespaceSkipTest {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Window object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Window object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
 
       serializeTo.addAttribute( "width", String.valueOf( object.getWidth() ) );
@@ -90,9 +90,9 @@ public class WindowSerializerNamespaceSkipTest {
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Window deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Window deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       double width = Double.parseDouble( deserializeFrom.getAttributeValue( null, "width" ) );
       double height = Double.parseDouble( deserializeFrom.getAttributeValue( null, "height" ) );

@@ -37,7 +37,7 @@ import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.StaxMateSupport;
 import com.cedarsoft.serialization.stax.StaxSupport;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -48,7 +48,7 @@ import java.util.List;
  *
  */
 public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Room> getSerializer() throws Exception {
     return new Room.Serializer( new Window.Serializer(), new Door.Serializer() );
@@ -60,7 +60,7 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
   }
 
   @Override
-  protected void verifySerialized( @NotNull Entry<Room> entry, @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull Entry<Room> entry, @Nonnull byte[] serialized ) throws Exception {
     JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
   }
 

@@ -43,8 +43,8 @@ import com.cedarsoft.serialization.generator.output.serializer.I18nAnnotationsDe
 import com.cedarsoft.serialization.generator.output.serializer.NotNullDecorator;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
@@ -86,14 +86,14 @@ public abstract class AbstractGeneratorTest {
     model = codeGenerator.getModel();
   }
 
-  protected void assertGeneratedCode( @NotNull @NonNls URL expected ) throws IOException {
+  protected void assertGeneratedCode( @Nonnull  URL expected ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
     AssertUtils.assertEquals( expected, out.toString().trim() );
   }
 
-  protected void assertGeneratedCode( @NotNull @NonNls String expected ) throws IOException {
+  protected void assertGeneratedCode( @Nonnull  String expected ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 

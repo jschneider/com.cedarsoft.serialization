@@ -37,7 +37,7 @@ import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.AbstractSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 public class FileTypeSerializerTest extends AbstractJsonSerializerTest2<FileType> {
@@ -49,7 +49,7 @@ public class FileTypeSerializerTest extends AbstractJsonSerializerTest2<FileType
 
   );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<FileType> getSerializer() throws Exception {
     return new FileTypeSerializer( new ExtensionSerializer() );

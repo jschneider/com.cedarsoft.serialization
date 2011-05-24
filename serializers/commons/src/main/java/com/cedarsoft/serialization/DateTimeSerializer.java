@@ -36,7 +36,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -54,14 +54,14 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
   }
 
   @Override
-  public void serialize( @NotNull SMOutputElement serializeTo, @NotNull DateTime object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull DateTime object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.addCharacters( createFormatter().print( object ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DateTime deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+  public DateTime deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionReadable( formatVersion );
     String text = getText( deserializeFrom );
 
@@ -76,7 +76,7 @@ public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
     throw new UnsupportedVersionException( formatVersion, getFormatVersionRange() );
   }
 
-  @NotNull
+  @Nonnull
   static DateTimeFormatter createFormatter() {
     return ISODateTimeFormat.basicDateTime();
   }

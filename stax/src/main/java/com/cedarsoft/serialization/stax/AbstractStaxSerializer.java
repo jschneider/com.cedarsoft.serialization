@@ -34,8 +34,8 @@ package com.cedarsoft.serialization.stax;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -56,12 +56,12 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version range
    */
-  protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractStaxSerializer( @Nonnull  String defaultElementName,  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException {
     try {
       XMLStreamWriter writer = StaxSupport.getXmlOutputFactory().createXMLStreamWriter( out );
 
@@ -92,7 +92,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @throws XMLStreamException
    * @throws IOException
    */
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull  String elementName, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 
@@ -103,7 +103,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     }
   }
 
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 

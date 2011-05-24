@@ -38,8 +38,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.TextNode;
 import org.fest.reflect.core.Reflection;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -56,7 +56,7 @@ import java.util.Map;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify( @NonNls @NotNull byte[] current, @NotNull @NonNls byte[] expectedJson ) throws Exception {
+  protected void verify(  @Nonnull byte[] current, @Nonnull  byte[] expectedJson ) throws Exception {
     String expectedAsString = new String( expectedJson );
     if ( addTypeInformation() ) {
       try {
@@ -69,22 +69,22 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
     JsonUtils.assertJsonEquals( expectedAsString, new String( current ) );
   }
 
-  @NotNull
-  @NonNls
-  public String addTypeInformation( @NotNull @NonNls byte[] expectedJson ) throws Exception {
+  @Nonnull
+
+  public String addTypeInformation( @Nonnull  byte[] expectedJson ) throws Exception {
     Serializer<T> serializer = getSerializer();
     return addTypeInformation( serializer, expectedJson );
   }
 
-  @NotNull
-  @NonNls
-  protected static String getType( @NotNull Serializer<?> serializer ) {
+  @Nonnull
+
+  protected static String getType( @Nonnull Serializer<?> serializer ) {
     return Reflection.method( "getType" ).withReturnType( String.class ).in( serializer ).invoke();
   }
 
-  @NotNull
-  @NonNls
-  public static String addTypeInformation( @NotNull Serializer<?> serializer, @NotNull @NonNls byte[] expectedJson ) throws Exception {
+  @Nonnull
+
+  public static String addTypeInformation( @Nonnull Serializer<?> serializer, @Nonnull  byte[] expectedJson ) throws Exception {
     return addTypeInformation( getType( serializer ), serializer.getFormatVersion(), expectedJson );
   }
 
@@ -92,9 +92,9 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
     return true;
   }
 
-  @NotNull
-  @NonNls
-  public static String addTypeInformation( @NotNull @NonNls String type, @NotNull Version version, @NotNull @NonNls byte[] xmlBytes ) throws Exception {
+  @Nonnull
+
+  public static String addTypeInformation( @Nonnull  String type, @Nonnull Version version, @Nonnull  byte[] xmlBytes ) throws Exception {
     JsonNode tree = new ObjectMapper().readTree( new String( xmlBytes ) );
 
     Map<String, JsonNode> newProps = new LinkedHashMap<String, JsonNode>();
@@ -114,12 +114,12 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
   }
 
   @Override
-  protected void verifySerialized( @NotNull Entry<T> entry, @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull Entry<T> entry, @Nonnull byte[] serialized ) throws Exception {
     verify( serialized, entry.getExpected() );
   }
 
-  @NotNull
-  protected static <T> Entry<? extends T> create( @NotNull T object, @NotNull @NonNls String expected ) {
+  @Nonnull
+  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  String expected ) {
     return new Entry<T>( object, expected.getBytes() );
   }
 }

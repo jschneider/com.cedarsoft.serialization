@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.registry;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,14 +45,14 @@ import java.util.Set;
  * @param <O> the objects access
  */
 public abstract class AbstractRegistrySerializingStrategy<T, O extends AbstractRegistrySerializingStrategy.ObjectsAccess> implements RegistrySerializingStrategy<T> {
-  @NotNull
+  @Nonnull
   protected final O objectsAccess;
 
-  protected AbstractRegistrySerializingStrategy( @NotNull O objectsAccess ) {
+  protected AbstractRegistrySerializingStrategy( @Nonnull O objectsAccess ) {
     this.objectsAccess = objectsAccess;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Collection<? extends T> deserialize() throws IOException {
     Set<? extends String> ids = objectsAccess.getIds();
@@ -70,7 +70,7 @@ public abstract class AbstractRegistrySerializingStrategy<T, O extends AbstractR
    *
    * @return the object access
    */
-  @NotNull
+  @Nonnull
   public O getObjectsAccess() {
     return objectsAccess;
   }
@@ -85,7 +85,7 @@ public abstract class AbstractRegistrySerializingStrategy<T, O extends AbstractR
      *
      * @throws IOException
      */
-    @NotNull
+    @Nonnull
     Set<? extends String> getIds() throws IOException;
   }
 }

@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.AssertUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Abstract base class for XML based serializers.
@@ -44,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 @Deprecated
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {
   @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
     String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), getExpectedSerialized().getBytes() );
     AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
   }
@@ -54,7 +54,7 @@ public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTes
    *
    * @return the expected serialized string
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   protected abstract String getExpectedSerialized();
 }

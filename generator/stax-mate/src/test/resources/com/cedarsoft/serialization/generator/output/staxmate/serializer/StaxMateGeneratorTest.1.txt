@@ -11,33 +11,33 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class FooSerializer
     extends AbstractStaxMateSerializer<Foo>
 {
 
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ATTRIBUTE_WIDTH = "width";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ATTRIBUTE_HEIGHT = "height";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ELEMENT_DESCRIPTION = "description";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ELEMENT_ANINT = "anInt";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ELEMENT_FLOATFIELD = "floatField";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ELEMENT_BARS = "bars";
-    @NotNull
-    @NonNls
+    @Nonnull
+
     public final static String ELEMENT_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {
@@ -48,11 +48,11 @@ public class FooSerializer
 
     @Override
     public void serialize(
-        @NotNull
+        @Nonnull
         SMOutputElement serializeTo,
-        @NotNull
+        @Nonnull
         Foo object,
-        @NotNull
+        @Nonnull
         Version formatVersion)
         throws IOException, XMLStreamException
     {
@@ -74,11 +74,11 @@ public class FooSerializer
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public Foo deserialize(
-        @NotNull
+        @Nonnull
         XMLStreamReader deserializeFrom,
-        @NotNull
+        @Nonnull
         Version formatVersion)
         throws VersionException, IOException, XMLStreamException
     {

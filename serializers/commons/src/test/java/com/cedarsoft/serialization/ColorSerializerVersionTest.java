@@ -32,14 +32,14 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
 import java.awt.Color;
 
 public class ColorSerializerVersionTest extends AbstractXmlVersionTest2<Color> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Color> getSerializer() throws Exception {
     return new ColorSerializer();
@@ -55,7 +55,7 @@ public class ColorSerializerVersionTest extends AbstractXmlVersionTest2<Color> {
       "</color>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Color deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Color deserialized, @Nonnull Version version ) throws Exception {
     Assert.assertEquals( 100, deserialized.getRed() );
     Assert.assertEquals( 42, deserialized.getGreen() );
     Assert.assertEquals( 130, deserialized.getBlue() );

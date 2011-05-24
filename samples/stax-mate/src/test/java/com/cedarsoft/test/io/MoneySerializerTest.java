@@ -35,7 +35,7 @@ import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 /**
@@ -44,7 +44,7 @@ import org.junit.experimental.theories.*;
 public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
   //We don't need a multi test for such an easy class...
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();

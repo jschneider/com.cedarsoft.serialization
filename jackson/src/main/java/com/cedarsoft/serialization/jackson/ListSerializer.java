@@ -38,7 +38,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class ListSerializer extends AbstractJacksonSerializer<List<? extends Obj
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull List<? extends Object> object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull List<? extends Object> object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeStartArray();
 
     for ( int i = 0; i < object.size(); i++ ) {
@@ -65,7 +65,7 @@ public class ListSerializer extends AbstractJacksonSerializer<List<? extends Obj
     serializeTo.writeEndArray();
   }
 
-  protected void serializeElement( @NotNull JsonGenerator serializeTo, @Nullable Object element, int index ) throws IOException {
+  protected void serializeElement( @Nonnull JsonGenerator serializeTo, @Nullable Object element, int index ) throws IOException {
     if ( element == null ) {
       serializeTo.writeNull();
     } else if ( element instanceof Integer ) {
@@ -83,9 +83,9 @@ public class ListSerializer extends AbstractJacksonSerializer<List<? extends Obj
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public List<? extends Object> deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public List<? extends Object> deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     List<Object> deserialized = new ArrayList<Object>();
 
     int index = 0;
@@ -98,7 +98,7 @@ public class ListSerializer extends AbstractJacksonSerializer<List<? extends Obj
   }
 
   @Nullable
-  protected Object deserializeElement( @NotNull JsonParser deserializeFrom, int index ) throws IOException {
+  protected Object deserializeElement( @Nonnull JsonParser deserializeFrom, int index ) throws IOException {
     //noinspection EnumSwitchStatementWhichMissesCases
     switch ( deserializeFrom.getCurrentToken() ) {
       case VALUE_STRING:

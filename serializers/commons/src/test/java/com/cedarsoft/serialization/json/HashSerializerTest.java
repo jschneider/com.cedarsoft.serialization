@@ -36,7 +36,7 @@ import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 public class HashSerializerTest
@@ -48,7 +48,7 @@ public class HashSerializerTest
     HashSerializerTest.class.getResource( "Hash_1.0.0_1.json" )
   );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Hash> getSerializer() throws Exception {
     return new HashSerializer();

@@ -53,44 +53,44 @@ import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @param <T>
  */
 public abstract class AbstractGenerator<T extends DecisionCallback> extends GeneratorBase<T> {
-  @NonNls
-  @NotNull
+
+  @Nonnull
   public static final String SERIALIZER_TEST_NAME_SUFFIX = "Test";
-  @NonNls
-  @NotNull
+
+  @Nonnull
   public static final String SERIALIZER_VERSION_TEST_NAME_SUFFIX = "VersionTest";
-  @NonNls
+
   public static final String METHOD_NAME_GET_SERIALIZER = "getSerializer";
-  @NonNls
+
   public static final String METHOD_NAME_VERIFY_DESERIALIZED = "verifyDeserialized";
-  @NonNls
+
   public static final String PARAM_NAME_DESERIALIZED = "deserialized";
-  @NonNls
+
   public static final String PARAM_NAME_VERSION = "version";
-  @NonNls
+
   public static final String METHOD_NAME_ASSERT_EQUALS = "assertEquals";
-  @NonNls
+
   public static final String METHOD_NAME_CREATE = "create";
-  @NonNls
+
   public static final String DATA_POINT_FIELD_NAME = "ENTRY1";
-  @NonNls
+
   public static final String METHOD_NAME_VALUE_OF = "valueOf";
-  @NonNls
+
   public static final String CLASS_NAME_ASSERT = "org.junit.Assert";
 
-  protected AbstractGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
-  @NotNull
-  public JDefinedClass generateSerializerVersionTest( @NotNull String serializerClassName, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+  @Nonnull
+  public JDefinedClass generateSerializerVersionTest( @Nonnull String serializerClassName, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
     JClass serializerClass = codeGenerator.ref( serializerClassName );
 
@@ -105,7 +105,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return testClass;
   }
 
-  protected void createVersionsDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  protected void createVersionsDataPoint( @Nonnull JDefinedClass testClass, @Nonnull JClass serializerClass, @Nonnull JClass domainType, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( VersionEntry.class ), DATA_POINT_FIELD_NAME );
     field.annotate( codeGenerator.ref( "org.junit.experimental.theories.DataPoint" ) );
 
@@ -115,7 +115,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     field.init( testClass.staticInvoke( METHOD_NAME_CREATE ).arg( versionInvocation ).arg( expected ) );
   }
 
-  protected void createVersionVerifyMethod( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  protected void createVersionVerifyMethod( @Nonnull JDefinedClass testClass, @Nonnull JClass serializerClass, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
 
     JMethod method = testClass.method( JMod.PROTECTED, Void.TYPE, METHOD_NAME_VERIFY_DESERIALIZED )._throws( Exception.class );
@@ -130,8 +130,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     }
   }
 
-  @NotNull
-  public JDefinedClass generateSerializerTest( @NotNull String serializerClassName, @NotNull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
+  @Nonnull
+  public JDefinedClass generateSerializerTest( @Nonnull String serializerClassName, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) throws JClassAlreadyExistsException {
     JClass domainType = codeGenerator.ref( domainObjectDescriptor.getQualifiedName() );
     JClass serializerClass = codeGenerator.ref( serializerClassName );
 
@@ -145,7 +145,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return testClass;
   }
 
-  protected void createDataPoint( @NotNull JDefinedClass testClass, @NotNull JClass serializerClass, @NotNull JClass domainType, @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  protected void createDataPoint( @Nonnull JDefinedClass testClass, @Nonnull JClass serializerClass, @Nonnull JClass domainType, @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JFieldVar field = testClass.field( JMod.STATIC | JMod.PUBLIC | JMod.FINAL, codeGenerator.ref( Entry.class ).narrow( domainType.wildcard() ), DATA_POINT_FIELD_NAME );
     field.annotate( codeModel.ref( "org.junit.experimental.theories.DataPoint" ) );
 
@@ -155,11 +155,11 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     field.init( testClass.staticInvoke( METHOD_NAME_CREATE ).arg( domainObjectCreation ).arg( expected ) );
   }
 
-  @NotNull
-  protected abstract JExpression createExpectedExpression( @NotNull JClass testClass, @NotNull JClass domainType );
+  @Nonnull
+  protected abstract JExpression createExpectedExpression( @Nonnull JClass testClass, @Nonnull JClass domainType );
 
-  @NotNull
-  protected JInvocation createDomainObjectCreationExpression( @NotNull DomainObjectDescriptor domainObjectDescriptor ) {
+  @Nonnull
+  protected JInvocation createDomainObjectCreationExpression( @Nonnull DomainObjectDescriptor domainObjectDescriptor ) {
     JInvocation invocation = JExpr._new( codeGenerator.ref( domainObjectDescriptor.getQualifiedName() ) );
 
     ConstructorDeclaration constructor = domainObjectDescriptor.findBestConstructor();
@@ -170,8 +170,8 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return invocation;
   }
 
-  @NotNull
-  protected JMethod createGetSerializerMethod( @NotNull JDefinedClass serializerTestClass, @NotNull JClass serializerClass, @NotNull JClass domainType ) {
+  @Nonnull
+  protected JMethod createGetSerializerMethod( @Nonnull JDefinedClass serializerTestClass, @Nonnull JClass serializerClass, @Nonnull JClass domainType ) {
     JType returnType = codeGenerator.ref( Serializer.class ).narrow( domainType );
     JMethod createSerializerMethod = serializerTestClass.method( JMod.PROTECTED, returnType, METHOD_NAME_GET_SERIALIZER )._throws( Exception.class );
     createSerializerMethod.annotate( Override.class );
@@ -182,21 +182,21 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     return createSerializerMethod;
   }
 
-  @NotNull
-  protected abstract JClass createExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass );
+  @Nonnull
+  protected abstract JClass createExtendsClass( @Nonnull JClass domainType, @Nonnull JClass serializerClass );
 
-  @NotNull
-  protected abstract JClass createVersionExtendsClass( @NotNull JClass domainType, @NotNull JClass serializerClass );
+  @Nonnull
+  protected abstract JClass createVersionExtendsClass( @Nonnull JClass domainType, @Nonnull JClass serializerClass );
 
-  @NotNull
-  @NonNls
-  public String createSerializerTestName( @NotNull @NonNls String serializerClassName ) {
+  @Nonnull
+
+  public String createSerializerTestName( @Nonnull  String serializerClassName ) {
     return serializerClassName + SERIALIZER_TEST_NAME_SUFFIX;
   }
 
-  @NotNull
-  @NonNls
-  public String createSerializerVersionTestName( @NotNull @NonNls String serializerClassName ) {
+  @Nonnull
+
+  public String createSerializerVersionTestName( @Nonnull  String serializerClassName ) {
     return serializerClassName + SERIALIZER_VERSION_TEST_NAME_SUFFIX;
   }
 }

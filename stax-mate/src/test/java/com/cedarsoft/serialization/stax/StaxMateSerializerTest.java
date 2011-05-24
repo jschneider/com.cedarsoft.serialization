@@ -38,7 +38,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.xml.XmlCommons;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -54,23 +54,23 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
-  @NotNull
+  @Nonnull
   @Rule
   public final ExpectedException expectedException = ExpectedException.none();
 
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {
     return new AbstractStaxMateSerializer<String>( "aString", "http://www.lang.java/String", new VersionRange( new Version( 1, 5, 3 ), new Version( 1, 5, 3 ) ) ) {
       @Override
-      public void serialize( @NotNull SMOutputElement serializeTo, @NotNull String object, @NotNull Version formatVersion ) throws XMLStreamException {
+      public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws XMLStreamException {
         assert isVersionWritable( formatVersion );
         serializeTo.addCharacters( object );
       }
 
       @Override
-      @NotNull
-      public String deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws XMLStreamException {
+      @Nonnull
+      public String deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws XMLStreamException {
         assert isVersionReadable( formatVersion );
         deserializeFrom.next();
         String text = deserializeFrom.getText();
@@ -81,25 +81,25 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   }
 
   @Override
-  protected void verifySerialized( @NotNull byte[] serialized ) throws Exception {
+  protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
     super.verifySerialized( serialized );
     assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String createObjectToSerialize() {
     return "asdf";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<aString xmlns=\"http://www.lang.java/String/1.5.3\">asdf</aString>";
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull String deserialized ) {
+  protected void verifyDeserialized( @Nonnull String deserialized ) {
     assertEquals( "asdf", deserialized );
   }
 

@@ -38,7 +38,7 @@ import com.cedarsoft.serialization.Entry;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -59,14 +59,14 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected ListSerializer getSerializer() throws Exception {
     return new ListSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Object> deserialized, @NotNull List<? extends Object> original ) {
+  protected void verifyDeserialized( @Nonnull List<? extends Object> deserialized, @Nonnull List<? extends Object> original ) {
     assertEquals( original.size(), deserialized.size() );
 
     for ( int i = 0, deserialized1Size = deserialized.size(); i < deserialized1Size; i++ ) {

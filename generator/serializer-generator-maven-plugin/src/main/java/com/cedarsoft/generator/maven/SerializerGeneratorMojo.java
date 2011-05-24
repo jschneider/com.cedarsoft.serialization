@@ -34,7 +34,7 @@ package com.cedarsoft.generator.maven;
 import com.cedarsoft.codegen.AbstractGenerator;
 import com.cedarsoft.serialization.generator.JacksonGenerator;
 import com.cedarsoft.serialization.generator.StaxMateGenerator;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 
@@ -64,12 +64,12 @@ public class SerializerGeneratorMojo extends AbstractGenerateMojo {
     super( Arrays.asList( "**/*Serializer.java" ) );
   }
 
-  @NotNull
+  @Nonnull
   public Target getDialect() {
     return Target.valueOf( dialect );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractGenerator createGenerator() {
     return getDialect().create();

@@ -38,19 +38,19 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
 public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRange> {
-  @NonNls
+
   public static final String PROPERTY_MIN = "min";
-  @NonNls
+
   public static final String PROPERTY_MAX = "max";
-  @NonNls
+
   public static final String PROPERTY_INCLUDELOWER = "includeLower";
-  @NonNls
+
   public static final String PROPERTY_INCLUDEUPPER = "includeUpper";
 
   public VersionRangeSerializer() {
@@ -58,7 +58,7 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull VersionRange object, @NotNull Version formatVersion )
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull VersionRange object, @Nonnull Version formatVersion )
     throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
 
@@ -71,9 +71,9 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
     serializeTo.writeBooleanField( PROPERTY_INCLUDEUPPER, object.isIncludeUpper() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public VersionRange deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
+  public VersionRange deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //min
     nextFieldValue( deserializeFrom, PROPERTY_MIN );

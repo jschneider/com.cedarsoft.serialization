@@ -35,7 +35,7 @@ import com.cedarsoft.AssertUtils;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 import org.xml.sax.SAXException;
@@ -47,7 +47,7 @@ import java.io.IOException;
  *
  */
 public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<Hash> getSerializer() {
     return new HashSerializer();

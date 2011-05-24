@@ -37,8 +37,8 @@ import com.cedarsoft.serialization.PluggableSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @param generator the generator
    * @throws IOException
    */
-  void serialize( @NotNull T object, @NotNull JsonGenerator generator ) throws IOException, JsonProcessingException;
+  void serialize( @Nonnull T object, @Nonnull JsonGenerator generator ) throws IOException, JsonProcessingException;
 
   /**
    * Deserializes the object from the given parser.
@@ -74,16 +74,16 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    *
    * @throws IOException
    */
-  @NotNull
-  T deserialize( @NotNull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException;
+  @Nonnull
+  T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException;
 
   /**
    * Returns the type
    *
    * @return the type
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   String getType();
 
   /**
@@ -93,6 +93,6 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
-  void verifyType( @Nullable @NonNls String type ) throws InvalidTypeException;
+  void verifyType( @Nullable  String type ) throws InvalidTypeException;
 
 }

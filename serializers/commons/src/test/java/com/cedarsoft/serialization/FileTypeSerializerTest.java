@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
@@ -43,14 +43,14 @@ import static org.junit.Assert.*;
  *
  */
 public class FileTypeSerializerTest extends AbstractXmlSerializerTest2<FileType> {
-  @NotNull
+  @Nonnull
   @Override
   protected AbstractStaxMateSerializer<FileType> getSerializer() {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull FileType deserialized, @NotNull FileType original ) {
+  protected void verifyDeserialized( @Nonnull FileType deserialized, @Nonnull FileType original ) {
     super.verifyDeserialized( deserialized, original );
 
     assertEquals( "application/special", deserialized.getContentType() );

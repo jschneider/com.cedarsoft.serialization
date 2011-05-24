@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * An entry used for {@link AbstractVersionTest2}. It provides a version information and a serialized object.
@@ -43,7 +43,7 @@ public interface VersionEntry {
    *
    * @return the version
    */
-  @NotNull
+  @Nonnull
   Version getVersion();
 
   /**
@@ -54,6 +54,6 @@ public interface VersionEntry {
    *
    * @throws Exception
    */
-  @NotNull
-  byte[] getSerialized( @NotNull Serializer<?> serializer ) throws Exception;
+  @Nonnull
+  byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception;
 }

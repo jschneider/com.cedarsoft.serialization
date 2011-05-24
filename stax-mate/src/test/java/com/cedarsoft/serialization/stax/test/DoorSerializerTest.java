@@ -33,13 +33,13 @@ package com.cedarsoft.serialization.stax.test;
 
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public class DoorSerializerTest extends AbstractXmlSerializerTest<Door> {
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<door>" +
@@ -47,13 +47,13 @@ public class DoorSerializerTest extends AbstractXmlSerializerTest<Door> {
       "</door>";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Door> getSerializer() throws Exception {
     return new Door.Serializer();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Door createObjectToSerialize() throws Exception {
     return new Door( "descr" );

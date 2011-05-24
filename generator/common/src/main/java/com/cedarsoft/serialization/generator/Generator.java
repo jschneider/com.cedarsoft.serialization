@@ -44,7 +44,7 @@ import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator
 import com.google.common.collect.Lists;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.mirror.declaration.ClassDeclaration;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -54,7 +54,7 @@ import java.util.List;
  *
  */
 public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator {
-  @NotNull
+  @Nonnull
   @Override
   protected List<? extends String> getPackagePrefixes() {
     List<String> list = Lists.newArrayList( super.getPackagePrefixes() );
@@ -68,7 +68,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
    */
   public abstract static class AbstractGeneratorRunner<T extends DecisionCallback> implements Runner {
     @Override
-    public void generate( @NotNull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
+    public void generate( @Nonnull GeneratorConfiguration configuration ) throws IOException, JClassAlreadyExistsException {
       PrintStream statusPrinter = new PrintStream( new WriterOutputStream( configuration.getLogOut() ) );
 
       Result result = Parser.parse( configuration.getClasspath(), configuration.getDomainSourceFiles() );
@@ -87,7 +87,7 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
       }
     }
 
-    private void generate( @NotNull DomainObjectDescriptor descriptor, @NotNull GeneratorConfiguration configuration, @NotNull PrintStream statusPrinter ) throws JClassAlreadyExistsException, IOException {
+    private void generate( @Nonnull DomainObjectDescriptor descriptor, @Nonnull GeneratorConfiguration configuration, @Nonnull PrintStream statusPrinter ) throws JClassAlreadyExistsException, IOException {
       T decisionCallback = createDecisionCallback();
 
       //The Serializer
@@ -111,13 +111,13 @@ public abstract class Generator extends com.cedarsoft.codegen.AbstractGenerator 
       }
     }
 
-    @NotNull
+    @Nonnull
     protected abstract T createDecisionCallback();
 
-    @NotNull
-    protected abstract com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<T> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator );
+    @Nonnull
+    protected abstract com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<T> instantiateTestGenerator( @Nonnull CodeGenerator testCodeGenerator );
 
-    @NotNull
-    protected abstract AbstractGenerator<T> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator );
+    @Nonnull
+    protected abstract AbstractGenerator<T> instantiateGenerator( @Nonnull CodeGenerator serializerCodeGenerator );
   }
 }

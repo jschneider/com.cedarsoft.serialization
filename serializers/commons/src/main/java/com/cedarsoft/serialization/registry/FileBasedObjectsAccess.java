@@ -35,8 +35,8 @@ import com.cedarsoft.StillContainedException;
 import com.cedarsoft.serialization.NotFoundException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -55,15 +55,15 @@ import java.util.Set;
  * Implementation that is based on simple files.
  */
 public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final File baseDir;
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final String extension;
 
-  public FileBasedObjectsAccess( @NotNull File baseDir, @NotNull String extension ) {
+  public FileBasedObjectsAccess( @Nonnull File baseDir, @Nonnull String extension ) {
     assert baseDir.exists();
     assert baseDir.isDirectory();
 
@@ -71,7 +71,7 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
     this.extension = extension;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Set<? extends String> getIds() throws IOException {
     assert baseDir.exists();
@@ -89,8 +89,8 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  @NotNull
-  public OutputStream openOut( @NotNull @NonNls String id ) throws FileNotFoundException {
+  @Nonnull
+  public OutputStream openOut( @Nonnull  String id ) throws FileNotFoundException {
     File file = getFile( id );
     if ( file.exists() ) {
       throw new StillContainedException( id );
@@ -99,7 +99,7 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public OutputStream openOutForUpdate( @NotNull @NonNls String id ) throws NotFoundException, FileNotFoundException {
+  public OutputStream openOutForUpdate( @Nonnull  String id ) throws NotFoundException, FileNotFoundException {
     File file = getFile( id );
     if ( !file.exists() ) {
       throw new NotFoundException( id );
@@ -108,13 +108,13 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  @NotNull
-  public InputStream getInputStream( @NotNull @NonNls String id ) throws FileNotFoundException {
+  @Nonnull
+  public InputStream getInputStream( @Nonnull  String id ) throws FileNotFoundException {
     return new BufferedInputStream( new FileInputStream( getFile( id ) ) );
   }
 
   @Override
-  public void delete( @NotNull @NonNls String id ) throws NotFoundException {
+  public void delete( @Nonnull  String id ) throws NotFoundException {
     File file = getFile( id );
     if ( !file.exists() ) {
       throw new NotFoundException( "No entry found for <" + id + ">" );
@@ -123,12 +123,12 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
     file.delete();
   }
 
-  @NotNull
-  private File getFile( @NotNull @NonNls String id ) {
+  @Nonnull
+  private File getFile( @Nonnull  String id ) {
     return new File( baseDir, id + '.' + extension );
   }
 
-  @NotNull
+  @Nonnull
   public File getBaseDir() {
     return baseDir;
   }

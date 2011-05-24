@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.generator.decision;
 
 import com.cedarsoft.codegen.DecisionCallback;
 import com.cedarsoft.codegen.model.FieldInfo;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -45,8 +45,8 @@ public interface XmlDecisionCallback extends DecisionCallback {
    * @param fieldInfo the field info
    * @return the serialization target
    */
-  @NotNull
-  Target getSerializationTarget( @NotNull FieldInfo fieldInfo );
+  @Nonnull
+  Target getSerializationTarget( @Nonnull FieldInfo fieldInfo );
 
   enum Target {
     ELEMENT,

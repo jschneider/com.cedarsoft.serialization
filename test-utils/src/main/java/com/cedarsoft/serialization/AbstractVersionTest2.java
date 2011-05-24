@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
 import org.xml.sax.SAXException;
@@ -56,7 +56,7 @@ public abstract class AbstractVersionTest2<T> {
    * @throws SAXException
    */
   @Theory
-  public void testVersion( @NotNull VersionEntry entry ) throws Exception {
+  public void testVersion( @Nonnull VersionEntry entry ) throws Exception {
     Serializer<T> serializer = getSerializer();
 
     Version version = entry.getVersion();
@@ -71,7 +71,7 @@ public abstract class AbstractVersionTest2<T> {
    *
    * @return the serializer
    */
-  @NotNull
+  @Nonnull
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
@@ -80,5 +80,5 @@ public abstract class AbstractVersionTest2<T> {
    * @param deserialized the deserialized object
    * @param version      the version
    */
-  protected abstract void verifyDeserialized( @NotNull T deserialized, @NotNull Version version ) throws Exception;
+  protected abstract void verifyDeserialized( @Nonnull T deserialized, @Nonnull Version version ) throws Exception;
 }

@@ -37,8 +37,8 @@ import com.google.common.collect.Sets;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +89,7 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
   protected AbstractGenerateMojo() {
   }
 
-  protected AbstractGenerateMojo( @NotNull @NonNls Collection<? extends String> defaultExcludes ) {
+  protected AbstractGenerateMojo( @Nonnull  Collection<? extends String> defaultExcludes ) {
     this.excludes.addAll( defaultExcludes );
   }
 
@@ -101,12 +101,12 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
     return createTests;
   }
 
-  @NonNls
+
   public Set<String> getExcludes() {
     return Collections.unmodifiableSet( excludes );
   }
 
-  @NonNls
+
   protected String getDomainSourceFilePattern() {
     return domainSourceFilePattern;
   }
@@ -148,7 +148,7 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
     }
   }
 
-  @NotNull
+  @Nonnull
   protected List<? extends File> getDomainSourceFiles() throws IOException {
     DirectoryScanner scanner = new DirectoryScanner();
     scanner.setBasedir( getBaseDir() );
@@ -167,6 +167,6 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
     return files;
   }
 
-  @NotNull
+  @Nonnull
   protected abstract AbstractGenerator createGenerator();
 }

@@ -9,7 +9,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class DaDomainObjectSerializer
     extends AbstractStaxMateSerializer<DaDomainObject>
@@ -23,7 +23,7 @@ public class DaDomainObjectSerializer
     }
 
     @Override
-    public void serialize( SMOutputElement serializeTo, DaDomainObject object, @NotNull Version formatVersion )
+    public void serialize( SMOutputElement serializeTo, DaDomainObject object, @Nonnull Version formatVersion )
         throws IOException, XMLStreamException
     {
         assert isVersionWritable( formatVersion );

@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -49,7 +49,7 @@ public class VersionSerializerVersionTest extends AbstractJsonVersionTest2<Versi
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Version deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Version deserialized, @Nonnull Version version ) throws Exception {
     Assert.assertEquals( 42, deserialized.getMajor() );
     Assert.assertEquals( 42, deserialized.getMinor() );
     Assert.assertEquals( 42, deserialized.getBuild() );

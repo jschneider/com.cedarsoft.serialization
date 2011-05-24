@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 
 import javax.xml.stream.XMLInputFactory;
@@ -50,19 +50,19 @@ import static org.junit.Assert.*;
  *
  */
 public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<int  xmlns=\"http://int/1.0.0\">7</int>";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Integer> getSerializer() {
     return new StaxIntegerSerializer();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Integer createObjectToSerialize() {
     return 7;
@@ -81,14 +81,14 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Integer object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Integer object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.writeCharacters( object.toString() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Integer deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public Integer deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       return Integer.parseInt( getText( deserializeFrom ) );
     }

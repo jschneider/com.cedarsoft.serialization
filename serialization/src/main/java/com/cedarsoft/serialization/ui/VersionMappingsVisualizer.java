@@ -36,8 +36,8 @@ import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -54,52 +54,52 @@ import java.util.SortedSet;
  * @param <T> the type
  */
 public class VersionMappingsVisualizer<T> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String COL_SEPARATOR = "  ";
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String FIRST_COLUMN_SEPARATOR = " -->";
   private static final int COL_WIDTH = 8;
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private static final String COL_VERSION_REPEAT = "|  ";
-  @NotNull
+  @Nonnull
   private final VersionMappings<T> mappings;
-  @NotNull
+  @Nonnull
   private final Comparator<T> comparator;
 
   @Nullable
   private final ToString<T> toString;
 
 
-  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings ) {
+  public VersionMappingsVisualizer( @Nonnull VersionMappings<T> mappings ) {
     this( mappings, new ToStringComparator<T>() );
   }
 
-  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator ) {
+  public VersionMappingsVisualizer( @Nonnull VersionMappings<T> mappings, @Nonnull Comparator<T> comparator ) {
     this( mappings, comparator, new DefaultToString<T>() );
   }
 
-  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull ToString<T> toString ) {
+  public VersionMappingsVisualizer( @Nonnull VersionMappings<T> mappings, @Nonnull ToString<T> toString ) {
     this( mappings, new ToStringComparator<T>(), toString );
   }
 
-  public VersionMappingsVisualizer( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator, @NotNull ToString<T> toString ) {
+  public VersionMappingsVisualizer( @Nonnull VersionMappings<T> mappings, @Nonnull Comparator<T> comparator, @Nonnull ToString<T> toString ) {
     this.mappings = mappings;
     this.comparator = comparator;
     this.toString = toString;
   }
 
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public String visualize() throws IOException {
     StringWriter writer = new StringWriter();
     visualize( writer );
     return writer.toString();
   }
 
-  public void visualize( @NotNull Writer out ) throws IOException {
+  public void visualize( @Nonnull Writer out ) throws IOException {
     Collection<Column> columns = new ArrayList<Column>();
 
     //The versions
@@ -126,7 +126,7 @@ public class VersionMappingsVisualizer<T> {
     writeSeparator( columns.size(), out );
   }
 
-  private static void writeContent( @NotNull List<? extends Version> keyVersions, @NotNull Iterable<? extends Column> columns, @NotNull Writer out ) throws IOException {
+  private static void writeContent( @Nonnull List<? extends Version> keyVersions, @Nonnull Iterable<? extends Column> columns, @Nonnull Writer out ) throws IOException {
     for ( int i = 0, keyVersionsSize = keyVersions.size(); i < keyVersionsSize; i++ ) {
       Version keyVersion = keyVersions.get( i );
       out.write( extend( keyVersion.format() ) );
@@ -142,7 +142,7 @@ public class VersionMappingsVisualizer<T> {
     }
   }
 
-  private static void writeSeparator( int columnsSize, @NotNull Writer out ) throws IOException {
+  private static void writeSeparator( int columnsSize, @Nonnull Writer out ) throws IOException {
     int count = COL_WIDTH;
     count += FIRST_COLUMN_SEPARATOR.length();
     count += COL_SEPARATOR.length() * columnsSize;
@@ -151,7 +151,7 @@ public class VersionMappingsVisualizer<T> {
     out.write( StringUtils.repeat( "-", count ) + "\n" );
   }
 
-  protected void writeHeadline( @NotNull Iterable<? extends Column> columns, @NotNull Writer out ) throws IOException {
+  protected void writeHeadline( @Nonnull Iterable<? extends Column> columns, @Nonnull Writer out ) throws IOException {
     out.write( extend( "" ) );//first column
     out.write( FIRST_COLUMN_SEPARATOR );
 
@@ -163,26 +163,26 @@ public class VersionMappingsVisualizer<T> {
     out.write( "\n" );
   }
 
-  @NotNull
-  public static <T> VersionMappingsVisualizer<T> create( @NotNull VersionMappings<T> mappings, @NotNull Comparator<T> comparator, @NotNull ToString<T> toString ) {
+  @Nonnull
+  public static <T> VersionMappingsVisualizer<T> create( @Nonnull VersionMappings<T> mappings, @Nonnull Comparator<T> comparator, @Nonnull ToString<T> toString ) {
     return new VersionMappingsVisualizer<T>( mappings, comparator, toString );
   }
 
-  @NotNull
-  @NonNls
-  public static <T> String toString( @NotNull VersionMappings<T> mappings ) throws IOException {
+  @Nonnull
+
+  public static <T> String toString( @Nonnull VersionMappings<T> mappings ) throws IOException {
     return new VersionMappingsVisualizer<T>( mappings ).visualize();
   }
 
-  @NotNull
-  @NonNls
-  public static <T> String toString( @NotNull VersionMappings<T> mappings, @NotNull ToString<T> toString ) throws IOException {
+  @Nonnull
+
+  public static <T> String toString( @Nonnull VersionMappings<T> mappings, @Nonnull ToString<T> toString ) throws IOException {
     return new VersionMappingsVisualizer<T>( mappings, toString ).visualize();
   }
 
-  @NotNull
-  @NonNls
-  private static String extend( @NonNls @NotNull String string ) {
+  @Nonnull
+
+  private static String extend(  @Nonnull String string ) {
     if ( string.length() > COL_WIDTH ) {
       return string.substring( 0, COL_WIDTH );
     }
@@ -191,13 +191,13 @@ public class VersionMappingsVisualizer<T> {
   }
 
   public static class Column {
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private final String header;
-    @NotNull
+    @Nonnull
     private final List<String> lines = new ArrayList<String>();
 
-    public Column( @NotNull String header, @NotNull Iterable<? extends Version> versions ) {
+    public Column( @Nonnull String header, @Nonnull Iterable<? extends Version> versions ) {
       this.header = header;
 
       Version lastVersion = null;
@@ -220,9 +220,9 @@ public class VersionMappingsVisualizer<T> {
   }
 
   public static class DefaultToString<T> implements ToString<T> {
-    @NotNull
+    @Nonnull
     @Override
-    public String convert( @NotNull T object ) {
+    public String convert( @Nonnull T object ) {
       return String.valueOf( object );
     }
   }

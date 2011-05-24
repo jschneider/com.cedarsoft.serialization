@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.stax.test;
 
 import com.cedarsoft.serialization.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +42,7 @@ import java.util.List;
  *
  */
 public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return
@@ -66,13 +66,13 @@ public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
         "</room>";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Room> getSerializer() throws Exception {
     return new Room.Serializer( new Window.Serializer(), new Door.Serializer() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Room createObjectToSerialize() throws Exception {
     List<Window> windows = Arrays.asList( new Window( "asdf", 20, 30 ), new Window( "asdf2", 50, 60.7 ) );

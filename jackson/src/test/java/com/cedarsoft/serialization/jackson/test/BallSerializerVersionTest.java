@@ -35,7 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import static org.junit.Assert.*;
@@ -44,14 +44,14 @@ import static org.junit.Assert.*;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class BallSerializerVersionTest extends AbstractJsonVersionTest2<Ball> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Ball> getSerializer() throws Exception {
     return new BallSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Ball deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Ball deserialized, @Nonnull Version version ) throws Exception {
     if ( deserialized instanceof Ball.BasketBall ) {
       assertEquals( "asdf", ( ( Ball.BasketBall ) deserialized ).getTheId() );
     }

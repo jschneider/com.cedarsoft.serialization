@@ -37,8 +37,8 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.stax.CollectionsMapping;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -52,45 +52,45 @@ import java.util.List;
  *
  */
 public class Room {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final String description;
 
-  @NotNull
+  @Nonnull
   private final List<Window> windows = new ArrayList<Window>();
 
-  @NotNull
+  @Nonnull
   private final List<Door> doors = new ArrayList<Door>();
 
-  public Room( @NotNull String description ) {
+  public Room( @Nonnull String description ) {
     this.description = description;
   }
 
-  public Room( @NotNull String description, Collection<? extends Window> windows, Collection<? extends Door> doors ) {
+  public Room( @Nonnull String description, Collection<? extends Window> windows, Collection<? extends Door> doors ) {
     this.description = description;
     this.windows.addAll( windows );
     this.doors.addAll( doors );
   }
 
-  public void addDoor( @NotNull Door door ) {
+  public void addDoor( @Nonnull Door door ) {
     this.doors.add( door );
   }
 
-  public void addWindow( @NotNull Window window ) {
+  public void addWindow( @Nonnull Window window ) {
     this.windows.add( window );
   }
 
-  @NotNull
+  @Nonnull
   public String getDescription() {
     return description;
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Window> getWindows() {
     return Collections.unmodifiableList( windows );
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Door> getDoors() {
     return Collections.unmodifiableList( doors );
   }
@@ -133,7 +133,7 @@ public class Room {
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull Room object, @NotNull Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull Room object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serializeTo.addElementWithCharacters( serializeTo.getNamespace(), "description", object.getDescription() );
 
@@ -141,9 +141,9 @@ public class Room {
       serializeCollection( object.getDoors(), Door.class, "door", serializeTo, formatVersion );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Room deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public Room deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       String description = getChildText( deserializeFrom, "description" );
 

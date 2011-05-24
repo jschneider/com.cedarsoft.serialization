@@ -41,25 +41,25 @@ import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JVar;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public abstract class AbstractStringConversionGenerator extends AbstractSerializeToGenerator {
-  protected AbstractStringConversionGenerator( @NotNull CodeGenerator codeGenerator ) {
+  protected AbstractStringConversionGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public JClass generateFieldType( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return codeGenerator.ref( fieldInfo.getType().toString() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @NotNull AbstractGenerator<?> generator, @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
     return new Expressions( codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo ) );
@@ -74,11 +74,11 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
    * @param fieldInfo       the field info
    * @return the expression to read the value
    */
-  @NotNull
-  public abstract JExpression createReadExpression( @NotNull JDefinedClass serializerClass, @NotNull JExpression deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldDeclarationInfo fieldInfo );
+  @Nonnull
+  public abstract JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo );
 
   @Override
-  public boolean canHandle( @NotNull FieldDeclarationInfo fieldInfo ) {
+  public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
     return isBuildInType( fieldInfo );
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
    * @param fieldInfo the field info
    * @return true if the field is of the build in type, false otherwise
    */
-  public static boolean isBuildInType( @NotNull FieldTypeInformation fieldInfo ) {
+  public static boolean isBuildInType( @Nonnull FieldTypeInformation fieldInfo ) {
     return ParseExpressionFactory.getSupportedTypeNames().contains( fieldInfo.getType().toString() );
   }
 

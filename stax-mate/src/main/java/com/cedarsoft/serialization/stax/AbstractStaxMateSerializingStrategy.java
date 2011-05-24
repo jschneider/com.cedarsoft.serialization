@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization.stax;
 
 import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Abstract base class for serializing strategies using stax mate
@@ -41,27 +41,27 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> the type
  */
 public abstract class AbstractStaxMateSerializingStrategy<T> extends AbstractStaxMateSerializer<T> implements StaxMateSerializingStrategy<T> {
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private final String id;
 
-  @NotNull
+  @Nonnull
   private final Class<? extends T> supportedType;
 
-  protected AbstractStaxMateSerializingStrategy( @NotNull String id, @NonNls @NotNull String nameSpaceUriBase, @NotNull Class<? extends T> supportedType, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractStaxMateSerializingStrategy( @Nonnull String id,  @Nonnull String nameSpaceUriBase, @Nonnull Class<? extends T> supportedType, @Nonnull VersionRange formatVersionRange ) {
     super( id, nameSpaceUriBase, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public String getId() {
     return id;
   }
 
   @Override
-  public boolean supports( @NotNull Object object ) {
+  public boolean supports( @Nonnull Object object ) {
     return supportedType.isAssignableFrom( object.getClass() );
   }
 }

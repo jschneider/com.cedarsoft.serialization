@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.stax;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -46,7 +46,7 @@ public class StaxSupport {
   private StaxSupport() {
   }
 
-  @NotNull
+  @Nonnull
   static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
@@ -54,7 +54,7 @@ public class StaxSupport {
       return XMLInputFactory.newInstance();
     }
   };
-  @NotNull
+  @Nonnull
   static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
@@ -68,7 +68,7 @@ public class StaxSupport {
    *
    * @return the xml output factory
    */
-  @NotNull
+  @Nonnull
   public static XMLOutputFactory getXmlOutputFactory() {
     return XML_OUTPUT_FACTORY.get();
   }
@@ -78,7 +78,7 @@ public class StaxSupport {
    *
    * @return the xml input factory
    */
-  @NotNull
+  @Nonnull
   public static XMLInputFactory getXmlInputFactory() {
     return XML_INPUT_FACTORY.get();
   }
@@ -89,8 +89,8 @@ public class StaxSupport {
    * @param eventId the event id
    * @return the name
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static String getEventName( int eventId ) {
     try {
       for ( Field field : XMLStreamReader.class.getFields() ) {

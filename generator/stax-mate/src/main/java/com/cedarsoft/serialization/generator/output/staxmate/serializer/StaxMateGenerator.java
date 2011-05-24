@@ -45,8 +45,8 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -58,10 +58,10 @@ import java.util.Map;
  * Generator for stax mate based parsers
  */
 public class StaxMateGenerator extends AbstractXmlGenerator {
-  @NonNls
+
   public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
 
-  @NotNull
+  @Nonnull
   private final List<SerializeToGenerator> generators = new ArrayList<SerializeToGenerator>();
 
   /**
@@ -69,7 +69,7 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
    *
    * @param codeGenerator the code generator
    */
-  public StaxMateGenerator( @NotNull CodeGenerator codeGenerator ) {
+  public StaxMateGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
     generators.add( new AsAttributeGenerator( codeGenerator ) );
     generators.add( new AsElementGenerator( codeGenerator ) );
@@ -77,9 +77,9 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
     generators.add( new DelegateGenerator( codeGenerator ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @NotNull DomainObjectDescriptor domainObjectDescriptor, @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JMethod deserializeMethod ) {
+  protected Map<FieldWithInitializationInfo, JVar> fillDeSerializationMethods( @Nonnull DomainObjectDescriptor domainObjectDescriptor, @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JMethod deserializeMethod ) {
     try {
       return super.fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
     } finally {
@@ -91,8 +91,8 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   }
 
   @Override
-  @NotNull
-  protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  @Nonnull
+  protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
     deserializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
 
@@ -114,39 +114,39 @@ public class StaxMateGenerator extends AbstractXmlGenerator {
   }
 
   @Override
-  protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+  protected void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
     serializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
 
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
     serializeMethod.body().add( serializeToHandler.createAddToSerializeToExpression( this, serializerClass, serializeTo, fieldInfo, object, formatVersion ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
+  protected JClass createSerializerExtendsExpression( @Nonnull JClass domainType ) {
     return codeGenerator.ref( AbstractStaxMateSerializer.class ).narrow( domainType );
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getExceptionType() {
     return XMLStreamException.class;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getSerializeFromType() {
     return XMLStreamReader.class;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   protected Class<?> getSerializeToType() {
     return SMOutputElement.class;
   }
 
-  @NotNull
-  protected SerializeToGenerator getGenerator( @NotNull FieldDeclarationInfo fieldInfo ) {
+  @Nonnull
+  protected SerializeToGenerator getGenerator( @Nonnull FieldDeclarationInfo fieldInfo ) {
     for ( SerializeToGenerator generator : generators ) {
       if ( generator.canHandle( fieldInfo ) ) {
         return generator;

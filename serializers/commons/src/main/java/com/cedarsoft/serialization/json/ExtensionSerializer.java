@@ -39,15 +39,15 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
 public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
-  @NonNls
+
   public static final String PROPERTY_DELIMITER = "delimiter";
-  @NonNls
+
   public static final String PROPERTY_EXTENSION = "extension";
 
   public ExtensionSerializer() {
@@ -55,7 +55,7 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Extension object, @NotNull Version formatVersion )
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Extension object, @Nonnull Version formatVersion )
     throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
     //delimiter
@@ -64,9 +64,9 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
     serializeTo.writeStringField( PROPERTY_EXTENSION, object.getExtension() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Extension deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion )
+  public Extension deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //delimiter
     nextFieldValue( deserializeFrom, PROPERTY_DELIMITER );

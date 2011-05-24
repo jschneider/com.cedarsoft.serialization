@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization.registry;
 
 import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,13 +44,13 @@ import java.io.IOException;
  * @param <T> the type
  */
 public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, DirBasedObjectsAccess> {
-  protected DirBasedRegistrySerializingStrategy( @NotNull DirBasedObjectsAccess objectsAccess ) {
+  protected DirBasedRegistrySerializingStrategy( @Nonnull DirBasedObjectsAccess objectsAccess ) {
     super( objectsAccess );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public T deserialize( @NotNull @NonNls String id ) throws IOException {
+  public T deserialize( @Nonnull  String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     return deserialize( id, dir );
   }
@@ -64,24 +64,24 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    *
    * @throws IOException
    */
-  @NotNull
-  protected abstract T deserialize( @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
+  @Nonnull
+  protected abstract T deserialize( @Nonnull  String id, @Nonnull File dir ) throws IOException;
 
 
   @Override
-  public void serialize( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull  String id ) throws IOException {
     File dir = objectsAccess.addDirectory( id );
     serialize( object, id, dir );
   }
 
   @Override
-  public void update( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void update( @Nonnull T object, @Nonnull  String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     serialize( object, id, dir );
   }
 
   @Override
-  public void remove( @NotNull T object, @NotNull @NonNls String id ) throws IOException {
+  public void remove( @Nonnull T object, @Nonnull  String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     FileUtils.deleteDirectory( dir );
   }
@@ -94,6 +94,6 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @param dir    the directory
    * @throws IOException
    */
-  protected abstract void serialize( @NotNull T object, @NotNull @NonNls String id, @NotNull File dir ) throws IOException;
+  protected abstract void serialize( @Nonnull T object, @Nonnull  String id, @Nonnull File dir ) throws IOException;
 
 }

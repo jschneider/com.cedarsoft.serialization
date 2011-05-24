@@ -36,7 +36,7 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.components.interactivity.Prompter;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.util.Collections;
@@ -91,7 +91,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
 
 
   @SuppressWarnings( "unchecked" )
-  @NotNull
+  @Nonnull
   protected List<? extends String> getCompileClasspathElements() throws DependencyResolutionRequiredException {
     List elements = getProject().getCompileClasspathElements();
     if ( elements == null ) {
@@ -113,7 +113,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return prompter;
   }
 
-  @NotNull
+  @Nonnull
   protected File getTestSourceRoot() throws MojoExecutionException {
     if ( testSourceRoots == null || testSourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No test compile source roots available" );
@@ -121,7 +121,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return new File( testSourceRoots.get( 0 ) );
   }
 
-  @NotNull
+  @Nonnull
   protected File getSourceRoot() throws MojoExecutionException {
     if ( sourceRoots == null || sourceRoots.isEmpty() ) {
       throw new MojoExecutionException( "No compile source roots available" );
@@ -129,7 +129,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return new File( sourceRoots.get( 0 ) );
   }
 
-  @NotNull
+  @Nonnull
   protected File getResourcesRoot() throws MojoExecutionException {
     if ( resources == null || resources.isEmpty() ) {
       throw new MojoExecutionException( "No resource roots available" );
@@ -137,7 +137,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return new File( resources.get( 0 ).getDirectory() );
   }
 
-  @NotNull
+  @Nonnull
   protected File getTestResourcesRoot() throws MojoExecutionException {
     if ( testResources == null || testResources.isEmpty() ) {
       throw new MojoExecutionException( "No test resource roots available" );
@@ -145,7 +145,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return new File( testResources.get( 0 ).getDirectory() );
   }
 
-  @NotNull
+  @Nonnull
   protected Classpath buildClassPath() throws MojoExecutionException {
     Classpath classpath = new Classpath();
 
@@ -162,7 +162,7 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
     return classpath;
   }
 
-  @NotNull
+  @Nonnull
   protected Classpath buildTestClassPath() throws MojoExecutionException {
     Classpath classpath = new Classpath();
 

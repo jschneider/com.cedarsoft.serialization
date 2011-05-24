@@ -47,7 +47,7 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JVar;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -90,7 +90,7 @@ public class DaGeneratorTest {
   }
 
   private static class MyGenerator extends Generator {
-    @NotNull
+    @Nonnull
     @Override
     protected String getRunnerClassName() {
       return MyRunner.class.getName();
@@ -99,7 +99,7 @@ public class DaGeneratorTest {
 
   private static class MyRunner implements AbstractGenerator.Runner {
     @Override
-    public void generate( @NotNull GeneratorConfiguration configuration ) throws Exception {
+    public void generate( @Nonnull GeneratorConfiguration configuration ) throws Exception {
       configuration.getLogOut().print( "MyRunner called" );
     }
   }
@@ -107,56 +107,56 @@ public class DaGeneratorTest {
   @Test
   public void testAbs() throws Exception {
     Generator.AbstractGeneratorRunner<XmlDecisionCallback> runner = new Generator.AbstractGeneratorRunner<XmlDecisionCallback>() {
-      @NotNull
+      @Nonnull
       @Override
       protected XmlDecisionCallback createDecisionCallback() {
         return new DefaultXmlDecisionCallback();
       }
 
-      @NotNull
+      @Nonnull
       @Override
-      protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @NotNull CodeGenerator testCodeGenerator ) {
+      protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @Nonnull CodeGenerator testCodeGenerator ) {
         return new XmlGenerator( testCodeGenerator );
       }
 
-      @NotNull
+      @Nonnull
       @Override
-      protected com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @NotNull CodeGenerator serializerCodeGenerator ) {
+      protected com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @Nonnull CodeGenerator serializerCodeGenerator ) {
         CodeGenerator codeGenerator = new CodeGenerator( new DefaultXmlDecisionCallback() );
         return new AbstractXmlGenerator( codeGenerator ) {
-          @NotNull
+          @Nonnull
           @Override
-          protected JClass createSerializerExtendsExpression( @NotNull JClass domainType ) {
+          protected JClass createSerializerExtendsExpression( @Nonnull JClass domainType ) {
             return codeGenerator.ref( Serializer.class ).narrow( Integer.class );
           }
 
-          @NotNull
+          @Nonnull
           @Override
           protected Class<?> getExceptionType() {
             return NullPointerException.class;
           }
 
-          @NotNull
+          @Nonnull
           @Override
           protected Class<?> getSerializeFromType() {
             return String.class;
           }
 
-          @NotNull
+          @Nonnull
           @Override
           protected Class<?> getSerializeToType() {
             return StringBuilder.class;
           }
 
-          @NotNull
+          @Nonnull
           @Override
-          protected JVar appendDeserializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod deserializeMethod, @NotNull JVar deserializeFrom, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+          protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
             deserializeMethod.body().directStatement( "//deserialize:" + fieldInfo.getSimpleName() );
             return deserializeMethod.body().decl( codeGenerator.ref( Double.class ), "asdf" );
           }
 
           @Override
-          protected void appendSerializeStatement( @NotNull JDefinedClass serializerClass, @NotNull JMethod serializeMethod, @NotNull JVar serializeTo, @NotNull JVar object, @NotNull JVar formatVersion, @NotNull FieldWithInitializationInfo fieldInfo ) {
+          protected void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
             serializeMethod.body().directStatement( "//serialize:" + fieldInfo.getSimpleName() );
           }
         };

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -67,14 +67,14 @@ public interface Ball {
   }
 
   class BasketBall implements Ball {
-    @NotNull
+    @Nonnull
     private final String theId;
 
-    public BasketBall( @NotNull String theId ) {
+    public BasketBall( @Nonnull String theId ) {
       this.theId = theId;
     }
 
-    @NotNull
+    @Nonnull
     public String getTheId() {
       return theId;
     }

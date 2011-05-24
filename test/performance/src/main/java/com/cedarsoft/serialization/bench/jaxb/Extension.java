@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.bench.jaxb;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
@@ -46,19 +46,19 @@ import java.io.Serializable;
  */
 @XmlAccessorType( XmlAccessType.FIELD )
 public class Extension implements Serializable {
-  @NonNls
+
   public static final String DEFAULT_DELIMITER = ".";
 
   @XmlElement( name = "default" )
   @Attribute( name = "default" )
   private boolean isDefault;
   @Attribute( name = "delimiter" )
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private String delimiter;
   @Element( name = "extension" )
-  @NotNull
-  @NonNls
+  @Nonnull
+
   private String extension;
 
   /**
@@ -70,7 +70,7 @@ public class Extension implements Serializable {
     this.extension = null;
   }
 
-  public Extension( @Attribute( name = "delimiter" ) @NotNull String delimiter, @Element( name = "extension" ) @NotNull String extension, @Attribute( name = "default" ) boolean isDefault ) {
+  public Extension( @Attribute( name = "delimiter" ) @Nonnull String delimiter, @Element( name = "extension" ) @Nonnull String extension, @Attribute( name = "default" ) boolean isDefault ) {
     this.delimiter = delimiter;
     this.extension = extension;
     this.isDefault = isDefault;
@@ -80,12 +80,12 @@ public class Extension implements Serializable {
     return isDefault;
   }
 
-  @NotNull
+  @Nonnull
   public String getDelimiter() {
     return delimiter;
   }
 
-  @NotNull
+  @Nonnull
   public String getExtension() {
     return extension;
   }
@@ -94,11 +94,11 @@ public class Extension implements Serializable {
     isDefault = aDefault;
   }
 
-  public void setDelimiter( @NotNull String delimiter ) {
+  public void setDelimiter( @Nonnull String delimiter ) {
     this.delimiter = delimiter;
   }
 
-  public void setExtension( @NotNull String extension ) {
+  public void setExtension( @Nonnull String extension ) {
     this.extension = extension;
   }
 }

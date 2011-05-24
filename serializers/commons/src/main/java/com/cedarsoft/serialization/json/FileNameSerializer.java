@@ -41,20 +41,20 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
 public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
-  @NonNls
+
   public static final String PROPERTY_BASENAME = "baseName";
-  @NonNls
+
   public static final String PROPERTY_EXTENSION = "extension";
 
   @Inject
-  public FileNameSerializer( @NotNull BaseNameSerializer baseNameSerializer, @NotNull ExtensionSerializer extensionSerializer ) {
+  public FileNameSerializer( @Nonnull BaseNameSerializer baseNameSerializer, @Nonnull ExtensionSerializer extensionSerializer ) {
     super( "file-name", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
     add( baseNameSerializer ).responsibleFor( BaseName.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
     add( extensionSerializer ).responsibleFor( Extension.class ).map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );
@@ -62,7 +62,7 @@ public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull FileName object, @NotNull Version formatVersion ) throws IOException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull FileName object, @Nonnull Version formatVersion ) throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
     //baseName
     serialize( object.getBaseName(), BaseName.class, PROPERTY_BASENAME, serializeTo, formatVersion );
@@ -70,9 +70,9 @@ public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
     serialize( object.getExtension(), Extension.class, PROPERTY_EXTENSION, serializeTo, formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public FileName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
+  public FileName deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     //baseName
     BaseName baseName = deserialize( BaseName.class, PROPERTY_BASENAME, formatVersion, deserializeFrom );
     //extension

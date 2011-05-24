@@ -32,8 +32,9 @@
 package com.cedarsoft.serialization.generator.decision;
 
 import com.cedarsoft.codegen.model.FieldInfo;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,21 +44,20 @@ import java.util.HashSet;
  *
  */
 public class DefaultXmlDecisionCallback implements XmlDecisionCallback {
-  @NotNull
-  @NonNls
+  @Nonnull
   private final Collection<String> fieldsAsAttribute = new HashSet<String>();
 
-  public DefaultXmlDecisionCallback( @NotNull @NonNls String... fieldsAsAttribute ) {
+  public DefaultXmlDecisionCallback( @Nonnull  String... fieldsAsAttribute ) {
     this( Arrays.asList( fieldsAsAttribute ) );
   }
 
-  public DefaultXmlDecisionCallback( @NotNull @NonNls Collection<? extends String> fieldsAsAttribute ) {
+  public DefaultXmlDecisionCallback( @Nonnull  Collection<? extends String> fieldsAsAttribute ) {
     this.fieldsAsAttribute.addAll( fieldsAsAttribute );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Target getSerializationTarget( @NotNull FieldInfo fieldInfo ) {
+  public Target getSerializationTarget( @Nonnull FieldInfo fieldInfo ) {
     if ( fieldsAsAttribute.contains( fieldInfo.getSimpleName() ) ) {
       return Target.ATTRIBUTE;
     }

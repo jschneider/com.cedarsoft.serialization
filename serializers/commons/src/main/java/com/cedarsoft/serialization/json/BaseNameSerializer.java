@@ -39,7 +39,7 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -49,14 +49,14 @@ public class BaseNameSerializer extends AbstractJacksonSerializer<BaseName> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull BaseName object, @NotNull Version formatVersion ) throws IOException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull BaseName object, @Nonnull Version formatVersion ) throws IOException, JsonProcessingException {
     verifyVersionReadable( formatVersion );
     serializeTo.writeString( object.getName() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public BaseName deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
+  public BaseName deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     return new BaseName( deserializeFrom.getText() );
   }
 

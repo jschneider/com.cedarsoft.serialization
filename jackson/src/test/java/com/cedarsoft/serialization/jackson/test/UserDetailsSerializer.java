@@ -41,8 +41,8 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -50,11 +50,11 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails> {
-  @NonNls
+
   public static final String PROPERTY_LAST_LOGIN = "id";
-  @NonNls
+
   public static final String PROPERTY_REGISTRATION_DATE = "registrationDate";
-  @NonNls
+
   public static final String PROPERTY_PASSWORD_HASH = "passwordHash";
 
   public UserDetailsSerializer() {
@@ -62,15 +62,15 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull UserDetails object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull UserDetails object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeNumberField( PROPERTY_REGISTRATION_DATE, object.getRegistrationDate() );
     serializeTo.writeNumberField( PROPERTY_LAST_LOGIN, object.getLastLogin() );
     serializeTo.writeStringField( PROPERTY_PASSWORD_HASH, new String( Hex.encodeHex( object.getPasswordHash() ) ) );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public UserDetails deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public UserDetails deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     try {
       nextFieldValue( deserializeFrom, PROPERTY_REGISTRATION_DATE );
       long registrationDate = deserializeFrom.getLongValue();

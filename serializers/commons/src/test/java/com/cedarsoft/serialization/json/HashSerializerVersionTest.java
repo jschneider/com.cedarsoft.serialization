@@ -37,7 +37,7 @@ import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.VersionEntry;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -47,14 +47,14 @@ public class HashSerializerVersionTest
   @DataPoint
   public static final VersionEntry ENTRY1 = HashSerializerVersionTest.create( Version.valueOf( 1, 0, 0 ), HashSerializerVersionTest.class.getResource( "Hash_1.0.0_1.json" ) );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Hash> getSerializer() throws Exception {
     return new HashSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Hash deserialized, @NotNull Version version )
+  protected void verifyDeserialized( @Nonnull Hash deserialized, @Nonnull Version version )
     throws Exception {
     Assert.assertEquals( Algorithm.MD5, deserialized.getAlgorithm() );
     Assert.assertEquals( "HASH", new String( deserialized.getValue() ) );

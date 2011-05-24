@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.stax.test;
 import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.junit.experimental.theories.*;
 
 import java.util.Arrays;
@@ -45,14 +45,14 @@ import static org.junit.Assert.*;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserSerializerTest extends AbstractXmlSerializerTest2<User> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
     return new UserSerializer( new RoleSerializer(), new EmailSerializer() );
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull User deserialized, @NotNull User original ) {
+  protected void verifyDeserialized( @Nonnull User deserialized, @Nonnull User original ) {
     assertEquals( 2, deserialized.getEmails().size() );
     assertEquals( 2, deserialized.getRoles().size() );
 
