@@ -82,7 +82,7 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
   }
 
   @Nonnull
-  public File addDirectory( @Nonnull  String id ) throws StillContainedException {
+  public File addDirectory( @Nonnull String id ) throws StillContainedException {
     File dir = getDirInternal( id );
     if ( dir.exists() ) {
       throw new StillContainedException( id );
@@ -93,7 +93,7 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
   }
 
   @Nonnull
-  public File getDirectory( @Nonnull  String id ) throws FileNotFoundException {
+  public File getDirectory( @Nonnull String id ) throws FileNotFoundException {
     File directory = getDirInternal( id );
     if ( !directory.exists() ) {
       throw new FileNotFoundException( "No dir found for <" + id + "> at " + directory.getAbsolutePath() );
@@ -102,7 +102,7 @@ public class DirBasedObjectsAccess implements AbstractRegistrySerializingStrateg
   }
 
   @Nonnull
-  private File getDirInternal( @Nonnull  String id ) {
+  private File getDirInternal( @Nonnull String id ) {
     return new File( baseDir, id );
   }
 

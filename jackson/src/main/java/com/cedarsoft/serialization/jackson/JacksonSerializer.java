@@ -82,7 +82,6 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @return the type
    */
   @Nonnull
-
   String getType();
 
   /**
@@ -92,6 +91,6 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @throws InvalidNamespaceException
    * @throws VersionException
    */
-  void verifyType( @Nullable  String type ) throws InvalidTypeException;
+  void verifyType( @Nullable String type ) throws InvalidTypeException;
 
 }

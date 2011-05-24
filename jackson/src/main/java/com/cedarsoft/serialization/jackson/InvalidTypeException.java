@@ -47,7 +47,7 @@ public class InvalidTypeException extends Exception {
 
   private final String expected;
 
-  public InvalidTypeException( @Nullable  String type,  @Nonnull String expected ) {
+  public InvalidTypeException( @Nullable String type, @Nonnull String expected ) {
     super( "Invalid type. Was <" + type + "> but expected <" + expected + ">" );
     this.type = type;
     this.expected = expected;

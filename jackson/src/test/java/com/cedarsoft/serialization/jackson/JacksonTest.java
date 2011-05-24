@@ -117,7 +117,7 @@ public class JacksonTest {
     verifyGenerator( "\"daContent1\"" );
   }
 
-  private void verifyGenerator( @Nonnull  String control ) throws IOException {
+  private void verifyGenerator( @Nonnull String control ) throws IOException {
     generator.flush();
     JsonUtils.assertJsonEquals( control, out.toString() );
   }

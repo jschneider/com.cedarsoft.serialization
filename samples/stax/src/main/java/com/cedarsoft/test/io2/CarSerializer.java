@@ -67,12 +67,12 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 0, 1 )
-      ;
+    ;
 
     add( extraSerializer ).responsibleFor( Extra.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 5, 1 )
-      ;
+    ;
 
     add( modelSerializer ).responsibleFor( Model.class )
       .map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 1, 0, 0 );

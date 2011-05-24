@@ -148,7 +148,7 @@ public class ShowDiffMojo extends SourceFolderAwareMojo {
 
   @Nonnull
 
-  public String buildCommandLine( @Nonnull  String firstPath, @Nonnull  String secondPath ) {
+  public String buildCommandLine( @Nonnull String firstPath, @Nonnull String secondPath ) {
     return MessageFormat.format( getDiffCommand(), firstPath, secondPath );
   }
 }

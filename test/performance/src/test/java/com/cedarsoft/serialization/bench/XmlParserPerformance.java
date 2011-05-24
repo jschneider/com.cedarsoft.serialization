@@ -225,109 +225,109 @@ public class XmlParserPerformance {
     final byte[] serialized = bao.toByteArray();
 
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          for ( int i = 0; i < MEDIUM; i++ ) {
-            assertNotNull( new ObjectInputStream( new ByteArrayInputStream( serialized ) ).readObject() );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        for ( int i = 0; i < MEDIUM; i++ ) {
+                          assertNotNull( new ObjectInputStream( new ByteArrayInputStream( serialized ) ).readObject() );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJibx() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          IBindingFactory bindingFactory = BindingDirectory.getFactory( com.cedarsoft.serialization.bench.jaxb.Extension.class );
-          IUnmarshallingContext context = bindingFactory.createUnmarshallingContext();
+                    @Override
+                    public void run() {
+                      try {
+                        IBindingFactory bindingFactory = BindingDirectory.getFactory( com.cedarsoft.serialization.bench.jaxb.Extension.class );
+                        IUnmarshallingContext context = bindingFactory.createUnmarshallingContext();
 
-          for ( int i = 0; i < BIG; i++ ) {
-            assertNotNull( context.unmarshalDocument( new StringReader( CONTENT_SAMPLE_JIBX ) ) );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        for ( int i = 0; i < BIG; i++ ) {
+                          assertNotNull( context.unmarshalDocument( new StringReader( CONTENT_SAMPLE_JIBX ) ) );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJAXB() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          Unmarshaller unmarshaller = JAXBContext.newInstance( com.cedarsoft.serialization.bench.jaxb.FileType.class ).createUnmarshaller();
+                    @Override
+                    public void run() {
+                      try {
+                        Unmarshaller unmarshaller = JAXBContext.newInstance( com.cedarsoft.serialization.bench.jaxb.FileType.class ).createUnmarshaller();
 
-          for ( int i = 0; i < MEDIUM; i++ ) {
-            assertNotNull( unmarshaller.unmarshal( new StringReader( CONTENT_SAMPLE_JAXB ) ) );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        for ( int i = 0; i < MEDIUM; i++ ) {
+                          assertNotNull( unmarshaller.unmarshal( new StringReader( CONTENT_SAMPLE_JAXB ) ) );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchXStream() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          XStream xStream = createConfiguredXStream();
-          for ( int i = 0; i < MEDIUM; i++ ) {
-            assertNotNull( xStream.fromXML( CONTENT_SAMPLE_XSTREAM ) );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        XStream xStream = createConfiguredXStream();
+                        for ( int i = 0; i < MEDIUM; i++ ) {
+                          assertNotNull( xStream.fromXML( CONTENT_SAMPLE_XSTREAM ) );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchSimpleXml() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          Serializer serializer = new Persister();
+                    @Override
+                    public void run() {
+                      try {
+                        Serializer serializer = new Persister();
 
-          for ( int i = 0; i < MEDIUM; i++ ) {
-            FileType read = serializer.read( FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
-            assertNotNull( read );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        for ( int i = 0; i < MEDIUM; i++ ) {
+                          FileType read = serializer.read( FileType.class, new StringReader( CONTENT_SAMPLE_XSTREAM ) );
+                          assertNotNull( read );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJdom() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          for ( int i = 0; i < SMALL; i++ ) {
-            Document doc = new SAXBuilder().build( new StringReader( CONTENT_SAMPLE ) );
+                    @Override
+                    public void run() {
+                      try {
+                        for ( int i = 0; i < SMALL; i++ ) {
+                          Document doc = new SAXBuilder().build( new StringReader( CONTENT_SAMPLE ) );
 
-            Element fileTypeElement = doc.getRootElement();
-            Element extensionElement = fileTypeElement.getChild( "extension" );
+                          Element fileTypeElement = doc.getRootElement();
+                          Element extensionElement = fileTypeElement.getChild( "extension" );
 
-            Extension extension = new Extension( extensionElement.getAttributeValue( "delimiter" ), extensionElement.getText(), extensionElement.getAttribute( "default" ).getBooleanValue() );
-            FileType fileType = new FileType( fileTypeElement.getChildText( "id" ), extension, fileTypeElement.getAttribute( "dependent" ).getBooleanValue() );
+                          Extension extension = new Extension( extensionElement.getAttributeValue( "delimiter" ), extensionElement.getText(), extensionElement.getAttribute( "default" ).getBooleanValue() );
+                          FileType fileType = new FileType( fileTypeElement.getChildText( "id" ), extension, fileTypeElement.getAttribute( "dependent" ).getBooleanValue() );
 
-            assertNotNull( fileType );
-          }
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                          assertNotNull( fileType );
+                        }
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   //  /*
@@ -387,18 +387,18 @@ public class XmlParserPerformance {
 
   public void benchJava() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          //          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "StAXInputFactory", getClass().getClassLoader() );
-          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
+                    @Override
+                    public void run() {
+                      try {
+                        //          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "StAXInputFactory", getClass().getClassLoader() );
+                        XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
 
-          benchParse( inputFactory, CONTENT_SAMPLE );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        benchParse( inputFactory, CONTENT_SAMPLE );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   //  public void benchAalto() {
@@ -419,136 +419,136 @@ public class XmlParserPerformance {
 
   public void benchWoodstox() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() );
+                    @Override
+                    public void run() {
+                      try {
+                        XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() );
 
-          benchParse( inputFactory, CONTENT_SAMPLE );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        benchParse( inputFactory, CONTENT_SAMPLE );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJackson() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          JsonFactory jsonFactory = new JsonFactory();
-          benchParse( jsonFactory, CONTENT_SAMPLE_GSON );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        JsonFactory jsonFactory = new JsonFactory();
+                        benchParse( jsonFactory, CONTENT_SAMPLE_GSON );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJacksonMapper() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          JsonFactory jsonFactory = new JsonFactory();
-          benchParseMapper( jsonFactory, CONTENT_SAMPLE_JACKSON );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        JsonFactory jsonFactory = new JsonFactory();
+                        benchParseMapper( jsonFactory, CONTENT_SAMPLE_JACKSON );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJson() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          Configuration configuration = new Configuration();
-          XMLInputFactory inputFactory = new MappedXMLInputFactory( configuration );
+                    @Override
+                    public void run() {
+                      try {
+                        Configuration configuration = new Configuration();
+                        XMLInputFactory inputFactory = new MappedXMLInputFactory( configuration );
 
-          benchParse( inputFactory, CONTENT_SAMPLE_JSON );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        benchParse( inputFactory, CONTENT_SAMPLE_JSON );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchGson() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          Gson gson = new Gson();
+                    @Override
+                    public void run() {
+                      try {
+                        Gson gson = new Gson();
 
-          for ( int i = 0; i < MEDIUM; i++ ) {
-            assertNotNull( gson.fromJson( CONTENT_SAMPLE_GSON, com.cedarsoft.serialization.bench.jaxb.FileType.class ) );
-          }
+                        for ( int i = 0; i < MEDIUM; i++ ) {
+                          assertNotNull( gson.fromJson( CONTENT_SAMPLE_GSON, com.cedarsoft.serialization.bench.jaxb.FileType.class ) );
+                        }
 
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJsonBadgerFish() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          XMLInputFactory inputFactory = new BadgerFishXMLInputFactory();
+                    @Override
+                    public void run() {
+                      try {
+                        XMLInputFactory inputFactory = new BadgerFishXMLInputFactory();
 
-          benchParse( inputFactory, CONTENT_SAMPLE_JSON_BADGER );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        benchParse( inputFactory, CONTENT_SAMPLE_JSON_BADGER );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchStaxMateWoodstox() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
+                    @Override
+                    public void run() {
+                      try {
+                        SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
 
-          benchParse( inf.getStaxFactory(), CONTENT_SAMPLE );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                        benchParse( inf.getStaxFactory(), CONTENT_SAMPLE );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchStaxRI() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          benchParse( XMLInputFactory.newInstance( "com.bea.xml.stream.MXParserFactory", getClass().getClassLoader() ), CONTENT_SAMPLE );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        benchParse( XMLInputFactory.newInstance( "com.bea.xml.stream.MXParserFactory", getClass().getClassLoader() ), CONTENT_SAMPLE );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   public void benchJavolution() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          javolution.xml.stream.XMLInputFactory inputFactory = javolution.xml.stream.XMLInputFactory.newInstance();
-          benchParse( inputFactory );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        javolution.xml.stream.XMLInputFactory inputFactory = javolution.xml.stream.XMLInputFactory.newInstance();
+                        benchParse( inputFactory );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   private void benchParse( javolution.xml.stream.XMLInputFactory inputFactory ) throws XMLStreamException, javolution.xml.stream.XMLStreamException {
@@ -594,7 +594,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParse( XMLInputFactory inputFactory, @Nonnull  String contentSample ) throws XMLStreamException {
+  private void benchParse( XMLInputFactory inputFactory, @Nonnull String contentSample ) throws XMLStreamException {
     for ( int i = 0; i < BIG; i++ ) {
       XMLStreamReader parser = inputFactory.createXMLStreamReader( new StringReader( contentSample ) );
 
@@ -635,7 +635,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParseMapper( @Nonnull JsonFactory factory, @Nonnull  String contentSample ) throws XMLStreamException, IOException {
+  private void benchParseMapper( @Nonnull JsonFactory factory, @Nonnull String contentSample ) throws XMLStreamException, IOException {
     ObjectMapper mapper = new ObjectMapper();
     for ( int i = 0; i < BIG; i++ ) {
       JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
@@ -643,7 +643,7 @@ public class XmlParserPerformance {
     }
   }
 
-  private void benchParse( @Nonnull JsonFactory factory, @Nonnull  String contentSample ) throws XMLStreamException, IOException {
+  private void benchParse( @Nonnull JsonFactory factory, @Nonnull String contentSample ) throws XMLStreamException, IOException {
     for ( int i = 0; i < BIG; i++ ) {
       JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
 

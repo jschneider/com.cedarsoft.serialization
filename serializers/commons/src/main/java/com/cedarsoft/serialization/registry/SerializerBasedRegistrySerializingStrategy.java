@@ -54,12 +54,12 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
 
   @Nonnull
   @Override
-  public T deserialize( @Nonnull  String id ) throws IOException {
+  public T deserialize( @Nonnull String id ) throws IOException {
     return serializer.deserialize( objectsAccess.getInputStream( id ) );
   }
 
   @Override
-  public void serialize( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull String id ) throws IOException {
     OutputStream out = objectsAccess.openOut( id );
     try {
       serializer.serialize( object, out );
@@ -69,7 +69,7 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
   }
 
   @Override
-  public void update( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void update( @Nonnull T object, @Nonnull String id ) throws IOException {
     OutputStream out = objectsAccess.openOutForUpdate( id );
     try {
       serializer.serialize( object, out );
@@ -79,7 +79,7 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
   }
 
   @Override
-  public void remove( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void remove( @Nonnull T object, @Nonnull String id ) throws IOException {
     objectsAccess.delete( id );
   }
 

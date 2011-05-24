@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class User {
   @Nonnull
-  
+
   private final String name;
   @Nonnull
   private final List<Role> roles = new ArrayList<Role>();

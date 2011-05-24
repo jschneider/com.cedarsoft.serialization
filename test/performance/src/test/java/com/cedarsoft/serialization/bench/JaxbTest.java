@@ -69,15 +69,15 @@ public class JaxbTest {
     marshaller.marshal( type, out );
 
     AssertUtils.assertXMLEquals( out.toString(),
-                                "<ns2:fileType xmlns:ns2=\"http://test.cedarsoft.com/fileType\">\n" +
-                                  "    <dependent>false</dependent>\n" +
-                                  "    <extension>\n" +
-                                  "        <default>true</default>\n" +
-                                  "        <delimiter>.</delimiter>\n" +
-                                  "        <extension>jpg</extension>\n" +
-                                  "    </extension>\n" +
-                                  "    <id>jpg</id>\n" +
-                                  "</ns2:fileType>" );
+                                 "<ns2:fileType xmlns:ns2=\"http://test.cedarsoft.com/fileType\">\n" +
+                                   "    <dependent>false</dependent>\n" +
+                                   "    <extension>\n" +
+                                   "        <default>true</default>\n" +
+                                   "        <delimiter>.</delimiter>\n" +
+                                   "        <extension>jpg</extension>\n" +
+                                   "    </extension>\n" +
+                                   "    <id>jpg</id>\n" +
+                                   "</ns2:fileType>" );
   }
 
   @Test

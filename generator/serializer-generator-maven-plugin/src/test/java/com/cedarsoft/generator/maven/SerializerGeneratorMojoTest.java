@@ -196,7 +196,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   }
 
   @Nonnull
-  private SerializerGeneratorMojo createVerifiedMojo( @Nonnull  String name ) throws Exception {
+  private SerializerGeneratorMojo createVerifiedMojo( @Nonnull String name ) throws Exception {
     SerializerGeneratorMojo mojo = createMojo( name );
 
     assertNotNull( mojo.projectArtifact );
@@ -220,7 +220,7 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
   }
 
   @Nonnull
-  private SerializerGeneratorMojo createMojo( @Nonnull  String name ) throws Exception {
+  private SerializerGeneratorMojo createMojo( @Nonnull String name ) throws Exception {
     File testPom = new File( getBasedir(), "src/test/resources/unit/" + name + "/basic-plugin-config.xml" );
     assertTrue( testPom.exists() );
     SerializerGeneratorMojo mojo = ( SerializerGeneratorMojo ) lookupMojo( "generate", testPom );

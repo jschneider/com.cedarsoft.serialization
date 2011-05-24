@@ -71,30 +71,30 @@ public class StaxMateDelegatePerformance {
 
   private void benchWithDelegate() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
-          benchRoundTrip( inf.getStaxFactory(), new FileTypeSerializerDelegates( new ExtensionSerializer() ) );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
+                        benchRoundTrip( inf.getStaxFactory(), new FileTypeSerializerDelegates( new ExtensionSerializer() ) );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   private void benchHardCoded() {
     runBenchmark( new Runnable() {
-      @Override
-      public void run() {
-        try {
-          SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
-          benchRoundTrip( inf.getStaxFactory(), new FileTypeSerializerHardCoded( new ExtensionSerializer() ) );
-        } catch ( Exception e ) {
-          throw new RuntimeException( e );
-        }
-      }
-    }, 4 );
+                    @Override
+                    public void run() {
+                      try {
+                        SMInputFactory inf = new SMInputFactory( XMLInputFactory.newInstance( "com.ctc.wstx.stax.WstxInputFactory", getClass().getClassLoader() ) );
+                        benchRoundTrip( inf.getStaxFactory(), new FileTypeSerializerHardCoded( new ExtensionSerializer() ) );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
   }
 
   private void benchRoundTrip( XMLInputFactory staxFactory, @Nonnull AbstractStaxMateSerializer<FileType> serializer ) throws IOException {
@@ -150,7 +150,7 @@ public class StaxMateDelegatePerformance {
 
       add( extensionSerializer ).responsibleFor( Extension.class )
         .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
-        ;
+      ;
 
       getDelegatesMappings().verify();
     }

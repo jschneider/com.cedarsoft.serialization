@@ -92,7 +92,7 @@ public class FileBasedSerializedObjectsAccessTest {
 
     try {
       access.openOut( "id" );
-      fail("Where is the Exception");
+      fail( "Where is the Exception" );
     } catch ( StillContainedException e ) {
     }
   }

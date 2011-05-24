@@ -60,7 +60,7 @@ public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extensio
   public static final Entry<?> entry3 = create( new Extension( "-", "jpg" ), "<extension delimiter=\"-\">jpg</extension>" );
   @DataPoint
   public static final Entry<?> entry4 = create( new Extension( ",", "cr2" ), "<extension delimiter=\",\">cr2</extension>" );
-  
+
   @Test
   public void testDelimiter() throws IOException {
     Extension extension = deserialize( "<extension xmlns=\"http://www.cedarsoft.com/file/extension/1.0.0\" delimiter=\".\">jpg</extension>\n" );

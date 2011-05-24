@@ -48,12 +48,12 @@
   </bannerRight>
 
   <body>
-     <breadcrumbs>
+    <breadcrumbs>
       <item name="cedarsoft" href="http://www.cedarsoft.com" />
       <item href="../" name="Open" />
-      <item name="serialization"/>
+      <item name="serialization" />
     </breadcrumbs>
-  
+
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="News" href="news.html" />
@@ -74,8 +74,8 @@
     <menu name="Tutorial">
       <item name="Tutorial" href="tutorial.html" />
       <item name="Evolution Sample" href="evolution.html">
-        <item name="using XStream" href="evolutionXStream.html"/>
-        <item name="using cedarsoft Serialization" href="evolutionCedarsoftSerialization.html"/>
+        <item name="using XStream" href="evolutionXStream.html" />
+        <item name="using cedarsoft Serialization" href="evolutionCedarsoftSerialization.html" />
       </item>
       <!--<item name="Advanced" href="advancedTut.html" />-->
     </menu>
@@ -112,7 +112,7 @@
 
     <menu ref="reports" inherit="bottom" />
   </body>
-  
+
   <publishDate position="bottom" format="yyyy-MM-dd HH:mm" />
   <skin>
     <groupId>com.cedarsoft.maven</groupId>

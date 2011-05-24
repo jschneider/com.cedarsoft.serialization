@@ -63,7 +63,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
       .map( 1, 5, 1 ).toDelegateVersion( 1, 0, 1 ) //this is the only line that has to be added! Everything else (below) stays the same!
-      ;
+    ;
 
     //Verify the delegate mappings
     //This is necessary, to ensure that the file format for the

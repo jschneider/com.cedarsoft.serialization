@@ -72,7 +72,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
       add( moneySerializer ).responsibleFor( Money.class )
         .map( 1, 4, 0 ).toDelegateVersion( 1, 0, 0 )
         .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 1 )
-        ;
+      ;
     }
 
     @Override

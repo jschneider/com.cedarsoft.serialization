@@ -46,7 +46,7 @@ public abstract class AbstractJacksonSerializingStrategy<T> extends AbstractJack
   @Nonnull
   private final Class<? extends T> supportedType;
 
-  protected AbstractJacksonSerializingStrategy( @Nonnull String id,  @Nonnull String type, @Nonnull Class<? extends T> supportedType, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractJacksonSerializingStrategy( @Nonnull String id, @Nonnull String type, @Nonnull Class<? extends T> supportedType, @Nonnull VersionRange formatVersionRange ) {
     super( type, formatVersionRange );
     this.id = id;
     this.supportedType = supportedType;

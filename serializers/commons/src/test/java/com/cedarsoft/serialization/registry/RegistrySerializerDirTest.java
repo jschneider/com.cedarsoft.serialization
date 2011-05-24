@@ -65,12 +65,12 @@ public class RegistrySerializerDirTest {
     serializer = new RegistrySerializer<String, Registry<String>>( new DirBasedRegistrySerializingStrategy<String>( access ) {
       @Nonnull
       @Override
-      protected String deserialize( @Nonnull  String id, @Nonnull File dir ) throws IOException {
+      protected String deserialize( @Nonnull String id, @Nonnull File dir ) throws IOException {
         return FileUtils.readFileToString( new File( dir, "data" ) );
       }
 
       @Override
-      protected void serialize( @Nonnull String object, @Nonnull  String id, @Nonnull File dir ) throws IOException {
+      protected void serialize( @Nonnull String object, @Nonnull String id, @Nonnull File dir ) throws IOException {
         File data = new File( dir, "data" );
         FileUtils.writeStringToFile( data, object );
       }
@@ -80,7 +80,8 @@ public class RegistrySerializerDirTest {
       public String getId( @Nonnull String object ) {
         return object;
       }
-    } );
+    }
+    );
   }
 
   @After

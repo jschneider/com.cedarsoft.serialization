@@ -47,6 +47,5 @@ public interface ToString<T> {
    * @return the string representation
    */
   @Nonnull
-
   String convert( @Nonnull T object );
 }

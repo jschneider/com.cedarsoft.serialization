@@ -55,7 +55,7 @@ import java.io.IOException;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify(  @Nonnull byte[] current, @Nonnull  byte[] exectedXml ) throws Exception {
+  protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
       AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
@@ -76,11 +76,11 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
 
   @Nonnull
 
-  public static String addNameSpace( @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer, @Nonnull  byte[] xmlBytes ) throws Exception {
+  public static String addNameSpace( @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer, @Nonnull byte[] xmlBytes ) throws Exception {
     return addNameSpace( serializer.createNameSpace( serializer.getFormatVersion() ), xmlBytes );
   }
 
-  public static String addNameSpace( @Nonnull  String nameSpaceUri, @Nonnull  byte[] xml ) throws JDOMException, IOException {
+  public static String addNameSpace( @Nonnull String nameSpaceUri, @Nonnull byte[] xml ) throws JDOMException, IOException {
     Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml ) );
 
     Element root = doc.getRootElement();
@@ -101,7 +101,7 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   }
 
   @Nonnull
-  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  String expected ) {
+  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
     return new Entry<T>( object, expected.getBytes() );
   }
 }

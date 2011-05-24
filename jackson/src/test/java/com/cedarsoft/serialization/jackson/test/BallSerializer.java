@@ -52,12 +52,12 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     addStrategy( new TennisBallSerializer() )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
       .map( 1, 1, 0 ).toDelegateVersion( 1, 5, 1 )
-      ;
+    ;
 
     addStrategy( new BasketBallSerializer() )
       .map( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 )
       .map( 1, 1, 0 ).toDelegateVersion( 2, 0, 1 )
-      ;
+    ;
 
     getSerializingStrategySupport().verify();
   }

@@ -54,7 +54,7 @@ public class ExtraSerializer extends AbstractStaxMateSerializer<Extra> {
 
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
-      ;
+    ;
 
     //Verify the delegate mappings
     //This is necessary, to ensure that the file format for the

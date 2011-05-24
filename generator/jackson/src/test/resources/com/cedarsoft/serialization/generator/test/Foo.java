@@ -29,11 +29,11 @@ public class Foo {
   /**
    * the constructor
    *
-   * @param description  the description
-   * @param width        the width
-   * @param height       the height
-   * @param anInt        the int
-   * @param bars the double values
+   * @param description the description
+   * @param width       the width
+   * @param height      the height
+   * @param anInt       the int
+   * @param bars        the double values
    */
   public Foo( String description, double width, int height, Integer anInt, Collection<? extends Bar> bars ) {
     this.width = width;

@@ -65,7 +65,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the supported format version range. The upper bound represents the format that is written. All Versions within the range can be read.
    */
-  protected AbstractStaxBasedSerializer( @Nonnull  String defaultElementName,  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractStaxBasedSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
@@ -104,7 +104,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param streamReader the stream reader
    * @param tagName      the tag name
    */
-  protected void ensureTag( @Nonnull XMLStreamReader streamReader, @Nonnull  String tagName ) throws XMLStreamException {
+  protected void ensureTag( @Nonnull XMLStreamReader streamReader, @Nonnull String tagName ) throws XMLStreamException {
     ensureTag( streamReader, tagName, null );
   }
 
@@ -115,7 +115,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param tagName      the tag name
    * @param namespace    the (optional) namespace (if the ns is null, no check will be performed)
    */
-  protected void ensureTag( @Nonnull XMLStreamReader streamReader, @Nonnull  String tagName, @Nullable  String namespace ) throws XMLStreamException {
+  protected void ensureTag( @Nonnull XMLStreamReader streamReader, @Nonnull String tagName, @Nullable String namespace ) throws XMLStreamException {
     QName qName = streamReader.getName();
 
     if ( !doesNamespaceFit( streamReader, namespace ) ) {
@@ -135,7 +135,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param namespace    the expected namespace (or null if the check shall be skipped)
    * @return true if the namespace fits (or the expected namespace is null), false otherwise
    */
-  protected boolean doesNamespaceFit( @Nonnull XMLStreamReader streamReader, @Nullable  String namespace ) {
+  protected boolean doesNamespaceFit( @Nonnull XMLStreamReader streamReader, @Nullable String namespace ) {
     if ( namespace == null ) {
       return true;
     }
@@ -178,7 +178,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws XMLStreamException
    */
   @Nonnull
-  protected String getChildText( @Nonnull XMLStreamReader reader, @Nonnull  String tagName ) throws XMLStreamException {
+  protected String getChildText( @Nonnull XMLStreamReader reader, @Nonnull String tagName ) throws XMLStreamException {
     return getChildText( reader, tagName, null );
   }
 
@@ -193,7 +193,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws XMLStreamException
    */
   @Nonnull
-  protected String getChildText( @Nonnull XMLStreamReader reader, @Nonnull  String tagName, @Nullable  String namespace ) throws XMLStreamException {
+  protected String getChildText( @Nonnull XMLStreamReader reader, @Nonnull String tagName, @Nullable String namespace ) throws XMLStreamException {
     nextTag( reader, tagName );
     ensureTag( reader, tagName, namespace );
     return getText( reader );
@@ -242,7 +242,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param tagName the tag name
    * @throws XMLStreamException
    */
-  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull  String tagName ) throws XMLStreamException {
+  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull String tagName ) throws XMLStreamException {
     nextTag( reader, tagName, null );
   }
 
@@ -254,7 +254,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param namespace the (optional) namespace (if the ns is null, no check will be performed)
    * @throws XMLStreamException
    */
-  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull  String tagName, @Nullable  String namespace ) throws XMLStreamException {
+  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull String tagName, @Nullable String namespace ) throws XMLStreamException {
     nextTag( reader, tagName, namespace, true );
   }
 
@@ -268,7 +268,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    *                  whether to skip unknown namespaces
    * @throws XMLStreamException
    */
-  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull  String tagName, @Nullable  String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
+  protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull String tagName, @Nullable String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
       throw new XMLStreamException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
@@ -334,7 +334,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
     visitChildren( deserializeFrom, new CB() {
       @Override
-      public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull  String tagName ) throws XMLStreamException, IOException {
+      public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull String tagName ) throws XMLStreamException, IOException {
         deserializedObjects.add( deserialize( type, formatVersion, deserializeFrom ) );
       }
     } );
@@ -354,7 +354,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected void deserializeCollections( @Nonnull final XMLStreamReader deserializeFrom, @Nonnull final Version formatVersion, final CollectionsMapping collectionsMapping ) throws XMLStreamException, IOException {
     visitChildren( deserializeFrom, new CB() {
       @Override
-      public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull  String tagName ) throws XMLStreamException, IOException {
+      public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull String tagName ) throws XMLStreamException, IOException {
         CollectionsMapping.Entry entry = collectionsMapping.getEntry( tagName );
         Object deserialized = deserialize( entry.getType(), formatVersion, deserializeFrom );
         entry.getTargetCollection().add( deserialized );
@@ -375,6 +375,6 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
      * @throws XMLStreamException
      * @throws IOException
      */
-    void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull  String tagName ) throws XMLStreamException, IOException;
+    void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull String tagName ) throws XMLStreamException, IOException;
   }
 }

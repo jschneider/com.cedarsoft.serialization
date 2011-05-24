@@ -123,7 +123,7 @@ public class JsonGeneratorTest {
     assertGeneratedCode( getClass().getResource( "JsonGeneratorTest2.txt" ) );
   }
 
-  protected void assertGeneratedCode( @Nonnull  URL expected ) throws IOException {
+  protected void assertGeneratedCode( @Nonnull URL expected ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 

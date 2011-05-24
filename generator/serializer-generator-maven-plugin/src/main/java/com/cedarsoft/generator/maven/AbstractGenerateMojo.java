@@ -87,7 +87,7 @@ public abstract class AbstractGenerateMojo extends SourceFolderAwareMojo {
   protected AbstractGenerateMojo() {
   }
 
-  protected AbstractGenerateMojo( @Nonnull  Collection<? extends String> defaultExcludes ) {
+  protected AbstractGenerateMojo( @Nonnull Collection<? extends String> defaultExcludes ) {
     this.excludes.addAll( defaultExcludes );
   }
 

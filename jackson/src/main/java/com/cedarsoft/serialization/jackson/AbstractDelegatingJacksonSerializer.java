@@ -54,7 +54,7 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
   @Nonnull
   protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> serializingStrategySupport;
 
-  protected AbstractDelegatingJacksonSerializer(  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractDelegatingJacksonSerializer( @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceUriBase, formatVersionRange );
     this.serializingStrategySupport = new SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException>( formatVersionRange );
   }

@@ -75,16 +75,16 @@ public class GeneratorTest {
   public void testHelp() throws Exception {
     StaxMateGenerator.main( new String[]{} );
     assertEquals( "Missing required options: d, t\n" +
-      "usage: ser-gen -d <serializer dest dir> -t <test dest dir> path-to-class\n" +
-      "-d,--destination <arg>               the output directory for the created\n" +
-      "                                     classes\n" +
-      "-h,--help                            display this use message\n" +
-      "-r,--resources-destination <arg>     the output directory for the created\n" +
-      "                                     resources\n" +
-      "-s,--test-resources-destination <arg>the output directory for the created\n" +
-      "                                     test resources\n" +
-      "-t,--test-destination <arg>          the output directory for the created\n" +
-      "                                     tests\n", systemOutRule.getOutAsString() );
+                    "usage: ser-gen -d <serializer dest dir> -t <test dest dir> path-to-class\n" +
+                    "-d,--destination <arg>               the output directory for the created\n" +
+                    "                                     classes\n" +
+                    "-h,--help                            display this use message\n" +
+                    "-r,--resources-destination <arg>     the output directory for the created\n" +
+                    "                                     resources\n" +
+                    "-s,--test-resources-destination <arg>the output directory for the created\n" +
+                    "                                     test resources\n" +
+                    "-t,--test-destination <arg>          the output directory for the created\n" +
+                    "                                     tests\n", systemOutRule.getOutAsString() );
     assertEquals( "", systemOutRule.getErrAsString() );
   }
 

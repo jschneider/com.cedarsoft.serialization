@@ -64,7 +64,8 @@ public class DelegatesMappingVisualizer {
         String[] parts = object.getName().split( "\\." );
         return parts[parts.length - 1];
       }
-    } );
+    }
+    );
     return visualizer.visualize();
   }
 

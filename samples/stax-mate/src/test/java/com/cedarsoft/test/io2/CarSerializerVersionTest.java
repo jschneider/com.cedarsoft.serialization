@@ -60,34 +60,34 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest2<Car> {
   }
 
   @DataPoint
-  public static final VersionEntry ENTRY1 = create(  Version.valueOf( 1, 0, 0 ),  "<car>\n" +
-      "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
-      "  <model>Ford</model>\n" +
-      "  <basePrice>1900000</basePrice>\n" +
-      "  <extra>\n" +
-      "    <description>Whoo effect</description>\n" +
-      "    <price>9998</price>\n" +
-      "  </extra>" +
-      " <extra>\n" +
-      "    <description>Better Whoo effect</description>\n" +
-      "    <price>19900</price>\n" +
-      "  </extra>" +
-      "</car>" );
+  public static final VersionEntry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "<car>\n" +
+    "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
+    "  <model>Ford</model>\n" +
+    "  <basePrice>1900000</basePrice>\n" +
+    "  <extra>\n" +
+    "    <description>Whoo effect</description>\n" +
+    "    <price>9998</price>\n" +
+    "  </extra>" +
+    " <extra>\n" +
+    "    <description>Better Whoo effect</description>\n" +
+    "    <price>19900</price>\n" +
+    "  </extra>" +
+    "</car>" );
 
   @DataPoint
-  public static final VersionEntry ENTRY2 = create(  Version.valueOf( 1, 0, 1 ),  "<car>\n" +
-      "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
-      "  <model>Ford</model>\n" +
-      "  <basePrice cents=\"1900000\" />\n" +
-      "  <extra>\n" +
-      "    <description>Whoo effect</description>\n" +
-      "    <price cents=\"9998\" />\n" +
-      "  </extra>\n" +
-      "  <extra>\n" +
-      "    <description>Better Whoo effect</description>\n" +
-      "    <price cents=\"19900\" />\n" +
-      "  </extra>\n" +
-      "</car>" );
+  public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 0, 1 ), "<car>\n" +
+    "  <color red=\"255\" blue=\"0\" green=\"200\" />\n" +
+    "  <model>Ford</model>\n" +
+    "  <basePrice cents=\"1900000\" />\n" +
+    "  <extra>\n" +
+    "    <description>Whoo effect</description>\n" +
+    "    <price cents=\"9998\" />\n" +
+    "  </extra>\n" +
+    "  <extra>\n" +
+    "    <description>Better Whoo effect</description>\n" +
+    "    <price cents=\"19900\" />\n" +
+    "  </extra>\n" +
+    "</car>" );
 
   @Override
   protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Version version ) throws Exception {

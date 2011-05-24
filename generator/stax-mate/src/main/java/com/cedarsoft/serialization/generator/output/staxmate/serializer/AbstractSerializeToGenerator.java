@@ -53,7 +53,7 @@ public abstract class AbstractSerializeToGenerator implements SerializeToGenerat
   }
 
   @Nonnull
-  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull  String constantName, @Nonnull JExpression value ) {
+  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull String constantName, @Nonnull JExpression value ) {
     return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
   }
 

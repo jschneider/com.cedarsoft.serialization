@@ -80,7 +80,7 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
 
   @Nonnull
   @Override
-  protected String getNamespace( @Nonnull  String domainObjectType ) {
+  protected String getNamespace( @Nonnull String domainObjectType ) {
     int lastIndex = domainObjectType.lastIndexOf( '.' );
 
     String simpleName;

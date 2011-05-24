@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
  */
-public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extends AbstractNameSpaceBasedSerializer<T,S,D,E>{
+public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extends AbstractNameSpaceBasedSerializer<T, S, D, E> {
   @Nonnull
 
   private final String defaultElementName;
@@ -53,10 +53,10 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
-   * @param nameSpaceBase   the base for the namespace uri
+   * @param nameSpaceBase      the base for the namespace uri
    * @param formatVersionRange the version range. The max value is used when written.
    */
-  protected AbstractXmlSerializer( @Nonnull  String defaultElementName,  @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractXmlSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceBase, formatVersionRange );
     this.defaultElementName = defaultElementName;
   }

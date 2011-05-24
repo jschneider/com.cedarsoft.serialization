@@ -55,7 +55,7 @@ import java.util.Map;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify(  @Nonnull byte[] current, @Nonnull  byte[] expectedJson ) throws Exception {
+  protected void verify( @Nonnull byte[] current, @Nonnull byte[] expectedJson ) throws Exception {
     String expectedAsString = new String( expectedJson );
     if ( addTypeInformation() ) {
       try {
@@ -70,7 +70,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
 
   @Nonnull
 
-  public String addTypeInformation( @Nonnull  byte[] expectedJson ) throws Exception {
+  public String addTypeInformation( @Nonnull byte[] expectedJson ) throws Exception {
     Serializer<T> serializer = getSerializer();
     return addTypeInformation( serializer, expectedJson );
   }
@@ -83,7 +83,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
 
   @Nonnull
 
-  public static String addTypeInformation( @Nonnull Serializer<?> serializer, @Nonnull  byte[] expectedJson ) throws Exception {
+  public static String addTypeInformation( @Nonnull Serializer<?> serializer, @Nonnull byte[] expectedJson ) throws Exception {
     return addTypeInformation( getType( serializer ), serializer.getFormatVersion(), expectedJson );
   }
 
@@ -93,7 +93,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
 
   @Nonnull
 
-  public static String addTypeInformation( @Nonnull  String type, @Nonnull Version version, @Nonnull  byte[] xmlBytes ) throws Exception {
+  public static String addTypeInformation( @Nonnull String type, @Nonnull Version version, @Nonnull byte[] xmlBytes ) throws Exception {
     JsonNode tree = new ObjectMapper().readTree( new String( xmlBytes ) );
 
     Map<String, JsonNode> newProps = new LinkedHashMap<String, JsonNode>();
@@ -118,7 +118,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
   }
 
   @Nonnull
-  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  String expected ) {
+  protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
     return new Entry<T>( object, expected.getBytes() );
   }
 }

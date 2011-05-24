@@ -62,11 +62,11 @@ public class FileNameSerializer extends AbstractStaxMateSerializer<FileName> {
 
     add( extensionSerializer ).responsibleFor( Extension.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
-      ;
+    ;
 
     add( baseNameSerializer ).responsibleFor( BaseName.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
-      ;
+    ;
 
     assert getDelegatesMappings().verify();
   }

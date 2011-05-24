@@ -56,32 +56,32 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
    * @return the byte array using the xml string
    */
   @Nonnull
-  protected static byte[] processXml( @Nonnull  String xml, @Nonnull Version version, @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
+  protected static byte[] processXml( @Nonnull String xml, @Nonnull Version version, @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
     return processXml( xml, serializer.createNameSpace( version ) );
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull  byte[] xml, @Nonnull Version version, @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
+  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull Version version, @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer ) throws Exception {
     return processXml( xml, serializer.createNameSpace( version ) );
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull  String xml, @Nonnull  String nameSpace ) throws JDOMException, IOException {
+  protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws JDOMException, IOException {
     return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull  byte[] xml, @Nonnull  String nameSpace ) throws JDOMException, IOException {
+  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws JDOMException, IOException {
     return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
   }
 
   @Nonnull
-  protected static VersionEntry create( @Nonnull Version version, @Nonnull  String xml ) {
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull String xml ) {
     return new XmlVersionEntry( version, xml );
   }
 
   @Nonnull
-  protected static VersionEntry create( @Nonnull Version version, @Nonnull  URL expected ) {
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull URL expected ) {
     try {
       return new XmlVersionEntry( version, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
@@ -96,12 +96,12 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
 
     private final byte[] xml;
 
-    public XmlVersionEntry( @Nonnull Version version, @Nonnull  byte[] xml ) {
+    public XmlVersionEntry( @Nonnull Version version, @Nonnull byte[] xml ) {
       this.version = version;
       this.xml = xml;
     }
 
-    public XmlVersionEntry( @Nonnull Version version, @Nonnull  String xml ) {
+    public XmlVersionEntry( @Nonnull Version version, @Nonnull String xml ) {
       this( version, xml.getBytes() );
     }
 

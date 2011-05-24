@@ -95,12 +95,12 @@ public abstract class AbstractSerializerTest2<T> {
   }
 
   @Nonnull
-  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  byte[] expected ) {
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull byte[] expected ) {
     return new Entry<T>( object, expected );
   }
 
   @Nonnull
-  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  URL expected ) {
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull URL expected ) {
     try {
       return new Entry<T>( object, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
@@ -109,7 +109,7 @@ public abstract class AbstractSerializerTest2<T> {
   }
 
   @Nonnull
-  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull  InputStream expected ) {
+  public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull InputStream expected ) {
     try {
       return new Entry<T>( object, IOUtils.toByteArray( expected ) );
     } catch ( IOException e ) {

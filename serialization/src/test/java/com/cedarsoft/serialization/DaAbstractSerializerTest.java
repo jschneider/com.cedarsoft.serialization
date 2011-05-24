@@ -76,7 +76,7 @@ public class DaAbstractSerializerTest {
     assertFalse( serializer.isVersionWritable( Version.valueOf( 1, 5, 0 ) ) );
     assertFalse( serializer.isVersionWritable( Version.valueOf( 2, 0, 1 ) ) );
     assertFalse( serializer.isVersionWritable( Version.valueOf( 0, 0, 1 ) ) );
-    
+
     serializer.verifyVersionWritable( Version.valueOf( 2, 0, 0 ) );
 
     expectedException.expect( VersionMismatchException.class );

@@ -38,8 +38,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
-*
-*/
+ *
+ */
 public class MoneyConverter implements Converter {
   @Override
   public void marshal( Object source, HierarchicalStreamWriter writer, MarshallingContext context ) {

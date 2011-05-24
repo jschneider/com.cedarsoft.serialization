@@ -44,7 +44,7 @@ public class CollectionsMapping {
   @Nonnull
   private final Map<String, Entry<?>> entries = new HashMap<String, Entry<?>>();
 
-  public Entry<?> getEntry( @Nonnull  String tagName ) {
+  public Entry<?> getEntry( @Nonnull String tagName ) {
     Entry<?> resolved = entries.get( tagName );
     if ( resolved == null ) {
       throw new IllegalArgumentException( "No entry found for <" + tagName + ">" );
@@ -53,7 +53,7 @@ public class CollectionsMapping {
   }
 
   @Nonnull
-  public <T> CollectionsMapping append( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull  String tagName ) {
+  public <T> CollectionsMapping append( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull String tagName ) {
     entries.put( tagName, new Entry<T>( type, targetCollection, tagName ) );
     return this;
   }
@@ -66,7 +66,7 @@ public class CollectionsMapping {
     @Nonnull
     private final String tagName;
 
-    public Entry( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull  String tagName ) {
+    public Entry( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull String tagName ) {
       this.type = type;
       this.targetCollection = targetCollection;
       this.tagName = tagName;

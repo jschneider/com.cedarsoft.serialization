@@ -45,11 +45,11 @@ public class DefaultXmlDecisionCallback implements XmlDecisionCallback {
   @Nonnull
   private final Collection<String> fieldsAsAttribute = new HashSet<String>();
 
-  public DefaultXmlDecisionCallback( @Nonnull  String... fieldsAsAttribute ) {
+  public DefaultXmlDecisionCallback( @Nonnull String... fieldsAsAttribute ) {
     this( Arrays.asList( fieldsAsAttribute ) );
   }
 
-  public DefaultXmlDecisionCallback( @Nonnull  Collection<? extends String> fieldsAsAttribute ) {
+  public DefaultXmlDecisionCallback( @Nonnull Collection<? extends String> fieldsAsAttribute ) {
     this.fieldsAsAttribute.addAll( fieldsAsAttribute );
   }
 

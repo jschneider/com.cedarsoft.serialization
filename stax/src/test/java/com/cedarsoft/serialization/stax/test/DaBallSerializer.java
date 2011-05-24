@@ -95,7 +95,7 @@ public class DaBallSerializer extends AbstractStaxSerializer<DaBall> {
 
       String name2 = getChildText( deserializeFrom, "name1" );
 
-      nextTag( deserializeFrom, "name2");
+      nextTag( deserializeFrom, "name2" );
       String name = getText( deserializeFrom );
       assertEquals( name, name2 );
 

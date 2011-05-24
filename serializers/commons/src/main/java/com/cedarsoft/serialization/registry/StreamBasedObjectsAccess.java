@@ -50,9 +50,9 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
    * @throws StillContainedException if an object with the given id is still contained
    */
   @Nonnull
-  OutputStream openOut( @Nonnull  String id ) throws StillContainedException, FileNotFoundException;
+  OutputStream openOut( @Nonnull String id ) throws StillContainedException, FileNotFoundException;
 
-  OutputStream openOutForUpdate( @Nonnull  String id ) throws NotFoundException, FileNotFoundException;
+  OutputStream openOutForUpdate( @Nonnull String id ) throws NotFoundException, FileNotFoundException;
 
   /**
    * Returns the input stream
@@ -63,7 +63,7 @@ public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStr
    * @throws FileNotFoundException
    */
   @Nonnull
-  InputStream getInputStream( @Nonnull  String id ) throws FileNotFoundException;
+  InputStream getInputStream( @Nonnull String id ) throws FileNotFoundException;
 
-  void delete( @Nonnull  String id ) throws NotFoundException;
+  void delete( @Nonnull String id ) throws NotFoundException;
 }

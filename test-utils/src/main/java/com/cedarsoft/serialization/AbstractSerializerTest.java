@@ -103,7 +103,7 @@ public abstract class AbstractSerializerTest<T> {
    *
    * @param deserialized the deserialized object
    */
-  protected void verifyDeserialized( @Nonnull T deserialized ) throws Exception  {
+  protected void verifyDeserialized( @Nonnull T deserialized ) throws Exception {
     assertEquals( deserialized, createObjectToSerialize() );
   }
 }

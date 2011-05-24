@@ -70,7 +70,7 @@ public abstract class AbstractNamespaceBasedGenerator extends AbstractGenerator<
    */
   @Nonnull
 
-  protected String getNamespace( @Nonnull  final String domainObjectType ) {
+  protected String getNamespace( @Nonnull final String domainObjectType ) {
     return NameSpaceSupport.createNameSpaceUriBase( domainObjectType );
   }
 

@@ -44,7 +44,7 @@ public class Entry<T> {
 
   private final byte[] expected;
 
-  public Entry( @Nonnull T object, @Nonnull  byte[] expected ) {
+  public Entry( @Nonnull T object, @Nonnull byte[] expected ) {
     this.object = object;
     this.expected = expected;
   }

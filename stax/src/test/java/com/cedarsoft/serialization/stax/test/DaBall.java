@@ -63,7 +63,7 @@ public class DaBall {
     if ( this == o ) return true;
     if ( !( o instanceof DaBall ) ) return false;
 
-    DaBall ball = (DaBall) o;
+    DaBall ball = ( DaBall ) o;
 
     if ( id != ball.id ) return false;
 

@@ -190,13 +190,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
 
   @Nonnull
 
-  public String createSerializerTestName( @Nonnull  String serializerClassName ) {
+  public String createSerializerTestName( @Nonnull String serializerClassName ) {
     return serializerClassName + SERIALIZER_TEST_NAME_SUFFIX;
   }
 
   @Nonnull
 
-  public String createSerializerVersionTestName( @Nonnull  String serializerClassName ) {
+  public String createSerializerVersionTestName( @Nonnull String serializerClassName ) {
     return serializerClassName + SERIALIZER_VERSION_TEST_NAME_SUFFIX;
   }
 }

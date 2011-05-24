@@ -74,7 +74,7 @@ public class StaxMateCollectionSerializerTest extends AbstractXmlSerializerTest<
 
         visitChildren( deserializeFrom, new CB() {
           @Override
-          public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull  String tagName ) throws XMLStreamException, IOException {
+          public void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull String tagName ) throws XMLStreamException, IOException {
             if ( tagName.equals( "description" ) ) {
               assertEquals( "descr", getText( deserializeFrom ) );
               called[0] = true;

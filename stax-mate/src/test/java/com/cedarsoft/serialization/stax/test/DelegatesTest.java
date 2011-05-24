@@ -98,19 +98,19 @@ public class DelegatesTest {
     roomSerializer.serialize( hall, out );
 
     AssertUtils.assertXMLEquals( out.toString(),
-                                "<room xmlns=\"room/2.0.0\">\n" +
-                                  "  <description>hall</description>\n" +
-                                  "  <doors>\n" +
-                                  "    <door>\n" +
-                                  "      <description>door1</description>\n" +
-                                  "    </door>\n" +
-                                  "  </doors>\n" +
-                                  "  <windows>\n" +
-                                  "    <window width=\"10.0\" height=\"11.0\">\n" +
-                                  "      <description>window1</description>\n" +
-                                  "    </window>\n" +
-                                  "  </windows>\n" +
-                                  "</room>" );
+                                 "<room xmlns=\"room/2.0.0\">\n" +
+                                   "  <description>hall</description>\n" +
+                                   "  <doors>\n" +
+                                   "    <door>\n" +
+                                   "      <description>door1</description>\n" +
+                                   "    </door>\n" +
+                                   "  </doors>\n" +
+                                   "  <windows>\n" +
+                                   "    <window width=\"10.0\" height=\"11.0\">\n" +
+                                   "      <description>window1</description>\n" +
+                                   "    </window>\n" +
+                                   "  </windows>\n" +
+                                   "</room>" );
 
     assertEquals( roomSerializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), hall );
 
@@ -144,7 +144,7 @@ public class DelegatesTest {
       add( new Window.Serializer() ).responsibleFor( Window.class )
         .map( 1, 0, 0 ).to( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
         .map( 2, 0, 0 ).toDelegateVersion( 2, 0, 0 )
-        ;
+      ;
     }
 
     @Override

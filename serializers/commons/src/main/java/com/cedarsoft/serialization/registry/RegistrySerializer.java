@@ -227,7 +227,6 @@ public class RegistrySerializer<T, R extends Registry<T>> {
      * @return the id
      */
     @Nonnull
-
     String getId( @Nonnull T object );
   }
 

@@ -123,10 +123,10 @@ public class Room {
 
       add( windowSerializer ).responsibleFor( Window.class )
         .map( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 )
-        ;
+      ;
       add( doorSerializer ).responsibleFor( Door.class )
         .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
-        ;
+      ;
 
       getDelegatesMappings().verify();
     }

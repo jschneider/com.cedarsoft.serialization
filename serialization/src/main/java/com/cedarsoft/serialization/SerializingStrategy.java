@@ -51,7 +51,6 @@ public interface SerializingStrategy<T, S, D, E extends Throwable> extends Plugg
    * @return the id
    */
   @Nonnull
-
   String getId();
 
   /**

@@ -60,15 +60,15 @@ public class WindowSerializerNamespaceSkipTest {
   public void testIt() throws IOException {
     DaSkippingSerializer serializer = new DaSkippingSerializer();
     Window deserialized = serializer.deserialize( new ByteArrayInputStream( (
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-        "<window xmlns=\"window/0.9.0\" width=\"123.3\" height=\"444.4\">\n" +
-        "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
-        "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
-        "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
-        "  <description>the window</description>\n" +
-        "  <other xmlns=\"asdf\"/>" +
-        "  <other xmlns=\"asdf2\"/>" +
-        "</window>" ).getBytes() ) );
+                                                                              "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                                                                "<window xmlns=\"window/0.9.0\" width=\"123.3\" height=\"444.4\">\n" +
+                                                                                "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
+                                                                                "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
+                                                                                "  <other xmlns=\"window/2.0.0\"><a><b>content of b</b></a></other>\n" +
+                                                                                "  <description>the window</description>\n" +
+                                                                                "  <other xmlns=\"asdf\"/>" +
+                                                                                "  <other xmlns=\"asdf2\"/>" +
+                                                                                "</window>" ).getBytes() ) );
 
     assertEquals( "the window", deserialized.getDescription() );
     assertEquals( 444.4, deserialized.getHeight(), 0.0 );

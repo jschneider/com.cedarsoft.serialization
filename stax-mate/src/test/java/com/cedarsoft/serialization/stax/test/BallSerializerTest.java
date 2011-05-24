@@ -70,10 +70,10 @@ public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
   public void testAsccii() throws Exception {
     assertEquals( 2, getSerializer().getSerializingStrategySupport().getVersionMappings().getMappings().size() );
     assertEquals( "         -->  basketBa  tennisBa\n" +
-      "--------------------------------\n" +
-      "   1.0.0 -->     2.0.0     1.5.0\n" +
-      "   1.1.0 -->     2.0.1     1.5.1\n" +
-      "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+                    "--------------------------------\n" +
+                    "   1.0.0 -->     2.0.0     1.5.0\n" +
+                    "   1.1.0 -->     2.0.1     1.5.1\n" +
+                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
       @Nonnull
       @Override
       public String convert( @Nonnull SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {

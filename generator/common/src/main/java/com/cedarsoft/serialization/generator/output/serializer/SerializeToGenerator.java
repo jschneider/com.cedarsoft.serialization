@@ -49,12 +49,12 @@ public interface SerializeToGenerator {
   /**
    * Creates a statement that is used to store the object (converted as string) to the <code>serializeTo</code> object
    *
-   * @param generator        the generator
-   * @param serializerClass  the serializer class
-   * @param serializeTo      the serialize to var
-   * @param fieldInfo        the field info    @return the invocation the serializes the given
-   * @param object           the object that is serialized     @return the created statement
-   * @param formatVersion    the format version
+   * @param generator       the generator
+   * @param serializerClass the serializer class
+   * @param serializeTo     the serialize to var
+   * @param fieldInfo       the field info    @return the invocation the serializes the given
+   * @param object          the object that is serialized     @return the created statement
+   * @param formatVersion   the format version
    * @return the created statement
    */
   @Nonnull

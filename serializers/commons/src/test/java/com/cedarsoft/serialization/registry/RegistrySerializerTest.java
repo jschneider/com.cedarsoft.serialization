@@ -82,7 +82,8 @@ public class RegistrySerializerTest {
       public String getId( @Nonnull String object ) {
         return object;
       }
-    } );
+    }
+    );
   }
 
   @Test

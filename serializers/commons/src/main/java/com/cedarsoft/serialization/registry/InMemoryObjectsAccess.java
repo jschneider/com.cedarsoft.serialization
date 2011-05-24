@@ -55,7 +55,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public InputStream getInputStream( @Nonnull  String id ) {
+  public InputStream getInputStream( @Nonnull String id ) {
     byte[] found = serialized.get( id );
     if ( found == null ) {
       throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
@@ -71,7 +71,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public OutputStream openOut( @Nonnull  final String id ) {
+  public OutputStream openOut( @Nonnull final String id ) {
     byte[] stored = serialized.get( id );
     if ( stored != null ) {
       throw new StillContainedException( id );
@@ -87,7 +87,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public OutputStream openOutForUpdate( @Nonnull  final String id ) throws NotFoundException, FileNotFoundException {
+  public OutputStream openOutForUpdate( @Nonnull final String id ) throws NotFoundException, FileNotFoundException {
     byte[] stored = serialized.get( id );
     if ( stored == null ) {
       throw new NotFoundException( id );
@@ -103,7 +103,7 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public void delete( @Nonnull  String id ) throws NotFoundException {
+  public void delete( @Nonnull String id ) throws NotFoundException {
     byte[] bytes = serialized.remove( id );
     if ( bytes == null ) {
       throw new NotFoundException( "id" );

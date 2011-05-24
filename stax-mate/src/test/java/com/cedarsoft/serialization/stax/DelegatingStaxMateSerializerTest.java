@@ -135,17 +135,18 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
     assertEquals( 2, versionMappings.getMappings().size() );
 
     VersionMappingsVisualizer<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> visualizer = VersionMappingsVisualizer.create( versionMappings, new Comparator<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
-      @Override
-      public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o2 ) {
-        return o1.getId().compareTo( o2.getId() );
-      }
-    }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+                                                                                                                                                                            @Override
+                                                                                                                                                                            public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o2 ) {
+                                                                                                                                                                              return o1.getId().compareTo( o2.getId() );
+                                                                                                                                                                            }
+                                                                                                                                                                          }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
       @Nonnull
       @Override
       public String convert( @Nonnull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
         return object.getId();
       }
-    } );
+    }
+    );
     StringWriter writer = new StringWriter();
     visualizer.visualize( writer );
 

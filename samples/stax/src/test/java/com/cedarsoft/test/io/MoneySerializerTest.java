@@ -40,7 +40,7 @@ import javax.annotation.Nonnull;
 /**
  *
  */
-public class MoneySerializerTest extends AbstractXmlSerializerTest<Money>{
+public class MoneySerializerTest extends AbstractXmlSerializerTest<Money> {
   //We don't need a multi test for such an easy class...
   @Nonnull
   @Override

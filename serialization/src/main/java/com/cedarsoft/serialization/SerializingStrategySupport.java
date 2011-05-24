@@ -77,7 +77,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    * @throws NotFoundException if not strategy could be found
    */
   @Nonnull
-  public SerializingStrategy<? extends T, S, D, E> findStrategy( @Nonnull  String id ) throws NotFoundException {
+  public SerializingStrategy<? extends T, S, D, E> findStrategy( @Nonnull String id ) throws NotFoundException {
     for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
       if ( strategy.getId().equals( id ) ) {
         return strategy;

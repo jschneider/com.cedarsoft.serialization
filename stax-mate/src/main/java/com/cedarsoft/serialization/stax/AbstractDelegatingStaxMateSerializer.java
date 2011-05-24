@@ -63,7 +63,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version name
    */
-  protected AbstractDelegatingStaxMateSerializer( @Nonnull String defaultElementName,  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractDelegatingStaxMateSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
     serializingStrategySupport = new SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException>( formatVersionRange );
   }

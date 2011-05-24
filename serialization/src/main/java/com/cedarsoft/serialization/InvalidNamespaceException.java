@@ -45,7 +45,7 @@ public class InvalidNamespaceException extends Exception {
 
   private final String expected;
 
-  public InvalidNamespaceException( @Nonnull  String namespace,  @Nonnull String expected ) {
+  public InvalidNamespaceException( @Nonnull String namespace, @Nonnull String expected ) {
     super( "Invalid namespace. Was <" + namespace + "> but expected <" + expected + ">" );
     this.namespace = namespace;
     this.expected = expected;

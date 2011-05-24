@@ -89,7 +89,7 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public OutputStream openOut( @Nonnull  String id ) throws FileNotFoundException {
+  public OutputStream openOut( @Nonnull String id ) throws FileNotFoundException {
     File file = getFile( id );
     if ( file.exists() ) {
       throw new StillContainedException( id );
@@ -98,7 +98,7 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Override
-  public OutputStream openOutForUpdate( @Nonnull  String id ) throws NotFoundException, FileNotFoundException {
+  public OutputStream openOutForUpdate( @Nonnull String id ) throws NotFoundException, FileNotFoundException {
     File file = getFile( id );
     if ( !file.exists() ) {
       throw new NotFoundException( id );
@@ -108,12 +108,12 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public InputStream getInputStream( @Nonnull  String id ) throws FileNotFoundException {
+  public InputStream getInputStream( @Nonnull String id ) throws FileNotFoundException {
     return new BufferedInputStream( new FileInputStream( getFile( id ) ) );
   }
 
   @Override
-  public void delete( @Nonnull  String id ) throws NotFoundException {
+  public void delete( @Nonnull String id ) throws NotFoundException {
     File file = getFile( id );
     if ( !file.exists() ) {
       throw new NotFoundException( "No entry found for <" + id + ">" );
@@ -123,7 +123,7 @@ public class FileBasedObjectsAccess implements StreamBasedObjectsAccess {
   }
 
   @Nonnull
-  private File getFile( @Nonnull  String id ) {
+  private File getFile( @Nonnull String id ) {
     return new File( baseDir, id + '.' + extension );
   }
 

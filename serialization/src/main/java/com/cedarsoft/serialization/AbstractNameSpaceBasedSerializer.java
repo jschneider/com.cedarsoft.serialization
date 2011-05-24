@@ -50,7 +50,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
 
   protected final String nameSpaceBase;
 
-  protected AbstractNameSpaceBasedSerializer(  @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractNameSpaceBasedSerializer( @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
     super( formatVersionRange );
     this.nameSpaceBase = nameSpaceBase;
   }
@@ -98,7 +98,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws IllegalArgumentException
    */
   @Nonnull
-  public static Version parseVersionFromNamespace( @Nullable  String namespaceURI ) throws IllegalArgumentException, VersionException {
+  public static Version parseVersionFromNamespace( @Nullable String namespaceURI ) throws IllegalArgumentException, VersionException {
     if ( namespaceURI == null || namespaceURI.length() == 0 ) {
       throw new VersionException( "No version information found" );
     }
@@ -115,7 +115,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws InvalidNamespaceException if the namespace is invalid
    * @throws VersionException          the if the version does not fit the expected range
    */
-  public void verifyNamespace( @Nullable  String namespace ) throws InvalidNamespaceException, VersionException {
+  public void verifyNamespace( @Nullable String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().length() == 0 ) {
       throw new VersionException( "No version information available" );
     }
@@ -135,7 +135,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws VersionException
    */
   @Nonnull
-  public Version parseAndVerifyNameSpace( @Nullable  String namespaceURI ) throws InvalidNamespaceException, VersionException {
+  public Version parseAndVerifyNameSpace( @Nullable String namespaceURI ) throws InvalidNamespaceException, VersionException {
     //Verify the name space
     verifyNamespace( namespaceURI );
 

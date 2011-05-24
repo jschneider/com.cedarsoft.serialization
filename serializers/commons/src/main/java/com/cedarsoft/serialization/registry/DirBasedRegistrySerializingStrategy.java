@@ -49,7 +49,7 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
 
   @Nonnull
   @Override
-  public T deserialize( @Nonnull  String id ) throws IOException {
+  public T deserialize( @Nonnull String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     return deserialize( id, dir );
   }
@@ -64,23 +64,23 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @throws IOException
    */
   @Nonnull
-  protected abstract T deserialize( @Nonnull  String id, @Nonnull File dir ) throws IOException;
+  protected abstract T deserialize( @Nonnull String id, @Nonnull File dir ) throws IOException;
 
 
   @Override
-  public void serialize( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull String id ) throws IOException {
     File dir = objectsAccess.addDirectory( id );
     serialize( object, id, dir );
   }
 
   @Override
-  public void update( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void update( @Nonnull T object, @Nonnull String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     serialize( object, id, dir );
   }
 
   @Override
-  public void remove( @Nonnull T object, @Nonnull  String id ) throws IOException {
+  public void remove( @Nonnull T object, @Nonnull String id ) throws IOException {
     File dir = objectsAccess.getDirectory( id );
     FileUtils.deleteDirectory( dir );
   }
@@ -93,6 +93,6 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @param dir    the directory
    * @throws IOException
    */
-  protected abstract void serialize( @Nonnull T object, @Nonnull  String id, @Nonnull File dir ) throws IOException;
+  protected abstract void serialize( @Nonnull T object, @Nonnull String id, @Nonnull File dir ) throws IOException;
 
 }

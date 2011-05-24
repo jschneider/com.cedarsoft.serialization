@@ -48,12 +48,12 @@ import java.net.URL;
 public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T> {
 
   @Nonnull
-  protected static VersionEntry create( @Nonnull Version version, @Nonnull  String json ) {
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull String json ) {
     return new JsonVersionEntry( version, json );
   }
 
   @Nonnull
-  protected static VersionEntry create( @Nonnull Version version, @Nonnull  URL expected ) {
+  protected static VersionEntry create( @Nonnull Version version, @Nonnull URL expected ) {
     try {
       return new JsonVersionEntry( version, IOUtils.toByteArray( expected.openStream() ) );
     } catch ( IOException e ) {
@@ -68,11 +68,11 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
 
     private final byte[] json;
 
-    public JsonVersionEntry( @Nonnull Version version, @Nonnull  String json ) {
+    public JsonVersionEntry( @Nonnull Version version, @Nonnull String json ) {
       this( version, json.getBytes() );
     }
 
-    public JsonVersionEntry( @Nonnull Version version, @Nonnull  byte[] json ) {
+    public JsonVersionEntry( @Nonnull Version version, @Nonnull byte[] json ) {
       this.version = version;
       this.json = json;
     }

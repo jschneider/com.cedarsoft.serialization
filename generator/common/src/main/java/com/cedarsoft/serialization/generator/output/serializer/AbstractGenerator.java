@@ -110,7 +110,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    */
   @Nonnull
 
-  public static String createSerializerClassName( @Nonnull  String domainClassName ) {
+  public static String createSerializerClassName( @Nonnull String domainClassName ) {
     return domainClassName + SERIALIZER_CLASS_NAME_SUFFIX;
   }
 
@@ -263,10 +263,10 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar param = constructor.param( fieldSerializerType, paramName );
 
     constructor.body().add( JExpr.invoke( "add" ).arg( param ).invoke( "responsibleFor" ).arg( JExpr.dotclass( fieldType ) )
-      .invoke( "map" )
-      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) )
-      .invoke( "toDelegateVersion" )
-      .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) );
+                              .invoke( "map" )
+                              .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) )
+                              .invoke( "toDelegateVersion" )
+                              .arg( JExpr.lit( 1 ) ).arg( JExpr.lit( 0 ) ).arg( JExpr.lit( 0 ) ) );
   }
 
   @Nonnull
@@ -314,12 +314,12 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   /**
    * Appends the serialize statement
    *
-   * @param serializerClass  the serializer class
-   * @param serializeMethod  the serialize method
-   * @param serializeTo      serialize to
-   * @param object           the object that is serialized
-   * @param formatVersion    the format version
-   * @param fieldInfo        the field info
+   * @param serializerClass the serializer class
+   * @param serializeMethod the serialize method
+   * @param serializeTo     serialize to
+   * @param object          the object that is serialized
+   * @param formatVersion   the format version
+   * @param fieldInfo       the field info
    */
   protected abstract void appendSerializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod serializeMethod, @Nonnull JVar serializeTo, @Nonnull JVar object, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo );
 }

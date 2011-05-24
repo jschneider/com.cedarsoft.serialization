@@ -49,7 +49,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
   @Nonnull
   @Override
   protected AbstractStaxMateSerializer<String> getSerializer() {
-    final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", "asdf",new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    final AbstractStaxMateSerializer<String> stringSerializer = new AbstractStaxMateSerializer<String>( "asdf", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws XMLStreamException {
         assert isVersionWritable( formatVersion );
@@ -67,7 +67,7 @@ public class ComplexStaxMateSerializerTest extends AbstractXmlSerializerTest<Str
       }
     };
 
-    return new AbstractStaxMateSerializer<String>( "aString","asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    return new AbstractStaxMateSerializer<String>( "aString", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         stringSerializer.serialize( serializeTo.addElement( serializeTo.getNamespace(), "sub" ), object, formatVersion );

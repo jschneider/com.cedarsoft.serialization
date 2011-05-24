@@ -76,10 +76,10 @@ public class StaxMateNameSpaceTest {
     doc.closeRoot();
 
     AssertUtils.assertXMLEquals( out.toString(),
-                                "<fileType xmlns=\"http://www.cedarsoft.com/serialization/filetype/1.0.1\" dependent=\"false\">\n" +
-                                  "  <id>Canon Raw</id>\n" +
-                                  "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
-                                  "</fileType>", false );
+                                 "<fileType xmlns=\"http://www.cedarsoft.com/serialization/filetype/1.0.1\" dependent=\"false\">\n" +
+                                   "  <id>Canon Raw</id>\n" +
+                                   "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
+                                   "</fileType>", false );
 
 
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();

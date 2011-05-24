@@ -64,21 +64,21 @@ public class VersionMappingsVisualizerTest {
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     versionMappings.add( String.class, other )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     versionMappings.add( Integer.class, other )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 1, 12 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 0, 91 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     assertEquals(
       "         -->   Integer    Object    String\n" +
@@ -101,6 +101,7 @@ public class VersionMappingsVisualizerTest {
           String[] parts = object.getName().split( "\\." );
           return parts[parts.length - 1];
         }
-      } ).visualize() );
+      }
+      ).visualize() );
   }
 }

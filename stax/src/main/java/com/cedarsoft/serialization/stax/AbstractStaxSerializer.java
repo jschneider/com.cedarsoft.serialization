@@ -55,7 +55,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version range
    */
-  protected AbstractStaxSerializer( @Nonnull  String defaultElementName,  @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractStaxSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
@@ -91,7 +91,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @throws XMLStreamException
    * @throws IOException
    */
-  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull  String elementName, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull String elementName, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 

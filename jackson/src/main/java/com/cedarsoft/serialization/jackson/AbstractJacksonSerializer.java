@@ -70,7 +70,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   private final String type;
 
-  protected AbstractJacksonSerializer(  @Nonnull String type, @Nonnull VersionRange formatVersionRange ) {
+  protected AbstractJacksonSerializer( @Nonnull String type, @Nonnull VersionRange formatVersionRange ) {
     super( formatVersionRange );
     this.type = type;
   }
@@ -82,7 +82,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   @Override
-  public void verifyType( @Nullable  String type ) throws InvalidTypeException {
+  public void verifyType( @Nullable String type ) throws InvalidTypeException {
     if ( !this.type.equals( type ) ) {
       throw new InvalidTypeException( type, this.type );
     }
@@ -192,7 +192,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * @param fieldName the field name
    * @throws IOException
    */
-  public static void nextFieldValue( @Nonnull JsonParser parser, @Nonnull  String fieldName ) throws IOException {
+  public static void nextFieldValue( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
     nextField( parser, fieldName );
     parser.nextToken();
   }
@@ -205,7 +205,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * @param fieldName the field name
    * @throws IOException
    */
-  public static void nextField( @Nonnull JsonParser parser, @Nonnull  String fieldName ) throws IOException {
+  public static void nextField( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
     nextToken( parser, JsonToken.FIELD_NAME );
     String currentName = parser.getCurrentName();
 
@@ -234,7 +234,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     serializeArray( elements, type, null, serializeTo, formatVersion );
   }
 
-  protected <T> void serializeArray( @Nonnull Iterable<? extends T> elements, @Nonnull Class<T> type, @Nullable  String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws IOException {
+  protected <T> void serializeArray( @Nonnull Iterable<? extends T> elements, @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws IOException {
     JacksonSerializer<? super T> serializer = getSerializer( type );
     Version delegateVersion = delegatesMappings.getVersionMappings().resolveVersion( type, formatVersion );
 
@@ -262,7 +262,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     return deserializeArray( type, null, deserializeFrom, formatVersion );
   }
 
-  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable  String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
+  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
     if ( propertyName == null ) {
       assert deserializeFrom.getCurrentToken() == JsonToken.START_ARRAY;
     } else {
@@ -276,7 +276,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     return deserialized;
   }
 
-  public <T> void serialize( @Nullable T object, @Nonnull Class<T> type, @Nonnull  String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws JsonProcessingException, IOException {
+  public <T> void serialize( @Nullable T object, @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws JsonProcessingException, IOException {
     serializeTo.writeFieldName( propertyName );
 
     //Fast exit if the value is null
@@ -299,7 +299,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   @Nullable
-  protected <T> T deserializeNullable( @Nonnull Class<T> type, @Nonnull  String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
+  protected <T> T deserializeNullable( @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, propertyName );
 
     if ( deserializeFrom.getCurrentToken() == JsonToken.VALUE_NULL ) {
@@ -310,7 +310,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   @Nonnull
-  protected <T> T deserialize( @Nonnull Class<T> type, @Nonnull  String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
+  protected <T> T deserialize( @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
     nextFieldValue( deserializeFrom, propertyName );
     return deserialize( type, formatVersion, deserializeFrom );
   }

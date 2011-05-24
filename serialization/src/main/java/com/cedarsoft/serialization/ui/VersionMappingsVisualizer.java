@@ -181,7 +181,7 @@ public class VersionMappingsVisualizer<T> {
 
   @Nonnull
 
-  private static String extend(  @Nonnull String string ) {
+  private static String extend( @Nonnull String string ) {
     if ( string.length() > COL_WIDTH ) {
       return string.substring( 0, COL_WIDTH );
     }

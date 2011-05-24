@@ -78,7 +78,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
     verifyFormatter( 966351113153L, "20000815T105153.153-0400" );
   }
 
-  private void verifyFormatter( long instant, @Nonnull  String text ) {
+  private void verifyFormatter( long instant, @Nonnull String text ) {
     assertEquals( DateTimeSerializer.createFormatter().print( instant ), text );
     assertEquals( DateTimeSerializer.createFormatter().parseDateTime( text ).getMillis(), instant );
   }
@@ -128,7 +128,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
     verifyZone( "WET" );
   }
 
-  private byte[] verifyZone( @Nonnull  String id ) throws IOException {
+  private byte[] verifyZone( @Nonnull String id ) throws IOException {
     DateTimeZone zone = DateTimeZone.forID( id );
     assertEquals( zone.getID(), id );
 

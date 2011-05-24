@@ -85,14 +85,14 @@ public abstract class AbstractGeneratorTest {
     model = codeGenerator.getModel();
   }
 
-  protected void assertGeneratedCode( @Nonnull  URL expected ) throws IOException {
+  protected void assertGeneratedCode( @Nonnull URL expected ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
     AssertUtils.assertEquals( expected, out.toString().trim() );
   }
 
-  protected void assertGeneratedCode( @Nonnull  String expected ) throws IOException {
+  protected void assertGeneratedCode( @Nonnull String expected ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
