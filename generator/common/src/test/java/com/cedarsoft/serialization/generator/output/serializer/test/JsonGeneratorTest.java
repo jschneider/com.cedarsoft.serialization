@@ -39,7 +39,6 @@ import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
-import com.cedarsoft.serialization.generator.output.serializer.I18nAnnotationsDecorator;
 import com.cedarsoft.serialization.generator.output.serializer.NotNullDecorator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
@@ -85,8 +84,7 @@ public class JsonGeneratorTest {
     assertEquals( 2, domainObjectDescriptor.getFieldInfos().size() );
     this.codeGenerator = new CodeGenerator( new DecisionCallback() {
     } );
-    this.codeGenerator.addDecorator( new NotNullDecorator( NotNull.class ) );
-    codeGenerator.addDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
+    this.codeGenerator.addDecorator( new NotNullDecorator( Nonnull.class ) );
     model = codeGenerator.getModel();
 
     generator = new JsonGenerator( codeGenerator );

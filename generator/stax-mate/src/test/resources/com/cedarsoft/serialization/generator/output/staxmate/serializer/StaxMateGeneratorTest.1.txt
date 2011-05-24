@@ -4,6 +4,7 @@ package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.io.IOException;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import com.cedarsoft.Version;
@@ -12,32 +13,23 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
-import javax.annotation.Nonnull;
-
 public class FooSerializer
     extends AbstractStaxMateSerializer<Foo>
 {
 
     @Nonnull
-
     public final static String ATTRIBUTE_WIDTH = "width";
     @Nonnull
-
     public final static String ATTRIBUTE_HEIGHT = "height";
     @Nonnull
-
     public final static String ELEMENT_DESCRIPTION = "description";
     @Nonnull
-
     public final static String ELEMENT_ANINT = "anInt";
     @Nonnull
-
     public final static String ELEMENT_FLOATFIELD = "floatField";
     @Nonnull
-
     public final static String ELEMENT_BARS = "bars";
     @Nonnull
-
     public final static String ELEMENT_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {

@@ -4,6 +4,7 @@ package com.cedarsoft.serialization.generator.test;
 
 import java.io.IOException;
 import java.util.List;
+import javax.annotation.Nonnull;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
@@ -12,32 +13,23 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 
-import javax.annotation.Nonnull;
-
 public class FooSerializer
     extends AbstractJacksonSerializer<Foo>
 {
 
     @Nonnull
-
     public final static String PROPERTY_WIDTH = "width";
     @Nonnull
-
     public final static String PROPERTY_HEIGHT = "height";
     @Nonnull
-
     public final static String PROPERTY_DESCRIPTION = "description";
     @Nonnull
-
     public final static String PROPERTY_ANINT = "anInt";
     @Nonnull
-
     public final static String PROPERTY_FLOATFIELD = "floatField";
     @Nonnull
-
     public final static String PROPERTY_BARS = "bars";
     @Nonnull
-
     public final static String PROPERTY_BAR = "bar";
 
     public FooSerializer(BarSerializer barSerializer) {

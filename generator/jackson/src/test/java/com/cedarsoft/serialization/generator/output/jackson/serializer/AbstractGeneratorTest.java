@@ -39,7 +39,6 @@ import com.cedarsoft.codegen.model.DomainObjectDescriptorFactory;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
 import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
-import com.cedarsoft.serialization.generator.output.serializer.I18nAnnotationsDecorator;
 import com.cedarsoft.serialization.generator.output.serializer.NotNullDecorator;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
@@ -80,8 +79,7 @@ public abstract class AbstractGeneratorTest {
     final DefaultXmlDecisionCallback decisionCallback = new DefaultXmlDecisionCallback( "width", "height" );
     CodeGenerator codeGenerator = new CodeGenerator( decisionCallback );
     this.codeGenerator = codeGenerator;
-    this.codeGenerator.addDecorator( new NotNullDecorator( NotNull.class ) );
-    codeGenerator.addDecorator( new I18nAnnotationsDecorator( NonNls.class ) );
+    this.codeGenerator.addDecorator( new NotNullDecorator( Nonnull.class ) );
     model = codeGenerator.getModel();
   }
 
