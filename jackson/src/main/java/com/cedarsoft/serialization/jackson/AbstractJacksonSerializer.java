@@ -56,18 +56,12 @@ import java.util.List;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
-
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
-
   public static final String PROPERTY_TYPE = "@type";
-
   public static final String PROPERTY_VERSION = "@version";
-  @Nonnull
-
   public static final String PROPERTY_SUB_TYPE = "@subtype";
 
   @Nonnull
-
   private final String type;
 
   protected AbstractJacksonSerializer( @Nonnull String type, @Nonnull VersionRange formatVersionRange ) {
