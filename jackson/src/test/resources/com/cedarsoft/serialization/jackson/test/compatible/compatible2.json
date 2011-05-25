@@ -1,0 +1,13 @@
+{
+  "otherObject": {
+    "asdf":31
+  },
+  "anotherValue": 243,
+  "street" : "Schlossalle",
+  "anotherValue2": 243,
+  "anArray":[
+    7,8,9
+  ],
+  "number" : 7,
+  "anotherValue": 243
+}

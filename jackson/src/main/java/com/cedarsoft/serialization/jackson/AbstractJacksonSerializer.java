@@ -62,7 +62,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public static final String PROPERTY_SUB_TYPE = "@subtype";
 
   @Nonnull
-  private final String type;
+  private final String type; //$NON-NLS-1$
 
   protected AbstractJacksonSerializer( @Nonnull String type, @Nonnull VersionRange formatVersionRange ) {
     super( formatVersionRange );
