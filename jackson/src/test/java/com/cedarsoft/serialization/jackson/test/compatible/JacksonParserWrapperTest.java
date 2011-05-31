@@ -59,11 +59,11 @@ public class JacksonParserWrapperTest {
     JacksonParserWrapper parser = new JacksonParserWrapper( jsonFactory.createJsonParser( getClass().getResource( "simple.json" ) ) );
     parser.startObject();
 
-    parser.nextField( "street" );
-    assertThat( parser.getValue() ).isEqualTo( "Schlossalle" );
+    parser.nextFieldValue( "street" );
+    assertThat( parser.getText() ).isEqualTo( "Schlossalle" );
 
-    parser.nextField( "number" );
-    assertThat( parser.getValueAsInt() ).isEqualTo( 7 );
+    parser.nextFieldValue( "number" );
+    assertThat( parser.getIntValue() ).isEqualTo( 7 );
 
     parser.endObject();
   }

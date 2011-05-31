@@ -84,17 +84,19 @@ public class JacksonParserWrapper {
     }
   }
 
-  @Nonnull
-  public String getValue() throws IOException {
-    parser.nextToken();
-    return parser.getText();
+  public void closeObject() throws IOException {
+    nextToken( JsonToken.END_OBJECT );
   }
 
-  @Override
-  public int getValueAsInt() throws IOException {
-    parser.nextToken();
-    return parser.getIntValue();
+  public void ensureObjectClosed() throws JsonParseException {
+    AbstractJacksonSerializer.ensureObjectClosed( parser );
   }
+
+  public void ensureParserClosed() throws IOException {
+    AbstractJacksonSerializer.ensureParserClosed( parser );
+  }
+
+  //Delegating
 
   public int getValueAsInt( int defaultValue ) throws IOException, JsonParseException {
     return getParser().getValueAsInt( defaultValue );
@@ -129,23 +131,11 @@ public class JacksonParserWrapper {
   }
 
   public <T> T readValueAs( TypeReference<?> valueTypeRef ) throws IOException, JsonProcessingException {
-    return getParser().readValueAs( valueTypeRef );
+    return getParser().<T>readValueAs( valueTypeRef );
   }
 
   public JsonNode readValueAsTree() throws IOException, JsonProcessingException {
     return getParser().readValueAsTree();
-  }
-
-  public void closeObject() throws IOException {
-    nextToken( JsonToken.END_OBJECT );
-  }
-
-  public void ensureObjectClosed() throws JsonParseException {
-    AbstractJacksonSerializer.ensureObjectClosed( parser );
-  }
-
-  public void ensureParserClosed() throws IOException {
-    AbstractJacksonSerializer.ensureParserClosed( parser );
   }
 
   @Nonnull
