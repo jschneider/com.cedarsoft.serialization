@@ -35,6 +35,7 @@ import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -42,6 +43,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
+
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
@@ -135,14 +137,16 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @Override
   @Nonnull
   public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+    JacksonParserWrapper wrapper = new JacksonParserWrapper( parser );
+
     Version version;
     if ( isObjectType() ) {
-      nextToken( parser, JsonToken.START_OBJECT );
+      wrapper.nextToken( JsonToken.START_OBJECT );
 
-      nextFieldValue( parser, PROPERTY_TYPE );
+      wrapper.nextFieldValue( PROPERTY_TYPE );
       String readNs = parser.getText();
       verifyType( readNs );
-      nextFieldValue( parser, PROPERTY_VERSION );
+      wrapper.nextFieldValue( PROPERTY_VERSION );
       version = Version.parse( parser.getText() );
       verifyVersionReadable( version );
     } else {
@@ -165,12 +169,14 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     ensureParserClosed( parser );
   }
 
+  @Deprecated
   public static void ensureObjectClosed( @Nonnull JsonParser parser ) throws JsonParseException {
     if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
       throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
     }
   }
 
+  @Deprecated
   public static void ensureParserClosed( @Nonnull JsonParser parser ) throws IOException {
     if ( parser.nextToken() != null ) {
       throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
@@ -224,6 +230,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
   }
 
+  @Deprecated
   public static void closeObject( @Nonnull JsonParser deserializeFrom ) throws IOException {
     nextToken( deserializeFrom, JsonToken.END_OBJECT );
   }
@@ -260,6 +267,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     return deserializeArray( type, null, deserializeFrom, formatVersion );
   }
 
+  @Nonnull
   protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
     if ( propertyName == null ) {
       assert deserializeFrom.getCurrentToken() == JsonToken.START_ARRAY;

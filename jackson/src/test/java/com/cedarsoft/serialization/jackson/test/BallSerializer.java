@@ -116,15 +116,17 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     public Ball.BasketBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
       verifyVersionReadable( formatVersion );
 
+      JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
+
       String theId;
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
-        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
-        theId = deserializeFrom.getText();
+        parser.nextFieldValue( FIELD_NAME_DEFAULT_TEXT );
+        theId = parser.getText();
       } else {
-        nextFieldValue( deserializeFrom, "theId" );
-        theId = deserializeFrom.getText();
+        parser.nextFieldValue( "theId" );
+        theId = parser.getText();
       }
-      closeObject( deserializeFrom );
+      parser.closeObject();
 
       return new Ball.BasketBall( theId );
     }
