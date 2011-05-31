@@ -56,21 +56,7 @@ public class JacksonParserWrapperTest {
 
   @Test
   public void testSimple() throws Exception {
-    JacksonParserWrapper parser = new JacksonParserWrapper( jsonFactory.createJsonParser( getClass().getResource( "compatible1.json" ) ) );
-    parser.startObject();
-
-    parser.nextField( "street" );
-    assertThat( parser.getValue() ).isEqualTo( "Schlossalle" );
-
-    parser.nextField( "number" );
-    assertThat( parser.getValueAsInt() ).isEqualTo( 7 );
-
-    parser.endObject();
-  }
-
-  @Test
-  public void testSkip() throws Exception {
-    JacksonParserWrapper parser = new JacksonParserWrapper( jsonFactory.createJsonParser( getClass().getResource( "compatible2.json" ) ) );
+    JacksonParserWrapper parser = new JacksonParserWrapper( jsonFactory.createJsonParser( getClass().getResource( "simple.json" ) ) );
     parser.startObject();
 
     parser.nextField( "street" );
