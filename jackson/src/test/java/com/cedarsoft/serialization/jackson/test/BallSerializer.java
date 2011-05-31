@@ -36,6 +36,7 @@ import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractDelegatingJacksonSerializer;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializingStrategy;
+import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 
@@ -79,17 +80,18 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     @Nonnull
     @Override
     public Ball.TennisBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
+      JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
       verifyVersionReadable( formatVersion );
 
       int id;
       if ( formatVersion.equals( Version.valueOf( 1, 5, 0 ) ) ) {
-        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
+        parser.nextFieldValue( FIELD_NAME_DEFAULT_TEXT );
         id = deserializeFrom.getIntValue();
       } else {
-        nextFieldValue( deserializeFrom, "id" );
+        parser.nextFieldValue( "id" );
         id = deserializeFrom.getIntValue();
       }
-      closeObject( deserializeFrom );
+      parser.closeObject();
 
       return new Ball.TennisBall( id );
     }

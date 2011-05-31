@@ -77,7 +77,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @Override
   public void verifyType( @Nullable String type ) throws InvalidTypeException {
-    if ( !this.type.equals( type ) ) {
+    if ( !this.type.equals( type ) ) {//$NON-NLS-1$
       throw new InvalidTypeException( type, this.type );
     }
   }
@@ -186,6 +186,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * @param fieldName the field name
    * @throws IOException
    */
+  @Deprecated
   public static void nextFieldValue( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
     nextField( parser, fieldName );
     parser.nextToken();
@@ -199,6 +200,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * @param fieldName the field name
    * @throws IOException
    */
+  @Deprecated
   public static void nextField( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
     nextToken( parser, JsonToken.FIELD_NAME );
     String currentName = parser.getCurrentName();
@@ -208,11 +210,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
   }
 
+  @Deprecated
   public static void nextToken( @Nonnull JsonParser parser, @Nonnull JsonToken expected ) throws IOException {
     parser.nextToken();
     verifyCurrentToken( parser, expected );
   }
 
+  @Deprecated
   public static void verifyCurrentToken( @Nonnull JsonParser parser, @Nonnull JsonToken expected ) throws JsonParseException {
     JsonToken current = parser.getCurrentToken();
     if ( current != expected ) {

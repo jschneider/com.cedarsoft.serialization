@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.jackson.test.compatible;
 
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -26,11 +27,30 @@ public class JacksonParserWrapper {
     nextToken( JsonToken.END_OBJECT );
   }
 
+  /**
+   * Verifies the next field has the given name and prepares for read (by calling parser.nextToken).
+   *
+   * @param parser    the parser
+   * @param fieldName the field name
+   * @throws IOException
+   */
+  public void nextFieldValue( @Nonnull String fieldName ) throws IOException {
+    nextField( fieldName );
+    parser.nextToken();
+  }
+
+  /**
+   * Verifies that the next field starts.
+   * When the content of the field shall be accessed, it is necessary to call parser.nextToken() afterwards.
+   *
+   * @param parser    the parser
+   * @param fieldName the field name
+   * @throws IOException
+   */
   public void nextField( @Nonnull String fieldName ) throws IOException {
     nextToken( JsonToken.FIELD_NAME );
     String currentName = parser.getCurrentName();
 
-    //noinspection CallToStringEquals
     if ( !fieldName.equals( currentName ) ) {
       throw new JsonParseException( "Invalid field. Expected <" + fieldName + "> but was <" + currentName + ">", parser.getCurrentLocation() );
     }
@@ -57,5 +77,17 @@ public class JacksonParserWrapper {
   public int getValueAsInt() throws IOException {
     parser.nextToken();
     return parser.getIntValue();
+  }
+
+  public void closeObject() throws IOException {
+    nextToken( JsonToken.END_OBJECT );
+  }
+
+  public void ensureObjectClosed() throws JsonParseException {
+    AbstractJacksonSerializer.ensureObjectClosed( parser );
+  }
+
+  public void ensureParserClosed() throws IOException {
+    AbstractJacksonSerializer.ensureParserClosed( parser );
   }
 }
