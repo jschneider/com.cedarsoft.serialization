@@ -195,7 +195,7 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar formatVersion = serializeMethod.param( codeGenerator.ref( Version.class ), PARAM_NAME_FORMAT_VERSION );
     serializeMethod._throws( IOException.class )._throws( ( Class ) getExceptionType() );
 
-    serializeMethod.body().invoke( "verifyVersionReadable" ).arg( formatVersion );
+    serializeMethod.body().invoke( "verifyVersionWritable" ).arg( formatVersion );
 
     for ( Decorator decorator : codeGenerator.getDecorators() ) {
       if ( decorator instanceof GeneratorDecorator ) {
@@ -210,9 +210,11 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
   protected JMethod createDeserializeMethodStub( @Nonnull JType domainType, @Nonnull JDefinedClass serializerClass ) {
     JMethod deserializeMethod = serializerClass.method( JMod.PUBLIC, domainType, METHOD_NAME_DESERIALIZE );
     deserializeMethod.param( getSerializeFromType(), METHOD_NAME_DESERIALIZE_FROM );
-    deserializeMethod.param( Version.class, PARAM_NAME_FORMAT_VERSION );
+    JVar formatVersion = deserializeMethod.param( codeGenerator.ref( Version.class ), PARAM_NAME_FORMAT_VERSION );
     deserializeMethod.annotate( Override.class );
     deserializeMethod._throws( IOException.class )._throws( VersionException.class )._throws( ( Class ) getExceptionType() );
+
+    deserializeMethod.body().invoke( "verifyVersionReadable" ).arg( formatVersion );
 
     for ( Decorator decorator : codeGenerator.getDecorators() ) {
       if ( decorator instanceof GeneratorDecorator ) {

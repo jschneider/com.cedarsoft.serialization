@@ -48,7 +48,7 @@ public class FooSerializer
         Version formatVersion)
         throws IOException, JsonProcessingException
     {
-        verifyVersionReadable(formatVersion);
+        verifyVersionWritable(formatVersion);
         //width
         serializeTo.writeNumberField(PROPERTY_WIDTH, object.getWidth());
         //height
@@ -74,6 +74,7 @@ public class FooSerializer
         Version formatVersion)
         throws VersionException, IOException, JsonProcessingException
     {
+        verifyVersionReadable(formatVersion);
         //width
         nextFieldValue(deserializeFrom, PROPERTY_WIDTH);
         double width = deserializeFrom.getDoubleValue();

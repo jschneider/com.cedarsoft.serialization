@@ -32,7 +32,7 @@ public class FooSerializer
     public void serialize(SMOutputElement serializeTo, Foo object, Version formatVersion)
         throws IOException, XMLStreamException
     {
-        verifyVersionReadable(formatVersion);
+        verifyVersionWritable(formatVersion);
         //width
         serializeTo.addElementWithCharacters(serializeTo.getNamespace(), ELEMENT_WIDTH, String.valueOf(object.getWidth()));
         //height
@@ -53,6 +53,7 @@ public class FooSerializer
     public Foo deserialize(XMLStreamReader deserializeFrom, Version formatVersion)
         throws VersionException, IOException, XMLStreamException
     {
+        verifyVersionReadable(formatVersion);
         //width
         double width = Double.parseDouble(getChildText(deserializeFrom, ELEMENT_WIDTH));
         //height

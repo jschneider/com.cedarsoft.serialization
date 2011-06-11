@@ -48,7 +48,7 @@ public class FooSerializer
         Version formatVersion)
         throws IOException, XMLStreamException
     {
-        verifyVersionReadable(formatVersion);
+        verifyVersionWritable(formatVersion);
         //width
         serializeTo.addAttribute(ATTRIBUTE_WIDTH, String.valueOf(object.getWidth()));
         //height
@@ -74,6 +74,7 @@ public class FooSerializer
         Version formatVersion)
         throws VersionException, IOException, XMLStreamException
     {
+        verifyVersionReadable(formatVersion);
         //width
         double width = Double.parseDouble(deserializeFrom.getAttributeValue(null, ATTRIBUTE_WIDTH));
         //height
