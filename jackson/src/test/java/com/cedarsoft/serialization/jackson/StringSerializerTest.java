@@ -43,6 +43,12 @@ import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.fest.assertions.Fail.fail;
 
 /**
  *
@@ -57,6 +63,30 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   @Override
   protected StringSerializer getSerializer() throws Exception {
     return new StringSerializer();
+  }
+
+  @Test
+  public void testNotClose() throws Exception {
+    final boolean[] shallAcceptClose = {false};
+
+    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
+    OutputStream out = new FilterOutputStream( new ByteArrayOutputStream() ) {
+      private boolean closed;
+
+      @Override
+      public void close() throws IOException {
+        if ( !shallAcceptClose[0] ) {
+          fail( "Unacceptable close!" );
+        }
+
+        super.close();
+        closed = true;
+      }
+    };
+
+    getSerializer().serialize( "daString", out );
+    shallAcceptClose[0] = true;
+    out.close();
   }
 
   @Test

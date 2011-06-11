@@ -47,6 +47,7 @@ import org.codehaus.jackson.JsonToken;
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.WillNotClose;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,12 +86,12 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   }
 
   @Override
-  public void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException {
+  public void serialize( @Nonnull T object, @WillNotClose @Nonnull OutputStream out ) throws IOException {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
 
     serialize( object, generator );
-    generator.close();
+    generator.flush();
   }
 
   /**
