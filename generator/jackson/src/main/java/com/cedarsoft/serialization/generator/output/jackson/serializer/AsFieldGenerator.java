@@ -47,6 +47,7 @@ import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Generates an attribute
@@ -97,9 +98,11 @@ public class AsFieldGenerator extends AbstractSerializeToGenerator {
 
   @Nonnull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nullable JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
+    assert wrapper != null;
+
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    JStatement nextFieldStatement = JExpr.invoke( "nextFieldValue" ).arg( deserializeFrom ).arg( constant );
+    JStatement nextFieldStatement = wrapper.invoke( "nextFieldValue" ).arg( constant );
 
     JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
     return new Expressions( readExpression, nextFieldStatement );

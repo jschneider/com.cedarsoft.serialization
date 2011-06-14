@@ -66,12 +66,13 @@ public interface SerializeToGenerator {
    * @param generator       the generator
    * @param serializerClass the serializer class
    * @param deserializeFrom the object that shall be used to deserialize from
+   * @param wrapper         the (optional) wrapper
    * @param formatVersion   the format version
    * @param fieldInfo       the field info   @return the expression that returns the object as string  @return the created statement     @return the created expression
    * @return the created expressions
    */
   @Nonnull
-  Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo );
+  Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo );
 
   @Nonnull
   JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo );

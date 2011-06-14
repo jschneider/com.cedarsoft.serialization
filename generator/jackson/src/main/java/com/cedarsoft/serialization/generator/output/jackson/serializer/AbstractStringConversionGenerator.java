@@ -60,7 +60,7 @@ public abstract class AbstractStringConversionGenerator extends AbstractSerializ
 
   @Nonnull
   @Override
-  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
     JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
 
     return new Expressions( codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo ) );

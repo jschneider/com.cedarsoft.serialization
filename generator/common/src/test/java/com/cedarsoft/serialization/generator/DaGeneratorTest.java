@@ -150,7 +150,7 @@ public class DaGeneratorTest {
 
           @Nonnull
           @Override
-          protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
+          protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
             deserializeMethod.body().directStatement( "//deserialize:" + fieldInfo.getSimpleName() );
             return deserializeMethod.body().decl( codeGenerator.ref( Double.class ), "asdf" );
           }

@@ -54,6 +54,7 @@ import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -238,14 +239,30 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
     JVar deserializeFrom = deserializeMethod.listParams()[0];
     JVar deserializeFormatVersion = deserializeMethod.listParams()[1];
 
+    @Nullable JVar wrapper = createDeserializeWrapper( deserializeMethod, deserializeFrom );
+
     //Generate the serialization and deserialization for every field. We use the ordering of the fields used within the class
     for ( FieldWithInitializationInfo fieldInfo : domainObjectDescriptor.getFieldInfos() ) {
       appendSerializeStatement( serializerClass, serializeMethod, serializeTo, object, serializeFormatVersion, fieldInfo );
 
-      fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, deserializeFormatVersion, fieldInfo ) );
+      fieldToVar.put( fieldInfo, appendDeserializeStatement( serializerClass, deserializeMethod, deserializeFrom, wrapper, deserializeFormatVersion, fieldInfo ) );
     }
 
     return fieldToVar;
+  }
+
+  /**
+   * Creates the deserialize wrapper.
+   *
+   * This method may be overridden by subclasses if a wrapper shall be used.
+   *
+   * @param deserializeMethod the deserialize method
+   * @param deserializeFrom   the deserialize from
+   * @return the wrapper or null if no wrapper exists
+   */
+  @Nullable
+  protected JVar createDeserializeWrapper( @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom ) {
+    return null;
   }
 
   public void addDelegatingSerializerToConstructor( @Nonnull JDefinedClass serializerClass, @Nonnull JClass fieldType ) {
@@ -306,12 +323,13 @@ public abstract class AbstractGenerator<T extends DecisionCallback> extends Gene
    * @param serializerClass   the serializer class
    * @param deserializeMethod the deserialize method
    * @param deserializeFrom   deserialize from
+   * @param wrapper           the wrapper that may be used
    * @param formatVersion     the format version
    * @param fieldInfo         the field info
    * @return the var holding the deserialized value
    */
   @Nonnull
-  protected abstract JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo );
+  protected abstract JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nullable JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo );
 
   /**
    * Appends the serialize statement

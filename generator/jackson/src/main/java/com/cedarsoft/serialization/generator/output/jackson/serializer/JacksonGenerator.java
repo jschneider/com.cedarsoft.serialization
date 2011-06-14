@@ -41,8 +41,10 @@ import com.cedarsoft.serialization.generator.output.serializer.AbstractNamespace
 import com.cedarsoft.serialization.generator.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JStatement;
@@ -52,6 +54,7 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,19 +113,26 @@ public class JacksonGenerator extends AbstractNamespaceBasedGenerator {
       return super.fillDeSerializationMethods( domainObjectDescriptor, serializerClass, serializeMethod, deserializeMethod );
     } finally {
       //Call closeTag( deserializeFrom ); on deserialize
-      JVar deserializeFrom = deserializeMethod.listParams()[0];
       deserializeMethod.body().directStatement( "//Finally closing element" );
-      deserializeMethod.body().invoke( JacksonGenerator.METHOD_NAME_CLOSE_OBJECT ).arg( deserializeFrom );
+      deserializeMethod.body().directStatement( "parser.closeObject();" ); //wrapper is somewhere hidden...
     }
   }
 
   @Override
+  protected JVar createDeserializeWrapper( @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom ) {
+    JClass wrapperType = codeGenerator.ref( JacksonParserWrapper.class );
+    return deserializeMethod.body().decl( wrapperType, "parser", JExpr._new( wrapperType ).arg( deserializeFrom ) );
+  }
+
+  @Override
   @Nonnull
-  protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
+  protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nullable JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
+    assert wrapper != null;
+
     deserializeMethod.body().directStatement( "//" + fieldInfo.getSimpleName() );
     SerializeToGenerator serializeToHandler = getGenerator( fieldInfo );
 
-    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( this, serializerClass, deserializeFrom, formatVersion, fieldInfo );
+    Expressions readExpressions = serializeToHandler.createReadFromDeserializeFromExpression( this, serializerClass, deserializeFrom, wrapper, formatVersion, fieldInfo );
 
     //Add the (optional) statements before
     for ( JStatement expression : readExpressions.getBefore() ) {

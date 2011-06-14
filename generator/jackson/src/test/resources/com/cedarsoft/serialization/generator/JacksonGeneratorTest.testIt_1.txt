@@ -54,23 +54,22 @@ public class FooSerializer
     public Foo deserialize(JsonParser deserializeFrom, Version formatVersion)
         throws VersionException, IOException, JsonProcessingException
     {
-        verifyVersionReadable( formatVersion );
-        JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
-
+        verifyVersionReadable(formatVersion);
+        JacksonParserWrapper parser = new JacksonParserWrapper(deserializeFrom);
         //width
-        parser.nextFieldValue( PROPERTY_WIDTH);
+        parser.nextFieldValue(PROPERTY_WIDTH);
         double width = deserializeFrom.getDoubleValue();
         //height
-        parser.nextFieldValue( PROPERTY_HEIGHT);
+        parser.nextFieldValue(PROPERTY_HEIGHT);
         int height = deserializeFrom.getIntValue();
         //description
-        parser.nextFieldValue( PROPERTY_DESCRIPTION);
+        parser.nextFieldValue(PROPERTY_DESCRIPTION);
         String description = deserializeFrom.getText();
         //anInt
-        parser.nextFieldValue( PROPERTY_ANINT);
+        parser.nextFieldValue(PROPERTY_ANINT);
         Integer anInt = deserializeFrom.getIntValue();
         //floatField
-        parser.nextFieldValue( PROPERTY_FLOATFIELD);
+        parser.nextFieldValue(PROPERTY_FLOATFIELD);
         float floatField = deserializeFrom.getFloatValue();
         //bars
         List<? extends Bar> bars = deserializeArray(Bar.class, PROPERTY_BARS, deserializeFrom, formatVersion);

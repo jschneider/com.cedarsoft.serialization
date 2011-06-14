@@ -97,7 +97,7 @@ public class AbstractXmlGeneratorTest {
 
       @Nonnull
       @Override
-      protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
+      protected JVar appendDeserializeStatement( @Nonnull JDefinedClass serializerClass, @Nonnull JMethod deserializeMethod, @Nonnull JVar deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldWithInitializationInfo fieldInfo ) {
         throw new UnsupportedOperationException();
       }
 
