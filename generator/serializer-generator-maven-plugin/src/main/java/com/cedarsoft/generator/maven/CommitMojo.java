@@ -33,6 +33,7 @@ package com.cedarsoft.generator.maven;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -59,6 +60,17 @@ public class CommitMojo extends SourceFolderAwareMojo {
    * @parameter expression="${commitTests}"
    */
   protected boolean commitTests = true;
+
+  /**
+   * @component
+   * @required
+   * @readonly
+   */
+  protected Prompter prompter;
+
+  protected Prompter getPrompter() {
+    return prompter;
+  }
 
   protected boolean commitTests() {
     return commitTests;

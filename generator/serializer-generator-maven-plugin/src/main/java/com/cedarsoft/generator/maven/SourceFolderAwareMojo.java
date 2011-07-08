@@ -81,15 +81,6 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
    */
   private List<Resource> testResources;
 
-
-  /**
-   * @component
-   * @required
-   * @readonly
-   */
-  protected Prompter prompter;
-
-
   @SuppressWarnings( "unchecked" )
   @Nonnull
   protected List<? extends String> getCompileClasspathElements() throws DependencyResolutionRequiredException {
@@ -107,10 +98,6 @@ public abstract class SourceFolderAwareMojo extends OutputFoldersAwareMojo {
       return Collections.emptyList();
     }
     return elements;
-  }
-
-  protected Prompter getPrompter() {
-    return prompter;
   }
 
   @Nonnull
