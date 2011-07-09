@@ -29,41 +29,48 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.Version;
-import org.junit.experimental.theories.*;
-import org.junit.runner.*;
+import com.cedarsoft.serialization.Serializer;
+import org.junit.*;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static org.junit.Assert.*;
+
 /**
- * Abstract test class for testing the support for multiple format versions
- * Attention: it is necessary to define at least one DataPoint:
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;?&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> serializedAsByteArray; );</pre>
+ * Abstract class for serializer tests
  *
- * @param <T> the type that is deserialized
+ * @param <T> the type of the serialized object
+ * @deprecated use {@link AbstractSerializerTest2} instead
  */
-@RunWith( Theories.class )
-public abstract class AbstractVersionTest2<T> {
+@Deprecated
+public abstract class AbstractSerializerTest<T> {
   /**
-   * This method checks old serialized objects
+   * Default test method that checks the serialization and deserialization using the latest format
    *
    * @throws IOException
    * @throws SAXException
    */
-  @Theory
-  public void testVersion( @Nonnull VersionEntry entry ) throws Exception {
+  @Test
+  public void testSerializer() throws Exception {
     Serializer<T> serializer = getSerializer();
 
-    Version version = entry.getVersion();
-    byte[] serialized = entry.getSerialized( serializer );
+    T objectToSerialize = createObjectToSerialize();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serializer.serialize( objectToSerialize, out );
+
+    byte[] serialized = out.toByteArray();
+    verifySerialized( serialized );
 
     T deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
-    verifyDeserialized( deserialized, version );
+
+    verifyDeserialized( deserialized );
   }
 
   /**
@@ -75,10 +82,29 @@ public abstract class AbstractVersionTest2<T> {
   protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
+   * Verifies the serialized object
+   *
+   * @param serialized the serialized object
+   * @throws SAXException
+   * @throws IOException
+   */
+  protected abstract void verifySerialized( @Nonnull byte[] serialized ) throws Exception;
+
+  /**
+   * Creates the object to serialize
+   *
+   * @return the object to serialize
+   */
+  @Nonnull
+  protected abstract T createObjectToSerialize() throws Exception;
+
+  /**
    * Verifies the deserialized object.
+   * The default implementation simply calls equals
    *
    * @param deserialized the deserialized object
-   * @param version      the version
    */
-  protected abstract void verifyDeserialized( @Nonnull T deserialized, @Nonnull Version version ) throws Exception;
+  protected void verifyDeserialized( @Nonnull T deserialized ) throws Exception {
+    assertEquals( deserialized, createObjectToSerialize() );
+  }
 }

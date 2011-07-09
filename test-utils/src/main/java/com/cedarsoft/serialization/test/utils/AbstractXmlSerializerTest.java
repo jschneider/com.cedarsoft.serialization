@@ -29,9 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.AssertUtils;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +46,7 @@ import javax.annotation.Nonnull;
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {
   @Override
   protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
-    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), getExpectedSerialized().getBytes() );
+    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), getExpectedSerialized().getBytes() );
     AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
   }
 

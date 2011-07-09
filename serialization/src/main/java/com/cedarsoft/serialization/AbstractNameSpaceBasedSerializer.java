@@ -62,8 +62,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @return the namespace uri
    */
   @Nonnull
-
-  protected String createNameSpace( @Nonnull Version formatVersion ) {
+  public String createNameSpace( @Nonnull Version formatVersion ) {
     return getNameSpaceBase() + "/" + formatVersion.format();
   }
 

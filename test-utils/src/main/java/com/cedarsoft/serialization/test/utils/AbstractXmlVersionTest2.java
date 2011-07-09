@@ -29,9 +29,11 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.jdom.JDOMException;
 

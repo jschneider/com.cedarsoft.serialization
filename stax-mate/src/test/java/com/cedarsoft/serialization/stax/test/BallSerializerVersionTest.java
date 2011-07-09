@@ -32,9 +32,9 @@
 package com.cedarsoft.serialization.stax.test;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractXmlVersionTest2;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.VersionEntry;
+import com.cedarsoft.serialization.test.utils.VersionEntry;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;

@@ -29,9 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.Serializer;
 import org.junit.*;
 import org.xml.sax.SAXException;
 

@@ -29,9 +29,10 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.AssertUtils;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -57,7 +58,7 @@ import java.io.IOException;
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
-      String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
+      String expectedWithNamespace = addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), exectedXml );
       AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
     } else {
       AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current ) );

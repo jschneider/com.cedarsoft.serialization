@@ -33,6 +33,8 @@ package com.cedarsoft.serialization;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.file.FileType;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
+import com.cedarsoft.serialization.test.utils.VersionEntry;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;

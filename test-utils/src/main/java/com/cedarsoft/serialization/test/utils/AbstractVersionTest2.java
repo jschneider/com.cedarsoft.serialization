@@ -29,51 +29,57 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.Serializer;
+import org.junit.experimental.theories.*;
+import org.junit.runner.*;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
- * @param <T> the type
- * @deprecated use {@link AbstractXmlVersionTest2} instead
+ * Abstract test class for testing the support for multiple format versions
+ * Attention: it is necessary to define at least one DataPoint:
+ * <pre>&#064;DataPoint<br/>public static final Entry&lt;?&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> serializedAsByteArray; );</pre>
+ *
+ * @param <T> the type that is deserialized
  */
-@Deprecated
-public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
-  @Nonnull
-  @Override
-  protected final Map<? extends Version, ? extends byte[]> getSerialized() throws Exception {
-    Map<Version, byte[]> serializedMap = new HashMap<Version, byte[]>();
-    for ( Map.Entry<? extends Version, ? extends String> entry : getSerializedXml().entrySet() ) {
-      byte[] xml = processXml( entry.getValue(), entry.getKey() );
-      serializedMap.put( entry.getKey(), xml );
-    }
+@RunWith( Theories.class )
+public abstract class AbstractVersionTest2<T> {
+  /**
+   * This method checks old serialized objects
+   *
+   * @throws IOException
+   * @throws SAXException
+   */
+  @Theory
+  public void testVersion( @Nonnull VersionEntry entry ) throws Exception {
+    Serializer<T> serializer = getSerializer();
 
-    return serializedMap;
+    Version version = entry.getVersion();
+    byte[] serialized = entry.getSerialized( serializer );
+
+    T deserialized = serializer.deserialize( new ByteArrayInputStream( serialized ) );
+    verifyDeserialized( deserialized, version );
   }
 
   /**
-   * Converts the xml string to a byte array used to deserialize.
-   * This method automatically adds the namespace containing the version.
+   * Returns the serializer
    *
-   * @param xml     the xml
-   * @param version the version
-   * @return the byte array using the xml string
+   * @return the serializer
    */
   @Nonnull
-  protected byte[] processXml( @Nonnull final String xml, @Nonnull Version version ) throws Exception {
-    String nameSpace = ( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer() ).createNameSpace( version );
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
-  }
+  protected abstract Serializer<T> getSerializer() throws Exception;
 
   /**
-   * Returns a map containing the serialized xmls
+   * Verifies the deserialized object.
    *
-   * @return a map containing the serialized xmls
+   * @param deserialized the deserialized object
+   * @param version      the version
    */
-  @Nonnull
-  protected abstract Map<? extends Version, ? extends String> getSerializedXml();
+  protected abstract void verifyDeserialized( @Nonnull T deserialized, @Nonnull Version version ) throws Exception;
 }

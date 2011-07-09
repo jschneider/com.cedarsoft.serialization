@@ -75,21 +75,21 @@ News
 
 *** For XML based serializers:
 
- * {{{./xref/com/cedarsoft/serialization/AbstractXmlSerializerTest2.html}<com.cedarsoft.serialization.AbstractXmlSerializerTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractXmlSerializerTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2>}}
 
    For roundtrip tests.
 
- * {{{./xref/com/cedarsoft/serialization/AbstractXmlVersionTest2.html}<com.cedarsoft.serialization.AbstractXmlVersionTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractXmlVersionTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2>}}
 
   For read-only tests of old versions
 
 *** For other serializers:
 
- * {{{./xref/com/cedarsoft/serialization/AbstractSerializerTest2.html}<com.cedarsoft.serialization.AbstractXmlSerializerTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractSerializerTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2>}}
 
    For roundtrip tests.
 
- * {{{./xref/com/cedarsoft/serialization/AbstractVersionTest2.html}<com.cedarsoft.serialization.AbstractXmlVersionTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractVersionTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2>}}
 
   For read-only tests of old versions
 

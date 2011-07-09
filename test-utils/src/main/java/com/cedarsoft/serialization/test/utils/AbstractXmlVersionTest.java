@@ -29,32 +29,52 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.Version;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * An entry used for {@link AbstractVersionTest2}. It provides a version information and a serialized object.
+ * @param <T> the type
+ * @deprecated use {@link AbstractXmlVersionTest2} instead
  */
-public interface VersionEntry {
-  /**
-   * Returns the version
-   *
-   * @return the version
-   */
+@Deprecated
+public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
   @Nonnull
-  Version getVersion();
+  @Override
+  protected final Map<? extends Version, ? extends byte[]> getSerialized() throws Exception {
+    Map<Version, byte[]> serializedMap = new HashMap<Version, byte[]>();
+    for ( Map.Entry<? extends Version, ? extends String> entry : getSerializedXml().entrySet() ) {
+      byte[] xml = processXml( entry.getValue(), entry.getKey() );
+      serializedMap.put( entry.getKey(), xml );
+    }
+
+    return serializedMap;
+  }
 
   /**
-   * Returns the serialized object
+   * Converts the xml string to a byte array used to deserialize.
+   * This method automatically adds the namespace containing the version.
    *
-   * @param serializer the serializer that is used to deserialize the byte stream
-   * @return the serialized object
-   *
-   * @throws Exception
+   * @param xml     the xml
+   * @param version the version
+   * @return the byte array using the xml string
    */
   @Nonnull
-  byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception;
+  protected byte[] processXml( @Nonnull final String xml, @Nonnull Version version ) throws Exception {
+    String nameSpace = ( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer() ).createNameSpace( version );
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+  }
+
+  /**
+   * Returns a map containing the serialized xmls
+   *
+   * @return a map containing the serialized xmls
+   */
+  @Nonnull
+  protected abstract Map<? extends Version, ? extends String> getSerializedXml();
 }

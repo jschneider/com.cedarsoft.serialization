@@ -31,6 +31,8 @@
 
 package com.cedarsoft.serialization;
 
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;

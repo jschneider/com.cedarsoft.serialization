@@ -34,9 +34,9 @@ package com.cedarsoft.serialization.json;
 import com.cedarsoft.Version;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
-import com.cedarsoft.serialization.AbstractJsonVersionTest2;
+import com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.VersionEntry;
+import com.cedarsoft.serialization.test.utils.VersionEntry;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 

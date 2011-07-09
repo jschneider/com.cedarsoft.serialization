@@ -33,9 +33,9 @@ package com.cedarsoft.serialization.json;
 
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.AbstractSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 

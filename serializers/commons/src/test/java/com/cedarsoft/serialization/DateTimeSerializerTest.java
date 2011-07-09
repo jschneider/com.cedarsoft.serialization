@@ -34,6 +34,8 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.DateTimeZoneRule;
 import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;

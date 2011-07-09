@@ -32,9 +32,9 @@
 package com.cedarsoft.test.io2;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractXmlVersionTest2;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.VersionEntry;
+import com.cedarsoft.serialization.test.utils.VersionEntry;
 import com.cedarsoft.test.Money;
 import org.junit.experimental.theories.*;
 

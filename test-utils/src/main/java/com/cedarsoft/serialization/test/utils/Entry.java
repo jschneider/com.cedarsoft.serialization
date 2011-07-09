@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
 
 import javax.annotation.Nonnull;

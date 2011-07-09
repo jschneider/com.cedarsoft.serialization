@@ -32,8 +32,8 @@
 package com.cedarsoft.serialization.stax.test;
 
 import com.cedarsoft.JsonUtils;
-import com.cedarsoft.serialization.AbstractSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.StaxMateSupport;
 import org.junit.*;

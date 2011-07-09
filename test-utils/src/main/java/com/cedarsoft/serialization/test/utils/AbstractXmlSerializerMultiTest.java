@@ -29,44 +29,46 @@
  * have any questions.
  */
 
-package com.cedarsoft.test.io2;
+package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.test.Car;
-import com.cedarsoft.test.Extra;
-import com.cedarsoft.test.Model;
-import com.cedarsoft.test.Money;
-import com.cedarsoft.test.io.ModelSerializer;
-import org.junit.experimental.theories.*;
+import com.cedarsoft.AssertUtils;
+import com.cedarsoft.serialization.AbstractXmlSerializer;
 
 import javax.annotation.Nonnull;
-import java.awt.Color;
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
+ * Abstract base class for XML based serializers.
  *
+ * @param <T> the type of the serialized object
+ * @deprecated use {@link AbstractXmlSerializerTest2} instead
  */
-public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
+@Deprecated
+public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializerMultiTest<T> {
+  @Override
+  protected void verifySerialized( @Nonnull List<? extends byte[]> serialized ) throws Exception {
+    List<? extends String> expected = getExpectedSerialized();
+
+    int index = 0;
+    for ( byte[] current : serialized ) {
+      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), expected.get( index ).getBytes() );
+      try {
+        AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
+      } catch ( AssertionError e ) {
+        AssertionError newError = new AssertionError( "Failed for index <" + index + ">: " + e.getMessage() );
+        newError.setStackTrace( e.getStackTrace() );
+        throw newError;
+      }
+      index++;
+    }
+  }
+
+  /**
+   * Returns the expected serialized string
+   *
+   * @return the expected serialized string
+   */
   @Nonnull
-  @Override
-  protected Serializer<Car> getSerializer() throws Exception {
-    MoneySerializer moneySerializer = new MoneySerializer();
-    return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
-  }
 
-  @DataPoint
-  public static final Entry<?> ENTRY2 = create(
-    new Car( new Model( "Ford" ), Color.ORANGE, new Money( 19000, 00 ), Arrays.asList( new Extra( "Whoo effect", new Money( 99, 98 ) ), new Extra( "Better Whoo effect", new Money( 199, 00 ) ) ) ),
-    CarSerializerTest.class.getResourceAsStream( "car3.xml" ) );
-
-  @Override
-  protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Car original ) {
-    assertEquals( original.getColor(), deserialized.getColor() );
-    assertEquals( original.getBasePrice(), deserialized.getBasePrice() );
-    //.... (and much more)
-  }
+  protected abstract List<? extends String> getExpectedSerialized() throws Exception;
 }

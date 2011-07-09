@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>11</version>
+    <version>13</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -183,7 +183,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>net.sourceforge.findbugs</groupId>
+      <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
 

@@ -29,45 +29,33 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.Version;
+import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
- * Abstract base class for XML based serializers.
- *
- * @param <T> the type of the serialized object
- * @deprecated use {@link AbstractXmlSerializerTest2} instead
+ * An entry used for {@link AbstractVersionTest2}. It provides a version information and a serialized object.
  */
-@Deprecated
-public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializerMultiTest<T> {
-  @Override
-  protected void verifySerialized( @Nonnull List<? extends byte[]> serialized ) throws Exception {
-    List<? extends String> expected = getExpectedSerialized();
-
-    int index = 0;
-    for ( byte[] current : serialized ) {
-      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), expected.get( index ).getBytes() );
-      try {
-        AssertUtils.assertXMLEquals( new String( current ), expectedWithNamespace );
-      } catch ( AssertionError e ) {
-        AssertionError newError = new AssertionError( "Failed for index <" + index + ">: " + e.getMessage() );
-        newError.setStackTrace( e.getStackTrace() );
-        throw newError;
-      }
-      index++;
-    }
-  }
-
+public interface VersionEntry {
   /**
-   * Returns the expected serialized string
+   * Returns the version
    *
-   * @return the expected serialized string
+   * @return the version
    */
   @Nonnull
+  Version getVersion();
 
-  protected abstract List<? extends String> getExpectedSerialized() throws Exception;
+  /**
+   * Returns the serialized object
+   *
+   * @param serializer the serializer that is used to deserialize the byte stream
+   * @return the serialized object
+   *
+   * @throws Exception
+   */
+  @Nonnull
+  byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception;
 }

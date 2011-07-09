@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;

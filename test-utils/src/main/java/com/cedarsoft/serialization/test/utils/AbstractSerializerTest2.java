@@ -29,8 +29,9 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.test.utils;
 
+import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
