@@ -1,11 +1,11 @@
------------------------------------com.cedarsoft.serialization.generator.test.FooSerializerTest.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.jackson.test.FooSerializerTest.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.test;
+package com.cedarsoft.serialization.generator.jackson.test;
 
 import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerTest
@@ -23,6 +23,6 @@ public class FooSerializerTest
     }
 
 }
------------------------------------com.cedarsoft.serialization.generator.test.Foo_1.0.0_1.json-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.jackson.test.Foo_1.0.0_1.json-----------------------------------
 {
 }

@@ -1,9 +1,9 @@
-package com.cedarsoft.serialization.generator.test;
+package com.cedarsoft.serialization.generator.jackson.test;
 
 import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerTest

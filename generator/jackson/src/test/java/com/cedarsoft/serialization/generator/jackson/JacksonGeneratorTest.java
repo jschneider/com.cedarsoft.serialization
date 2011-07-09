@@ -91,20 +91,20 @@ public class JacksonGeneratorTest {
 
   @Test
   public void testRun() throws Exception {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/jackson/test/Foo.java" ).toURI() );
     assertTrue( javaFile.exists() );
     assertTrue( javaFile.isFile() );
 
     JacksonGenerator.main( new String[]{"-d", destDir.getAbsolutePath(), "-r", destResDir.getAbsolutePath(), "-t", testDestDir.getAbsolutePath(), "-s", testResDestDir.getAbsolutePath(), javaFile.getPath()} );
 
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializer.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.json" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/FooSerializerTest.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/FooSerializerTest.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/Foo_1.0.0_1.json" ) );
 
     assertEquals( "", systemOutRule.getErrAsString() );
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
@@ -113,30 +113,30 @@ public class JacksonGeneratorTest {
   }
 
   private void verifyGeneratedTests() throws IOException {
-    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/test/FooSerializerTest.java" );
+    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializerTest.java" );
     assertTrue( serializerTestFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_2.txt" ), FileUtils.readFileToString( serializerTestFile ).trim() );
 
-    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/test/FooSerializerVersionTest.java" );
+    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializerVersionTest.java" );
     assertTrue( serializerVersionTestFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
 
 
-    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/test/Foo_1.0.0_1.json" );
+    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/jackson/test/Foo_1.0.0_1.json" );
     assertTrue( resFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_4.txt" ), FileUtils.readFileToString( resFile ).trim() );
   }
 
   @Test
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/jackson/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ) );
     Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.JacksonGeneratorRunner();
     runner.generate( configuration );
 
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
     AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
@@ -146,13 +146,13 @@ public class JacksonGeneratorTest {
 
   @Test
   public void testOnlyTests() throws Exception {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/jackson/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
     Generator.AbstractGeneratorRunner<?> runner = new JacksonGenerator.JacksonGeneratorRunner();
     runner.generate( configuration );
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" );
     assertFalse( serializerFile.exists() );
 
     verifyGeneratedTests();

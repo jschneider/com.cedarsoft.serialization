@@ -91,20 +91,20 @@ public class GeneratorTest {
 
   @Test
   public void testRun() throws Exception {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/stax/mate/test/Foo.java" ).toURI() );
     assertTrue( javaFile.exists() );
     assertTrue( javaFile.isFile() );
 
     StaxMateGenerator.main( new String[]{"-d", destDir.getAbsolutePath(), "-r", destResDir.getAbsolutePath(), "-t", testDestDir.getAbsolutePath(), "-s", testResDestDir.getAbsolutePath(), javaFile.getPath()} );
 
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" ) );
-    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/staxmate/test/Foo_1.0.0_1.xml" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializer.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializerTest.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializerTest.java" ) );
+    assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/stax/mate/test/Foo_1.0.0_1.xml" ) );
 
     assertEquals( "", systemOutRule.getErrAsString() );
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
@@ -113,30 +113,30 @@ public class GeneratorTest {
   }
 
   private void verifyGeneratedTests() throws IOException {
-    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerTest.java" );
+    File serializerTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializerTest.java" );
     assertTrue( serializerTestFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_2.txt" ), FileUtils.readFileToString( serializerTestFile ).trim() );
 
-    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializerVersionTest.java" );
+    File serializerVersionTestFile = new File( testDestDir, "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializerVersionTest.java" );
     assertTrue( serializerVersionTestFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_3.txt" ), FileUtils.readFileToString( serializerVersionTestFile ).trim() );
 
 
-    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/staxmate/test/Foo_1.0.0_1.xml" );
+    File resFile = new File( testResDestDir, "com/cedarsoft/serialization/generator/stax/mate/test/Foo_1.0.0_1.xml" );
     assertTrue( resFile.exists() );
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_4.txt" ), FileUtils.readFileToString( resFile ).trim() );
   }
 
   @Test
   public void testIt() throws URISyntaxException, IOException, JClassAlreadyExistsException {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/stax/mate/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ) );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
     AssertUtils.assertEquals( getClass().getResource( "GeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
@@ -146,13 +146,13 @@ public class GeneratorTest {
 
   @Test
   public void testOnlyTests() throws Exception {
-    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/staxmate/test/Foo.java" ).toURI() );
+    File javaFile = new File( getClass().getResource( "/com/cedarsoft/serialization/generator/stax/mate/test/Foo.java" ).toURI() );
 
     GeneratorConfiguration configuration = new GeneratorConfiguration( ImmutableList.of( javaFile ), destDir, destResDir, testDestDir, testResDestDir, null, new PrintWriter( new ByteArrayOutputStream() ), GeneratorConfiguration.CreationMode.TESTS_ONLY );
     Generator.AbstractGeneratorRunner<?> runner = new StaxMateGenerator.StaxGeneratorRunner();
     runner.generate( configuration );
 
-    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/staxmate/test/FooSerializer.java" );
+    File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/stax/mate/test/FooSerializer.java" );
     assertFalse( serializerFile.exists() );
 
     verifyGeneratedTests();

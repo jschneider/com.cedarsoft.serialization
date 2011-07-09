@@ -3,8 +3,9 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.generator.stax.mate.test.Foo;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.test.utils.VersionEntry;
 import org.junit.Assert;
 import org.junit.experimental.theories.DataPoint;

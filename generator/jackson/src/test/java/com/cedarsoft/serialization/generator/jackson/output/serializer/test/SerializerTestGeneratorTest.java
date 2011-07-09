@@ -62,23 +62,23 @@ public class SerializerTestGeneratorTest extends AbstractGeneratorTest {
 
   @Test
   public void testGenerateVersionsTest() throws Exception {
-    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( "com.cedarsoft.serialization.generator.test.FooSerializer", domainObjectDescriptor );
+    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( "com.cedarsoft.serialization.generator.jackson.test.FooSerializer", domainObjectDescriptor );
 
     assertEquals( "FooSerializerVersionTest", serializerVersionTestClass.name() );
-    assertEquals( "com.cedarsoft.serialization.generator.test", serializerVersionTestClass.getPackage().name() );
+    assertEquals( "com.cedarsoft.serialization.generator.jackson.test", serializerVersionTestClass.getPackage().name() );
 
     assertGeneratedCode( getClass().getResource( "SerializerTestGeneratorTest.1.txt" ) );
   }
 
   @Test
   public void testIt() throws Exception {
-    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.test.FooSerializer" );
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.jackson.test.FooSerializer" );
 
     JDefinedClass serializerTestClass = generator.generateSerializerTest( serializerClass.fullName(), domainObjectDescriptor );
     assertEquals( "FooSerializerTest", serializerTestClass.name() );
-    assertEquals( "com.cedarsoft.serialization.generator.test", serializerTestClass.getPackage().name() );
+    assertEquals( "com.cedarsoft.serialization.generator.jackson.test", serializerTestClass.getPackage().name() );
 
-    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.test" );
+    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.jackson.test" );
     JDefinedClass definedClass = thePackage._getClass( "FooSerializerTest" );
     assertNotNull( definedClass );
     assertEquals( "FooSerializerTest", definedClass.name() );

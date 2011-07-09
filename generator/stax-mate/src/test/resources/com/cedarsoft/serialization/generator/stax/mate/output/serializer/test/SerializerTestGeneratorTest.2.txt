@@ -3,9 +3,11 @@
 package com.cedarsoft.serialization.generator.staxmate.test;
 
 import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.generator.stax.mate.test.Bar;
+import com.cedarsoft.serialization.generator.stax.mate.test.Foo;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class FooSerializerTest

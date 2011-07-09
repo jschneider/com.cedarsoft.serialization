@@ -57,7 +57,7 @@ public class StaxMateGeneratorTest extends AbstractGeneratorTest {
   public void testSerializer() throws IOException, JClassAlreadyExistsException {
     generator.generateSerializer( domainObjectDescriptor );
 
-    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.staxmate.test" );
+    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.stax.mate.test" );
     JDefinedClass definedClass = thePackage._getClass( "FooSerializer" );
     assertNotNull( definedClass );
 

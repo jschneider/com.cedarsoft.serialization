@@ -63,7 +63,7 @@ public abstract class AbstractGeneratorTest {
 
   @Before
   public void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/test/Foo.java" );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/jackson/test/Foo.java" );
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );

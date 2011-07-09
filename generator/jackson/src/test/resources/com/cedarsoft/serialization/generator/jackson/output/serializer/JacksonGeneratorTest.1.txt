@@ -1,6 +1,6 @@
------------------------------------com.cedarsoft.serialization.generator.test.FooSerializer.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.jackson.test.FooSerializer.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.test;
+package com.cedarsoft.serialization.generator.jackson.test;
 
 import java.io.IOException;
 import java.util.List;

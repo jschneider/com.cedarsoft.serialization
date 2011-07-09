@@ -1,10 +1,10 @@
------------------------------------com.cedarsoft.serialization.generator.test.FooSerializerVersionTest.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.jackson.test.FooSerializerVersionTest.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.test;
+package com.cedarsoft.serialization.generator.jackson.test;
 
 import com.cedarsoft.Version;
-import com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.test.utils.VersionEntry;
 import org.junit.Assert;
 import org.junit.experimental.theories.DataPoint;
@@ -37,6 +37,6 @@ public class FooSerializerVersionTest
     }
 
 }
------------------------------------com.cedarsoft.serialization.generator.test.Foo_1.0.0_1.json-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.jackson.test.Foo_1.0.0_1.json-----------------------------------
 {
 }
