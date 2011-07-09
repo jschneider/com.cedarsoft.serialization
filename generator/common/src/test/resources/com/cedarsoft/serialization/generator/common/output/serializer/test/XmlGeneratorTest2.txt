@@ -1,11 +1,11 @@
------------------------------------com.cedarsoft.serialization.generator.parsing.test.HouseSerializerTest.java-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.common.parsing.test.HouseSerializerTest.java-----------------------------------
 
-package com.cedarsoft.serialization.generator.parsing.test;
+package com.cedarsoft.serialization.generator.common.parsing.test;
 
 import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class HouseSerializerTest
@@ -23,7 +23,7 @@ public class HouseSerializerTest
     }
 
 }
------------------------------------com.cedarsoft.serialization.generator.parsing.test.House_1.0.0_1.xml-----------------------------------
+-----------------------------------com.cedarsoft.serialization.generator.common.parsing.test.House_1.0.0_1.xml-----------------------------------
 <?xml version="1.0"?>
 <house>
 </house>

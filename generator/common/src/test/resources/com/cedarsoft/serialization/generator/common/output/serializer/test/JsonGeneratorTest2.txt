@@ -3,9 +3,12 @@
 package com.cedarsoft.serialization.generator.parsing.test;
 
 import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.generator.common.parsing.test.Door;
+import com.cedarsoft.serialization.generator.common.parsing.test.House;
+import com.cedarsoft.serialization.generator.common.parsing.test.Room;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.DataPoint;
 
 public class HouseSerializerTest

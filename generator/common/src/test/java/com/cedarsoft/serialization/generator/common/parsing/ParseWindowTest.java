@@ -55,7 +55,7 @@ public class ParseWindowTest {
 
   @Before
   public void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/Window.java" );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/common/parsing/test/Window.java" );
     assertNotNull( resource );
     javaFile = new File( resource.toURI() );
     assertTrue( javaFile.exists() );

@@ -68,7 +68,7 @@ public class XmlGeneratorTest {
 
   @Before
   public void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/House.java" );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/common/parsing/test/House.java" );
 
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );
@@ -97,23 +97,23 @@ public class XmlGeneratorTest {
 
   @Test
   public void testGenerateVersionsTest() throws Exception {
-    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( "com.cedarsoft.serialization.generator.parsing.test.HouseSerializer", domainObjectDescriptor );
+    JDefinedClass serializerVersionTestClass = generator.generateSerializerVersionTest( "com.cedarsoft.serialization.generator.common.parsing.test.HouseSerializer", domainObjectDescriptor );
 
     assertEquals( "HouseSerializerVersionTest", serializerVersionTestClass.name() );
-    assertEquals( "com.cedarsoft.serialization.generator.parsing.test", serializerVersionTestClass.getPackage().name() );
+    assertEquals( "com.cedarsoft.serialization.generator.common.parsing.test", serializerVersionTestClass.getPackage().name() );
 
     assertGeneratedCode( getClass().getResource( "XmlGeneratorTest1.txt" ) );
   }
 
   @Test
   public void testCreateTest() throws Exception {
-    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.parsing.test.HouseSerializer" );
+    JClass serializerClass = model.ref( "com.cedarsoft.serialization.generator.common.parsing.test.HouseSerializer" );
 
     JDefinedClass serializerTestClass = generator.generateSerializerTest( serializerClass.fullName(), domainObjectDescriptor );
     assertEquals( "HouseSerializerTest", serializerTestClass.name() );
-    assertEquals( "com.cedarsoft.serialization.generator.parsing.test", serializerTestClass.getPackage().name() );
+    assertEquals( "com.cedarsoft.serialization.generator.common.parsing.test", serializerTestClass.getPackage().name() );
 
-    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.parsing.test" );
+    JPackage thePackage = model._package( "com.cedarsoft.serialization.generator.common.parsing.test" );
     JDefinedClass definedClass = thePackage._getClass( "HouseSerializerTest" );
     assertNotNull( definedClass );
     assertEquals( "HouseSerializerTest", definedClass.name() );
