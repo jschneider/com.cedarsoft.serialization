@@ -35,7 +35,8 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
-import org.apache.commons.lang.StringUtils;
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
@@ -147,7 +148,12 @@ public class VersionMappingsVisualizer<T> {
     count += COL_SEPARATOR.length() * columnsSize;
     count += COL_WIDTH * columnsSize;
 
-    out.write( StringUtils.repeat( "-", count ) + "\n" );
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < count; i++) {
+      builder.append("-");
+    }
+
+    out.write(builder.append("\n").toString());
   }
 
   protected void writeHeadline( @Nonnull Iterable<? extends Column> columns, @Nonnull Writer out ) throws IOException {
@@ -180,13 +186,17 @@ public class VersionMappingsVisualizer<T> {
   }
 
   @Nonnull
-
   private static String extend( @Nonnull String string ) {
     if ( string.length() > COL_WIDTH ) {
       return string.substring( 0, COL_WIDTH );
     }
 
-    return StringUtils.leftPad( string, COL_WIDTH );
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < COL_WIDTH - string.length(); i++) {
+      builder.append(" ");
+    }
+
+    return builder.append(string).toString();
   }
 
   public static class Column {
