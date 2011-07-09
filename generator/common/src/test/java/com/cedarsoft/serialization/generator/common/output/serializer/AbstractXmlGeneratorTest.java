@@ -118,7 +118,7 @@ public class AbstractXmlGeneratorTest {
   public void testVersionRangeInvo() {
     StringWriter out = new StringWriter();
     generator.createDefaultVersionRangeInvocation( Version.valueOf( 1, 0, 0 ), Version.valueOf( 1, 0, 0 ) ).state( new JFormatter( out ) );
-    assertEquals( "com.cedarsoft.VersionRange.from(1, 0, 0).to(1, 0, 0);", out.toString().trim() );
+    assertEquals( "com.cedarsoft.version.VersionRange.from(1, 0, 0).to(1, 0, 0);", out.toString().trim() );
   }
 
   @Test
