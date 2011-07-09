@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;

@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 

@@ -44,7 +44,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.cedarsoft.AssertUtils.assertXMLEquals;
+import static com.cedarsoft.test.utils.AssertUtils.assertXMLEquals;
 import static org.junit.Assert.*;
 
 /**

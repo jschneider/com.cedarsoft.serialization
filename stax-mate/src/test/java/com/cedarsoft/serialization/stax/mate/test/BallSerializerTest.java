@@ -31,12 +31,12 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
+import com.cedarsoft.version.Version;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.junit.*;
 import org.junit.experimental.theories.*;

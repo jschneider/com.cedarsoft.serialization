@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.test.utils.AssertUtils;
 
 import javax.annotation.Nonnull;
 
@@ -47,7 +47,7 @@ public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTes
   @Override
   protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
     String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), getExpectedSerialized().getBytes() );
-    AssertUtils.assertXMLEquals( new String( serialized ), expectedWithNamespace );
+    AssertUtils.assertXMLEquals(new String(serialized), expectedWithNamespace);
   }
 
   /**

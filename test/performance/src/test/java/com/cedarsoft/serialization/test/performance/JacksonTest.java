@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.test.performance;
 
-import com.cedarsoft.JsonUtils;
+import com.cedarsoft.test.utils.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -66,7 +66,7 @@ public class JacksonTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     mapper.writeValue( out, fileType );
 
-    JsonUtils.assertJsonEquals( JSON, out.toString() );
+    JsonUtils.assertJsonEquals(JSON, out.toString());
   }
 
   @Test

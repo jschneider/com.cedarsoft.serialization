@@ -31,7 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;

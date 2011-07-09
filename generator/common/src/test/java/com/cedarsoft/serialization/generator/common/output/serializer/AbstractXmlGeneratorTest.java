@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.generator.common.output.serializer;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
 import com.cedarsoft.codegen.model.FieldInfo;

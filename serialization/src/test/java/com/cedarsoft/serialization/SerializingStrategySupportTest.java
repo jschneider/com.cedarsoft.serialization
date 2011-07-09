@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.MockitoTemplate;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.test.utils.MockitoTemplate;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 import org.mockito.Mock;
@@ -55,7 +55,7 @@ public class SerializingStrategySupportTest {
 
   @Before
   public void setUp() throws Exception {
-    support = new SerializingStrategySupport<Integer, StringBuilder, String, IOException>( VersionRange.single( 1, 0, 0 ) );
+    support = new SerializingStrategySupport<Integer, StringBuilder, String, IOException>( VersionRange.single(1, 0, 0) );
   }
 
   @Test
@@ -107,7 +107,7 @@ public class SerializingStrategySupportTest {
         assertTrue( support.verify() );
 
         assertEquals( 1, support.getVersionMappings().getMappedVersions().size() );
-        assertEquals( Version.valueOf( 0, 0, 1 ), support.resolveVersion( strategy1, Version.valueOf( 1, 0, 0 ) ) );
+        assertEquals( Version.valueOf(0, 0, 1), support.resolveVersion( strategy1, Version.valueOf( 1, 0, 0 ) ) );
         assertEquals( Version.valueOf( 0, 0, 2 ), support.resolveVersion( strategy2, Version.valueOf( 1, 0, 0 ) ) );
       }
 

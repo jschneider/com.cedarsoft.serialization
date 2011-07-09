@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.generator.common.parsing;
 
-import com.cedarsoft.MockitoTemplate;
 import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
+import com.cedarsoft.test.utils.MockitoTemplate;
 import com.google.common.collect.ImmutableList;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;

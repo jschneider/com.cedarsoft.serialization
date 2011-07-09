@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.codehaus.jackson.JsonEncoding;
@@ -97,7 +97,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
     getSerializer().serialize( generator, "asdf", Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals( "\"asdf\"", out.toString() );
+    JsonUtils.assertJsonEquals("\"asdf\"", out.toString());
   }
 
   @DataPoint

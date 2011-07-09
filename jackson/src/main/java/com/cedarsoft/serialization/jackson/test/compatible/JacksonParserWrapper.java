@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.jackson.test.compatible;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.cedarsoft.serialization.jackson.JacksonSerializer;
 import org.codehaus.jackson.Base64Variant;

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax.mate;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLOutputFactory;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.SMOutputFactory;
@@ -89,7 +89,7 @@ public class StaxMateTest {
 
     doc.closeRoot();
 
-    AssertUtils.assertXMLEquals( out.toString(), CONTENT_SAMPLE, false );
+    AssertUtils.assertXMLEquals(out.toString(), CONTENT_SAMPLE, false);
     assertTrue( out.toString(), out.toString().contains( "<?format version=\"1.0\"?>" ) );
 
 

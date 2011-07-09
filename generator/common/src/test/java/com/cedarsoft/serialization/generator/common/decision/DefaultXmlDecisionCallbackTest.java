@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.generator.common.decision;
 
-import com.cedarsoft.MockitoTemplate;
 import com.cedarsoft.codegen.model.FieldInfo;
+import com.cedarsoft.test.utils.MockitoTemplate;
 import org.junit.*;
 import org.mockito.Mock;
 

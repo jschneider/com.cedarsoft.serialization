@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.stax.mate;
 
-import com.cedarsoft.AssertUtils;
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.test.utils.AssertUtils;
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.junit.*;
 import org.xml.sax.SAXException;
@@ -59,7 +59,7 @@ public class StaxMateVersionTest {
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( 7, out );
-    AssertUtils.assertXMLEquals( out.toString(), "<integer xmlns=\"http://integer/1.0.0\" value=\"7\" />" );
+    AssertUtils.assertXMLEquals(out.toString(), "<integer xmlns=\"http://integer/1.0.0\" value=\"7\" />");
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), Integer.valueOf( 7 ) );
   }

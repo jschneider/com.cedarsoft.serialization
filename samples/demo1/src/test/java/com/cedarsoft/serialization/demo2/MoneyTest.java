@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.demo2;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.test.utils.AssertUtils;
 import com.thoughtworks.xstream.XStream;
 import org.junit.*;
 import org.xml.sax.SAXException;
@@ -64,7 +64,7 @@ public class MoneyTest {
 
   @Test
   public void testXStream() throws IOException, SAXException {
-    AssertUtils.assertXMLEquals( EXPECTED, xStream.toXML( new Money( 7, 1 ) ) );
+    AssertUtils.assertXMLEquals(EXPECTED, xStream.toXML(new Money(7, 1)));
     AssertUtils.assertXMLEquals( EXPECTED, xStream.toXML( new Money( 701 ) ) );
     Assert.assertEquals( 7.01, ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getAmount(), 0 );
     Assert.assertEquals( 701, ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getCents() );

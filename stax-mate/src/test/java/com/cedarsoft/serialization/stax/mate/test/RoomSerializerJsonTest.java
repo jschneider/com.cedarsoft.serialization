@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.JsonUtils;
 import com.cedarsoft.serialization.stax.mate.StaxMateSupport;
 import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.test.utils.JsonUtils;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -60,7 +60,7 @@ public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
 
   @Override
   protected void verifySerialized( @Nonnull Entry<Room> entry, @Nonnull byte[] serialized ) throws Exception {
-    JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
+    JsonUtils.assertJsonEquals(new String(entry.getExpected()), new String(serialized));
   }
 
   @DataPoint

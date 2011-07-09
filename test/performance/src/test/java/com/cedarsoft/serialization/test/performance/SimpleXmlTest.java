@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.test.performance;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.junit.*;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -54,7 +54,7 @@ public class SimpleXmlTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.write( fileType, out );
 
-    AssertUtils.assertXMLEquals( out.toString(), XmlParserPerformance.CONTENT_SAMPLE_XSTREAM );
+    AssertUtils.assertXMLEquals(out.toString(), XmlParserPerformance.CONTENT_SAMPLE_XSTREAM);
   }
 
   @Test

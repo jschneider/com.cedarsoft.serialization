@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;

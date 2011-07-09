@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.AssertUtils;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.test.utils.AssertUtils;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -97,20 +97,20 @@ public class DelegatesTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     roomSerializer.serialize( hall, out );
 
-    AssertUtils.assertXMLEquals( out.toString(),
-                                 "<room xmlns=\"room/2.0.0\">\n" +
-                                   "  <description>hall</description>\n" +
-                                   "  <doors>\n" +
-                                   "    <door>\n" +
-                                   "      <description>door1</description>\n" +
-                                   "    </door>\n" +
-                                   "  </doors>\n" +
-                                   "  <windows>\n" +
-                                   "    <window width=\"10.0\" height=\"11.0\">\n" +
-                                   "      <description>window1</description>\n" +
-                                   "    </window>\n" +
-                                   "  </windows>\n" +
-                                   "</room>" );
+    AssertUtils.assertXMLEquals(out.toString(),
+                                "<room xmlns=\"room/2.0.0\">\n" +
+                                  "  <description>hall</description>\n" +
+                                  "  <doors>\n" +
+                                  "    <door>\n" +
+                                  "      <description>door1</description>\n" +
+                                  "    </door>\n" +
+                                  "  </doors>\n" +
+                                  "  <windows>\n" +
+                                  "    <window width=\"10.0\" height=\"11.0\">\n" +
+                                  "      <description>window1</description>\n" +
+                                  "    </window>\n" +
+                                  "  </windows>\n" +
+                                  "</room>");
 
     assertEquals( roomSerializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), hall );
 

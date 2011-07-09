@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -90,11 +90,11 @@ public class StaxTest {
     writer.writeEndDocument();
     writer.close();
 
-    AssertUtils.assertXMLEquals( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    AssertUtils.assertXMLEquals(out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
       "<fileType xmlns=\"http://namespace\" dependent=\"false\">\n" +
       "  <id>Canon Raw</id>\n" +
       "  <extension default=\"true\" delimiter=\".\">cr2</extension>\n" +
-      "</fileType>", true );
+      "</fileType>", true);
   }
 
   @Test

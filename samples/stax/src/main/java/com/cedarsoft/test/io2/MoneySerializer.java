@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Money;
 

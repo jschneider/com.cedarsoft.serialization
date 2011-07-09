@@ -31,8 +31,8 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.test.Money;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -53,7 +53,7 @@ public class MoneySerializerManualVersionTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( new Money( 7, 99 ), out );
 
-    AssertUtils.assertXMLEquals( out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />" );
+    AssertUtils.assertXMLEquals(out.toString(), "<money xmlns=\"http://thecompany.com/test/money/1.0.1\" cents=\"799\" />");
 
     assertEquals( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ), new Money( 7, 99 ) );
   }

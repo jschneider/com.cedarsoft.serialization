@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.registry;
 
-import com.cedarsoft.StillContainedException;
+import com.cedarsoft.exceptions.StillContainedException;
 import com.cedarsoft.serialization.NotFoundException;
 
 import javax.annotation.Nonnull;
@@ -55,12 +55,12 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public InputStream getInputStream( @Nonnull String id ) {
-    byte[] found = serialized.get( id );
-    if ( found == null ) {
-      throw new IllegalArgumentException( "No stored data found for <" + id + ">" );
+  public InputStream getInputStream(@Nonnull String id) {
+    byte[] found = serialized.get(id);
+    if (found == null) {
+      throw new IllegalArgumentException("No stored data found for <" + id + ">");
     }
-    return new ByteArrayInputStream( found );
+    return new ByteArrayInputStream(found);
   }
 
   @Nonnull
@@ -71,42 +71,42 @@ public class InMemoryObjectsAccess implements StreamBasedObjectsAccess {
 
   @Override
   @Nonnull
-  public OutputStream openOut( @Nonnull final String id ) {
-    byte[] stored = serialized.get( id );
-    if ( stored != null ) {
-      throw new StillContainedException( id );
+  public OutputStream openOut(@Nonnull final String id) {
+    byte[] stored = serialized.get(id);
+    if (stored != null) {
+      throw new StillContainedException(id);
     }
 
     return new ByteArrayOutputStream() {
       @Override
       public void close() throws IOException {
         super.close();
-        serialized.put( id, toByteArray() );
+        serialized.put(id, toByteArray());
       }
     };
   }
 
   @Override
-  public OutputStream openOutForUpdate( @Nonnull final String id ) throws NotFoundException, FileNotFoundException {
-    byte[] stored = serialized.get( id );
-    if ( stored == null ) {
-      throw new NotFoundException( id );
+  public OutputStream openOutForUpdate(@Nonnull final String id) throws NotFoundException, FileNotFoundException {
+    byte[] stored = serialized.get(id);
+    if (stored == null) {
+      throw new NotFoundException(id);
     }
 
     return new ByteArrayOutputStream() {
       @Override
       public void close() throws IOException {
         super.close();
-        serialized.put( id, toByteArray() );
+        serialized.put(id, toByteArray());
       }
     };
   }
 
   @Override
-  public void delete( @Nonnull String id ) throws NotFoundException {
-    byte[] bytes = serialized.remove( id );
-    if ( bytes == null ) {
-      throw new NotFoundException( "id" );
+  public void delete(@Nonnull String id) throws NotFoundException {
+    byte[] bytes = serialized.remove(id);
+    if (bytes == null) {
+      throw new NotFoundException("id");
     }
   }
 

@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.serializers;
 
-import com.cedarsoft.AssertUtils;
-import com.cedarsoft.DateTimeZoneRule;
 import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
+import com.cedarsoft.test.utils.AssertUtils;
+import com.cedarsoft.test.utils.DateTimeZoneRule;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -97,7 +97,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
   @Test
   public void testWrite100() throws IOException, SAXException {
     byte[] serialized = getSerializer().serializeToByteArray( new DateTime( 2001, 1, 1, 1, 1, 1, 1, zoneRule.getZone() ) );
-    AssertUtils.assertXMLEquals( new String( serialized ).trim(), "<dateTime xmlns=\"http://www.joda.org/time/dateTime/1.0.0\">20010101T010101.001-0500</dateTime>" );
+    AssertUtils.assertXMLEquals(new String(serialized).trim(), "<dateTime xmlns=\"http://www.joda.org/time/dateTime/1.0.0\">20010101T010101.001-0500</dateTime>");
 
     DateTime deserialized = getSerializer().deserialize( new ByteArrayInputStream( serialized ) );
     assertEqualsDateTime( deserialized, new DateTime( 2001, 1, 1, 1, 1, 1, 1, zoneRule.getZone() ) );

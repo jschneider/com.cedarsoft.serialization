@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;

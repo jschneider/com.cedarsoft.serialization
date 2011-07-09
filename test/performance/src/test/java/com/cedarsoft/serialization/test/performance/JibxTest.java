@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.test.performance;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.test.performance.jaxb.Extension;
 import com.cedarsoft.serialization.test.performance.jaxb.FileType;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
@@ -64,13 +64,13 @@ public class JibxTest {
     StringWriter out = new StringWriter();
     context.marshalDocument( type, "UTF-8", null, out );
 
-    AssertUtils.assertXMLEquals( out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    AssertUtils.assertXMLEquals(out.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
       "<fileType xmlns=\"http://cedarsoft.com/serialization/bench/jaxb\" dependent=\"false\">\n" +
       " <id>jpg</id>\n" +
       " <extension isDefault=\"true\">\n" +
       "  <delimiter>.</delimiter>\n" +
       "  <extension>jpg</extension>\n" +
       " </extension>\n" +
-      "</fileType>" );
+      "</fileType>");
   }
 }

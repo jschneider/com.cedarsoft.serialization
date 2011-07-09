@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.serializers.registry;
 
-import com.cedarsoft.StillContainedException;
-import com.cedarsoft.TestUtils;
+import com.cedarsoft.exceptions.StillContainedException;
+import com.cedarsoft.test.utils.TestUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.VersionMismatchException;
+import com.cedarsoft.version.VersionMismatchException;
 import com.google.common.collect.Lists;
 import org.junit.*;
 import org.junit.rules.*;
@@ -40,7 +40,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static com.cedarsoft.AssertUtils.assertXMLEquals;
+import static com.cedarsoft.test.utils.AssertUtils.assertXMLEquals;
 import static org.junit.Assert.*;
 
 /**

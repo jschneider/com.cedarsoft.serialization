@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.VersionRange;
 
 import javax.annotation.Nonnull;
 

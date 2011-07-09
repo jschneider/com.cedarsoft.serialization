@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
+import com.cedarsoft.test.utils.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -121,6 +121,6 @@ public class JacksonTest {
 
   private void verifyGenerator( @Nonnull String control ) throws IOException {
     generator.flush();
-    JsonUtils.assertJsonEquals( control, out.toString() );
+    JsonUtils.assertJsonEquals(control, out.toString());
   }
 }

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.registry;
 
-import com.cedarsoft.StillContainedException;
+import com.cedarsoft.exceptions.StillContainedException;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;

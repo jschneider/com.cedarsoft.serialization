@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.serializers;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;

@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -59,7 +59,7 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace = addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), exectedXml );
-      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
+      AssertUtils.assertXMLEquals(expectedWithNamespace, new String(current));
     } else {
       AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current ) );
     }

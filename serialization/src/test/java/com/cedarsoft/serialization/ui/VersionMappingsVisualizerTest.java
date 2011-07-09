@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.ui;
 
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
 import org.junit.*;

@@ -1,8 +1,8 @@
 package com.cedarsoft.serialization.jackson.test.compatible;
 
-import com.cedarsoft.JsonUtils;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.cedarsoft.serialization.jackson.JacksonSupport;
+import com.cedarsoft.test.utils.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -41,7 +41,7 @@ public class JacksonCompatibleTest {
     generator.flush();
     generator.close();
 
-    JsonUtils.assertJsonEquals( getClass().getResource( "simple.json" ), out.toString() );
+    JsonUtils.assertJsonEquals(getClass().getResource("simple.json"), out.toString());
   }
 
   @Test

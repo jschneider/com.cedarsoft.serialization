@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.registry;
 
-import com.cedarsoft.StillContainedException;
+import com.cedarsoft.exceptions.StillContainedException;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import javax.annotation.Nonnull;

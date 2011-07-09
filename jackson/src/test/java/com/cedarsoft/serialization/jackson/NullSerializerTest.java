@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -63,7 +63,7 @@ public class NullSerializerTest {
     NullSerializer serializer = getSerializer();
     serializer.serialize( generator, null, Version.valueOf( 1, 0, 0 ) );
     generator.close();
-    JsonUtils.assertJsonEquals( "null", out.toString() );
+    JsonUtils.assertJsonEquals("null", out.toString());
 
     assertNull( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ) );
   }

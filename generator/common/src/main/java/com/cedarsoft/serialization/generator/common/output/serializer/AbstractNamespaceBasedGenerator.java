@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.generator.common.output.serializer;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.id.NameSpaceSupport;
 import com.cedarsoft.serialization.generator.common.decision.XmlDecisionCallback;

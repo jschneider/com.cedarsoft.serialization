@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.codehaus.jackson.JsonEncoding;
@@ -87,7 +87,7 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
     getSerializer().serialize( generator, Arrays.asList( "a", "b", "c", 42, 3.141, false, null ), Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals( "[ \"a\", \"b\", \"c\", 42, 3.141, false, null ]", out.toString() );
+    JsonUtils.assertJsonEquals("[ \"a\", \"b\", \"c\", 42, 3.141, false, null ]", out.toString());
 
     List<? extends Object> deserialized = getSerializer().deserialize( new ByteArrayInputStream( out.toByteArray() ) );
     assertEquals( 7, deserialized.size() );

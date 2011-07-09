@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.test.performance;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.serialization.test.performance.jaxb.Extension;
 import com.cedarsoft.serialization.test.performance.jaxb.FileType;
+import com.cedarsoft.test.utils.AssertUtils;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
@@ -68,16 +68,16 @@ public class JaxbTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     marshaller.marshal( type, out );
 
-    AssertUtils.assertXMLEquals( out.toString(),
-                                 "<ns2:fileType xmlns:ns2=\"http://test.cedarsoft.com/fileType\">\n" +
-                                   "    <dependent>false</dependent>\n" +
-                                   "    <extension>\n" +
-                                   "        <default>true</default>\n" +
-                                   "        <delimiter>.</delimiter>\n" +
-                                   "        <extension>jpg</extension>\n" +
-                                   "    </extension>\n" +
-                                   "    <id>jpg</id>\n" +
-                                   "</ns2:fileType>" );
+    AssertUtils.assertXMLEquals(out.toString(),
+                                "<ns2:fileType xmlns:ns2=\"http://test.cedarsoft.com/fileType\">\n" +
+                                  "    <dependent>false</dependent>\n" +
+                                  "    <extension>\n" +
+                                  "        <default>true</default>\n" +
+                                  "        <delimiter>.</delimiter>\n" +
+                                  "        <extension>jpg</extension>\n" +
+                                  "    </extension>\n" +
+                                  "    <id>jpg</id>\n" +
+                                  "</ns2:fileType>");
   }
 
   @Test

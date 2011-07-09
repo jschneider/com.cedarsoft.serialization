@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.generator.jackson;
 
-import com.cedarsoft.AssertUtils;
-import com.cedarsoft.SystemOutRule;
 import com.cedarsoft.codegen.GeneratorConfiguration;
 import com.cedarsoft.serialization.generator.common.Generator;
+import com.cedarsoft.test.utils.AssertUtils;
+import com.cedarsoft.test.utils.SystemOutRule;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
@@ -107,7 +107,7 @@ public class JacksonGeneratorTest {
     File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
 
-    AssertUtils.assertEquals( getClass().getResource( "JacksonGeneratorTest.testIt_1.txt" ), FileUtils.readFileToString( serializerFile ).trim() );
+    AssertUtils.assertEquals(getClass().getResource("JacksonGeneratorTest.testIt_1.txt"), FileUtils.readFileToString(serializerFile).trim());
 
     verifyGeneratedTests();
   }

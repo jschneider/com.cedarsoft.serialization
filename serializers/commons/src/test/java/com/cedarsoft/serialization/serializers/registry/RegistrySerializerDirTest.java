@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.serializers.registry;
 
-import com.cedarsoft.StillContainedException;
-import com.cedarsoft.TestUtils;
+import com.cedarsoft.exceptions.StillContainedException;
 import com.cedarsoft.registry.DefaultRegistry;
 import com.cedarsoft.registry.Registry;
 import com.cedarsoft.registry.RegistryFactory;
+import com.cedarsoft.test.utils.TestUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 

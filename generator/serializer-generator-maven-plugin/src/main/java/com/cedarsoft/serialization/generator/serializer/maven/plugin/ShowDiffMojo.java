@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
-import com.cedarsoft.exec.Executer;
+import com.cedarsoft.execution.Executer;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.apache.maven.plugin.MojoExecutionException;

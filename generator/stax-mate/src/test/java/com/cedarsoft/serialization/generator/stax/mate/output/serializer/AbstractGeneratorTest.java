@@ -31,7 +31,6 @@
 
 package com.cedarsoft.serialization.generator.stax.mate.output.serializer;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.DomainObjectDescriptor;
@@ -40,6 +39,7 @@ import com.cedarsoft.codegen.parser.Parser;
 import com.cedarsoft.codegen.parser.Result;
 import com.cedarsoft.serialization.generator.common.decision.DefaultXmlDecisionCallback;
 import com.cedarsoft.serialization.generator.common.output.serializer.NotNullDecorator;
+import com.cedarsoft.test.utils.AssertUtils;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
 import org.junit.*;
@@ -87,7 +87,7 @@ public abstract class AbstractGeneratorTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     model.build( new SingleStreamCodeWriter( out ) );
 
-    AssertUtils.assertEquals( expected, out.toString().trim() );
+    AssertUtils.assertEquals(expected, out.toString().trim());
   }
 
   protected void assertGeneratedCode( @Nonnull String expected ) throws IOException {

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
-import com.cedarsoft.matchers.ContainsFileMatcher;
+import com.cedarsoft.test.utils.matchers.ContainsFileMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
@@ -42,8 +42,8 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Collections;
 
-import static com.cedarsoft.matchers.ContainsFileMatcher.containsFiles;
-import static com.cedarsoft.matchers.ContainsFileMatcher.empty;
+import static com.cedarsoft.test.utils.matchers.ContainsFileMatcher.containsFiles;
+import static com.cedarsoft.test.utils.matchers.ContainsFileMatcher.empty;
 import static org.junit.Assert.*;
 
 /**
@@ -117,8 +117,8 @@ public class SerializerGeneratorMojoTest extends AbstractMojoTestCase {
     SerializerGeneratorMojo mojo = createMojo( "excludes" );
     mojo.execute();
 
-    assertThat( ContainsFileMatcher.toMessage( mojo.outputDirectory ), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
-    assertThat( ContainsFileMatcher.toMessage( mojo.testOutputDirectory ), mojo.testOutputDirectory, empty() );
+    assertThat( ContainsFileMatcher.toMessage(mojo.outputDirectory), mojo.outputDirectory, containsFiles( "unit/basic/DaDomainObjectSerializer.java" ) );
+    assertThat( ContainsFileMatcher.toMessage(mojo.testOutputDirectory), mojo.testOutputDirectory, empty() );
   }
 
   @Test

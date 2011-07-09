@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;

@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
