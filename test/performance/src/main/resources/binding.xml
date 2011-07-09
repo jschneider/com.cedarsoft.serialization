@@ -33,20 +33,20 @@
 
 <binding xmlns:ns1="http://cedarsoft.com/serialization/bench/jaxb" name="binding" package="com.cedarsoft.serialization.bench.jaxb">
   <namespace uri="http://cedarsoft.com/serialization/bench/jaxb" default="elements" />
-  <mapping abstract="true" type-name="ns1:extension" class="com.cedarsoft.serialization.bench.jaxb.Extension">
+  <mapping abstract="true" type-name="ns1:extension" class="com.cedarsoft.serialization.test.performance.jaxb.Extension">
     <value style="attribute" name="isDefault" field="isDefault" />
     <value style="element" name="delimiter" field="delimiter" usage="optional" />
     <value style="element" name="extension" field="extension" usage="optional" />
   </mapping>
-  <mapping class="com.cedarsoft.serialization.bench.jaxb.Extension" name="extension">
+  <mapping class="com.cedarsoft.serialization.test.performance.jaxb.Extension" name="extension">
     <structure map-as="ns1:extension" />
   </mapping>
-  <mapping abstract="true" type-name="ns1:fileType" class="com.cedarsoft.serialization.bench.jaxb.FileType">
+  <mapping abstract="true" type-name="ns1:fileType" class="com.cedarsoft.serialization.test.performance.jaxb.FileType">
     <value style="attribute" name="dependent" field="dependent" />
     <value style="element" name="id" field="id" usage="optional" />
     <structure map-as="ns1:extension" field="extension" usage="optional" name="extension" />
   </mapping>
-  <mapping class="com.cedarsoft.serialization.bench.jaxb.FileType" name="fileType">
+  <mapping class="com.cedarsoft.serialization.test.performance.jaxb.FileType" name="fileType">
     <structure map-as="ns1:fileType" />
   </mapping>
 </binding>

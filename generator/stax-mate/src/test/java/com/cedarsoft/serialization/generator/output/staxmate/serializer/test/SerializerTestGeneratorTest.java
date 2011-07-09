@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.generator.output.staxmate.serializer.test;
 
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
+import com.cedarsoft.serialization.generator.common.output.serializer.test.XmlGenerator;
 import com.cedarsoft.serialization.generator.output.staxmate.serializer.AbstractGeneratorTest;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;

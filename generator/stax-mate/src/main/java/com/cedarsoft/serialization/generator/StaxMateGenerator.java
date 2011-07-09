@@ -33,10 +33,11 @@ package com.cedarsoft.serialization.generator;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.GeneratorCliSupport;
-import com.cedarsoft.serialization.generator.decision.DefaultXmlDecisionCallback;
-import com.cedarsoft.serialization.generator.decision.XmlDecisionCallback;
-import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
-import com.cedarsoft.serialization.generator.output.serializer.test.XmlGenerator;
+import com.cedarsoft.serialization.generator.common.Generator;
+import com.cedarsoft.serialization.generator.common.decision.DefaultXmlDecisionCallback;
+import com.cedarsoft.serialization.generator.common.decision.XmlDecisionCallback;
+import com.cedarsoft.serialization.generator.common.output.serializer.AbstractGenerator;
+import com.cedarsoft.serialization.generator.common.output.serializer.test.XmlGenerator;
 
 import javax.annotation.Nonnull;
 
@@ -63,7 +64,7 @@ public class StaxMateGenerator extends Generator {
 
     @Nonnull
     @Override
-    protected com.cedarsoft.serialization.generator.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @Nonnull CodeGenerator testCodeGenerator ) {
+    protected com.cedarsoft.serialization.generator.common.output.serializer.test.AbstractGenerator<XmlDecisionCallback> instantiateTestGenerator( @Nonnull CodeGenerator testCodeGenerator ) {
       return new XmlGenerator( testCodeGenerator );
     }
 

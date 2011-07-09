@@ -36,7 +36,7 @@ import com.cedarsoft.codegen.Expressions;
 import com.cedarsoft.codegen.ParseExpressionFactory;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
 import com.cedarsoft.codegen.model.FieldTypeInformation;
-import com.cedarsoft.serialization.generator.output.serializer.AbstractGenerator;
+import com.cedarsoft.serialization.generator.common.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;

@@ -4,5 +4,5 @@ This module contains some performance tests.
 
 JIXB binding.xml generation:
 
-java -cp /home/johannes/java/jibx/lib/jibx-tools.jar:target/classes/ org.jibx.binding.generator.BindGen -s src/main/java -t src/main/resources com.cedarsoft.serialization.bench.jaxb.Extension com.cedarsoft.serialization.bench.jaxb.FileType
+java -cp /home/johannes/java/jibx/lib/jibx-tools.jar:target/classes/ org.jibx.binding.generator.BindGen -s src/main/java -t src/main/resources com.cedarsoft.serialization.test.performance.jaxb.Extension com.cedarsoft.serialization.test.performance.jaxb.FileType
 

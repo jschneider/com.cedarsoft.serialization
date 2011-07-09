@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.generator.output.jackson.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.output.serializer.SerializeToGenerator;
+import com.cedarsoft.serialization.generator.common.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;

@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.generator;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.SystemOutRule;
 import com.cedarsoft.codegen.GeneratorConfiguration;
+import com.cedarsoft.serialization.generator.common.Generator;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
