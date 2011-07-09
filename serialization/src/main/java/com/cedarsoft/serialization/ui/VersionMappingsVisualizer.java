@@ -35,11 +35,9 @@ import com.cedarsoft.Version;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMapping;
 import com.cedarsoft.serialization.VersionMappings;
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
