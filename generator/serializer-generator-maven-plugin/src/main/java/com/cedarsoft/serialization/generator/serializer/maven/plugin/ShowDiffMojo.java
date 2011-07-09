@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.generator.maven;
+package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
 import com.cedarsoft.exec.Executer;
 import com.google.common.base.Splitter;

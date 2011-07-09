@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.generator.maven;
+package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
 import com.cedarsoft.codegen.AbstractGenerator;
 import com.cedarsoft.codegen.GeneratorConfiguration;

@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.generator.maven;
+package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.generator.maven;
+package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
 import com.cedarsoft.matchers.ContainsFileMatcher;
 import org.apache.commons.io.FileUtils;

@@ -29,13 +29,12 @@
  * have any questions.
  */
 
-package com.cedarsoft.generator.maven;
+package com.cedarsoft.serialization.generator.serializer.maven.plugin;
 
 import com.cedarsoft.codegen.parser.Classpath;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.components.interactivity.Prompter;
 
 import javax.annotation.Nonnull;
 import java.io.File;
