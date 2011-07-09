@@ -29,46 +29,49 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.staxmate.serializer;
+package com.cedarsoft.serialization.generator.stax.mate.output.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
-import com.cedarsoft.codegen.model.FieldDeclarationInfo;
+import com.cedarsoft.codegen.model.FieldInfo;
+import com.cedarsoft.serialization.generator.common.output.serializer.SerializeToGenerator;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JFieldVar;
 
 import javax.annotation.Nonnull;
 
 /**
  *
  */
-public abstract class AbstractDelegateGenerator extends AbstractSerializeToGenerator {
+public abstract class AbstractSerializeToGenerator implements SerializeToGenerator {
+  @Nonnull
+  protected final CodeGenerator codeGenerator;
 
-  public static final String METHOD_NAME_ADD_ELEMENT = "addElement";
-
-  public static final String METHOD_NAME_GET_NAMESPACE = "getNamespace";
-
-  public static final String METHOD_NAME_NEXT_TAG = "nextTag";
-
-  public static final String METHOD_NAME_CLOSE_TAG = "closeTag";
-
-  protected AbstractDelegateGenerator( @Nonnull CodeGenerator codeGenerator ) {
-    super( codeGenerator );
+  protected AbstractSerializeToGenerator( @Nonnull CodeGenerator codeGenerator ) {
+    this.codeGenerator = codeGenerator;
   }
 
   @Nonnull
-  protected JInvocation createCloseTagInvocation( @Nonnull JExpression deserializeFrom ) {
-    return JExpr.invoke( METHOD_NAME_CLOSE_TAG ).arg( deserializeFrom );
+  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull String constantName, @Nonnull JExpression value ) {
+    return codeGenerator.getOrCreateConstant( serializerClass, String.class, constantName, value );
   }
 
   @Nonnull
-  protected JInvocation createNextTagInvocation( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull FieldDeclarationInfo fieldInfo ) {
-    return JExpr.invoke( METHOD_NAME_NEXT_TAG ).arg( deserializeFrom ).arg( getConstant( serializerClass, fieldInfo ) );
+  protected JFieldVar getConstant( @Nonnull JDefinedClass serializerClass, @Nonnull FieldInfo fieldInfo ) {
+    String constantName = getConstantName( fieldInfo );
+    JExpression value = JExpr.lit( fieldInfo.getSimpleName() );
+    return getConstant( serializerClass, constantName, value );
   }
 
+  /**
+   * Returns the constant name
+   *
+   * @param fieldInfo the field info
+   * @return the constant name
+   */
   @Nonnull
-  protected JInvocation createAddElementExpression( @Nonnull JExpression serializeTo, @Nonnull JExpression elementName ) {
-    return serializeTo.invoke( METHOD_NAME_ADD_ELEMENT ).arg( serializeTo.invoke( METHOD_NAME_GET_NAMESPACE ) ).arg( elementName );
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
+    return "ELEMENT_" + fieldInfo.getSimpleName().toUpperCase();
   }
 }

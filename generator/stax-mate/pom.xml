@@ -54,7 +54,7 @@
           </descriptors>
           <archive>
             <manifest>
-              <mainClass>com.cedarsoft.serialization.generator.StaxMateGenerator</mainClass>
+              <mainClass>com.cedarsoft.serialization.generator.stax.mate.StaxMateGenerator</mainClass>
               <packageName>com.cedarsoft.serialization.generator</packageName>
             </manifest>
             <manifestEntries>

@@ -167,7 +167,7 @@ public class DaGeneratorTest {
 
     assertTrue( out.toString(), out.toString().contains( "Generating Serializer:\n" +
                                                            "Generating Serializer Tests:\n" +
-                                                           "com/cedarsoft/serialization/generator/MyClassSerializerTest.java\n" +
-                                                           "com/cedarsoft/serialization/generator/MyClassSerializerVersionTest.java\n" ) );
+                                                           "com/cedarsoft/serialization/generator/common/MyClassSerializerTest.java\n" +
+                                                           "com/cedarsoft/serialization/generator/common/MyClassSerializerVersionTest.java\n" ) );
   }
 }

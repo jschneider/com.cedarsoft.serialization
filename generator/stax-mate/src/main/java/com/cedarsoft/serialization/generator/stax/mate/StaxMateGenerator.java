@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator;
+package com.cedarsoft.serialization.generator.stax.mate;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.GeneratorCliSupport;
@@ -52,7 +52,7 @@ public class StaxMateGenerator extends Generator {
   @Nonnull
   @Override
   protected String getRunnerClassName() {
-    return "com.cedarsoft.serialization.generator.StaxMateGenerator$StaxGeneratorRunner";
+    return "com.cedarsoft.serialization.generator.stax.mate.StaxMateGenerator$StaxGeneratorRunner";
   }
 
   public static class StaxGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
@@ -71,7 +71,7 @@ public class StaxMateGenerator extends Generator {
     @Nonnull
     @Override
     protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @Nonnull CodeGenerator serializerCodeGenerator ) {
-      return new com.cedarsoft.serialization.generator.output.staxmate.serializer.StaxMateGenerator( serializerCodeGenerator );
+      return new com.cedarsoft.serialization.generator.stax.mate.output.serializer.StaxMateGenerator( serializerCodeGenerator );
     }
   }
 }

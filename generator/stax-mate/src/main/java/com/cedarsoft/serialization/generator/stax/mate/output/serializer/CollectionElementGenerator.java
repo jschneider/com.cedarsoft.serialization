@@ -29,13 +29,14 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.staxmate.serializer;
+package com.cedarsoft.serialization.generator.stax.mate.output.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
+import com.cedarsoft.codegen.Expressions;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
-import com.cedarsoft.codegen.model.FieldInfo;
-import com.cedarsoft.serialization.generator.common.decision.XmlDecisionCallback;
 import com.cedarsoft.serialization.generator.common.output.serializer.AbstractGenerator;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -44,55 +45,60 @@ import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
- * Generates an attribute
+ * Generates a new element
  */
-public class AsAttributeGenerator extends AbstractStringConversionGenerator {
+public class CollectionElementGenerator extends AbstractDelegateGenerator {
 
-  public static final String METHOD_NAME_ADD_ATTRIBUTE = "addAttribute";
+  public static final String METHOD_NAME_SERIALIZE_COLLECTION = "serializeCollectionToElement";
 
-  public static final String METHOD_NAME_GET_ATTRIBUTE_VALUE = "getAttributeValue";
+  public static final String METHOD_NAME_DESERIALIZE_COLLECTION = "deserializeCollection";
 
-
-  public AsAttributeGenerator( @Nonnull CodeGenerator codeGenerator ) {
+  public CollectionElementGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Override
   @Nonnull
   public JInvocation createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getCollectionParam() ).toString() ) );
+
     JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    JExpression objectAsString = codeGenerator.getParseExpressionFactory().createToStringExpression( codeGenerator.createGetterInvocation( object, fieldInfo ), fieldInfo );
-    return serializeTo.invoke( METHOD_NAME_ADD_ATTRIBUTE )
+    JInvocation getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
+
+    return JExpr.invoke( METHOD_NAME_SERIALIZE_COLLECTION )
+      .arg( getterInvocation )
+      .arg( JExpr.dotclass( codeGenerator.ref( fieldInfo.getCollectionParam().toString() ) ) )
       .arg( constant )
-      .arg( objectAsString );
+      .arg( serializeTo )
+      .arg( formatVersion )
+      ;
+  }
+
+  @Override
+  @Nonnull
+  public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
+    JClass collectionParamType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+
+    JInvocation nextTagExpression = createNextTagInvocation( serializerClass, deserializeFrom, fieldInfo );
+
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE_COLLECTION ).arg( deserializeFrom ).arg( JExpr.dotclass( collectionParamType ) ).arg( formatVersion );
+    return new Expressions( expression, nextTagExpression );
   }
 
   @Nonnull
   @Override
-  public JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
-    JFieldVar constant = getConstant( serializerClass, fieldInfo );
-    return deserializeFrom.invoke( METHOD_NAME_GET_ATTRIBUTE_VALUE ).arg( JExpr._null() ).arg( constant );
-  }
-
-  /**
-   * @noinspection RefusedBequest
-   */
-  @Override
-  @Nonnull
-
-  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
-    return "ATTRIBUTE_" + fieldInfo.getSimpleName().toUpperCase();
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
+    JClass collectionType = codeGenerator.ref( fieldInfo.getCollectionParam().toString() );
+    JClass list = codeGenerator.getModel().ref( List.class );
+    return list.narrow( collectionType.wildcard() );
   }
 
   @Override
   public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
-    if ( !super.canHandle( fieldInfo ) ) {
-      return false;
-    }
-
-    return ( ( XmlDecisionCallback ) codeGenerator.getDecisionCallback() ).getSerializationTarget( fieldInfo ) == XmlDecisionCallback.Target.ATTRIBUTE;
+    return fieldInfo.isCollectionType();
   }
 }

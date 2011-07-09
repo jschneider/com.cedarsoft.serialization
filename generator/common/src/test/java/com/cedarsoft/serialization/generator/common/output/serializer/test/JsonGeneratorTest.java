@@ -68,7 +68,7 @@ public class JsonGeneratorTest {
 
   @Before
   public void setUp() throws Exception {
-    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/parsing/test/House.java" );
+    URL resource = getClass().getResource( "/com/cedarsoft/serialization/generator/common/parsing/test/House.java" );
 
     assertNotNull( resource );
     File javaFile = new File( resource.toURI() );

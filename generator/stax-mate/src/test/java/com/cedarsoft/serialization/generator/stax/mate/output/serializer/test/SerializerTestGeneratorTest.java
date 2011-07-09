@@ -29,11 +29,11 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.staxmate.serializer.test;
+package com.cedarsoft.serialization.generator.stax.mate.output.serializer.test;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.generator.common.output.serializer.test.XmlGenerator;
-import com.cedarsoft.serialization.generator.output.staxmate.serializer.AbstractGeneratorTest;
+import com.cedarsoft.serialization.generator.stax.mate.output.serializer.AbstractGeneratorTest;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JDefinedClass;

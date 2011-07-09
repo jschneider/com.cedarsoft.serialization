@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.generator.staxmate.test;
+package com.cedarsoft.serialization.generator.stax.mate.test;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
