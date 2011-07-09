@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax;
+package com.cedarsoft.serialization.stax.mate;
 
 import com.cedarsoft.serialization.SerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;

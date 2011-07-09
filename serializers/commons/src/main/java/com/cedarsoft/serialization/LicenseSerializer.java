@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.license.License;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;

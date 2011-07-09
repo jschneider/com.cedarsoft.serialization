@@ -34,7 +34,7 @@ package com.cedarsoft.serialization.bench;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.out.SMOutputElement;

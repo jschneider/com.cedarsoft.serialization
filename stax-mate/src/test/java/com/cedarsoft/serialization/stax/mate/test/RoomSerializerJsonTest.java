@@ -29,10 +29,15 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
+package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
+import com.cedarsoft.JsonUtils;
+import com.cedarsoft.serialization.stax.mate.StaxMateSupport;
+import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
+import org.junit.*;
+import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -41,42 +46,31 @@ import java.util.List;
 /**
  *
  */
-public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
-  @Nonnull
-  @Override
-  protected String getExpectedSerialized() {
-    return
-      "<room>\n" +
-        "  <description>descr</description>\n" +
-        "    <window width=\"20.0\" height=\"30.0\">\n" +
-        "      <description>asdf</description>\n" +
-        "    </window>\n" +
-        "    <window width=\"50.0\" height=\"60.7\">\n" +
-        "      <description>asdf2</description>\n" +
-        "    </window>\n" +
-        "    <door>\n" +
-        "      <description>asdf</description>\n" +
-        "    </door>\n" +
-        "    <door>\n" +
-        "      <description>asdf2</description>\n" +
-        "    </door>\n" +
-        "    <door>\n" +
-        "      <description>asdf3</description>\n" +
-        "    </door>\n" +
-        "</room>";
-  }
-
+public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
   @Nonnull
   @Override
   protected Serializer<Room> getSerializer() throws Exception {
     return new Room.Serializer( new Window.Serializer(), new Door.Serializer() );
   }
 
-  @Nonnull
+  @After
+  public void clear() {
+    StaxMateSupport.clear();
+  }
+
   @Override
-  protected Room createObjectToSerialize() throws Exception {
+  protected void verifySerialized( @Nonnull Entry<Room> entry, @Nonnull byte[] serialized ) throws Exception {
+    JsonUtils.assertJsonEquals( new String( entry.getExpected() ), new String( serialized ) );
+  }
+
+  @DataPoint
+  public static Entry<?> json() {
+    StaxMateSupport.enableJson();
+
     List<Window> windows = Arrays.asList( new Window( "asdf", 20, 30 ), new Window( "asdf2", 50, 60.7 ) );
     List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
-    return new Room( "descr", windows, doors );
+    Room room = new Room( "descr", windows, doors );
+
+    return create( room, "{\"room\":{\"@xmlns\":{\"$\":\"room\\/1.0.0\"},\"description\":{\"$\":\"descr\"},\"window\":[{\"@width\":\"20.0\",\"@height\":\"30.0\",\"description\":{\"$\":\"asdf\"}},{\"@width\":\"50.0\",\"@height\":\"60.7\",\"description\":{\"$\":\"asdf2\"}}],\"door\":[{\"description\":{\"$\":\"asdf\"}},{\"description\":{\"$\":\"asdf2\"}},{\"description\":{\"$\":\"asdf3\"}}]}}".getBytes() );
   }
 }

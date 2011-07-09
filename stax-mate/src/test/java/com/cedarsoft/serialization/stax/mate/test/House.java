@@ -29,46 +29,45 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
-
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
-import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.test.utils.VersionEntry;
-import org.junit.experimental.theories.*;
+package com.cedarsoft.serialization.stax.mate.test;
 
 import javax.annotation.Nonnull;
-
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
  */
-public class BallSerializerVersionTest extends AbstractXmlVersionTest2<Ball> {
+public class House {
   @Nonnull
-  @Override
-  protected Serializer<Ball> getSerializer() throws Exception {
-    return new BallSerializer();
+  private final List<Room> rooms = new ArrayList<Room>();
+
+  @Nonnull
+  private final Door frontDoor;
+
+  public House( @Nonnull Door frontDoor ) {
+    this.frontDoor = frontDoor;
   }
 
-  @Override
-  protected void verifyDeserialized( @Nonnull Ball deserialized, @Nonnull Version version ) throws Exception {
-    if ( deserialized instanceof Ball.BasketBall ) {
-      assertEquals( "asdf", ( ( Ball.BasketBall ) deserialized ).getTheId() );
-    }
-
-    if ( deserialized instanceof Ball.TennisBall ) {
-      assertEquals( 7, ( ( Ball.TennisBall ) deserialized ).getId() );
-    }
+  public House( @Nonnull Door frontDoor, @Nonnull Collection<? extends Room> rooms ) {
+    this.frontDoor = frontDoor;
+    this.rooms.addAll( rooms );
   }
 
-  @DataPoint
-  public static final VersionEntry ENTRY1 = create( Version.valueOf( 1, 0, 0 ), "<ball type=\"basketBall\">asdf</ball>" );
-  @DataPoint
-  public static final VersionEntry ENTRY4 = create( Version.valueOf( 1, 0, 0 ), "<ball type=\"tennisBall\">7</ball>" );
+  public void addRoom( @Nonnull Room room ) {
+    this.rooms.add( room );
+  }
 
-  @DataPoint
-  public static final VersionEntry ENTRY2 = create( Version.valueOf( 1, 1, 0 ), "<ball type=\"tennisBall\" id=\"7\" />" );
-  @DataPoint
-  public static final VersionEntry ENTRY3 = create( Version.valueOf( 1, 1, 0 ), "<ball type=\"basketBall\" theId=\"asdf\"/>" );
+  @Nonnull
+  public List<? extends Room> getRooms() {
+    return Collections.unmodifiableList( rooms );
+  }
+
+  @Nonnull
+  public Door getFrontDoor() {
+    return frontDoor;
+  }
 }
+

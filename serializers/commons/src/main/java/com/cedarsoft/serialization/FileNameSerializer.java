@@ -36,7 +36,7 @@ import com.cedarsoft.VersionRange;
 import com.cedarsoft.file.BaseName;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileName;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;

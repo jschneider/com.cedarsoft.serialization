@@ -29,44 +29,34 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization;
+package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.license.License;
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.test.utils.Entry;
-import org.junit.experimental.theories.*;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
 
 /**
  *
  */
-public class LicenseSerializerTest extends AbstractXmlSerializerTest2<License> {
+public class WindowSerializerTest extends AbstractXmlSerializerTest<Window> {
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<License> getSerializer() {
-    return new LicenseSerializer();
+  protected Serializer<Window> getSerializer() throws Exception {
+    return new Window.Serializer();
   }
 
-  @DataPoint
-  public static final Entry<?> entry1 = create(
-    License.PUBLIC_DOMAIN,
-    "<license id=\"PUBLIC_DOMAIN\">\n" +
-      "  <name>Public Domain</name>\n" +
-      "</license>" );
+  @Nonnull
+  @Override
+  protected String getExpectedSerialized() {
+    return "<window width=\"123.3\" height=\"444.4\">\n" +
+      "  <description>the window</description>\n" +
+      "</window>";
+  }
 
-  @DataPoint
-  public static final Entry<?> entry2 = create(
-    License.ALL_RIGHTS_RESERVED,
-    "<license id=\"ALL_RIGHTS_RESERVED\">\n" +
-      "  <name>All rights reserved</name>\n" +
-      "</license>" );
-
-  @DataPoint
-  public static final Entry<?> entry3 = create(
-    License.UNKNOWN,
-    "<license id=\"UNKNOWN\">\n" +
-      "  <name>Unknown</name>\n" +
-      "</license>" );
+  @Nonnull
+  @Override
+  protected Window createObjectToSerialize() throws Exception {
+    return new Window( "the window", 123.3, 444.4 );
+  }
 }

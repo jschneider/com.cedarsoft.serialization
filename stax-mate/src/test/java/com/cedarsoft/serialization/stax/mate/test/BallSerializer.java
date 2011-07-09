@@ -29,13 +29,13 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
+package com.cedarsoft.serialization.stax.mate.test;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionException;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractDelegatingStaxMateSerializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializingStrategy;
+import com.cedarsoft.serialization.stax.mate.AbstractDelegatingStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializingStrategy;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;

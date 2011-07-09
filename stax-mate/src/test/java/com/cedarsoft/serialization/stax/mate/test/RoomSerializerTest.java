@@ -29,34 +29,54 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
+package com.cedarsoft.serialization.stax.mate.test;
 
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
  */
-public class WindowSerializerTest extends AbstractXmlSerializerTest<Window> {
-  @Nonnull
-  @Override
-  protected Serializer<Window> getSerializer() throws Exception {
-    return new Window.Serializer();
-  }
-
+public class RoomSerializerTest extends AbstractXmlSerializerTest<Room> {
   @Nonnull
   @Override
   protected String getExpectedSerialized() {
-    return "<window width=\"123.3\" height=\"444.4\">\n" +
-      "  <description>the window</description>\n" +
-      "</window>";
+    return
+      "<room>\n" +
+        "  <description>descr</description>\n" +
+        "    <window width=\"20.0\" height=\"30.0\">\n" +
+        "      <description>asdf</description>\n" +
+        "    </window>\n" +
+        "    <window width=\"50.0\" height=\"60.7\">\n" +
+        "      <description>asdf2</description>\n" +
+        "    </window>\n" +
+        "    <door>\n" +
+        "      <description>asdf</description>\n" +
+        "    </door>\n" +
+        "    <door>\n" +
+        "      <description>asdf2</description>\n" +
+        "    </door>\n" +
+        "    <door>\n" +
+        "      <description>asdf3</description>\n" +
+        "    </door>\n" +
+        "</room>";
   }
 
   @Nonnull
   @Override
-  protected Window createObjectToSerialize() throws Exception {
-    return new Window( "the window", 123.3, 444.4 );
+  protected Serializer<Room> getSerializer() throws Exception {
+    return new Room.Serializer( new Window.Serializer(), new Door.Serializer() );
+  }
+
+  @Nonnull
+  @Override
+  protected Room createObjectToSerialize() throws Exception {
+    List<Window> windows = Arrays.asList( new Window( "asdf", 20, 30 ), new Window( "asdf2", 50, 60.7 ) );
+    List<Door> doors = Arrays.asList( new Door( "asdf" ), new Door( "asdf2" ), new Door( "asdf3" ) );
+    return new Room( "descr", windows, doors );
   }
 }

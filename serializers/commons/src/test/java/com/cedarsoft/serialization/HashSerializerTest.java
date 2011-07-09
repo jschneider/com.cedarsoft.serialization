@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.*;

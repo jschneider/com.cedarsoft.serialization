@@ -29,34 +29,67 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
+package com.cedarsoft.serialization.stax.mate;
 
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.stax.StaxSupport;
+import org.codehaus.staxmate.SMInputFactory;
+import org.codehaus.staxmate.SMOutputFactory;
 
 import javax.annotation.Nonnull;
 
 /**
- *
+ * Support class for stax mate
  */
-public class DoorSerializerTest extends AbstractXmlSerializerTest<Door> {
+public class StaxMateSupport {
   @Nonnull
-  @Override
-  protected String getExpectedSerialized() {
-    return "<door>" +
-      "  <description>descr</description>" +
-      "</door>";
+  static final ThreadLocal<SMInputFactory> SM_INPUT_FACTORY = new ThreadLocal<SMInputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected SMInputFactory initialValue() {
+      return new SMInputFactory( StaxSupport.XML_INPUT_FACTORY.get() );
+    }
+  };
+  @Nonnull
+  static final ThreadLocal<SMOutputFactory> SM_OUTPUT_FACTORY = new ThreadLocal<SMOutputFactory>() {
+    /** @noinspection RefusedBequest*/
+    @Override
+    protected SMOutputFactory initialValue() {
+      return new SMOutputFactory( StaxSupport.XML_OUTPUT_FACTORY.get() );
+    }
+  };
+
+  private StaxMateSupport() {
   }
 
+  /**
+   * Returns the cached sm output factory
+   *
+   * @return the cached sm output factory
+   */
   @Nonnull
-  @Override
-  protected Serializer<Door> getSerializer() throws Exception {
-    return new Door.Serializer();
+  public static SMOutputFactory getSmOutputFactory() {
+    return SM_OUTPUT_FACTORY.get();
   }
 
+  /**
+   * Returns the cached sm input factory
+   *
+   * @return the cached sm input factory
+   */
   @Nonnull
-  @Override
-  protected Door createObjectToSerialize() throws Exception {
-    return new Door( "descr" );
+  public static SMInputFactory getSmInputFactory() {
+    return SM_INPUT_FACTORY.get();
+  }
+
+  public static void clear() {
+    StaxMateSupport.SM_INPUT_FACTORY.remove();
+    StaxMateSupport.SM_OUTPUT_FACTORY.remove();
+
+    StaxSupport.clear();
+  }
+
+  public static void enableJson() {
+    clear();
+    StaxSupport.enableJson();
   }
 }

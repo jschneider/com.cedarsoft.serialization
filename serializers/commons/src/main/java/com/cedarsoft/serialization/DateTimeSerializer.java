@@ -34,7 +34,7 @@ package com.cedarsoft.serialization;
 import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;

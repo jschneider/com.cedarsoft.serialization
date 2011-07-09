@@ -29,11 +29,12 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax;
+package com.cedarsoft.serialization.stax.mate;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer;
 import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;

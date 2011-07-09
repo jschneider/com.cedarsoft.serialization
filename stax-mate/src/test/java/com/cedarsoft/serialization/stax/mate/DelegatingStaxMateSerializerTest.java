@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax;
+package com.cedarsoft.serialization.stax.mate;
 
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.Version;
@@ -121,7 +121,7 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
   @Test
   public void testIt() throws IOException, SAXException {
-    Assert.assertEquals( 2, serializer.getStrategies().size() );
+    assertEquals( 2, serializer.getStrategies().size() );
 
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 1 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>" );
     AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );

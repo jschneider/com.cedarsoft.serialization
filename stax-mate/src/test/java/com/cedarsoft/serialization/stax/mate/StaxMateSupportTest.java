@@ -29,8 +29,9 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax;
+package com.cedarsoft.serialization.stax.mate;
 
+import com.cedarsoft.serialization.stax.StaxSupport;
 import com.ctc.wstx.stax.WstxInputFactory;
 import com.ctc.wstx.stax.WstxOutputFactory;
 import org.codehaus.jettison.mapped.Configuration;
@@ -64,7 +65,7 @@ public class StaxMateSupportTest {
 
   @Test
   public void testEventNames() {
-    assertEquals( "START_ELEMENT", StaxSupport.getEventName( XMLStreamReader.START_ELEMENT ) );
+    Assert.assertEquals("START_ELEMENT", StaxSupport.getEventName(XMLStreamReader.START_ELEMENT));
     assertEquals( "DTD", StaxSupport.getEventName( XMLStreamReader.DTD ) );
     assertEquals( "END_ELEMENT", StaxSupport.getEventName( XMLStreamReader.END_ELEMENT ) );
     assertEquals( "6151351", StaxSupport.getEventName( 6151351 ) );

@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.file.FileName;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.xml.XmlCommons;

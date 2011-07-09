@@ -34,7 +34,7 @@ package com.cedarsoft.test.io2;
 import com.cedarsoft.UnsupportedVersionException;
 import com.cedarsoft.Version;
 import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
 

@@ -46,7 +46,7 @@ public class StaxSupport {
   }
 
   @Nonnull
-  static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
+  public static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
     protected XMLInputFactory initialValue() {
@@ -54,7 +54,7 @@ public class StaxSupport {
     }
   };
   @Nonnull
-  static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
+  public static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
     protected XMLOutputFactory initialValue() {

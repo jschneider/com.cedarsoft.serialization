@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.stax.test;
+package com.cedarsoft.serialization.stax.mate.test;
 
 import com.cedarsoft.Version;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
