@@ -29,11 +29,11 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.jackson.serializer.test;
+package com.cedarsoft.serialization.generator.jackson.output.serializer.test;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.serialization.generator.common.output.serializer.test.JsonGenerator;
-import com.cedarsoft.serialization.generator.output.jackson.serializer.AbstractGeneratorTest;
+import com.cedarsoft.serialization.generator.jackson.output.serializer.AbstractGeneratorTest;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;

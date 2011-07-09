@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.generator.test;
+package com.cedarsoft.serialization.generator.jackson.test;
 
 /**
  *

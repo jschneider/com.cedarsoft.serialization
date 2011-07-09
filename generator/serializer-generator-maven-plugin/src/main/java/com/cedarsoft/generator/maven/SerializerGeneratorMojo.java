@@ -32,7 +32,7 @@
 package com.cedarsoft.generator.maven;
 
 import com.cedarsoft.codegen.AbstractGenerator;
-import com.cedarsoft.serialization.generator.JacksonGenerator;
+import com.cedarsoft.serialization.generator.jackson.JacksonGenerator;
 import com.cedarsoft.serialization.generator.stax.mate.StaxMateGenerator;
 
 import javax.annotation.Nonnull;

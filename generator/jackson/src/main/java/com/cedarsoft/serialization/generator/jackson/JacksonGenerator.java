@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator;
+package com.cedarsoft.serialization.generator.jackson;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.GeneratorCliSupport;
@@ -52,7 +52,7 @@ public class JacksonGenerator extends Generator {
   @Nonnull
   @Override
   protected String getRunnerClassName() {
-    return "com.cedarsoft.serialization.generator.JacksonGenerator$JacksonGeneratorRunner";
+    return "com.cedarsoft.serialization.generator.jackson.JacksonGenerator$JacksonGeneratorRunner";
   }
 
   public static class JacksonGeneratorRunner extends AbstractGeneratorRunner<XmlDecisionCallback> {
@@ -71,7 +71,7 @@ public class JacksonGenerator extends Generator {
     @Nonnull
     @Override
     protected AbstractGenerator<XmlDecisionCallback> instantiateGenerator( @Nonnull CodeGenerator serializerCodeGenerator ) {
-      return new com.cedarsoft.serialization.generator.output.jackson.serializer.JacksonGenerator( serializerCodeGenerator );
+      return new com.cedarsoft.serialization.generator.jackson.output.serializer.JacksonGenerator( serializerCodeGenerator );
     }
   }
 }

@@ -29,17 +29,21 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.jackson.serializer;
+package com.cedarsoft.serialization.generator.jackson.output.serializer;
 
 import com.cedarsoft.codegen.CodeGenerator;
 import com.cedarsoft.codegen.Expressions;
-import com.cedarsoft.codegen.ParseExpressionFactory;
+import com.cedarsoft.codegen.TypeUtils;
 import com.cedarsoft.codegen.model.FieldDeclarationInfo;
-import com.cedarsoft.codegen.model.FieldTypeInformation;
+import com.cedarsoft.codegen.model.FieldInfo;
 import com.cedarsoft.serialization.generator.common.output.serializer.AbstractGenerator;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JStatement;
 import com.sun.codemodel.JVar;
 
 import javax.annotation.Nonnull;
@@ -47,50 +51,60 @@ import javax.annotation.Nonnull;
 /**
  *
  */
-public abstract class AbstractStringConversionGenerator extends AbstractSerializeToGenerator {
-  protected AbstractStringConversionGenerator( @Nonnull CodeGenerator codeGenerator ) {
+public class DelegateGenerator extends AbstractDelegateGenerator {
+
+  public static final String METHOD_NAME_DESERIALIZE = "deserialize";
+
+  public static final String METHOD_NAME_SERIALIZE = "serialize";
+
+  public DelegateGenerator( @Nonnull CodeGenerator codeGenerator ) {
     super( codeGenerator );
   }
 
   @Nonnull
   @Override
-  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
-    return codeGenerator.ref( fieldInfo.getType().toString() );
+  public JStatement createAddToSerializeToExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression serializeTo, @Nonnull FieldDeclarationInfo fieldInfo, @Nonnull JVar object, JVar formatVersion ) {
+    //Add serializer to constructor
+    generator.addDelegatingSerializerToConstructor( serializerClass, codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) );
+
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
+
+    JExpression getterInvocation = codeGenerator.createGetterInvocation( object, fieldInfo );
+
+    return JExpr.invoke( METHOD_NAME_SERIALIZE )
+      .arg( getterInvocation )
+      .arg( JExpr.dotclass( codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() ) ) )
+      .arg( constant )
+      .arg( serializeTo )
+      .arg( formatVersion )
+      ;
   }
 
   @Nonnull
   @Override
   public Expressions createReadFromDeserializeFromExpression( @Nonnull AbstractGenerator<?> generator, @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, JVar wrapper, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo ) {
-    JExpression readExpression = createReadExpression( serializerClass, deserializeFrom, formatVersion, fieldInfo );
+    JFieldVar constant = getConstant( serializerClass, fieldInfo );
 
-    return new Expressions( codeGenerator.getParseExpressionFactory().createParseExpression( readExpression, fieldInfo ) );
+    JClass type = codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
+    JInvocation expression = JExpr.invoke( METHOD_NAME_DESERIALIZE ).arg( JExpr.dotclass( type ) ).arg( constant ).arg( formatVersion ).arg( deserializeFrom );
+    return new Expressions( expression );
   }
 
-  /**
-   * Creates the read expression (without conversion to string)
-   *
-   * @param serializerClass the serializer class
-   * @param deserializeFrom the deserialize from
-   * @param formatVersion   the format version
-   * @param fieldInfo       the field info
-   * @return the expression to read the value
-   */
   @Nonnull
-  public abstract JExpression createReadExpression( @Nonnull JDefinedClass serializerClass, @Nonnull JExpression deserializeFrom, @Nonnull JVar formatVersion, @Nonnull FieldDeclarationInfo fieldInfo );
+  @Override
+  public JClass generateFieldType( @Nonnull FieldDeclarationInfo fieldInfo ) {
+    return codeGenerator.ref( TypeUtils.getErasure( fieldInfo.getType() ).toString() );
+  }
 
   @Override
   public boolean canHandle( @Nonnull FieldDeclarationInfo fieldInfo ) {
-    return isBuildInType( fieldInfo );
+    return true;
   }
 
-  /**
-   * Returns whether the given field info is a build in type
-   *
-   * @param fieldInfo the field info
-   * @return true if the field is of the build in type, false otherwise
-   */
-  public static boolean isBuildInType( @Nonnull FieldTypeInformation fieldInfo ) {
-    return ParseExpressionFactory.getSupportedTypeNames().contains( fieldInfo.getType().toString() );
-  }
+  @Override
+  @Nonnull
 
+  protected String getConstantName( @Nonnull FieldInfo fieldInfo ) {
+    return "PROPERTY_" + fieldInfo.getSimpleName().toUpperCase();
+  }
 }

@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator;
+package com.cedarsoft.serialization.generator.jackson;
 
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.SystemOutRule;

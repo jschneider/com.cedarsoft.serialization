@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.output.jackson.serializer;
+package com.cedarsoft.serialization.generator.jackson.output.serializer;
 
 import com.cedarsoft.AssertUtils;
 import com.cedarsoft.codegen.CodeGenerator;
@@ -71,7 +71,7 @@ public abstract class AbstractGeneratorTest {
     assertNotNull( parsed );
 
     TypeUtils.setTypes( parsed.getEnvironment().getTypeUtils() );
-    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.test.Foo" ) );
+    DomainObjectDescriptorFactory factory = new DomainObjectDescriptorFactory( parsed.getClassDeclaration( "com.cedarsoft.serialization.generator.jackson.test.Foo" ) );
     domainObjectDescriptor = factory.create();
     assertNotNull( domainObjectDescriptor );
 

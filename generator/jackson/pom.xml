@@ -54,7 +54,7 @@
           </descriptors>
           <archive>
             <manifest>
-              <mainClass>com.cedarsoft.serialization.generator.JacksonGenerator</mainClass>
+              <mainClass>com.cedarsoft.serialization.generator.jackson.JacksonGenerator</mainClass>
               <packageName>com.cedarsoft.serialization.generator</packageName>
             </manifest>
             <manifestEntries>
