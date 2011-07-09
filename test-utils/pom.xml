@@ -11,6 +11,8 @@
   <artifactId>test-utils</artifactId>
   <name>Test Utils</name>
 
+  <packaging>bundle</packaging>
+
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>

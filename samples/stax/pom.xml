@@ -11,6 +11,8 @@
   <artifactId>stax</artifactId>
   <name>Stax Sample</name>
 
+  <packaging>bundle</packaging>
+
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>

@@ -11,6 +11,8 @@
   <artifactId>stax-mate</artifactId>
   <name>Stax Mate</name>
 
+  <packaging>bundle</packaging>
+
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>

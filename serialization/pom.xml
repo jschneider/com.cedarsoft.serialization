@@ -10,16 +10,12 @@
   <artifactId>serialization</artifactId>
   <name>Serialization</name>
 
+  <packaging>bundle</packaging>
+
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>version</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <optional>true</optional>
     </dependency>
 
     <dependency>

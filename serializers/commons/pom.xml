@@ -11,6 +11,8 @@
   <artifactId>commons-serializers</artifactId>
   <name>cedarsoft Commons Serializers</name>
 
+  <packaging>bundle</packaging>
+
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>
