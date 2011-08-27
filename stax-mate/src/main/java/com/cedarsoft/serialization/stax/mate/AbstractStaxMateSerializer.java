@@ -125,4 +125,16 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
   protected void serializeToElementWithCharacters( @Nonnull String elementName, @Nonnull String characters, @Nonnull SMOutputElement serializeTo ) throws XMLStreamException {
     serializeTo.addElementWithCharacters( serializeTo.getNamespace(), elementName, characters );
   }
+
+  /**
+   * Serializes an enum (as attribute)
+   *
+   * @param enumValue    the num value
+   * @param propertyName the property name
+   * @param serializeTo  the object to serialize to
+   * @throws XMLStreamException
+   */
+  public void serializeEnum( @Nonnull Enum<?> enumValue, @Nonnull String propertyName, @Nonnull SMOutputElement serializeTo ) throws XMLStreamException {
+    serializeTo.addAttribute( propertyName, enumValue.name() );
+  }
 }

@@ -36,6 +36,7 @@ import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.InvalidNamespaceException;
+
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
@@ -360,6 +361,21 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
         entry.getTargetCollection().add( deserialized );
       }
     } );
+  }
+
+  /**
+   * Deserializes the enum
+   *
+   * @param enumType        the enum type
+   * @param propertyName    the property name
+   * @param deserializeFrom the object to deserialize from
+   * @param <T>             the type
+   * @return the deserialized enum
+   */
+  @Nonnull
+  public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumType, @Nonnull String propertyName, @Nonnull XMLStreamReader deserializeFrom ) {
+    String enumValue = deserializeFrom.getAttributeValue( null, propertyName );
+    return Enum.valueOf( enumType, enumValue );
   }
 
   /**

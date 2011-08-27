@@ -63,10 +63,6 @@ public class Foo {
       serializeEnum( object.getDirection(), "direction", serializeTo );
     }
 
-    private void serializeEnum( @Nonnull Enum<?> enumValue, @Nonnull String propertyName, @Nonnull SMOutputElement serializeTo ) throws XMLStreamException {
-      serializeTo.addAttribute( propertyName, enumValue.name() );
-    }
-
     @Nonnull
     @Override
     public Foo deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
@@ -77,10 +73,5 @@ public class Foo {
       return new Foo( description, direction );
     }
 
-    @Nonnull
-    private <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumType, @Nonnull String propertyName, @Nonnull XMLStreamReader deserializeFrom ) {
-      String enumValue = deserializeFrom.getAttributeValue( null, propertyName );
-      return Enum.valueOf( enumType, enumValue );
-    }
   }
 }
