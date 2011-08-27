@@ -332,4 +332,14 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public boolean isObjectType() {
     return true;
   }
+
+  public void serializeEnum( @Nonnull Enum<?> enumValue, @Nonnull String propertyName, @Nonnull JsonGenerator serializeTo ) throws IOException {
+    serializeTo.writeStringField( propertyName, enumValue.name() );
+  }
+
+  @Nonnull
+  public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull String propertyName, @Nonnull JacksonParserWrapper parser ) throws IOException {
+    parser.nextFieldValue( propertyName );
+    return Enum.valueOf( enumClass, parser.getText() );
+  }
 }
