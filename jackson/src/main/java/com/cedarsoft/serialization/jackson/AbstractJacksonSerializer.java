@@ -144,6 +144,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     if ( isObjectType() ) {
       wrapper.nextToken( JsonToken.START_OBJECT );
 
+      beforeTypeAndVersion( wrapper );
+
       wrapper.nextFieldValue( PROPERTY_TYPE );
       String readType = parser.getText();
       verifyType( readType );
@@ -162,6 +164,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
 
     return deserialized;
+  }
+
+  /**
+   * Callback method that is called before the type and version are parsed
+   * @param wrapper the wrapper
+   */
+  protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) {
   }
 
   @Deprecated
