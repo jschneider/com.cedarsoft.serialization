@@ -168,9 +168,10 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   /**
    * Callback method that is called before the type and version are parsed
+   *
    * @param wrapper the wrapper
    */
-  protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) {
+  protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, InvalidTypeException {
   }
 
   @Deprecated
