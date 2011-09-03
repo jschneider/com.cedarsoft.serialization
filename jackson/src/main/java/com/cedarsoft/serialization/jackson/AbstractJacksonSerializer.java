@@ -145,8 +145,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
       wrapper.nextToken( JsonToken.START_OBJECT );
 
       wrapper.nextFieldValue( PROPERTY_TYPE );
-      String readNs = parser.getText();
-      verifyType( readNs );
+      String readType = parser.getText();
+      verifyType( readType );
       wrapper.nextFieldValue( PROPERTY_VERSION );
       version = Version.parse( parser.getText() );
       verifyVersionReadable( version );
