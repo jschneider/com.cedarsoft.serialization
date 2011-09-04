@@ -71,16 +71,16 @@ public class MoneyXstreamLegacyTest {
       xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream() );
       fail( "Where is the Exception" );
     } catch ( ConversionException e ) {
-      assertEquals( e.getMessage(), "amount : amount : amount : amount\n" +
-        "---- Debugging information ----\n" +
-        "message             : amount : amount\n" +
-        "cause-exception     : com.thoughtworks.xstream.mapper.CannotResolveClassException\n" +
-        "cause-message       : amount : amount\n" +
-        "class               : com.cedarsoft.serialization.demo2.Money\n" +
-        "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
-        "path                : /money/amount\n" +
-        "line number         : 3\n" +
-        "-------------------------------" );
+      assertEquals( "No such field com.cedarsoft.serialization.demo2.Money.amount\n" +
+                      "---- Debugging information ----\n" +
+                      "field               : amount\n" +
+                      "class               : com.cedarsoft.serialization.demo2.Money\n" +
+                      "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
+                      "converter-type      : com.thoughtworks.xstream.converters.reflection.ReflectionConverter\n" +
+                      "path                : /money/amount\n" +
+                      "line number         : 3\n" +
+                      "version             : null\n" +
+                      "-------------------------------", e.getMessage() );
     }
   }
 
