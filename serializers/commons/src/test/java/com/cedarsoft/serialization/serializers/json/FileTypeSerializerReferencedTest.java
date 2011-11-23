@@ -45,7 +45,7 @@ public class FileTypeSerializerReferencedTest extends AbstractJsonSerializerTest
   @DataPoint
   public static final Entry<? extends FileType> ENTRY1 = create(
     FileTypeRegistry.RAW_CANON,
-    "\"Canon Raw\""
+    "\"CanonRaw\""
   );
 
   @Nonnull
