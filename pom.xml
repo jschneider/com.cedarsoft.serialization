@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>22</version>
+    <version>23</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -208,7 +208,7 @@
   <properties>
     <currentStableVersion>4.0.2</currentStableVersion>
     <currentDevelopmentVersion>4.0.3-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>5.0.6</commons.version>
+    <commons.version>5.0.7</commons.version>
   </properties>
 
   <repositories>
