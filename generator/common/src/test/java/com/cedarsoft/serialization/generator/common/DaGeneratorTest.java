@@ -127,7 +127,8 @@ public class DaGeneratorTest {
           @Nonnull
           @Override
           protected JClass createSerializerExtendsExpression( @Nonnull JClass domainType ) {
-            return codeGenerator.ref( Serializer.class ).narrow( Integer.class );
+            JClass ref = codeGenerator.ref( Serializer.class );
+            return ref.narrow( Integer.class );
           }
 
           @Nonnull
