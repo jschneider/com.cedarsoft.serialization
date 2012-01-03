@@ -108,6 +108,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public void serialize( @Nonnull T object, @Nonnull JsonGenerator generator ) throws IOException {
     if ( isObjectType() ) {
       generator.writeStartObject();
+
+      beforeTypeAndVersion( object, generator );
+      
       generator.writeStringField( PROPERTY_TYPE, type );
       generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
     }
@@ -117,6 +120,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     if ( isObjectType() ) {
       generator.writeEndObject();
     }
+  }
+
+  protected void beforeTypeAndVersion( @Nonnull T object, @Nonnull JsonGenerator serializeTo ) throws IOException {
   }
 
   @Nonnull
