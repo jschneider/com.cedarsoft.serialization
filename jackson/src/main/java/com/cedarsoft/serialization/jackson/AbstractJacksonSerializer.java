@@ -134,7 +134,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @Override
   @Nonnull
   public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
-    return deserialize( parser, null );
+    return deserializeInternal( parser, null );
   }
 
   @Nonnull
