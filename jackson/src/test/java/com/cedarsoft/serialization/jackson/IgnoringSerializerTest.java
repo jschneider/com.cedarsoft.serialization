@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.version.Version;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.junit.*;
@@ -29,7 +30,7 @@ public class IgnoringSerializerTest {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     JsonParser parser = jsonFactory.createJsonParser( new ByteArrayInputStream( json.getBytes() ) );
 
-    Void result = serializer.deserialize( parser );
+    Void result = serializer.deserialize( parser, Version.valueOf( 1, 0, 0 ) ); //we use the override stuff to avoid version/type check
     assertThat( result ).isNull();
   }
 
