@@ -46,6 +46,7 @@ import java.io.InputStream;
 
 /**
  *
+ * @noinspection RefusedBequest, NullableProblems
  */
 public class NullSerializer extends AbstractJacksonSerializer<Void> {
   @Nonnull
@@ -60,7 +61,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
     serializeTo.writeNull();
   }
 
-  @Nullable
+  @Nonnull
   @Override
   public Void deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     throw new UnsupportedOperationException();
@@ -70,12 +71,14 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   @Override
   public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
     nextToken( parser, JsonToken.VALUE_NULL );
+    //noinspection ConstantConditions
     return null;
   }
 
   @Nullable
   @Override
   public Void deserialize( @Nonnull InputStream in ) throws IOException, VersionException {
+    //noinspection ConstantConditions
     return null;
   }
 
