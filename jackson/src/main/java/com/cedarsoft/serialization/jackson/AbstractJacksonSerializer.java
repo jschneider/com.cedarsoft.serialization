@@ -128,11 +128,22 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @Nonnull
   @Override
   public T deserialize( @Nonnull InputStream in ) throws IOException, VersionException {
+    return deserialize( in, null );
+  }
+
+  @Override
+  @Nonnull
+  public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+    return deserialize( parser, null );
+  }
+
+  @Nonnull
+  public T deserialize( @Nonnull InputStream in, @Nullable Version version ) throws IOException, VersionException {
     try {
       JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
       JsonParser parser = jsonFactory.createJsonParser( in );
 
-      T deserialized = deserialize( parser );
+      T deserialized = deserializeInternal( parser, version );
 
       ensureParserClosed( parser );
       return deserialized;
@@ -141,27 +152,20 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
   }
 
-  @Override
+  /**
+   * If the format version override is not null, the type and version field are skipped
+   * @param parser the parser
+   * @param formatVersionOverride the format version override (usually "null")
+   * @return the deserialized object
+   * @throws IOException
+   * @throws JsonProcessingException
+   * @throws InvalidTypeException
+   */
   @Nonnull
-  public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+  protected T deserializeInternal( @Nonnull JsonParser parser, @Nullable Version formatVersionOverride ) throws IOException, JsonProcessingException, InvalidTypeException {
     JacksonParserWrapper wrapper = new JacksonParserWrapper( parser );
 
-    Version version;
-    if ( isObjectType() ) {
-      wrapper.nextToken( JsonToken.START_OBJECT );
-
-      beforeTypeAndVersion( wrapper );
-
-      wrapper.nextFieldValue( PROPERTY_TYPE );
-      String readType = parser.getText();
-      verifyType( readType );
-      wrapper.nextFieldValue( PROPERTY_VERSION );
-      version = Version.parse( parser.getText() );
-      verifyVersionReadable( version );
-    } else {
-      parser.nextToken();
-      version = getFormatVersion();
-    }
+    Version version = prepareDeserialization( wrapper, formatVersionOverride );
 
     T deserialized = deserialize( parser, version );
 
@@ -170,6 +174,43 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     }
 
     return deserialized;
+  }
+
+  /**
+   * Prepares the deserialization.
+   *
+   * If the format version is set - the type and version properties are *not* read!
+   * This can be useful for cases where this information is not available...
+   *
+   * @param wrapper the wrapper
+   * @param formatVersionOverride the format version
+   * @return the format version
+   * @throws IOException
+   * @throws InvalidTypeException
+   */
+  @Nonnull
+  private Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
+    if ( isObjectType() ) {
+      wrapper.nextToken( JsonToken.START_OBJECT );
+
+      beforeTypeAndVersion( wrapper );
+
+      if ( formatVersionOverride == null ) {
+        wrapper.nextFieldValue( PROPERTY_TYPE );
+        String readType = wrapper.getText();
+        verifyType( readType );
+        wrapper.nextFieldValue( PROPERTY_VERSION );
+        Version version = Version.parse( wrapper.getText() );
+        verifyVersionReadable( version );
+        return version;
+      } else {
+        verifyVersionReadable( formatVersionOverride );
+        return formatVersionOverride;
+      }
+    } else {
+      wrapper.nextToken();
+      return getFormatVersion();
+    }
   }
 
   /**

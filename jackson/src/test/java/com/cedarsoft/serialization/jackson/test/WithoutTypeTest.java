@@ -40,5 +40,23 @@ public class WithoutTypeTest {
     } catch ( JsonParseException e ) {
       assertThat( e.getMessage() ).startsWith( "Invalid field. Expected <@type> but was <description>" );
     }
+
+    Foo foo = serializer.deserialize( new ByteArrayInputStream( withoutType.getBytes() ), serializer.getFormatVersion() );
+    assertThat( foo.getDescription() ).isEqualTo( "descri" );
+    assertThat( foo.getDirection() ).isEqualTo( Direction.NORTH );
+  }
+
+
+  @Test
+  public void testNonObjectType() throws Exception {
+    EmailSerializer serializer =new EmailSerializer();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serializer.serialize( new Email( "asdf@test.de" ), out );
+
+    JsonUtils.assertJsonEquals( "\"asdf@test.de\"", out.toString() );
+
+    Email mail = serializer.deserialize( new ByteArrayInputStream( "\"asdf@test.de\"".getBytes() ), serializer.getFormatVersion() );
+    assertThat( mail.getMail() ).isEqualTo( "asdf@test.de" );
   }
 }
