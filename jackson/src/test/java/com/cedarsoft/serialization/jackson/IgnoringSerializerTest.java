@@ -41,7 +41,8 @@ public class IgnoringSerializerTest {
       "[1,2,3,4]",
       "{\"id\":123}",
       "{\"id\":[123]}",
-      "{\"id\":{\"value\":123}}"
+      "{\"id\":{\"value\":123}}",
+      "\"\""
     };
   }
 }

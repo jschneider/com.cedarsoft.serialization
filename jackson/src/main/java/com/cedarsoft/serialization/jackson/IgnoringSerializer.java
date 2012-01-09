@@ -29,6 +29,12 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
   @Override
   public Void deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     JsonToken inToken = deserializeFrom.nextToken();
+
+    if ( isValueToken( inToken ) ) {
+      return null;
+    }
+    
+    
     JsonToken outToken = findOutToken( inToken );
 
     int depth = 1;
@@ -47,8 +53,12 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
     return null;
   }
 
+  private static boolean isValueToken( @Nonnull JsonToken inToken ) {
+    return inToken.name().startsWith( "VALUE_" );
+  }
+
   @Nonnull
-  private JsonToken findOutToken( @Nonnull JsonToken inToken ) {
+  private static JsonToken findOutToken( @Nonnull JsonToken inToken ) {
     switch ( inToken ) {
       case START_OBJECT:
         return JsonToken.END_OBJECT;
