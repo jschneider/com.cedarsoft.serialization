@@ -12,6 +12,8 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
+ * Attention: Does not yet work with StringValues! Use StringSerializer for those cases.
+ *
  * Simply ignores the object/array
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
@@ -34,8 +36,8 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
       deserializeFrom.nextToken();
       return null;
     }
-    
-    
+
+
     JsonToken outToken = findOutToken( inToken );
 
     int depth = 1;
