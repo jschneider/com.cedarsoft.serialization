@@ -31,6 +31,7 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
     JsonToken inToken = deserializeFrom.nextToken();
 
     if ( isValueToken( inToken ) ) {
+      deserializeFrom.nextToken();
       return null;
     }
     

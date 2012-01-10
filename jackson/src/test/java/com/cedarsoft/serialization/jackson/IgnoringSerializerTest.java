@@ -3,6 +3,7 @@ package com.cedarsoft.serialization.jackson;
 import com.cedarsoft.version.Version;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
@@ -32,8 +33,11 @@ public class IgnoringSerializerTest {
 
     Void result = serializer.deserialize( parser, Version.valueOf( 1, 0, 0 ) ); //we use the override stuff to avoid version/type check
     assertThat( result ).isNull();
-  }
 
+    JsonToken nextToken = parser.nextToken();
+    assertThat( nextToken ).isNull();
+  }
+  
   @DataPoints
   public static String[] testIt() throws Exception {
     return new String[]{
