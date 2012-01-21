@@ -208,7 +208,7 @@
   <properties>
     <currentStableVersion>4.0.2</currentStableVersion>
     <currentDevelopmentVersion>4.0.3-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>5.0.10</commons.version>
+    <commons.version>5.1.0</commons.version>
   </properties>
 
   <repositories>
