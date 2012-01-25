@@ -67,7 +67,8 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
   @Nonnull
   protected byte[] processXml( @Nonnull final String xml, @Nonnull Version version ) throws Exception {
     String nameSpace = ( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer() ).createNameSpace( version );
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+//    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+    throw new UnsupportedOperationException();
   }
 
   /**

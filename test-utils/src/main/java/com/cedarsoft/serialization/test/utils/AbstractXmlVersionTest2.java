@@ -35,7 +35,6 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.io.IOUtils;
-import org.jdom.JDOMException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -68,13 +67,15 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws JDOMException, IOException {
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+  protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws  IOException {
+    //    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+    throw new UnsupportedOperationException();
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws JDOMException, IOException {
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
+  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws  IOException {
+//    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
+    throw new UnsupportedOperationException();
   }
 
   @Nonnull
