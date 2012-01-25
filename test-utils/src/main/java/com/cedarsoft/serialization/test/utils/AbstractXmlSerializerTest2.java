@@ -33,10 +33,16 @@ package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.test.utils.AssertUtils;
+import com.cedarsoft.xml.XmlCommons;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
+import javax.xml.stream.events.Namespace;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.text.Format;
 
 /**
  * Abstract base class for XML based serializers.
@@ -51,8 +57,8 @@ import java.io.IOException;
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
-      String expectedWithNamespace = addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), exectedXml );
-      AssertUtils.assertXMLEquals(expectedWithNamespace, new String(current));
+      String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
+      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
     } else {
       AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current ) );
     }
@@ -67,33 +73,23 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
     return true;
   }
 
-
   @Nonnull
-
   public static String addNameSpace( @Nonnull AbstractXmlSerializer<?, ?, ?, ?> serializer, @Nonnull byte[] xmlBytes ) throws Exception {
-    //    return addNameSpace( serializer.createNameSpace( serializer.getFormatVersion() ), xmlBytes );
-    return "asdf";
+    return addNameSpace( serializer.createNameSpace( serializer.getFormatVersion() ), xmlBytes );
   }
 
-//  public static String addNameSpace( @Nonnull String nameSpaceUri, @Nonnull byte[] xml ) throws JDOMException, IOException {
-//    Document doc = new SAXBuilder().build( new ByteArrayInputStream( xml ) );
-//
-//    Element root = doc.getRootElement();
-//    if ( root.getNamespaceURI().length() == 0 ) {
-//      Namespace namespace = Namespace.getNamespace( nameSpaceUri );
-//
-//      addNameSpaceRecursively( root, namespace );
-//    }
-//
-//    return new XMLOutputter( Format.getPrettyFormat() ).outputString( doc );
-//  }
+  @Nonnull
+  public static String addNameSpace( @Nonnull String nameSpaceUri, @Nonnull byte[] xml ) throws IOException, SAXException {
+    Document document = XmlCommons.parse( xml );
 
-//  public static void addNameSpaceRecursively( @Nonnull Element element, @Nonnull Namespace namespace ) {
-//    element.setNamespace( namespace );
-//    for ( Element child : ( ( Iterable<? extends Element> ) element.getChildren() ) ) {
-//      addNameSpaceRecursively( child, namespace );
-//    }
-//  }
+    new XmlNamespaceTranslator()
+        .addTranslation( null, nameSpaceUri )
+        .translateNamespaces( document, false );
+
+    StringWriter out = new StringWriter();
+    XmlCommons.out( document, out );
+    return out.toString();
+  }
 
   @Nonnull
   protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
