@@ -29,8 +29,6 @@ public class DomTest {
     assertThat( element ).isNotNull();
     assertThat( element.getTagName() ).isEqualTo( "a" );
     assertThat( element.getNamespaceURI() ).isEqualTo( null );
-    assertThat( element ).isInstanceOf( DeferredNode.class );
-
 
     element.setAttribute( "daAttr", "daval" );
 
