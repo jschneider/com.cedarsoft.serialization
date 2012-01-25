@@ -31,10 +31,11 @@
 
 package com.cedarsoft.serialization.test.utils;
 
-import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.version.Version;
 import org.apache.commons.io.IOUtils;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -67,15 +68,13 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws  IOException {
-    //    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
-    throw new UnsupportedOperationException();
+  protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws IOException, SAXException {
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
   }
 
   @Nonnull
-  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws  IOException {
-//    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
-    throw new UnsupportedOperationException();
+  protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws IOException, SAXException {
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
   }
 
   @Nonnull
