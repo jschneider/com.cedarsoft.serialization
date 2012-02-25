@@ -78,17 +78,17 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       int result = reader.nextTag();
       if ( result != XMLStreamReader.START_ELEMENT ) {
-        throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + ">" );
+        throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + "> @ " + reader.getLocation() );
       }
 
       //Now build the deserialization context
       T deserialized = deserialize( reader, parseAndVerifyNameSpace( reader.getNamespaceURI() ) );
 
       if ( !reader.isEndElement() ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
+        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
       }
       if ( reader.next() != XMLStreamReader.END_DOCUMENT ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">" );
+        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
       }
 
       return deserialized;
@@ -120,12 +120,12 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     QName qName = streamReader.getName();
 
     if ( !doesNamespaceFit( streamReader, namespace ) ) {
-      throw new XMLStreamException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + qName.getNamespaceURI() + "> but expected <" + namespace + ">" );
+      throw new XMLStreamException( "Invalid namespace for <" + qName.getLocalPart() + ">. Was <" + qName.getNamespaceURI() + "> but expected <" + namespace + "> @ " + streamReader.getLocation() );
     }
 
     String current = qName.getLocalPart();
     if ( !current.equals( tagName ) ) {
-      throw new XMLStreamException( "Invalid tag. Was <" + current + "> but expected <" + tagName + ">" );
+      throw new XMLStreamException( "Invalid tag. Was <" + current + "> but expected <" + tagName + "> @ " + streamReader.getLocation() );
     }
   }
 
@@ -161,7 +161,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     int result;
     while ( ( result = reader.next() ) != XMLStreamReader.END_ELEMENT ) {
       if ( result != XMLStreamReader.CHARACTERS ) {
-        throw new XMLStreamException( "Invalid result: " + result );
+        throw new XMLStreamException( "Invalid result: " + result + " @ " + reader.getLocation() );
       }
       content.append( reader.getText() );
     }
@@ -225,11 +225,11 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     }
 
     if ( !skipElementsWithOtherNamespaces || result != XMLStreamReader.START_ELEMENT ) {
-      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + "> @ " + reader.getLocation() );
     }
 
     if ( doesNamespaceFit( reader, getNameSpace() ) ) {
-      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + "> @ " + reader.getLocation() );
     }
 
     skipCurrentTag( reader );
@@ -272,7 +272,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull String tagName, @Nullable String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
     if ( result != XMLStreamReader.START_ELEMENT ) {
-      throw new XMLStreamException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" );
+      throw new XMLStreamException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" + " @ " + reader.getLocation() );
     }
 
     if ( skipElementsWithOtherNamespaces && !doesNamespaceFit( reader, namespace ) ) {
