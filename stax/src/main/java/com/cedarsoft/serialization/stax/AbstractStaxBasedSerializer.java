@@ -41,6 +41,7 @@ import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -77,7 +78,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       XMLStreamReader reader = StaxSupport.getXmlInputFactory().createXMLStreamReader( in );
 
       int result = reader.nextTag();
-      if ( result != XMLStreamReader.START_ELEMENT ) {
+      if ( result != XMLStreamConstants.START_ELEMENT ) {
         throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + "> @ " + reader.getLocation() );
       }
 
@@ -87,7 +88,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       if ( !reader.isEndElement() ) {
         throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
       }
-      if ( reader.next() != XMLStreamReader.END_DOCUMENT ) {
+      if ( reader.next() != XMLStreamConstants.END_DOCUMENT ) {
         throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
       }
 
@@ -159,8 +160,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     StringBuilder content = new StringBuilder();
 
     int result;
-    while ( ( result = reader.next() ) != XMLStreamReader.END_ELEMENT ) {
-      if ( result != XMLStreamReader.CHARACTERS ) {
+    while ( ( result = reader.next() ) != XMLStreamConstants.END_ELEMENT ) {
+      if ( result != XMLStreamConstants.CHARACTERS ) {
         throw new XMLStreamException( "Invalid result: " + result + " @ " + reader.getLocation() );
       }
       content.append( reader.getText() );
@@ -220,11 +221,11 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    */
   protected void closeTag( @Nonnull XMLStreamReader reader, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
-    if ( result == XMLStreamReader.END_ELEMENT ) {
+    if ( result == XMLStreamConstants.END_ELEMENT ) {
       return;
     }
 
-    if ( !skipElementsWithOtherNamespaces || result != XMLStreamReader.START_ELEMENT ) {
+    if ( !skipElementsWithOtherNamespaces || result != XMLStreamConstants.START_ELEMENT ) {
       throw new XMLStreamException( "Invalid result. Expected <END_ELEMENT> but was <" + StaxSupport.getEventName( result ) + "> @ " + reader.getLocation() );
     }
 
@@ -271,7 +272,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    */
   protected void nextTag( @Nonnull XMLStreamReader reader, @Nonnull String tagName, @Nullable String namespace, boolean skipElementsWithOtherNamespaces ) throws XMLStreamException {
     int result = reader.nextTag();
-    if ( result != XMLStreamReader.START_ELEMENT ) {
+    if ( result != XMLStreamConstants.START_ELEMENT ) {
       throw new XMLStreamException( "Invalid result. Expected <START_ELEMENT> but was <" + StaxSupport.getEventName( result ) + ">" + " @ " + reader.getLocation() );
     }
 
@@ -295,9 +296,9 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
     while ( counter > 0 ) {
       int result = reader.next();
 
-      if ( result == XMLStreamReader.END_ELEMENT ) {
+      if ( result == XMLStreamConstants.END_ELEMENT ) {
         counter--;
-      } else if ( result == XMLStreamReader.START_ELEMENT ) {
+      } else if ( result == XMLStreamConstants.START_ELEMENT ) {
         counter++;
       }
     }
@@ -312,7 +313,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws IOException
    */
   protected void visitChildren( @Nonnull XMLStreamReader streamReader, @Nonnull CB callback ) throws XMLStreamException, IOException {
-    while ( streamReader.nextTag() != XMLStreamReader.END_ELEMENT ) {
+    while ( streamReader.nextTag() != XMLStreamConstants.END_ELEMENT ) {
       String tagName = streamReader.getName().getLocalPart();
       callback.tagEntered( streamReader, tagName );
     }
