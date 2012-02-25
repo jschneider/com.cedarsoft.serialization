@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.jackson.test.compatible;
 
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.serialization.jackson.JacksonSupport;
 import com.cedarsoft.test.utils.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;

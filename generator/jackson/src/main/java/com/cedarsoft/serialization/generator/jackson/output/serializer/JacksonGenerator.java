@@ -41,7 +41,7 @@ import com.cedarsoft.serialization.generator.common.output.serializer.AbstractNa
 import com.cedarsoft.serialization.generator.common.output.serializer.AbstractXmlGenerator;
 import com.cedarsoft.serialization.generator.common.output.serializer.SerializeToGenerator;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;

@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.jackson.test.compatible;
+package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;

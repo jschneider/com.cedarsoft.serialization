@@ -1,6 +1,7 @@
-package com.cedarsoft.serialization.jackson.test.compatible;
+package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.serialization.jackson.JacksonSupport;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;

@@ -35,7 +35,7 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;

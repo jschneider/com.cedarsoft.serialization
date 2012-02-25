@@ -3,7 +3,7 @@ package com.cedarsoft.serialization.serializers.json;
 import java.io.IOException;
 
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;

@@ -31,12 +31,13 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractDelegatingJacksonSerializer;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializingStrategy;
-import com.cedarsoft.serialization.jackson.test.compatible.JacksonParserWrapper;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 
