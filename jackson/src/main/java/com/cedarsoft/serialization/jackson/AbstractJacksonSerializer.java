@@ -31,11 +31,10 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -44,9 +43,8 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 
-import javax.annotation.Nullable;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.WillNotClose;
 import java.io.IOException;
 import java.io.InputStream;
@@ -110,9 +108,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
       generator.writeStartObject();
 
       beforeTypeAndVersion( object, generator );
-      
-      generator.writeStringField( PROPERTY_TYPE, type );
-      generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
+      writeTypeAndVersion( generator );
     }
 
     serialize( generator, object, getFormatVersion() );
@@ -120,6 +116,11 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     if ( isObjectType() ) {
       generator.writeEndObject();
     }
+  }
+
+  protected void writeTypeAndVersion( @Nonnull JsonGenerator generator ) throws IOException {
+    generator.writeStringField( PROPERTY_TYPE, type );
+    generator.writeStringField( PROPERTY_VERSION, getFormatVersion().format() );
   }
 
   protected void beforeTypeAndVersion( @Nonnull T object, @Nonnull JsonGenerator serializeTo ) throws IOException {
@@ -189,7 +190,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    * @throws InvalidTypeException
    */
   @Nonnull
-  private Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
+  protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
     if ( isObjectType() ) {
       wrapper.nextToken( JsonToken.START_OBJECT );
 
@@ -208,6 +209,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
         return formatVersionOverride;
       }
     } else {
+      //Not an object type
       wrapper.nextToken();
       return getFormatVersion();
     }
