@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.jackson;
+package com.cedarsoft.serialization.jackson.test.compatible;
 
 import com.cedarsoft.serialization.jackson.JacksonSupport;
 import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
