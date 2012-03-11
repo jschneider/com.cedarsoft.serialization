@@ -68,13 +68,6 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
     return 7;
   }
 
-  @Test
-  public void testIt() {
-    assertEquals( "com.sun.xml.internal.stream.XMLInputFactoryImpl", XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName() );
-    assertEquals( "com.sun.xml.internal.stream.XMLInputFactoryImpl", XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() ).getClass().getName() );
-  }
-
-
   public static class StaxIntegerSerializer extends AbstractStaxSerializer<Integer> {
     public StaxIntegerSerializer() {
       super( "int", "http://int", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
