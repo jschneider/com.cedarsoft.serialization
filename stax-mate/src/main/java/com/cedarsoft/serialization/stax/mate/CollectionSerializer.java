@@ -59,7 +59,7 @@ public class CollectionSerializer<T> extends AbstractStaxMateSerializer<List<? e
     super(defaultElementName, nameSpaceUriBase, formatVersionRange);
     this.type = type;
 
-    add(serializer).responsibleFor(type).map(formatVersionRange.getMax()).toDelegateVersion(serializer.getFormatVersion());
+    add(serializer).responsibleFor(type).map(formatVersionRange).toDelegateVersion(serializer.getFormatVersion());
     assert getDelegatesMappings().verify();
   }
 
