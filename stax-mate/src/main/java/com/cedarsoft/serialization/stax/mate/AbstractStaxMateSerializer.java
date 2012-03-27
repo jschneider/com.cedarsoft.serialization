@@ -35,6 +35,7 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer;
+import org.codehaus.staxmate.SMOutputFactory;
 import org.codehaus.staxmate.out.SMNamespace;
 import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -51,6 +52,9 @@ import java.io.OutputStream;
  * @param <T> the type
  */
 public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSerializer<T, SMOutputElement> {
+  @Nonnull
+  public static final String INDENT_STR = "\n                            ";
+
   protected AbstractStaxMateSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
@@ -58,7 +62,9 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
   @Override
   public void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException {
     try {
-      SMOutputDocument doc = StaxMateSupport.getSmOutputFactory().createOutputDocument( out );
+      SMOutputFactory factory = StaxMateSupport.getSmOutputFactory();
+      SMOutputDocument doc = factory.createOutputDocument( out );
+      doc.setIndentation( INDENT_STR, 1, 2 );
 
       String nameSpaceUri = getNameSpace();
       SMNamespace nameSpace = doc.getNamespace( nameSpaceUri );
