@@ -123,4 +123,9 @@ public class StaxSupport {
       throw new RuntimeException( e );
     }
   }
+
+  public static boolean isJsonEnabled() {
+    XMLInputFactory factory = XML_INPUT_FACTORY.get();
+    return factory.getClass().getName().equals( "org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory" );
+  }
 }
