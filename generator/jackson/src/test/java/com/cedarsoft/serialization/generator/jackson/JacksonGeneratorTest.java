@@ -38,6 +38,8 @@ import com.cedarsoft.test.utils.SystemOutRule;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
+import org.fest.assertions.Assertions;
+import org.fest.assertions.Condition;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -102,7 +104,18 @@ public class JacksonGeneratorTest {
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/FooSerializerTest.java" ) );
     assertTrue( systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains( "com/cedarsoft/serialization/generator/jackson/test/Foo_1.0.0_1.json" ) );
 
-    assertEquals( "", systemOutRule.getErrAsString() );
+    Assertions.assertThat( systemOutRule.getErrAsString() ).satisfies( new Condition<String>() {
+      @Override
+      public boolean matches( String value ) {
+        return value.equals( "" ) || value.equals( "\n" +
+                                                     "warning: The apt tool and its associated API are planned to be\n" +
+                                                     "removed in the next major JDK release.  These features have been\n" +
+                                                     "superseded by javac and the standardized annotation processing API,\n" +
+                                                     "javax.annotation.processing and javax.lang.model.  Users are\n" +
+                                                     "recommended to migrate to the annotation processing features of\n" +
+                                                     "javac; see the javac man page for more information.\n" );
+      }
+    } );
 
     File serializerFile = new File( destDir, "com/cedarsoft/serialization/generator/jackson/test/FooSerializer.java" );
     assertTrue( serializerFile.exists() );
