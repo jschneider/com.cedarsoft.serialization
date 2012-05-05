@@ -36,8 +36,11 @@ News
   Version 3.0.1 has been released. This version contains the following changes:
 
   * Jackson: Introduced wrapper for improved API (JacksonParserWrapper)
+
   * Generator: Fixed verify methods
+
   * Generator: Using JacksonParserWrapper
+
   * Internal: Updated Annotations (switched to javax.annotation.Nonnull)
 
 * 2011-12-03: Released 3.0.0
