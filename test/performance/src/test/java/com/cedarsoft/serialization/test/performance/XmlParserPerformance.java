@@ -167,14 +167,18 @@ public class XmlParserPerformance {
 
   public static void main( String[] args ) throws IOException {
     System.out.println();
+//    System.out.println( "Java6:" );
+//    new XmlParserPerformance().benchJava();
+
     //Needs the plugin to be enabled (in pom.xml)
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
+    System.out.println();
     System.out.println( "Jackson (Mapper)" );
     new XmlParserPerformance().benchJacksonMapper();
     System.out.println( "Jackson (Stream)" );
     new XmlParserPerformance().benchJackson();
-    System.out.println( "GSon (10%)" );
+    System.out.println( "GSon" );
     new XmlParserPerformance().benchGson();
     System.out.println( "Json (Mapped)" );
     new XmlParserPerformance().benchJson();
@@ -194,9 +198,6 @@ public class XmlParserPerformance {
     System.out.println();
     System.out.println( "Jdom (1% of documents):" );
     new XmlParserPerformance().benchJdom();
-    System.out.println();
-    System.out.println( "Java6:" );
-    new XmlParserPerformance().benchJava();
     //        System.out.println();
     //        System.out.println( "Aalto:" );
     //        new XmlParserPerformance().benchAalto();
@@ -391,7 +392,8 @@ public class XmlParserPerformance {
                     public void run() {
                       try {
                         //          XMLInputFactory inputFactory = XMLInputFactory.newInstance( "StAXInputFactory", getClass().getClassLoader() );
-                        XMLInputFactory inputFactory = XMLInputFactory.newInstance( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
+                        //                        XMLInputFactory inputFactory = XMLInputFactory.newFactory( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
+                        XMLInputFactory inputFactory = XMLInputFactory.newFactory( "com.sun.xml.internal.stream.XMLInputFactoryImpl", getClass().getClassLoader() );
 
                         benchParse( inputFactory, CONTENT_SAMPLE );
                       } catch ( Exception e ) {
@@ -483,7 +485,7 @@ public class XmlParserPerformance {
                       try {
                         Gson gson = new Gson();
 
-                        for ( int i = 0; i < MEDIUM; i++ ) {
+                        for ( int i = 0; i < BIG; i++ ) {
                           assertNotNull( gson.fromJson( CONTENT_SAMPLE_GSON, com.cedarsoft.serialization.test.performance.jaxb.FileType.class ) );
                         }
 
