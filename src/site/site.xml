@@ -50,7 +50,7 @@
   <body>
     <breadcrumbs>
       <item name="cedarsoft" href="http://www.cedarsoft.com" />
-      <item href="../" name="Open" />
+      <item name="Open" href="../" />
       <item name="serialization" href="."/>
     </breadcrumbs>
 
