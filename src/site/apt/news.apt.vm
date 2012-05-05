@@ -31,6 +31,60 @@
 
 News
 
+* 2012-02-25: Released 4.1.1
+
+ * Improved Exception messages: Added location
+
+* 2012-01-25: Released 4.1.0
+
+  * Removing JDOM dependencies
+
+  * Improved Namespace handling
+
+* 2012-01-17: Released 4.0.7
+
+  * Updated (commons) version
+
+  * Additional callbacks added
+
+  * IgnoringSerializer improved
+
+* 2011-12-31: Released 4.0.6
+
+  * Updated (commons) version
+
+* 2011-12-08: Released 4.0.5
+
+  * Updated versions of dependencies
+
+* 2011-11-30: Released 4.0.4
+
+  * Updated commons version
+
+* 2011-11-23: Released 4.0.3
+
+  * Added DateTimeZone serializer
+
+* 2011-09-26: Released 4.0.2
+
+  * Updated versions of dependencies
+
+  * Added URL serializer
+
+* 2011-09-03: Released 4.0.1
+
+  * Jackson: Added Enum support
+
+  * Updated versions of dependencies
+
+* 2011-07-09: Released 4.0.0
+
+  * Updated Package structure - therefore the major version number has changed
+
+  * Added basic support for OSGi
+
+  * replaced commons-lang with Guava
+
 * 2011-05-14: Released 3.0.1
 
   Version 3.0.1 has been released. This version contains the following changes:
