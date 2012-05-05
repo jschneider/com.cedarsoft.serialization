@@ -51,7 +51,7 @@
     <breadcrumbs>
       <item name="cedarsoft" href="http://www.cedarsoft.com" />
       <item href="../" name="Open" />
-      <item name="serialization" />
+      <item name="serialization" href="."/>
     </breadcrumbs>
 
     <menu name="Overview">
