@@ -35,9 +35,9 @@ cedarsoft Serialization
   Its goal is to provide some simple classes (very small framework) that enables rapid development
   of versioned serialization.
 
-* 2011-05-14: Released 3.0.1
+* 2012-02-25: Released 4.1.1
 
-  Version 3.0.1 has been released. Further informations can be found on the {{{./news.html}news page}}.
+  Version 4.1.1 has been released. Further informations can be found on the {{{./news.html}news page}}.
 
 * Introduction
 
