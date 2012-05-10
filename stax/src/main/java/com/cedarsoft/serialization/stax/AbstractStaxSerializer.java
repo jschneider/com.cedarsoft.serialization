@@ -36,11 +36,14 @@ import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 
 /**
  * Abstract base class for serializer using stax.
@@ -62,7 +65,8 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
   @Override
   public void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException {
     try {
-      XMLStreamWriter writer = StaxSupport.getXmlOutputFactory().createXMLStreamWriter( out );
+      XMLOutputFactory xmlOutputFactory = StaxSupport.getXmlOutputFactory();
+      XMLStreamWriter writer = wrapWithIndent(xmlOutputFactory.createXMLStreamWriter(out));
 
       //Sets the name space
       String nameSpace = getNameSpace();
@@ -77,6 +81,33 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
       writer.close();
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
+    }
+  }
+
+  @Nullable
+  private static final Constructor<?> INDENTING_WRITER_CONSTRUCTOR = getIndentingConstructor();
+
+  @Nullable
+  private static Constructor<?> getIndentingConstructor() {
+    try {
+      Class<?> indentingType = Class.forName("com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter");
+      return indentingType.getConstructor(XMLStreamWriter.class);
+    } catch (Exception ignore) {
+      return null;
+    }
+  }
+
+  @Nonnull
+  protected XMLStreamWriter wrapWithIndent(@Nonnull XMLStreamWriter xmlStreamWriter) {
+    if (INDENTING_WRITER_CONSTRUCTOR == null) {
+      return xmlStreamWriter;
+    }
+
+    try {
+      return (XMLStreamWriter) INDENTING_WRITER_CONSTRUCTOR.newInstance(xmlStreamWriter);
+    } catch (Exception ignore) {
+      //We could not instantiate the writer
+      return xmlStreamWriter;
     }
   }
 
