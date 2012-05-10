@@ -98,7 +98,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
   }
 
   @Nonnull
-  protected XMLStreamWriter wrapWithIndent(@Nonnull XMLStreamWriter xmlStreamWriter) {
+  protected static XMLStreamWriter wrapWithIndent(@Nonnull XMLStreamWriter xmlStreamWriter) {
     if (INDENTING_WRITER_CONSTRUCTOR == null) {
       return xmlStreamWriter;
     }
