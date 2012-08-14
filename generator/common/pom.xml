@@ -29,7 +29,7 @@
       <artifactId>test-utils</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
+      <groupId>com.cedarsoft</groupId>
       <artifactId>codegen</artifactId>
     </dependency>
     <dependency>

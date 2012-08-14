@@ -41,7 +41,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class ClasspathTest {
   @Test
   public void testName() throws Exception {
-    assertThat( Class.forName( "com.sun.tools.xjc.api.util.APTClassLoader" ) ).isNotNull();
+    assertThat( Class.forName( "com.sun.tools.internal.xjc.api.util.APTClassLoader" ) ).isNotNull();
   }
 
   @Test
