@@ -225,4 +225,19 @@
       </releases>
     </repository>
   </repositories>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--Downgrade due to https://jira.codehaus.org/browse/MPIR-248
+        Is marked for fixed in 2.5.1-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 </project>
