@@ -207,8 +207,8 @@
   </dependencies>
 
   <properties>
-    <currentStableVersion>4.1.1</currentStableVersion>
-    <currentDevelopmentVersion>4.1.2-SNAPSHOT</currentDevelopmentVersion>
+    <currentStableVersion>4.1.2</currentStableVersion>
+    <currentDevelopmentVersion>4.1.3-SNAPSHOT</currentDevelopmentVersion>
     <commons.version>5.1.3</commons.version>
   </properties>
 
