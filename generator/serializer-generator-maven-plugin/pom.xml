@@ -19,7 +19,7 @@
   </prerequisites>
 
   <scm>
-    <url>https://github.com/jschneider/com.cedarsoft.serialization</url>
+    <url>https://github.com/jschneider/com.cedarsoft.serialization/tree/master/generator/serializer-generator-maven-plugin</url>
   </scm>
 
   <dependencies>
