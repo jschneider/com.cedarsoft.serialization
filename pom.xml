@@ -17,7 +17,7 @@
   <scm>
     <connection>scm:git:git://github.com/jschneider/com.cedarsoft.serialization.git</connection>
     <developerConnection>scm:git:git@github.com:jschneider/com.cedarsoft.serialization.git</developerConnection>
-    <url>http://git.cedarsoft.com/com.cedarsoft.open/</url>
+    <url>https://github.com/jschneider/com.cedarsoft.serialization</url>
     <tag>HEAD</tag>
   </scm>
 
