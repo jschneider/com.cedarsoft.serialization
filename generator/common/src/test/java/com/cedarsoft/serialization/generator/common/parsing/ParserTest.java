@@ -197,7 +197,7 @@ public class ParserTest {
       assertEquals( "com.sun.tools.apt.mirror.type.ClassTypeImpl", actualTypeArgs.get( 0 ).getClass().getName() );
       assertEquals( "String", ( ( ClassType ) actualTypeArgs.get( 0 ) ).getDeclaration().getSimpleName() );
       assertEquals( "java.lang.Object", ( ( ClassType ) actualTypeArgs.get( 0 ) ).getSuperclass().toString() );
-      Assertions.assertThat( ( ( DeclaredType ) actualTypeArgs.get( 0 ) ).getDeclaration().getMethods().size() ).isGreaterThan( 68 ).isLessThan( 72 );
+      Assertions.assertThat( ( ( DeclaredType ) actualTypeArgs.get( 0 ) ).getDeclaration().getMethods().size() ).isGreaterThan( 68 ).isLessThan( 73 );
     }
   }
 
