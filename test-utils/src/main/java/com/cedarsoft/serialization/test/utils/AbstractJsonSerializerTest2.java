@@ -36,6 +36,7 @@ import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ContainerNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.TextNode;
 import org.fest.reflect.core.Reflection;
@@ -101,13 +102,13 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
     newProps.put( "@type", new TextNode( type ) );
     newProps.put( "@version", new TextNode( version.format() ) );
 
-    Iterator<Map.Entry<String, JsonNode>> nodeIterator = ( ( ObjectNode ) tree ).getFields();
+    Iterator<Map.Entry<String, JsonNode>> nodeIterator = tree.getFields();
     while ( nodeIterator.hasNext() ) {
       Map.Entry<String, JsonNode> jsonNode = nodeIterator.next();
       newProps.put( jsonNode.getKey(), jsonNode.getValue() );
     }
 
-    ( ( ObjectNode ) tree ).removeAll();
+    ( ( ContainerNode ) tree ).removeAll();
     ( ( ObjectNode ) tree ).putAll( newProps );
 
     return tree.toString();
