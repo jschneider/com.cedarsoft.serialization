@@ -38,8 +38,8 @@ import com.cedarsoft.test.utils.SystemOutRule;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import org.apache.commons.io.FileUtils;
-import org.fest.assertions.Assertions;
-import org.fest.assertions.Condition;
+import org.fest.assertions.api.Assertions;
+import org.fest.assertions.core.Condition;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -104,7 +104,7 @@ public class GeneratorTest {
     assertTrue(systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains("com/cedarsoft/serialization/generator/stax/mate/test/FooSerializerTest.java"));
     assertTrue(systemOutRule.getOutAsString(), systemOutRule.getOutAsString().contains("com/cedarsoft/serialization/generator/stax/mate/test/Foo_1.0.0_1.xml"));
 
-    Assertions.assertThat( systemOutRule.getErrAsString() ).satisfies( new Condition<String>() {
+    Assertions.assertThat( systemOutRule.getErrAsString() ).has( new Condition<String>() {
       @Override
       public boolean matches( String value ) {
         return value.equals( "" ) || value.equals( "\n" +

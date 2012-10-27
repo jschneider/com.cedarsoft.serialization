@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.generator.common;
 import com.sun.tools.internal.xjc.api.util.APTClassLoader;
 import org.junit.*;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com<.a>)

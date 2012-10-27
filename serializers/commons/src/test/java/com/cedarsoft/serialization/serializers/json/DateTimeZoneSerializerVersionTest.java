@@ -39,7 +39,7 @@ import org.junit.experimental.theories.DataPoint;
 
 import javax.annotation.Nonnull;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DateTimeZoneSerializerVersionTest extends AbstractJsonVersionTest2<DateTimeZone> {
 
