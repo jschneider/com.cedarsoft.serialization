@@ -69,7 +69,7 @@
 
     <dependency>
       <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert-core</artifactId>
+      <artifactId>fest-assert</artifactId>
       <scope>compile</scope>
     </dependency>
 
