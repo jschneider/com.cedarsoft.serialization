@@ -103,21 +103,4 @@
     <coverage.haltOnFailure>false</coverage.haltOnFailure>
   </properties>
 
-  <build>
-    <plugins>
-      <!--Skip the scr-plugin. It has a bug related to com.cedarsoft.serialization.test.utils.AbstractSerializerTest2#create-->
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-scr-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-scr-scrdescriptor</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-
-    </plugins>
-  </build>
-
 </project>
