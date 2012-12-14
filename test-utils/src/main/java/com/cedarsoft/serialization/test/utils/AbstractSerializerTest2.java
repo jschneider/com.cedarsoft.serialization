@@ -35,7 +35,6 @@ import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;

@@ -35,6 +35,10 @@
       <artifactId>test-utils</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
 
     <!--Fix maven overriding scope with transitive deps-->
     <dependency>
