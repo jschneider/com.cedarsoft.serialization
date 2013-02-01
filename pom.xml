@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft</groupId>
   <artifactId>serialization-parent</artifactId>
-  <version>4.1.3-SNAPSHOT</version>
+  <version>4.1.3</version>
   <name>Serialization</name>
   <packaging>pom</packaging>
   <url>http://serialization.cedarsoft.org</url>
@@ -18,7 +18,7 @@
     <connection>scm:git:git://github.com/jschneider/com.cedarsoft.serialization.git</connection>
     <developerConnection>scm:git:git@github.com:jschneider/com.cedarsoft.serialization.git</developerConnection>
     <url>https://github.com/jschneider/com.cedarsoft.serialization</url>
-    <tag>HEAD</tag>
+    <tag>serialization-parent-4.1.3</tag>
   </scm>
 
   <mailingLists>
