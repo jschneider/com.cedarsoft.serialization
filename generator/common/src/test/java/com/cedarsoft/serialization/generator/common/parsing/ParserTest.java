@@ -49,7 +49,7 @@ import com.sun.mirror.type.TypeMirror;
 import com.sun.mirror.type.WildcardType;
 import com.sun.mirror.util.TypeVisitor;
 import com.sun.tools.apt.mirror.type.WildcardTypeImpl;
-import org.fest.assertions.api.Assertions;
+import org.fest.assertions.Assertions;
 import org.junit.*;
 import org.mockito.Mock;
 

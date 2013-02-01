@@ -5,7 +5,7 @@ import org.junit.*;
 
 import javax.xml.transform.Transformer;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Reproduces https://github.com/jschneider/com.cedarsoft.serialization/issues/2

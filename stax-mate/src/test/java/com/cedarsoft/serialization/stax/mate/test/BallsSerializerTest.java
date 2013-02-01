@@ -40,7 +40,7 @@ import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import com.cedarsoft.version.Version;
 import com.google.common.collect.ImmutableList;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.fest.assertions.api.Assertions;
+import org.fest.assertions.Assertions;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -74,6 +74,6 @@ public class BallsSerializerTest extends AbstractXmlSerializerTest2<List<? exten
 
   @Override
   protected void verifyDeserialized( @Nonnull List<? extends Ball> deserialized, @Nonnull List<? extends Ball> original ) {
-    Assertions.assertThat( deserialized ).isEqualTo( ( List ) original );
+    Assertions.assertThat( deserialized ).isEqualTo( original );
   }
 }
