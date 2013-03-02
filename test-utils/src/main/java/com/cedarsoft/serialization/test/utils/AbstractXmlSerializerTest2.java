@@ -43,6 +43,7 @@ import javax.xml.stream.events.Namespace;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.text.Format;
 
 /**
@@ -59,10 +60,15 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
-      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current, Charsets.UTF_8 ) );
+      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current, getEncoding() ) );
     } else {
-      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current, Charsets.UTF_8 ) );
+      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current, getEncoding() ) );
     }
+  }
+
+  @Nonnull
+  protected Charset getEncoding() {
+    return Charsets.UTF_8;
   }
 
   @Override

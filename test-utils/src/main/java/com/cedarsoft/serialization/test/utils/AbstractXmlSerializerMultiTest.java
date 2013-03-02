@@ -37,6 +37,7 @@ import com.cedarsoft.test.utils.AssertUtils;
 import org.apache.commons.io.Charsets;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
     for ( byte[] current : serialized ) {
       String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), expected.get( index ).getBytes() );
       try {
-        AssertUtils.assertXMLEquals( new String( current, Charsets.UTF_8 ), expectedWithNamespace );
+        AssertUtils.assertXMLEquals( new String( current, getCharset() ), expectedWithNamespace );
       } catch ( AssertionError e ) {
         AssertionError newError = new AssertionError( "Failed for index <" + index + ">: " + e.getMessage() );
         newError.setStackTrace( e.getStackTrace() );
@@ -63,6 +64,11 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
       }
       index++;
     }
+  }
+
+  @Nonnull
+  protected Charset getCharset() {
+    return Charsets.UTF_8;
   }
 
   /**
