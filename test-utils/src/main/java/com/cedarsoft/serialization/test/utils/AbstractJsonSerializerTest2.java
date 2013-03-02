@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.test.utils;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
+import org.apache.commons.io.Charsets;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ContainerNode;
@@ -42,6 +43,7 @@ import org.codehaus.jackson.node.TextNode;
 import org.fest.reflect.core.Reflection;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,7 +60,7 @@ import java.util.Map;
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] expectedJson ) throws Exception {
-    String expectedAsString = new String( expectedJson );
+    String expectedAsString = new String( expectedJson, Charsets.UTF_8 );
     if ( addTypeInformation() ) {
       try {
         expectedAsString = addTypeInformation( expectedJson );
