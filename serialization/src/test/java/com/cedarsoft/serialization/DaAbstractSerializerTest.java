@@ -35,6 +35,7 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionMismatchException;
 import com.cedarsoft.version.VersionRange;
+import org.apache.commons.io.Charsets;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -61,7 +62,7 @@ public class DaAbstractSerializerTest {
 
   @Test
   public void testSeria() throws Exception {
-    assertThat( new String( serializer.serializeToByteArray( "daObject" ) ), is( "daObject" ) );
+    assertThat( new String( serializer.serializeToByteArray( "daObject" ), Charsets.UTF_8 ), is( "daObject" ) );
   }
 
   @Test

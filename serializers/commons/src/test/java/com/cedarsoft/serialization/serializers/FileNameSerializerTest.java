@@ -36,6 +36,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.xml.XmlCommons;
+import org.apache.commons.io.Charsets;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -64,7 +65,7 @@ public class FileNameSerializerTest extends AbstractXmlSerializerTest2<FileName>
   @Override
   protected void verifySerialized( @Nonnull Entry<FileName> entry, @Nonnull byte[] serialized ) throws Exception {
     super.verifySerialized( entry, serialized );
-    assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
+    assertTrue( XmlCommons.format( new String( serialized, Charsets.UTF_8 ) ), new String( serialized ).contains( "xmlns=\"http://www.cedarsoft.com/file/fileName/" + getSerializer().getFormatVersion() + "\"" ) );
   }
 
   @Test

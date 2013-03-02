@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.test.utils;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.test.utils.AssertUtils;
 import com.cedarsoft.xml.XmlCommons;
+import org.apache.commons.io.Charsets;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -58,9 +59,9 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
-      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current ) );
+      AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current, Charsets.UTF_8 ) );
     } else {
-      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current ) );
+      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current, Charsets.UTF_8 ) );
     }
   }
 

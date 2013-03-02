@@ -39,6 +39,7 @@ import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
+import org.apache.commons.io.Charsets;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.junit.*;
 import org.xml.sax.SAXException;
@@ -123,8 +124,8 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
   public void testIt() throws IOException, SAXException {
     assertEquals( 2, serializer.getStrategies().size() );
 
-    AssertUtils.assertXMLEquals(new String(serializer.serializeToByteArray(1)).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>");
-    AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ) ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );
+    AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 1 ), Charsets.UTF_8 ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"int\">1</number>" );
+    AssertUtils.assertXMLEquals( new String( serializer.serializeToByteArray( 2.0 ), Charsets.UTF_8 ).trim(), "<number xmlns=\"http://number/1.0.0\" type=\"double\">2.0</number>" );
   }
 
   @Test

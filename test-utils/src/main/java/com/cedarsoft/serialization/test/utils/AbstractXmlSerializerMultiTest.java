@@ -34,6 +34,7 @@ package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 import com.cedarsoft.test.utils.AssertUtils;
+import org.apache.commons.io.Charsets;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -54,7 +55,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
     for ( byte[] current : serialized ) {
       String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), expected.get( index ).getBytes() );
       try {
-        AssertUtils.assertXMLEquals(new String(current), expectedWithNamespace);
+        AssertUtils.assertXMLEquals( new String( current, Charsets.UTF_8 ), expectedWithNamespace );
       } catch ( AssertionError e ) {
         AssertionError newError = new AssertionError( "Failed for index <" + index + ">: " + e.getMessage() );
         newError.setStackTrace( e.getStackTrace() );

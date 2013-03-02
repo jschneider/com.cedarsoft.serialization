@@ -37,6 +37,7 @@ import com.cedarsoft.crypt.Hash;
 import com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.test.utils.VersionEntry;
+import org.apache.commons.io.Charsets;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -58,7 +59,7 @@ public class HashSerializerVersionTest
   protected void verifyDeserialized( @Nonnull Hash deserialized, @Nonnull Version version )
     throws Exception {
     Assert.assertEquals( Algorithm.MD5, deserialized.getAlgorithm() );
-    Assert.assertEquals( "HASH", new String( deserialized.getValue() ) );
+    Assert.assertEquals( "HASH", new String( deserialized.getValue(), Charsets.UTF_8 ) );
   }
 
 }

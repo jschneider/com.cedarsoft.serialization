@@ -37,6 +37,7 @@ import com.cedarsoft.version.VersionMismatchException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.xml.XmlCommons;
+import org.apache.commons.io.Charsets;
 import org.codehaus.staxmate.out.SMOutputElement;
 import org.junit.*;
 import org.junit.rules.*;
@@ -83,7 +84,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Override
   protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
     super.verifySerialized( serialized );
-    assertTrue( XmlCommons.format( new String( serialized ) ), new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ) );
+    assertTrue( XmlCommons.format( new String( serialized, Charsets.UTF_8 ) ), new String( serialized ).contains( "xmlns=\"http://www.lang.java/String/1.5.3\"" ) );
   }
 
   @Nonnull

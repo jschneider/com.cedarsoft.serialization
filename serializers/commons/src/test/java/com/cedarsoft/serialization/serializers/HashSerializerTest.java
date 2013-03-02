@@ -37,6 +37,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.AssertUtils;
+import org.apache.commons.io.Charsets;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -59,7 +60,7 @@ public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
   @Test
   public void testIt() throws Exception {
     byte[] serialized = getSerializer().serializeToByteArray( Hash.fromHex( Algorithm.MD5, "121212" ) );
-    AssertUtils.assertXMLEquals(new String(serialized).trim(), "<hash xmlns=\"http://www.cedarsoft.com/crypt/hash/1.0.0\" algorithm=\"MD5\">121212</hash>");
+    AssertUtils.assertXMLEquals( new String( serialized, Charsets.UTF_8 ).trim(), "<hash xmlns=\"http://www.cedarsoft.com/crypt/hash/1.0.0\" algorithm=\"MD5\">121212</hash>" );
 
     Hash deserialized = getSerializer().deserialize( new ByteArrayInputStream( serialized ) );
     Assert.assertEquals( deserialized, Hash.fromHex( Algorithm.MD5, "121212" ) );
