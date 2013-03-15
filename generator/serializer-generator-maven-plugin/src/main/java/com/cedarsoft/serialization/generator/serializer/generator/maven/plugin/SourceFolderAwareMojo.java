@@ -29,7 +29,7 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.serializer.maven.plugin;
+package com.cedarsoft.serialization.generator.serializer.generator.maven.plugin;
 
 import com.cedarsoft.codegen.parser.Classpath;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;

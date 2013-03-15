@@ -29,51 +29,66 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.generator.serializer.maven.plugin;
+package com.cedarsoft.serialization.generator.serializer.generator.maven.plugin;
 
-import com.google.common.base.Splitter;
-import org.apache.maven.plugin.logging.Log;
+import com.cedarsoft.codegen.AbstractGenerator;
+import com.cedarsoft.serialization.generator.jackson.JacksonGenerator;
+import com.cedarsoft.serialization.generator.stax.mate.StaxMateGenerator;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.Writer;
+import java.util.Arrays;
 
 /**
+ * Generate a Serializer and the corresponding unit tests.
+ * <p/>
+ * All files are generated within <i>target/generated-sources</i>.
+ * So no source files are overwritten by this goal.
  *
+ * @goal generate
  */
-public class LogWriter extends Writer {
-  @Nonnull
+public class SerializerGeneratorMojo extends AbstractGenerateMojo {
+  /**
+   * The dialect that shall be created.
+   * At the moment those are supported:
+   * <ul>
+   * <li>STAX_MATE</li>
+   * <li>JACKSON</li>
+   * </ul>
+   *
+   * @required
+   * @parameter expression="${dialect}"
+   */
+  protected String dialect = Target.STAX_MATE.name();
 
-  private static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
-  @Nonnull
-
-  private final StringBuffer buffer = new StringBuffer();
-  @Nonnull
-  private final Log log;
-
-  LogWriter( @Nonnull Log log ) {
-    this.log = log;
+  public SerializerGeneratorMojo() {
+    super( Arrays.asList( "**/*Serializer.java" ) );
   }
 
-  @Override
-  public void write( char[] cbuf, int off, int len ) throws IOException {
-    buffer.append( cbuf, off, len );
+  @Nonnull
+  public Target getDialect() {
+    return Target.valueOf( dialect );
   }
 
+  @Nonnull
   @Override
-  public void flush() throws IOException {
-    Iterable<String> parts = Splitter.on( LINE_SEPARATOR ).split( buffer );
-    for ( String part : parts ) {
-      if ( part.length() > 0 ) {
-        log.info( part );
+  protected AbstractGenerator createGenerator() {
+    return getDialect().create();
+  }
+
+  public enum Target {
+    STAX_MATE {
+      @Override
+      public AbstractGenerator create() {
+        return new StaxMateGenerator();
       }
-    }
+    },
+    JACKSON {
+      @Override
+      public AbstractGenerator create() {
+        return new JacksonGenerator();
+      }
+    };
 
-    buffer.setLength( 0 );
-  }
-
-  @Override
-  public void close() throws IOException {
-    flush();
+    public abstract AbstractGenerator create();
   }
 }
