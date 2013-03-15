@@ -3,13 +3,13 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>4.0.3</version>
+    <version>47</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cedarsoft</groupId>
   <artifactId>serialization-parent</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>4.1.4</version>
   <name>Serialization</name>
   <packaging>pom</packaging>
   <url>http://serialization.cedarsoft.org</url>
@@ -17,6 +17,8 @@
   <scm>
     <connection>scm:git:git://github.com/jschneider/com.cedarsoft.serialization.git</connection>
     <developerConnection>scm:git:git@github.com:jschneider/com.cedarsoft.serialization.git</developerConnection>
+    <url>https://github.com/jschneider/com.cedarsoft.serialization</url>
+    <tag>4.1.4</tag>
   </scm>
 
   <mailingLists>
@@ -111,9 +113,9 @@
         <version>${commons.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.cedarsoft.commons</groupId>
+        <groupId>com.cedarsoft</groupId>
         <artifactId>codegen</artifactId>
-        <version>${commons.version}</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.cedarsoft.commons</groupId>
@@ -165,32 +167,42 @@
       <dependency>
         <groupId>org.codehaus.jettison</groupId>
         <artifactId>jettison</artifactId>
-        <version>1.2</version>
+        <version>1.3.1</version>
       </dependency>
 
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-core-asl</artifactId>
-        <version>1.6.2</version>
+        <version>1.9.7</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-mapper-asl</artifactId>
-        <version>1.6.2</version>
+        <version>1.9.7</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>com.intellij</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -202,9 +214,10 @@
   </dependencies>
 
   <properties>
-    <currentStableVersion>2.0.1</currentStableVersion>
-    <currentDevelopmentVersion>2.1.0-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>3.0.1</commons.version>
+    <currentStableVersion>4.1.2</currentStableVersion>
+    <currentDevelopmentVersion>4.1.3-SNAPSHOT</currentDevelopmentVersion>
+    <commons.version>5.1.7</commons.version>
+    <java.version>1.7</java.version>
   </properties>
 
   <repositories>
@@ -220,4 +233,5 @@
       </releases>
     </repository>
   </repositories>
+
 </project>

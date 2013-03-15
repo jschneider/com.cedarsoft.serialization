@@ -31,16 +31,15 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -52,13 +51,13 @@ public class EmailSerializer extends AbstractJacksonSerializer<Email> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Email object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Email object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeString( object.getMail() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Email deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public Email deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     return new Email( deserializeFrom.getText() );
   }
 

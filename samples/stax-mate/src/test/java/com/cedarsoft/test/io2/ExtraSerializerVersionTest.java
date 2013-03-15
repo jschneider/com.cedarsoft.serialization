@@ -31,17 +31,18 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.AbstractXmlVersionTest2;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.VersionEntry;
+import com.cedarsoft.serialization.test.utils.VersionEntry;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 
@@ -49,7 +50,7 @@ import static org.junit.Assert.*;
  * Testing the new version.
  */
 public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Extra> getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
@@ -72,7 +73,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
       "</extra>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Extra deserialized, @NotNull Version version ) throws Exception {
+  protected void verifyDeserialized( @Nonnull Extra deserialized, @Nonnull Version version ) throws Exception {
     assertEquals( "Metallic", deserialized.getDescription() );
     assertEquals( deserialized.getPrice(), new Money( 400, 01 ) );
   }

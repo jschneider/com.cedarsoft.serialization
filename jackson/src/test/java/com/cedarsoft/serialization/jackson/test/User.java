@@ -31,9 +31,8 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,23 +42,22 @@ import java.util.List;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class User {
-  @NotNull
-  @NonNls
+  @Nonnull
   private final String name;
-  @NotNull
+  @Nonnull
   private final List<Role> roles = new ArrayList<Role>();
-  @NotNull
+  @Nonnull
   private final List<Email> emails = new ArrayList<Email>();
-  @NotNull
+  @Nonnull
   private final UserDetails userDetails;
-  @NotNull
+  @Nonnull
   private final Email singleEmail;
 
-  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles, @NotNull Email singleEmail ) {
+  public User( @Nonnull String name, @Nonnull Collection<? extends Email> emails, Collection<? extends Role> roles, @Nonnull Email singleEmail ) {
     this( name, emails, roles, singleEmail, new UserDetails() );
   }
 
-  public User( @NotNull String name, @NotNull Collection<? extends Email> emails, Collection<? extends Role> roles, @NotNull Email singleEmail, @NotNull UserDetails userDetails ) {
+  public User( @Nonnull String name, @Nonnull Collection<? extends Email> emails, Collection<? extends Role> roles, @Nonnull Email singleEmail, @Nonnull UserDetails userDetails ) {
     this.name = name;
     this.singleEmail = singleEmail;
     this.userDetails = userDetails;
@@ -67,27 +65,27 @@ public class User {
     this.roles.addAll( roles );
   }
 
-  @NotNull
+  @Nonnull
   public Email getSingleEmail() {
     return singleEmail;
   }
 
-  @NotNull
+  @Nonnull
   public UserDetails getUserDetails() {
     return userDetails;
   }
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return name;
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Role> getRoles() {
     return Collections.unmodifiableList( roles );
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Email> getEmails() {
     return Collections.unmodifiableList( emails );
   }

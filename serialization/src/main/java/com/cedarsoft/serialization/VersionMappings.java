@@ -31,14 +31,15 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
 
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
+
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,9 +52,9 @@ import java.util.TreeSet;
  * @param <T> the type of the key
  */
 public class VersionMappings<T> {
-  @NotNull
+  @Nonnull
   protected final VersionRange versionRange;
-  @NotNull
+  @Nonnull
   protected final Map<T, VersionMapping> mappings = new HashMap<T, VersionMapping>();
 
   /**
@@ -61,7 +62,7 @@ public class VersionMappings<T> {
    *
    * @param versionRange the version range for the source
    */
-  public VersionMappings( @NotNull VersionRange versionRange ) {
+  public VersionMappings( @Nonnull VersionRange versionRange ) {
     this.versionRange = versionRange;
   }
 
@@ -70,7 +71,7 @@ public class VersionMappings<T> {
    *
    * @return the mappings
    */
-  @NotNull
+  @Nonnull
   public Map<? extends T, ? extends VersionMapping> getMappings() {
     return Collections.unmodifiableMap( mappings );
   }
@@ -82,8 +83,8 @@ public class VersionMappings<T> {
    * @param version the version
    * @return the mapped version
    */
-  @NotNull
-  public Version resolveVersion( @NotNull T key, @NotNull Version version ) {
+  @Nonnull
+  public Version resolveVersion( @Nonnull T key, @Nonnull Version version ) {
     return getMapping( key ).resolveVersion( version );
   }
 
@@ -93,8 +94,8 @@ public class VersionMappings<T> {
    * @param key the key
    * @return the version mapping for the key
    */
-  @NotNull
-  public VersionMapping getMapping( @NotNull T key ) {
+  @Nonnull
+  public VersionMapping getMapping( @Nonnull T key ) {
     VersionMapping mapping = mappings.get( key );
     if ( mapping == null ) {
       throw new IllegalArgumentException( "No mapping found for <" + key + ">" );
@@ -102,8 +103,8 @@ public class VersionMappings<T> {
     return mapping;
   }
 
-  @NotNull
-  protected VersionMapping addMapping( @NotNull T key, @NotNull VersionRange targetVersionRange ) {
+  @Nonnull
+  protected VersionMapping addMapping( @Nonnull T key, @Nonnull VersionRange targetVersionRange ) {
     if ( mappings.containsKey( key ) ) {
       throw new IllegalStateException( "An entry for the key <" + key + "> has still been added" );
     }
@@ -118,7 +119,7 @@ public class VersionMappings<T> {
    *
    * @return a set with all mapped versions
    */
-  @NotNull
+  @Nonnull
   public SortedSet<Version> getMappedVersions() {
     SortedSet<Version> keyVersions = new TreeSet<Version>();
     for ( VersionMapping mapping : getMappings().values() ) {
@@ -133,27 +134,27 @@ public class VersionMappings<T> {
     return keyVersions;
   }
 
-  @NotNull
-  public VersionMapping add( @NotNull T key, @NotNull VersionRange targetVersionRange ) {
+  @Nonnull
+  public VersionMapping add( @Nonnull T key, @Nonnull VersionRange targetVersionRange ) {
     return addMapping( key, targetVersionRange );
   }
 
-  @NotNull
+  @Nonnull
   public VersionRange getVersionRange() {
     return versionRange;
   }
 
   public boolean verify() throws VersionException {
     return verify( new ToString<T>() {
-      @NotNull
+      @Nonnull
       @Override
-      public String convert( @NotNull T object ) {
+      public String convert( @Nonnull T object ) {
         return object.toString();
       }
     } );
   }
 
-  public boolean verify( @NotNull ToString<T> toString ) throws VersionException {
+  public boolean verify( @Nonnull ToString<T> toString ) throws VersionException {
     SortedSet<Version> mappedVersions = getMappedVersions();
 
     if ( mappings.isEmpty() ) {

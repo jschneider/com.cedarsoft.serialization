@@ -31,15 +31,17 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractDelegatingJacksonSerializer;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializingStrategy;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -52,12 +54,12 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     addStrategy( new TennisBallSerializer() )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
       .map( 1, 1, 0 ).toDelegateVersion( 1, 5, 1 )
-      ;
+    ;
 
     addStrategy( new BasketBallSerializer() )
       .map( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 )
       .map( 1, 1, 0 ).toDelegateVersion( 2, 0, 1 )
-      ;
+    ;
 
     getSerializingStrategySupport().verify();
   }
@@ -71,25 +73,26 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Ball.TennisBall object, @NotNull Version formatVersion ) throws IOException {
+    public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Ball.TennisBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
       serializeTo.writeNumberField( "id", object.getId() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.TennisBall deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException {
+    public Ball.TennisBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
+      JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
       verifyVersionReadable( formatVersion );
 
       int id;
       if ( formatVersion.equals( Version.valueOf( 1, 5, 0 ) ) ) {
-        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
+        parser.nextFieldValue( FIELD_NAME_DEFAULT_TEXT );
         id = deserializeFrom.getIntValue();
       } else {
-        nextFieldValue( deserializeFrom, "id" );
+        parser.nextFieldValue( "id" );
         id = deserializeFrom.getIntValue();
       }
-      closeObject( deserializeFrom );
+      parser.closeObject();
 
       return new Ball.TennisBall( id );
     }
@@ -104,25 +107,27 @@ public class BallSerializer extends AbstractDelegatingJacksonSerializer<Ball> {
     }
 
     @Override
-    public void serialize( @NotNull JsonGenerator serializeTo, @NotNull Ball.BasketBall object, @NotNull Version formatVersion ) throws IOException {
+    public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Ball.BasketBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
       serializeTo.writeStringField( "theId", String.valueOf( object.getTheId() ) );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Ball.BasketBall deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException {
+    public Ball.BasketBall deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException {
       verifyVersionReadable( formatVersion );
+
+      JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
 
       String theId;
       if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
-        nextFieldValue( deserializeFrom, FIELD_NAME_DEFAULT_TEXT );
-        theId = deserializeFrom.getText();
+        parser.nextFieldValue( FIELD_NAME_DEFAULT_TEXT );
+        theId = parser.getText();
       } else {
-        nextFieldValue( deserializeFrom, "theId" );
-        theId = deserializeFrom.getText();
+        parser.nextFieldValue( "theId" );
+        theId = parser.getText();
       }
-      closeObject( deserializeFrom );
+      parser.closeObject();
 
       return new Ball.BasketBall( theId );
     }

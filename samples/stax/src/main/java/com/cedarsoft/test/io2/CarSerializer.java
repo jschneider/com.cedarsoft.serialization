@@ -31,16 +31,16 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
 import com.cedarsoft.test.io.ModelSerializer;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -67,12 +67,12 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 0, 1 )
-      ;
+    ;
 
     add( extraSerializer ).responsibleFor( Extra.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 5, 1 )
-      ;
+    ;
 
     add( modelSerializer ).responsibleFor( Model.class )
       .map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 1, 0, 0 );
@@ -86,7 +86,7 @@ public class CarSerializer extends AbstractStaxSerializer<Car> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Car object, Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Car object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
 
     serializeTo.writeStartElement( "color" ); //okay, should be a own serializer in real world...

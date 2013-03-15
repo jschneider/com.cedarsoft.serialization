@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -62,7 +62,7 @@ public class DelegatesMappingsTest {
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
-      ;
+    ;
 
     try {
       delegatesMappings.verify();
@@ -91,7 +91,7 @@ public class DelegatesMappingsTest {
       DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
       mappings.add( serializer ).responsibleFor( Object.class )
         .map( 1, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-        ;
+      ;
 
       mappings.verify();
     }
@@ -106,7 +106,7 @@ public class DelegatesMappingsTest {
       .map( 1, 0, 3 ).toDelegateVersion( 7, 0, 4 )
       .map( 1, 0, 4 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 1, 8, 4 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 10 )
-      ;
+    ;
 
     assertEquals( delegatesMappings.getMapping( String.class ).getDelegateWriteVersion(), Version.valueOf( 7, 1, 10 ) );
 
@@ -126,7 +126,7 @@ public class DelegatesMappingsTest {
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 3 ).to( 2, 0, 0 ).toDelegateVersion( 7, 1, 1 )
-      ;
+    ;
 
     try {
       delegatesMappings.verify();
@@ -143,7 +143,7 @@ public class DelegatesMappingsTest {
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
-      ;
+    ;
 
     //    delegatesMappings.addMappingFor( serializer )
     //      .map( VersionRange.from( 1, 0, 0 ).single(), new Version( 7, 0, 1 ) )

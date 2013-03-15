@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<person>
+  <name>Markus Mustermann</name>
+  <hobbies>
+    <hobby>Angeln</hobby>
+    <hobby>Radfahren</hobby>
+    <hobby>Lesen</hobby>
+  </hobbies>
+</person>

@@ -44,7 +44,7 @@
 
   <body>
     <breadcrumbs>
-      <item name="${project.name}" />
+      <item name="${project.name}" href="." />
     </breadcrumbs>
 
     <menu ref="parent" inherit="top" />

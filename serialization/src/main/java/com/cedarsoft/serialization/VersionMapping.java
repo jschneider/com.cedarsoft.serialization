@@ -31,14 +31,15 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
 
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,47 +56,47 @@ public class VersionMapping {
    * Represents the version range of the delegating object (the source).
    * The complete range has to be mapped to one or more versions of the delegate.
    */
-  @NotNull
+  @Nonnull
   private final VersionRange sourceVersionRange;
   /**
    * The supported version range of the delegate.
    */
-  @NotNull
+  @Nonnull
   private final VersionRange delegateVersionRange;
-  @NotNull
+  @Nonnull
   private final List<Entry> entries = new ArrayList<Entry>();
 
-  public VersionMapping( @NotNull VersionRange sourceVersionRange, @NotNull VersionRange delegateVersionRange ) {
+  public VersionMapping( @Nonnull VersionRange sourceVersionRange, @Nonnull VersionRange delegateVersionRange ) {
     this.sourceVersionRange = sourceVersionRange;
     this.delegateVersionRange = delegateVersionRange;
   }
 
-  @NotNull
+  @Nonnull
   public Collection<? extends Entry> getEntries() {
     return Collections.unmodifiableCollection( entries );
   }
 
-  @NotNull
+  @Nonnull
   public VersionRange getSourceVersionRange() {
     return sourceVersionRange;
   }
 
-  @NotNull
+  @Nonnull
   public VersionRange getDelegateVersionRange() {
     return delegateVersionRange;
   }
 
-  @NotNull
-  public FluentFactory map( @NotNull VersionRange range ) throws VersionException {
+  @Nonnull
+  public FluentFactory map( @Nonnull VersionRange range ) throws VersionException {
     return new FluentFactory( range, true );
   }
 
-  @NotNull
-  public FluentFactory map( @NotNull Version version ) throws VersionException {
+  @Nonnull
+  public FluentFactory map( @Nonnull Version version ) throws VersionException {
     return new FluentFactory( VersionRange.from( version ).single() );
   }
 
-  @NotNull
+  @Nonnull
   public FluentFactory map( int major, int minor, int build ) throws VersionException {
     return map( Version.valueOf( major, minor, build ) );
   }
@@ -104,7 +105,7 @@ public class VersionMapping {
    * @param sourceRange     the source version range
    * @param delegateVersion the delegate version
    */
-  public void addMapping( @NotNull VersionRange sourceRange, @NotNull Version delegateVersion ) throws VersionException {
+  public void addMapping( @Nonnull VersionRange sourceRange, @Nonnull Version delegateVersion ) throws VersionException {
     if ( !sourceVersionRange.containsCompletely( sourceRange ) ) {
       throw new UnsupportedVersionRangeException( sourceRange, sourceVersionRange, "Invalid source range: " );
     }
@@ -121,7 +122,7 @@ public class VersionMapping {
     this.entries.add( new Entry( sourceRange, delegateVersion ) );
   }
 
-  private boolean containsMappingIn( @NotNull VersionRange range ) {
+  private boolean containsMappingIn( @Nonnull VersionRange range ) {
     for ( Entry entry : entries ) {
       if ( entry.versionRange.overlaps( range ) ) {
         return true;
@@ -130,8 +131,8 @@ public class VersionMapping {
     return false;
   }
 
-  @NotNull
-  public Version resolveVersion( @NotNull Version version ) throws UnsupportedVersionException {
+  @Nonnull
+  public Version resolveVersion( @Nonnull Version version ) throws UnsupportedVersionException {
     for ( Entry entry : entries ) {
       if ( entry.versionRange.contains( version ) ) {
         return entry.delegateVersion;
@@ -167,7 +168,7 @@ public class VersionMapping {
     }
   }
 
-  @NotNull
+  @Nonnull
   public Version getDelegateWriteVersion() {
     if ( entries.isEmpty() ) {
       throw new IllegalStateException( "Contains no entries" );
@@ -176,7 +177,7 @@ public class VersionMapping {
     return entries.get( entries.size() - 1 ).getDelegateVersion();
   }
 
-  public void verifyMappedVersions( @NotNull Iterable<? extends Version> mappedVersions ) throws UnsupportedVersionException {
+  public void verifyMappedVersions( @Nonnull Iterable<? extends Version> mappedVersions ) throws UnsupportedVersionException {
     for ( Version mappedVersion : mappedVersions ) {
       resolveVersion( mappedVersion );
     }
@@ -192,54 +193,54 @@ public class VersionMapping {
   }
 
   public static class Entry {
-    @NotNull
+    @Nonnull
     private final VersionRange versionRange;
-    @NotNull
+    @Nonnull
     private final Version delegateVersion;
 
-    Entry( @NotNull VersionRange versionRange, @NotNull Version delegateVersion ) {
+    Entry( @Nonnull VersionRange versionRange, @Nonnull Version delegateVersion ) {
       this.versionRange = versionRange;
       this.delegateVersion = delegateVersion;
     }
 
-    @NotNull
+    @Nonnull
     public VersionRange getVersionRange() {
       return versionRange;
     }
 
-    @NotNull
+    @Nonnull
     public Version getDelegateVersion() {
       return delegateVersion;
     }
   }
 
   public class FluentFactory {
-    @NotNull
+    @Nonnull
     private final VersionRange range;
 
     private final boolean toCalled;
 
-    public FluentFactory( @NotNull VersionRange range ) {
+    public FluentFactory( @Nonnull VersionRange range ) {
       this( range, false );
     }
 
-    public FluentFactory( @NotNull VersionRange range, boolean toCalled ) {
+    public FluentFactory( @Nonnull VersionRange range, boolean toCalled ) {
       this.range = range;
       this.toCalled = toCalled;
     }
 
-    @NotNull
+    @Nonnull
     public VersionMapping toDelegateVersion( int major, int minor, int build ) {
       return toDelegateVersion( Version.valueOf( major, minor, build ) );
     }
 
-    @NotNull
-    public VersionMapping toDelegateVersion( @NotNull Version version ) {
+    @Nonnull
+    public VersionMapping toDelegateVersion( @Nonnull Version version ) {
       addMapping( range, version );
       return VersionMapping.this;
     }
 
-    @NotNull
+    @Nonnull
     public FluentFactory to( int major, int minor, int build ) {
       //check if we have still set a to version. Then it is probably a user fault
       if ( toCalled ) {

@@ -31,8 +31,8 @@
 
 package com.cedarsoft.serialization;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Represents a strategy to serialize an object.
@@ -50,8 +50,7 @@ public interface SerializingStrategy<T, S, D, E extends Throwable> extends Plugg
    *
    * @return the id
    */
-  @NotNull
-  @NonNls
+  @Nonnull
   String getId();
 
   /**
@@ -61,5 +60,5 @@ public interface SerializingStrategy<T, S, D, E extends Throwable> extends Plugg
    * @param object the reference
    * @return true if this strategy supports the reference, false otherwise
    */
-  boolean supports( @NotNull Object object );
+  boolean supports( @Nonnull Object object );
 }

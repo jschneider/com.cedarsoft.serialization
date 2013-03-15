@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import com.cedarsoft.version.VersionRange;
+
+import javax.annotation.Nonnull;
 
 /**
  * Abstract base class for xml based serializers.
@@ -44,19 +44,19 @@ import org.jetbrains.annotations.NotNull;
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
  */
-public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extends AbstractNameSpaceBasedSerializer<T,S,D,E>{
-  @NotNull
-  @NonNls
+public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extends AbstractNameSpaceBasedSerializer<T, S, D, E> {
+  @Nonnull
+
   private final String defaultElementName;
 
   /**
    * Creates a new serializer
    *
    * @param defaultElementName the default element name
-   * @param nameSpaceBase   the base for the namespace uri
+   * @param nameSpaceBase      the base for the namespace uri
    * @param formatVersionRange the version range. The max value is used when written.
    */
-  protected AbstractXmlSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractXmlSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceBase, formatVersionRange );
     this.defaultElementName = defaultElementName;
   }
@@ -66,15 +66,15 @@ public abstract class AbstractXmlSerializer<T, S, D, E extends Throwable> extend
    *
    * @return the default element name
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public String getDefaultElementName() {
     return defaultElementName;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public <T> AbstractXmlSerializer<? super T, S, D, E> getSerializer( @NotNull Class<T> type ) {
+  public <T> AbstractXmlSerializer<? super T, S, D, E> getSerializer( @Nonnull Class<T> type ) {
     return ( AbstractXmlSerializer<? super T, S, D, E> ) super.getSerializer( type );
   }
 

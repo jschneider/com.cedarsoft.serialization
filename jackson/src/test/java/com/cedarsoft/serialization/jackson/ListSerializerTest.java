@@ -31,17 +31,17 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
@@ -59,14 +59,14 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected ListSerializer getSerializer() throws Exception {
     return new ListSerializer();
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull List<? extends Object> deserialized, @NotNull List<? extends Object> original ) {
+  protected void verifyDeserialized( @Nonnull List<? extends Object> deserialized, @Nonnull List<? extends Object> original ) {
     assertEquals( original.size(), deserialized.size() );
 
     for ( int i = 0, deserialized1Size = deserialized.size(); i < deserialized1Size; i++ ) {
@@ -87,7 +87,7 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
     getSerializer().serialize( generator, Arrays.asList( "a", "b", "c", 42, 3.141, false, null ), Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals( "[ \"a\", \"b\", \"c\", 42, 3.141, false, null ]", out.toString() );
+    JsonUtils.assertJsonEquals("[ \"a\", \"b\", \"c\", 42, 3.141, false, null ]", out.toString());
 
     List<? extends Object> deserialized = getSerializer().deserialize( new ByteArrayInputStream( out.toByteArray() ) );
     assertEquals( 7, deserialized.size() );

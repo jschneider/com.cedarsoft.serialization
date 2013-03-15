@@ -31,11 +31,11 @@
 
 package com.cedarsoft.sample.fixed.xstream;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.sample.fixed.Car;
 import com.cedarsoft.sample.fixed.Extra;
 import com.cedarsoft.sample.fixed.Model;
 import com.cedarsoft.sample.fixed.Money;
+import com.cedarsoft.test.utils.AssertUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
 import org.junit.*;
@@ -96,16 +96,17 @@ public class XStreamDemo {
       xStream.fromXML( getClass().getResourceAsStream( "../../xstream/car.xml" ) );
       fail( "Where is the Exception" );
     } catch ( ConversionException e ) {
-      assertEquals( e.getMessage().trim(), "amount : amount : amount : amount\n" +
-        "---- Debugging information ----\n" +
-        "message             : amount : amount\n" +
-        "cause-exception     : com.thoughtworks.xstream.mapper.CannotResolveClassException\n" +
-        "cause-message       : amount : amount\n" +
-        "class               : com.cedarsoft.sample.fixed.Car\n" +
-        "required-type       : com.cedarsoft.sample.fixed.Money\n" +
-        "path                : /car/basePrice/amount\n" +
-        "line number         : 8\n" +
-        "-------------------------------" );
+      assertEquals( "No such field com.cedarsoft.sample.fixed.Money.amount\n" +
+                      "---- Debugging information ----\n" +
+                      "field               : amount\n" +
+                      "class               : com.cedarsoft.sample.fixed.Money\n" +
+                      "required-type       : com.cedarsoft.sample.fixed.Money\n" +
+                      "converter-type      : com.thoughtworks.xstream.converters.reflection.ReflectionConverter\n" +
+                      "path                : /car/basePrice/amount\n" +
+                      "line number         : 8\n" +
+                      "class[1]            : com.cedarsoft.sample.fixed.Car\n" +
+                      "version             : null\n" +
+                      "-------------------------------", e.getMessage().trim() );
     }
   }
 

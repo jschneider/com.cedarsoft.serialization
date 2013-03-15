@@ -31,18 +31,19 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.*;
 
@@ -50,7 +51,7 @@ import static org.junit.Assert.*;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
-  @NotNull
+  @Nonnull
   @Override
   protected BallSerializer getSerializer() throws Exception {
     return new BallSerializer();
@@ -70,13 +71,13 @@ public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
   public void testAsccii() throws Exception {
     assertEquals( 2, getSerializer().getSerializingStrategySupport().getVersionMappings().getMappings().size() );
     assertEquals( "         -->  basketBa  tennisBa\n" +
-      "--------------------------------\n" +
-      "   1.0.0 -->     2.0.0     1.5.0\n" +
-      "   1.1.0 -->     2.0.1     1.5.1\n" +
-      "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException>>() {
-      @NotNull
+                    "--------------------------------\n" +
+                    "   1.0.0 -->     2.0.0     1.5.0\n" +
+                    "   1.1.0 -->     2.0.1     1.5.1\n" +
+                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException>>() {
+      @Nonnull
       @Override
-      public String convert( @NotNull SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException> object ) {
         return object.getId();
       }
     } ) );

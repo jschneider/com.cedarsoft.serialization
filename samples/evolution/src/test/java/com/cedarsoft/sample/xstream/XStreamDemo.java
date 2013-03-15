@@ -31,11 +31,11 @@
 
 package com.cedarsoft.sample.xstream;
 
-import com.cedarsoft.AssertUtils;
 import com.cedarsoft.sample.Car;
 import com.cedarsoft.sample.Extra;
 import com.cedarsoft.sample.Model;
 import com.cedarsoft.sample.Money;
+import com.cedarsoft.test.utils.AssertUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
 import org.junit.*;
@@ -46,7 +46,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 /**
@@ -75,7 +75,7 @@ public class XStreamDemo {
     xStream.alias( "money", Money.class );
 
     String xml = xStream.toXML( createSampleCar() );
-    AssertUtils.assertXMLEquals( getClass().getResource( "car.xml" ), xml );
+    AssertUtils.assertXMLEquals(getClass().getResource("car.xml"), xml);
   }
 
   @Test

@@ -33,17 +33,18 @@ package com.cedarsoft.serialization.jackson.test;
 
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.HashCalculator;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
-import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserDetailsSerializerTest extends AbstractJsonSerializerTest2<UserDetails> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<UserDetails> getSerializer() throws Exception {
     return new UserDetailsSerializer();

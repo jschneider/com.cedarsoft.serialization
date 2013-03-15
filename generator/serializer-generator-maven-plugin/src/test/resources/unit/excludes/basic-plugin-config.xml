@@ -5,7 +5,7 @@
       <plugin>
         <groupId>com.cedarsoft.serialization.generator</groupId>
         <artifactId>serializer-generator-maven-plugin</artifactId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
 
         <configuration>
           <outputDirectory>${basedir}/target/test/unit/target/out</outputDirectory>

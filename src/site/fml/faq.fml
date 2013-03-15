@@ -231,7 +231,7 @@
           But if you really prefer another XML parser - no problem. You just have to implement some abstract
           base classes (<a href="./customBackend.html">explained here</a>).
           If you want to contribute your backend, send a message to the<a
-          href="http://groups.google.de/group/users-cedarsoft-serialization"> mailing list</a>.
+          href="http://groups.google.de/group/users-cedarsoft-serialization">mailing list</a>.
         </p>
       </answer>
     </faq>

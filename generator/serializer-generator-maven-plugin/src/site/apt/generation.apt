@@ -35,7 +35,7 @@ Generation of serializers and test
   is triggered by calling
 
 +---
-mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
+mvn serializer-generator:generate -Ddialect=JACKSON -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
   It is necessary to add the relative path pattern to the domain class(es).
@@ -49,6 +49,13 @@ mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/com/cedar
 ** -Ddomain.class.pattern=src/main/java/**/*.java
 
   Creates Serializers and Tests for all java files within <src/main/java>
+
+* Dialect
+
+ At the moment there are two generators available:
+
+ * JACKSON: Using Jackson to (de)serialize JSON
+ * STAX_MATE: Using Stax-Mate to (de)serialize XML
 
 * Target dir
 

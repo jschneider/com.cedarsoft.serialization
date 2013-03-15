@@ -31,13 +31,13 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -72,24 +72,24 @@ public class DaAbstractXmlSerializerTest {
     }
 
     @Override
-    public void serialize( @NotNull StringBuffer serializeTo, @NotNull String object, @NotNull Version formatVersion ) throws IOException, VersionException, IOException {
+    public void serialize( @Nonnull StringBuffer serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       serializeTo.append( object );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public String deserialize( @NotNull String deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, IOException {
+    public String deserialize( @Nonnull String deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       return deserializeFrom;
     }
 
     @Override
-    public void serialize( @NotNull String object, @NotNull OutputStream out ) throws IOException {
+    public void serialize( @Nonnull String object, @Nonnull OutputStream out ) throws IOException {
       out.write( object.getBytes() );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public String deserialize( @NotNull InputStream in ) throws IOException, VersionException {
+    public String deserialize( @Nonnull InputStream in ) throws IOException, VersionException {
       throw new UnsupportedOperationException();
     }
   }

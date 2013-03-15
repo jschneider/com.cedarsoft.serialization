@@ -31,18 +31,19 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Model;
-import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
 public class ModelSerializerTest extends AbstractXmlSerializerTest2<Model> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Model> getSerializer() {
     //We create a serializer. This one is very easy. But sometimes it needs a little bit of work...
@@ -64,7 +65,7 @@ public class ModelSerializerTest extends AbstractXmlSerializerTest2<Model> {
   public static final Entry<?> ENTRY4 = create( new Model( "Renault" ), "<model>Renault</model>" );
 
   @Override
-  protected void verifyDeserialized( @NotNull Model deserialized, @NotNull Model original ) {
+  protected void verifyDeserialized( @Nonnull Model deserialized, @Nonnull Model original ) {
     //We *might* override this method and verify the deserialized objects on our own
     //The default implementation simply calls "equals" for each single object.
     super.verifyDeserialized( deserialized, original );

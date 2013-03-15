@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://thecompany.com/test/car/1.0.0" xmlns:car="http://thecompany.com/test/car/1.0.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://thecompany.com/test/car/1.0.0"
+           xmlns:car="http://thecompany.com/test/car/1.0.0">
   <xs:element name="car">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="car:color"/>
-        <xs:element ref="car:model"/>
-        <xs:element ref="car:basePrice"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="car:extra"/>
+        <xs:element ref="car:color" />
+        <xs:element ref="car:model" />
+        <xs:element ref="car:basePrice" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="car:extra" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="color">
     <xs:complexType>
-      <xs:attribute name="blue" use="required" type="xs:integer"/>
-      <xs:attribute name="green" use="required" type="xs:integer"/>
-      <xs:attribute name="red" use="required" type="xs:integer"/>
+      <xs:attribute name="blue" use="required" type="xs:integer" />
+      <xs:attribute name="green" use="required" type="xs:integer" />
+      <xs:attribute name="red" use="required" type="xs:integer" />
     </xs:complexType>
   </xs:element>
-  <xs:element name="model" type="xs:NCName"/>
-  <xs:element name="basePrice" type="xs:integer"/>
+  <xs:element name="model" type="xs:NCName" />
+  <xs:element name="basePrice" type="xs:integer" />
   <xs:element name="extra">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="car:description"/>
-        <xs:element ref="car:price"/>
+        <xs:element ref="car:description" />
+        <xs:element ref="car:price" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="description" type="xs:string"/>
-  <xs:element name="price" type="xs:integer"/>
+  <xs:element name="description" type="xs:string" />
+  <xs:element name="price" type="xs:integer" />
 </xs:schema>

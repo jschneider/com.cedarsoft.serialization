@@ -31,12 +31,12 @@
 
 package com.cedarsoft.serialization.demo2;
 
-import com.cedarsoft.AssertUtils;
+import com.cedarsoft.test.utils.AssertUtils;
 import com.thoughtworks.xstream.XStream;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -47,13 +47,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import static com.cedarsoft.AssertUtils.assertEquals;
-
 /**
  *
  */
 public class MoneyTest {
-  @NotNull
+  @Nonnull
   public static final URL EXPECTED = MoneyTest.class.getResource( "money.xml" );
 
   private XStream xStream;
@@ -66,7 +64,7 @@ public class MoneyTest {
 
   @Test
   public void testXStream() throws IOException, SAXException {
-    AssertUtils.assertXMLEquals( EXPECTED, xStream.toXML( new Money( 7, 1 ) ) );
+    AssertUtils.assertXMLEquals(EXPECTED, xStream.toXML(new Money(7, 1)));
     AssertUtils.assertXMLEquals( EXPECTED, xStream.toXML( new Money( 701 ) ) );
     Assert.assertEquals( 7.01, ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getAmount(), 0 );
     Assert.assertEquals( 701, ( ( Money ) xStream.fromXML( EXPECTED.openStream() ) ).getCents() );
@@ -90,7 +88,7 @@ public class MoneyTest {
     Assert.assertEquals( 701, deserialize( EXPECTED.openStream() ).getCents() );
   }
 
-  protected static String serialize( @NotNull Money money ) throws XMLStreamException {
+  protected static String serialize( @Nonnull Money money ) throws XMLStreamException {
     //Boilerplate
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter( out );
@@ -108,7 +106,7 @@ public class MoneyTest {
     return out.toString();
   }
 
-  private static Money deserialize( @NotNull InputStream serialized ) throws XMLStreamException {
+  private static Money deserialize( @Nonnull InputStream serialized ) throws XMLStreamException {
     //Boilerplate
     XMLInputFactory factory = XMLInputFactory.newInstance();
     XMLStreamReader reader = factory.createXMLStreamReader( serialized );

@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
 
@@ -47,7 +47,7 @@ import java.io.IOException;
 //START SNIPPET: body
 public class MoneySerializer extends AbstractStaxMateSerializer<Money> {
   public MoneySerializer() {
-    super( "money", "http://thecompany.com/test/money",new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
+    super( "money", "http://thecompany.com/test/money", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
 
   @Override

@@ -1,0 +1,23 @@
+package com.cedarsoft.serialization.generator.stax.mate.test;
+
+import java.util.Arrays;
+import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
+import org.junit.experimental.theories.DataPoint;
+
+public class FooSerializerTest
+    extends AbstractXmlSerializerTest2 <Foo>
+{
+
+    @DataPoint
+    public final static Entry<? extends Foo> ENTRY1 = FooSerializerTest.create(new Foo("description", 12.5D, 42, Integer.valueOf(42), Arrays.asList(new Bar())), FooSerializerTest.class.getResource("Foo_1.0.0_1.xml"));
+
+    @Override
+    protected Serializer<Foo> getSerializer()
+        throws Exception
+    {
+        return new FooSerializer();
+    }
+
+}

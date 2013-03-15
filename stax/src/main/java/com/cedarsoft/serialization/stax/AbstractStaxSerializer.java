@@ -31,17 +31,19 @@
 
 package com.cedarsoft.serialization.stax;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 
 /**
  * Abstract base class for serializer using stax.
@@ -56,14 +58,15 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @param nameSpaceUriBase   the name space uri base
    * @param formatVersionRange the format version range
    */
-  protected AbstractStaxSerializer( @NotNull @NonNls String defaultElementName, @NonNls @NotNull String nameSpaceUriBase, @NotNull VersionRange formatVersionRange ) {
+  protected AbstractStaxSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
   }
 
   @Override
-  public void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException {
+  public void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException {
     try {
-      XMLStreamWriter writer = StaxSupport.getXmlOutputFactory().createXMLStreamWriter( out );
+      XMLOutputFactory xmlOutputFactory = StaxSupport.getXmlOutputFactory();
+      XMLStreamWriter writer = wrapWithIndent(xmlOutputFactory.createXMLStreamWriter(out));
 
       //Sets the name space
       String nameSpace = getNameSpace();
@@ -81,6 +84,33 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     }
   }
 
+  @Nullable
+  private static final Constructor<?> INDENTING_WRITER_CONSTRUCTOR = getIndentingConstructor();
+
+  @Nullable
+  private static Constructor<?> getIndentingConstructor() {
+    try {
+      Class<?> indentingType = Class.forName("com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter");
+      return indentingType.getConstructor(XMLStreamWriter.class);
+    } catch (Exception ignore) {
+      return null;
+    }
+  }
+
+  @Nonnull
+  protected static XMLStreamWriter wrapWithIndent(@Nonnull XMLStreamWriter xmlStreamWriter) {
+    if (INDENTING_WRITER_CONSTRUCTOR == null) {
+      return xmlStreamWriter;
+    }
+
+    try {
+      return (XMLStreamWriter) INDENTING_WRITER_CONSTRUCTOR.newInstance(xmlStreamWriter);
+    } catch (Exception ignore) {
+      //We could not instantiate the writer
+      return xmlStreamWriter;
+    }
+  }
+
   /**
    * Serializes the elements of a collection
    *
@@ -92,7 +122,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @throws XMLStreamException
    * @throws IOException
    */
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull @NonNls String elementName, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull String elementName, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 
@@ -103,7 +133,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
     }
   }
 
-  protected <T> void serializeCollection( @NotNull Iterable<? extends T> objects, @NotNull Class<T> type, @NotNull XMLStreamWriter serializeTo, @NotNull Version formatVersion ) throws XMLStreamException, IOException {
+  protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
     Version resolvedVersion = getDelegatesMappings().resolveVersion( type, formatVersion );
 

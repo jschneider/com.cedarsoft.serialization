@@ -31,9 +31,8 @@
 
 package com.cedarsoft.serialization.stax;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -46,16 +45,16 @@ public class StaxSupport {
   private StaxSupport() {
   }
 
-  @NotNull
-  static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
+  @Nonnull
+  public static final ThreadLocal<XMLInputFactory> XML_INPUT_FACTORY = new ThreadLocal<XMLInputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
     protected XMLInputFactory initialValue() {
       return XMLInputFactory.newInstance();
     }
   };
-  @NotNull
-  static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
+  @Nonnull
+  public static final ThreadLocal<XMLOutputFactory> XML_OUTPUT_FACTORY = new ThreadLocal<XMLOutputFactory>() {
     /** @noinspection RefusedBequest*/
     @Override
     protected XMLOutputFactory initialValue() {
@@ -68,7 +67,7 @@ public class StaxSupport {
    *
    * @return the xml output factory
    */
-  @NotNull
+  @Nonnull
   public static XMLOutputFactory getXmlOutputFactory() {
     return XML_OUTPUT_FACTORY.get();
   }
@@ -78,7 +77,7 @@ public class StaxSupport {
    *
    * @return the xml input factory
    */
-  @NotNull
+  @Nonnull
   public static XMLInputFactory getXmlInputFactory() {
     return XML_INPUT_FACTORY.get();
   }
@@ -89,8 +88,8 @@ public class StaxSupport {
    * @param eventId the event id
    * @return the name
    */
-  @NotNull
-  @NonNls
+  @Nonnull
+
   public static String getEventName( int eventId ) {
     try {
       for ( Field field : XMLStreamReader.class.getFields() ) {
@@ -123,5 +122,10 @@ public class StaxSupport {
     } catch ( Exception e ) {
       throw new RuntimeException( e );
     }
+  }
+
+  public static boolean isJsonEnabled() {
+    XMLInputFactory factory = XML_INPUT_FACTORY.get();
+    return factory.getClass().getName().equals( "org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory" );
   }
 }

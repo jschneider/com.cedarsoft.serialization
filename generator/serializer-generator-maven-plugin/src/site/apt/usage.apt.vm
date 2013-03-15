@@ -35,7 +35,7 @@ Usage
 
 +---
 mvn com.cedarsoft.serialization.generator:serializer-generator-maven-plugin:generate \
-  -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
+  -Ddialect=JACKSON -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
 * Shortening the command line
@@ -53,7 +53,7 @@ mvn com.cedarsoft.serialization.generator:serializer-generator-maven-plugin:gene
   Then it is possible to just call the plugin using 
 
 +---
-mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
+mvn serializer-generator:generate -Ddialect=STAX_MATE -Ddomain.class.pattern=src/main/java/com/cedarsoft/MyDomainObject.java
 +---
 
 

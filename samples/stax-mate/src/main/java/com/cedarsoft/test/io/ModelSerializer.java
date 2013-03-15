@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Model;
 import org.codehaus.staxmate.out.SMOutputElement;
 
@@ -43,7 +43,7 @@ import java.io.IOException;
 
 /**
  * This is a very simple serializer that serializes a {@link Model}.
- * <p>
+ * <p/>
  * Results in:<br/>
  * <code>
  * &lt;model&gt;Toyota&lt;/model&gt;</code><br/>

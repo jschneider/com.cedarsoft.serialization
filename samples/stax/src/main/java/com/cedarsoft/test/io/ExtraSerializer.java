@@ -31,13 +31,13 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -55,7 +55,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
 
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 0 )
-      ;
+    ;
 
     //Verify the delegate mappings
     //This is necessary, to ensure that the file format for the
@@ -71,7 +71,7 @@ public class ExtraSerializer extends AbstractStaxSerializer<Extra> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Extra object, Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Extra object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.writeStartElement( "description" );
     serializeTo.writeCharacters( object.getDescription() );

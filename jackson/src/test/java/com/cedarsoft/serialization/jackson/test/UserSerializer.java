@@ -31,17 +31,16 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,14 +48,14 @@ import java.util.List;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserSerializer extends AbstractJacksonSerializer<User> {
-  @NonNls
+
   public static final String PROPERTY_NAME = "id";
-  @NonNls
+
   public static final String PROPERTY_EMAILS = "emails";
-  @NonNls
+
   public static final String PROPERTY_ROLES = "roles";
 
-  public UserSerializer( @NotNull EmailSerializer emailSerializer, @NotNull RoleSerializer roleSerializer, @NotNull UserDetailsSerializer userDetailsSerializer ) {
+  public UserSerializer( @Nonnull EmailSerializer emailSerializer, @Nonnull RoleSerializer roleSerializer, @Nonnull UserDetailsSerializer userDetailsSerializer ) {
     super( "user", VersionRange.from( 1, 0, 0 ).to() );
 
     getDelegatesMappings().add( emailSerializer ).responsibleFor( Email.class )
@@ -68,7 +67,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   }
 
   @Override
-  public void serialize( @NotNull JsonGenerator serializeTo, @NotNull User object, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull User object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     serializeTo.writeStringField( PROPERTY_NAME, object.getName() );
 
     serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
@@ -78,9 +77,9 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     serialize( object.getSingleEmail(), Email.class, "singleEmail", serializeTo, formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public User deserialize( @NotNull JsonParser deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+  public User deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     nextFieldValue( deserializeFrom, PROPERTY_NAME );
     String name = deserializeFrom.getText();
 

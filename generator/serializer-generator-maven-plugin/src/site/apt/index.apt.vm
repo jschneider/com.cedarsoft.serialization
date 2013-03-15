@@ -75,7 +75,7 @@ Quick overview
 * Generation of serializers and tests
 
 +---
-mvn serializer-generator:generate -Ddomain.class.pattern=src/main/java/**/*.java
+mvn serializer-generator:generate -Ddialect=JACKSON -Ddomain.class.pattern=src/main/java/**/*.java
 +---
 
 * Generation of serializers and tests

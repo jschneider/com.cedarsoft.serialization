@@ -34,17 +34,17 @@ package com.cedarsoft.serialization.demo2;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.cedarsoft.AssertUtils.assertXMLEquals;
+import static com.cedarsoft.test.utils.AssertUtils.assertXMLEquals;
 import static org.junit.Assert.*;
 
 /**
@@ -71,16 +71,16 @@ public class MoneyXstreamLegacyTest {
       xStream.fromXML( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream() );
       fail( "Where is the Exception" );
     } catch ( ConversionException e ) {
-      assertEquals( e.getMessage(), "amount : amount : amount : amount\n" +
-        "---- Debugging information ----\n" +
-        "message             : amount : amount\n" +
-        "cause-exception     : com.thoughtworks.xstream.mapper.CannotResolveClassException\n" +
-        "cause-message       : amount : amount\n" +
-        "class               : com.cedarsoft.serialization.demo2.Money\n" +
-        "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
-        "path                : /money/amount\n" +
-        "line number         : 3\n" +
-        "-------------------------------" );
+      assertEquals( "No such field com.cedarsoft.serialization.demo2.Money.amount\n" +
+                      "---- Debugging information ----\n" +
+                      "field               : amount\n" +
+                      "class               : com.cedarsoft.serialization.demo2.Money\n" +
+                      "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
+                      "converter-type      : com.thoughtworks.xstream.converters.reflection.ReflectionConverter\n" +
+                      "path                : /money/amount\n" +
+                      "line number         : 3\n" +
+                      "version             : null\n" +
+                      "-------------------------------", e.getMessage() );
     }
   }
 
@@ -101,7 +101,7 @@ public class MoneyXstreamLegacyTest {
     assertEquals( 701, deserialize( com.cedarsoft.serialization.demo1.MoneyTest.EXPECTED.openStream(), Version.LEGACY ).getCents() );
   }
 
-  private static Money deserialize( @NotNull InputStream serialized, Version version ) throws XMLStreamException {
+  private static Money deserialize( @Nonnull InputStream serialized, Version version ) throws XMLStreamException {
     //Boilerplate
     XMLInputFactory factory = XMLInputFactory.newInstance();
     XMLStreamReader reader = factory.createXMLStreamReader( serialized );

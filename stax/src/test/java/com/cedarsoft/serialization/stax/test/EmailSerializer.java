@@ -31,13 +31,12 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -47,7 +46,7 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class EmailSerializer extends AbstractStaxSerializer<Email> {
-  @NonNls
+
   public static final String DEFAULT_ELEMENT_NAME = "email";
 
   public EmailSerializer() {
@@ -55,13 +54,13 @@ public class EmailSerializer extends AbstractStaxSerializer<Email> {
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Email object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Email object, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     serializeTo.writeCharacters( object.getMail() );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public Email deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public Email deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     return new Email( getText( deserializeFrom ) );
   }
 }

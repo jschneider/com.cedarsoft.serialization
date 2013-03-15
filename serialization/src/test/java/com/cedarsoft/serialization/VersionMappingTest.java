@@ -31,15 +31,15 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -301,28 +301,28 @@ public class VersionMappingTest {
   //
 
   public static class MySerializer extends AbstractSerializer<Object, Object, Object, IOException> {
-    public MySerializer( @NotNull VersionRange formatVersionRange ) {
+    public MySerializer( @Nonnull VersionRange formatVersionRange ) {
       super( formatVersionRange );
     }
 
     @Override
-    public void serialize( @NotNull Object serializeTo, @NotNull Object object, @NotNull Version formatVersion ) throws IOException, IOException {
+    public void serialize( @Nonnull Object serializeTo, @Nonnull Object object, @Nonnull Version formatVersion ) throws IOException, IOException {
       assert isVersionWritable( formatVersion );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Object deserialize( @NotNull Object deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, IOException {
+    public Object deserialize( @Nonnull Object deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public void serialize( @NotNull Object object, @NotNull OutputStream out ) throws IOException {
+    public void serialize( @Nonnull Object object, @Nonnull OutputStream out ) throws IOException {
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public Object deserialize( @NotNull InputStream in ) throws IOException, VersionException {
+    public Object deserialize( @Nonnull InputStream in ) throws IOException, VersionException {
       throw new UnsupportedOperationException();
     }
   }

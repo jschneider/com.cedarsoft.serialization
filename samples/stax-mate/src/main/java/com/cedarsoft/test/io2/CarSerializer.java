@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
@@ -66,12 +66,12 @@ public class CarSerializer extends AbstractStaxMateSerializer<Car> {
     add( moneySerializer ).responsibleFor( Money.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 0, 1 )
-      ;
+    ;
 
     add( extraSerializer ).responsibleFor( Extra.class )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
       .map( 1, 0, 1 ).toDelegateVersion( 1, 5, 1 )
-      ;
+    ;
 
     add( modelSerializer ).responsibleFor( Model.class )
       .map( 1, 0, 0 ).to( 1, 0, 1 ).toDelegateVersion( 1, 0, 0 );

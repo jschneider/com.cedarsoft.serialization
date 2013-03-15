@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
+import com.cedarsoft.version.Version;
 import org.junit.*;
 
 import static org.junit.Assert.*;

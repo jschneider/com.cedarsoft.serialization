@@ -31,18 +31,18 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ import static org.junit.Assert.*;
  *
  */
 public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Car> getSerializer() {
     MoneySerializer moneySerializer = new MoneySerializer();
@@ -70,7 +70,7 @@ public class CarSerializerTest extends AbstractXmlSerializerTest2<Car> {
     CarSerializerTest.class.getResourceAsStream( "car2.xml" ) );
 
   @Override
-  protected void verifyDeserialized( @NotNull Car deserialized, @NotNull Car original ) {
+  protected void verifyDeserialized( @Nonnull Car deserialized, @Nonnull Car original ) {
     //We don't implement equals in the car, therefore compare manually
     //    super.verifyDeserialized( deserialized );
 

@@ -31,18 +31,23 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.fest.assertions.Fail.fail;
 
 /**
  *
@@ -53,10 +58,34 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected StringSerializer getSerializer() throws Exception {
     return new StringSerializer();
+  }
+
+  @Test
+  public void testNotClose() throws Exception {
+    final boolean[] shallAcceptClose = {false};
+
+    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
+    OutputStream out = new FilterOutputStream( new ByteArrayOutputStream() ) {
+      private boolean closed;
+
+      @Override
+      public void close() throws IOException {
+        if ( !shallAcceptClose[0] ) {
+          fail( "Unacceptable close!" );
+        }
+
+        super.close();
+        closed = true;
+      }
+    };
+
+    getSerializer().serialize( "daString", out );
+    shallAcceptClose[0] = true;
+    out.close();
   }
 
   @Test
@@ -68,7 +97,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
     getSerializer().serialize( generator, "asdf", Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals( "\"asdf\"", out.toString() );
+    JsonUtils.assertJsonEquals("\"asdf\"", out.toString());
   }
 
   @DataPoint

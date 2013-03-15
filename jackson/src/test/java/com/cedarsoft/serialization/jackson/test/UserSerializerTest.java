@@ -31,20 +31,20 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.serialization.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.codec.binary.Hex;
-import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<User> getSerializer() throws Exception {
     return new UserSerializer( new EmailSerializer(), new RoleSerializer(), new UserDetailsSerializer() );

@@ -31,9 +31,8 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,10 +41,10 @@ import java.util.List;
 public class DaBall {
   private final int id;
 
-  @NotNull
+  @Nonnull
   private final List<Element> elements = new ArrayList<Element>();
 
-  public DaBall( int id, @NotNull Collection<? extends Element> elements ) {
+  public DaBall( int id, @Nonnull Collection<? extends Element> elements ) {
     this.id = id;
     this.elements.addAll( elements );
   }
@@ -54,7 +53,7 @@ public class DaBall {
     return id;
   }
 
-  @NotNull
+  @Nonnull
   public List<? extends Element> getElements() {
     return Collections.unmodifiableList( elements );
   }
@@ -64,7 +63,7 @@ public class DaBall {
     if ( this == o ) return true;
     if ( !( o instanceof DaBall ) ) return false;
 
-    DaBall ball = (DaBall) o;
+    DaBall ball = ( DaBall ) o;
 
     if ( id != ball.id ) return false;
 
@@ -77,15 +76,15 @@ public class DaBall {
   }
 
   public static class Element {
-    @NotNull
-    @NonNls
+    @Nonnull
+
     private final String name;
 
-    public Element( @NotNull String name ) {
+    public Element( @Nonnull String name ) {
       this.name = name;
     }
 
-    @NotNull
+    @Nonnull
     public String getName() {
       return name;
     }

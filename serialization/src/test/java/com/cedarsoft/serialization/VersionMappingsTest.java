@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.UnsupportedVersionException;
-import com.cedarsoft.UnsupportedVersionRangeException;
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionMismatchException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.UnsupportedVersionException;
+import com.cedarsoft.version.UnsupportedVersionRangeException;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionMismatchException;
+import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -60,7 +60,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 6, 0 ).to( 1, 9, 0 ).toDelegateVersion( 8, 0, 0 )
-      ;
+    ;
 
     expectedException.expect( VersionMismatchException.class );
     expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Upper border of source range not mapped: Expected [2.0.0] but was [1.9.0]" );
@@ -73,7 +73,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 6, 0 ).to( 2, 0, 0 ).toDelegateVersion( 8, 0, 0 )
-      ;
+    ;
 
     expectedException.expect( VersionMismatchException.class );
     expectedException.expectMessage( "Invalid mapping for <class java.lang.String>: Lower border of source range not mapped: Expected [1.0.0] but was [1.0.1]" );
@@ -88,7 +88,7 @@ public class VersionMappingsTest {
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 5, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 1, 6, 0 ).to( 2, 0, 0 ).toDelegateVersion( 8, 0, 0 )
-      ;
+    ;
 
     assertThat( mapping.resolveVersion( String.class, Version.valueOf( 1, 0, 0 ) ), is( Version.valueOf( 7, 0, 1 ) ) );
     assertThat( mapping.resolveVersion( String.class, Version.valueOf( 1, 0, 1 ) ), is( Version.valueOf( 7, 0, 2 ) ) );
@@ -117,7 +117,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 )
-      ;
+    ;
   }
 
   @Test
@@ -128,7 +128,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 0, 2 )
-      ;
+    ;
   }
 
   @Test
@@ -139,7 +139,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 0, 2 )
-      ;
+    ;
   }
 
   @Test
@@ -150,7 +150,7 @@ public class VersionMappingsTest {
     mapping.add( String.class, VersionRange.from( 7, 0, 0 ).to( 8, 0, 0 ) )
       .map( 2, 0, 0 ).toDelegateVersion( 7, 0, 1 )
       .map( 1, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 0, 2 )
-      ;
+    ;
   }
 
   @Test

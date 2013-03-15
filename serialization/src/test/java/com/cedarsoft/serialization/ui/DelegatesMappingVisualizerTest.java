@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.ui;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.VersionMappingTest;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.DelegatesMappings;
+import com.cedarsoft.serialization.VersionMappingTest;
 import org.junit.*;
 
 import java.io.IOException;
@@ -63,21 +63,21 @@ public class DelegatesMappingVisualizerTest {
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     delegatesMappings.add( serializer ).responsibleFor( String.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     delegatesMappings.add( serializer ).responsibleFor( Integer.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 1, 12 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 0, 91 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     assertEquals( new DelegatesMappingVisualizer( delegatesMappings ).visualize(),
                   "         -->   Integer    Object    String\n" +

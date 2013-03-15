@@ -31,21 +31,21 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class Email {
-  @NotNull @NonNls
+  @Nonnull
   private final String mail;
 
-  public Email( @NotNull String mail ) {
+  public Email( @Nonnull String mail ) {
     this.mail = mail;
   }
 
-  @NotNull
+  @Nonnull
   public String getMail() {
     return mail;
   }

@@ -31,12 +31,12 @@
 
 package com.cedarsoft.serialization.ui;
 
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.VersionMappings;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Comparator;
 
@@ -64,21 +64,21 @@ public class VersionMappingsVisualizerTest {
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     versionMappings.add( String.class, other )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 0, 2 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 1, 0 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     versionMappings.add( Integer.class, other )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 1, 1 )
       .map( 1, 0, 1 ).toDelegateVersion( 7, 1, 12 )
       .map( 1, 0, 2 ).to( 1, 15, 0 ).toDelegateVersion( 7, 0, 91 )
       .map( 2, 0, 0 ).to( 2, 0, 0 ).toDelegateVersion( 7, 5, 9 )
-      ;
+    ;
 
     assertEquals(
       "         -->   Integer    Object    String\n" +
@@ -95,12 +95,13 @@ public class VersionMappingsVisualizerTest {
           return o1.getName().compareTo( o2.getName() );
         }
       }, new ToString<Class<?>>() {
-        @NotNull
+        @Nonnull
         @Override
-        public String convert( @NotNull Class<?> object ) {
+        public String convert( @Nonnull Class<?> object ) {
           String[] parts = object.getName().split( "\\." );
           return parts[parts.length - 1];
         }
-      } ).visualize() );
+      }
+      ).visualize() );
   }
 }

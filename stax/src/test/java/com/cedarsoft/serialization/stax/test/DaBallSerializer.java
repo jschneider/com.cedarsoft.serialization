@@ -31,12 +31,12 @@
 
 package com.cedarsoft.serialization.stax.test;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -57,15 +57,15 @@ public class DaBallSerializer extends AbstractStaxSerializer<DaBall> {
   }
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull DaBall object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull DaBall object, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     serializeTo.writeAttribute( "id", String.valueOf( object.getId() ) );
 
     serializeCollection( object.getElements(), DaBall.Element.class, "daElement", serializeTo, formatVersion );
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public DaBall deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+  public DaBall deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
     int id = Integer.parseInt( deserializeFrom.getAttributeValue( null, "id" ) );
 
     List<? extends DaBall.Element> elements = deserializeCollection( deserializeFrom, DaBall.Element.class, formatVersion );
@@ -78,7 +78,7 @@ public class DaBallSerializer extends AbstractStaxSerializer<DaBall> {
     }
 
     @Override
-    public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull DaBall.Element object, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull DaBall.Element object, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       serializeTo.writeStartElement( "name1" );
       serializeTo.writeCharacters( object.getName() );
       serializeTo.writeEndElement();
@@ -88,14 +88,14 @@ public class DaBallSerializer extends AbstractStaxSerializer<DaBall> {
       serializeTo.writeEndElement();
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public DaBall.Element deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public DaBall.Element deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assertEquals( Version.valueOf( 2, 0, 0 ), formatVersion );
 
       String name2 = getChildText( deserializeFrom, "name1" );
 
-      nextTag( deserializeFrom, "name2");
+      nextTag( deserializeFrom, "name2" );
       String name = getText( deserializeFrom );
       assertEquals( name, name2 );
 

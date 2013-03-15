@@ -31,18 +31,18 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.AbstractXmlSerializerTest2;
-import com.cedarsoft.serialization.Entry;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
+import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
-import org.jetbrains.annotations.NotNull;
 import org.junit.experimental.theories.*;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -59,31 +59,31 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
       "  <money cents=\"203499\" />\n" +
       "</myObject>" );
 
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<MyObject> getSerializer() throws Exception {
     return new MyObjectSerializer( new com.cedarsoft.test.io2.MoneySerializer() );
   }
 
   public static class MyObjectSerializer extends AbstractStaxMateSerializer<MyObject> {
-    public MyObjectSerializer( @NotNull MoneySerializer moneySerializer ) {
+    public MyObjectSerializer( @Nonnull MoneySerializer moneySerializer ) {
       super( "myObject", "http://serialization.cedarsoft.com/test/myObject", VersionRange.from( Version.valueOf( 1, 4, 0 ) ).to( Version.valueOf( 1, 5, 0 ) ) );
 
       add( moneySerializer ).responsibleFor( Money.class )
         .map( 1, 4, 0 ).toDelegateVersion( 1, 0, 0 )
         .map( 1, 5, 0 ).toDelegateVersion( 1, 0, 1 )
-        ;
+      ;
     }
 
     @Override
-    public void serialize( @NotNull SMOutputElement serializeTo, @NotNull MyObject object, Version formatVersion ) throws IOException, XMLStreamException {
+    public void serialize( @Nonnull SMOutputElement serializeTo, @Nonnull MyObject object, Version formatVersion ) throws IOException, XMLStreamException {
       assert isVersionWritable( formatVersion );
       serialize( object.getMoney(), Money.class, serializeTo.addElement( serializeTo.getNamespace(), "money" ), formatVersion );
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public MyObject deserialize( @NotNull XMLStreamReader deserializeFrom, @NotNull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
+    public MyObject deserialize( @Nonnull XMLStreamReader deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, XMLStreamException {
       assert isVersionReadable( formatVersion );
       nextTag( deserializeFrom, "money" );
       Money money = deserialize( Money.class, formatVersion, deserializeFrom );

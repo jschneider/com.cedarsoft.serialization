@@ -29,7 +29,6 @@ package com.cedarsoft.sample; /**
  * have any questions.
  */
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

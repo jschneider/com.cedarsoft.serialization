@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionException;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NotNull;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,7 +57,7 @@ public interface Serializer<T> {
    * @param out    the out stream
    * @throws IOException
    */
-  void serialize( @NotNull T object, @NotNull OutputStream out ) throws IOException;
+  void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException;
 
   /**
    * Deserializes the object from the input stream
@@ -68,15 +68,15 @@ public interface Serializer<T> {
    * @throws VersionException if any version related problem occurred
    * @throws IOException
    */
-  @NotNull
-  T deserialize( @NotNull InputStream in ) throws IOException, VersionException;
+  @Nonnull
+  T deserialize( @Nonnull InputStream in ) throws IOException, VersionException;
 
   /**
    * Returns the format version that is written.
    *
    * @return the format version that is written
    */
-  @NotNull
+  @Nonnull
   Version getFormatVersion();
 
   /**
@@ -84,6 +84,6 @@ public interface Serializer<T> {
    *
    * @return the format version range that is supported
    */
-  @NotNull
+  @Nonnull
   VersionRange getFormatVersionRange();
 }

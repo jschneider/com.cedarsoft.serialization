@@ -31,20 +31,19 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
+import com.cedarsoft.test.utils.JsonUtils;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -120,8 +119,8 @@ public class JacksonTest {
     verifyGenerator( "\"daContent1\"" );
   }
 
-  private void verifyGenerator( @NotNull @NonNls String control ) throws IOException {
+  private void verifyGenerator( @Nonnull String control ) throws IOException {
     generator.flush();
-    JsonUtils.assertJsonEquals( control, out.toString() );
+    JsonUtils.assertJsonEquals(control, out.toString());
   }
 }

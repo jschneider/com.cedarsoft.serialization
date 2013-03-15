@@ -31,12 +31,12 @@
 
 package com.cedarsoft.test.io2;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.serialization.AbstractXmlVersionTest;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,13 +46,13 @@ import static org.junit.Assert.*;
  *
  */
 public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Map<? extends Version, ? extends String> getSerializedXml() {
     Map<Version, String> map = new HashMap<Version, String>();
@@ -65,7 +65,7 @@ public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
   }
 
   @Override
-  protected void verifyDeserialized( @NotNull Money deserialized, @NotNull Version version ) {
+  protected void verifyDeserialized( @Nonnull Money deserialized, @Nonnull Version version ) {
     assertEquals( new Money( 7, 99 ), deserialized );
   }
 }

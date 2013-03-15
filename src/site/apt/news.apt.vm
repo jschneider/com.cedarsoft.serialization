@@ -31,6 +31,89 @@
 
 News
 
+* 2012-08-15: Released 4.1.2
+
+ * Collection Serializer added
+
+ * StaxMate output: Added indentation
+
+ * Inlined HashSerializer added
+
+ * Updated dependency to Codegen
+
+ * Serveral updates to external dependencies
+
+* 2012-02-25: Released 4.1.1
+
+ * Improved Exception messages: Added location
+
+* 2012-01-25: Released 4.1.0
+
+  * Removing JDOM dependencies
+
+  * Improved Namespace handling
+
+* 2012-01-17: Released 4.0.7
+
+  * Updated (commons) version
+
+  * Additional callbacks added
+
+  * IgnoringSerializer improved
+
+* 2011-12-31: Released 4.0.6
+
+  * Updated (commons) version
+
+* 2011-12-08: Released 4.0.5
+
+  * Updated versions of dependencies
+
+* 2011-11-30: Released 4.0.4
+
+  * Updated commons version
+
+* 2011-11-23: Released 4.0.3
+
+  * Added DateTimeZone serializer
+
+* 2011-09-26: Released 4.0.2
+
+  * Updated versions of dependencies
+
+  * Added URL serializer
+
+* 2011-09-03: Released 4.0.1
+
+  * Jackson: Added Enum support
+
+  * Updated versions of dependencies
+
+* 2011-07-09: Released 4.0.0
+
+  * Updated Package structure - therefore the major version number has changed
+
+  * Added basic support for OSGi
+
+  * replaced commons-lang with Guava
+
+* 2011-05-14: Released 3.0.1
+
+  Version 3.0.1 has been released. This version contains the following changes:
+
+  * Jackson: Introduced wrapper for improved API (JacksonParserWrapper)
+
+  * Generator: Fixed verify methods
+
+  * Generator: Using JacksonParserWrapper
+
+  * Internal: Updated Annotations (switched to javax.annotation.Nonnull)
+
+* 2011-12-03: Released 3.0.0
+
+  Version 3.0.0 has been released.
+  Several dependencies have been updated to their latest versions. Therefore the new major version number.
+
 * 2010-08-09: Released 2.0.0
 
   A new major version has been released. This version is a major step forward.
@@ -61,21 +144,21 @@ News
 
 *** For XML based serializers:
 
- * {{{./xref/com/cedarsoft/serialization/AbstractXmlSerializerTest2.html}<com.cedarsoft.serialization.AbstractXmlSerializerTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractXmlSerializerTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2>}}
 
    For roundtrip tests.
 
- * {{{./xref/com/cedarsoft/serialization/AbstractXmlVersionTest2.html}<com.cedarsoft.serialization.AbstractXmlVersionTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractXmlVersionTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2>}}
 
   For read-only tests of old versions
 
 *** For other serializers:
 
- * {{{./xref/com/cedarsoft/serialization/AbstractSerializerTest2.html}<com.cedarsoft.serialization.AbstractXmlSerializerTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractSerializerTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2>}}
 
    For roundtrip tests.
 
- * {{{./xref/com/cedarsoft/serialization/AbstractVersionTest2.html}<com.cedarsoft.serialization.AbstractXmlVersionTest2>}}
+ * {{{./xref/com/cedarsoft/serialization/AbstractVersionTest2.html}<com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2>}}
 
   For read-only tests of old versions
 

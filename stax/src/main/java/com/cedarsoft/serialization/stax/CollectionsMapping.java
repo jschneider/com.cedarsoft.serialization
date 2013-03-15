@@ -31,9 +31,8 @@
 
 package com.cedarsoft.serialization.stax;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +41,10 @@ import java.util.Map;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class CollectionsMapping {
-  @NotNull
+  @Nonnull
   private final Map<String, Entry<?>> entries = new HashMap<String, Entry<?>>();
 
-  public Entry<?> getEntry( @NotNull @NonNls String tagName ) {
+  public Entry<?> getEntry( @Nonnull String tagName ) {
     Entry<?> resolved = entries.get( tagName );
     if ( resolved == null ) {
       throw new IllegalArgumentException( "No entry found for <" + tagName + ">" );
@@ -53,37 +52,37 @@ public class CollectionsMapping {
     return resolved;
   }
 
-  @NotNull
-  public <T> CollectionsMapping append( @NotNull Class<T> type, @NotNull List<T> targetCollection, @NotNull @NonNls String tagName ) {
+  @Nonnull
+  public <T> CollectionsMapping append( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull String tagName ) {
     entries.put( tagName, new Entry<T>( type, targetCollection, tagName ) );
     return this;
   }
 
   public static class Entry<T> {
-    @NotNull
+    @Nonnull
     private final Class<T> type;
-    @NotNull
+    @Nonnull
     private final List<T> targetCollection;
-    @NotNull
+    @Nonnull
     private final String tagName;
 
-    public Entry( @NotNull Class<T> type, @NotNull List<T> targetCollection, @NotNull @NonNls String tagName ) {
+    public Entry( @Nonnull Class<T> type, @Nonnull List<T> targetCollection, @Nonnull String tagName ) {
       this.type = type;
       this.targetCollection = targetCollection;
       this.tagName = tagName;
     }
 
-    @NotNull
+    @Nonnull
     public Class<T> getType() {
       return type;
     }
 
-    @NotNull
+    @Nonnull
     public List<T> getTargetCollection() {
       return targetCollection;
     }
 
-    @NotNull
+    @Nonnull
     public String getTagName() {
       return tagName;
     }

@@ -31,29 +31,30 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.serialization.AbstractXmlSerializerTest;
+import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  *
  */
-public class MoneySerializerTest extends AbstractXmlSerializerTest<Money>{
+public class MoneySerializerTest extends AbstractXmlSerializerTest<Money> {
   //We don't need a multi test for such an easy class...
-  @NotNull
+  @Nonnull
   @Override
   protected Serializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getExpectedSerialized() {
     return "<money>1199</money>";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected Money createObjectToSerialize() {
     return new Money( 1199 );

@@ -41,8 +41,19 @@
     <src>serialization.jpg</src>
     <href>index.html</href>
   </bannerLeft>
+  <bannerRight>
+    <name>cedarsoft</name>
+    <src>images/cedarsoft.jpg</src>
+    <href>http://www.cedarsoft.com/</href>
+  </bannerRight>
 
   <body>
+    <breadcrumbs>
+      <item name="cedarsoft" href="http://www.cedarsoft.com" />
+      <item name="Open" href="../" />
+      <item name="serialization" href="."/>
+    </breadcrumbs>
+
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="News" href="news.html" />
@@ -63,8 +74,8 @@
     <menu name="Tutorial">
       <item name="Tutorial" href="tutorial.html" />
       <item name="Evolution Sample" href="evolution.html">
-        <item name="using XStream" href="evolutionXStream.html"/>
-        <item name="using cedarsoft Serialization" href="evolutionCedarsoftSerialization.html"/>
+        <item name="using XStream" href="evolutionXStream.html" />
+        <item name="using cedarsoft Serialization" href="evolutionCedarsoftSerialization.html" />
       </item>
       <!--<item name="Advanced" href="advancedTut.html" />-->
     </menu>
@@ -101,5 +112,15 @@
 
     <menu ref="reports" inherit="bottom" />
   </body>
+
+  <publishDate position="bottom" format="yyyy-MM-dd HH:mm" />
+  <skin>
+    <groupId>com.cedarsoft.maven</groupId>
+    <artifactId>cedarsoft-skin</artifactId>
+    <version>${maven.skin.version}</version>
+  </skin>
+  <poweredBy>
+    <logo name="cedarsoft" href="http://www.cedarsoft.com" img="http://www.cedarsoft.com/objects/poweredby.png" />
+  </poweredBy>
 </project>
 

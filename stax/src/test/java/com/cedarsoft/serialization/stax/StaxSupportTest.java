@@ -48,10 +48,4 @@ public class StaxSupportTest {
     assertEquals( "END_ELEMENT", StaxSupport.getEventName( XMLStreamReader.END_ELEMENT ) );
     assertEquals( "6151351", StaxSupport.getEventName( 6151351 ) );
   }
-
-  @Test
-  public void testFactories() {
-    assertEquals( "com.sun.xml.internal.stream.XMLInputFactoryImpl", StaxSupport.getXmlInputFactory().getClass().getName() );
-    assertEquals( "com.sun.xml.internal.stream.XMLOutputFactoryImpl", StaxSupport.getXmlOutputFactory().getClass().getName() );
-  }
 }

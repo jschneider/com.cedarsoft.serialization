@@ -31,11 +31,10 @@
 
 package com.cedarsoft.serialization;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,10 +52,10 @@ import java.util.List;
  * @param <E> as defined in {@link SerializingStrategy}
  */
 public class SerializingStrategySupport<T, S, D, E extends Throwable> {
-  @NotNull
+  @Nonnull
   private final List<SerializingStrategy<? extends T, S, D, E>> strategies = new ArrayList<SerializingStrategy<? extends T, S, D, E>>();
 
-  @NotNull
+  @Nonnull
   private final VersionMappings<SerializingStrategy<? extends T, S, D, E>> versionMappings;
 
   /**
@@ -64,7 +63,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    *
    * @param versionRange the format version range
    */
-  public SerializingStrategySupport( @NotNull VersionRange versionRange ) {
+  public SerializingStrategySupport( @Nonnull VersionRange versionRange ) {
     versionMappings = new VersionMappings<SerializingStrategy<? extends T, S, D, E>>( versionRange );
   }
 
@@ -77,8 +76,8 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    *
    * @throws NotFoundException if not strategy could be found
    */
-  @NotNull
-  public SerializingStrategy<? extends T, S, D, E> findStrategy( @NotNull @NonNls String id ) throws NotFoundException {
+  @Nonnull
+  public SerializingStrategy<? extends T, S, D, E> findStrategy( @Nonnull String id ) throws NotFoundException {
     for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
       if ( strategy.getId().equals( id ) ) {
         return strategy;
@@ -96,8 +95,8 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    *
    * @throws NotFoundException
    */
-  @NotNull
-  public <R extends T> SerializingStrategy<R, S, D, E> findStrategy( @NotNull R object ) throws NotFoundException {
+  @Nonnull
+  public <R extends T> SerializingStrategy<R, S, D, E> findStrategy( @Nonnull R object ) throws NotFoundException {
     for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
       if ( strategy.supports( object ) ) {
         return ( SerializingStrategy<R, S, D, E> ) strategy;
@@ -112,23 +111,23 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    *
    * @return the strategies
    */
-  @NotNull
+  @Nonnull
   public Collection<? extends SerializingStrategy<? extends T, S, D, E>> getStrategies() {
     return Collections.unmodifiableList( strategies );
   }
 
-  @NotNull
-  public VersionMapping addStrategy( @NotNull SerializingStrategy<? extends T, S, D, E> strategy ) {
+  @Nonnull
+  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, S, D, E> strategy ) {
     strategies.add( strategy );
     return versionMappings.add( strategy, strategy.getFormatVersionRange() );
   }
 
-  @NotNull
-  public Version resolveVersion( @NotNull SerializingStrategy<? extends T, S, D, E> key, @NotNull Version version ) {
+  @Nonnull
+  public Version resolveVersion( @Nonnull SerializingStrategy<? extends T, S, D, E> key, @Nonnull Version version ) {
     return versionMappings.resolveVersion( key, version );
   }
 
-  @NotNull
+  @Nonnull
   public VersionMappings<SerializingStrategy<? extends T, S, D, E>> getVersionMappings() {
     return versionMappings;
   }

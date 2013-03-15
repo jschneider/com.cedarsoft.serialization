@@ -31,15 +31,15 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.JsonUtils;
-import com.cedarsoft.Version;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParser;
-import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
  *
  */
 public class NullSerializerTest {
-  @NotNull
+  @Nonnull
   protected NullSerializer getSerializer() throws Exception {
     return new NullSerializer();
   }
@@ -63,7 +63,7 @@ public class NullSerializerTest {
     NullSerializer serializer = getSerializer();
     serializer.serialize( generator, null, Version.valueOf( 1, 0, 0 ) );
     generator.close();
-    JsonUtils.assertJsonEquals( "null", out.toString() );
+    JsonUtils.assertJsonEquals("null", out.toString());
 
     assertNull( serializer.deserialize( new ByteArrayInputStream( out.toByteArray() ) ) );
   }

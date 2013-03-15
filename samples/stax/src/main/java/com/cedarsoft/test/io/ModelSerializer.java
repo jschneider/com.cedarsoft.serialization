@@ -31,12 +31,12 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.stax.AbstractStaxSerializer;
 import com.cedarsoft.test.Model;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -44,7 +44,7 @@ import java.io.IOException;
 
 /**
  * This is a very simple serializer that serializes a {@link Model}.
- * <p>
+ * <p/>
  * Results in:<br/>
  * <code>
  * &lt;model&gt;Toyota&lt;/model&gt;</code><br/>
@@ -63,7 +63,7 @@ public class ModelSerializer extends AbstractStaxSerializer<Model> {
   //START SNIPPET: serialize
 
   @Override
-  public void serialize( @NotNull XMLStreamWriter serializeTo, @NotNull Model object, Version formatVersion ) throws IOException, XMLStreamException {
+  public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull Model object, Version formatVersion ) throws IOException, XMLStreamException {
     assert isVersionWritable( formatVersion );
     serializeTo.writeCharacters( object.getName() );
   }

@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io;
 
-import com.cedarsoft.Version;
-import com.cedarsoft.VersionRange;
-import com.cedarsoft.serialization.stax.AbstractStaxMateSerializer;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Car;
 import com.cedarsoft.test.Extra;
 import com.cedarsoft.test.Model;
