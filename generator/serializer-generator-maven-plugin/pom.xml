@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft.serialization</groupId>
     <artifactId>generator</artifactId>
-    <version>4.1.4</version>
+    <version>4.1.5-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -20,7 +20,7 @@
 
   <scm>
     <url>https://github.com/jschneider/com.cedarsoft.serialization/tree/master/generator/serializer-generator-maven-plugin</url>
-    <tag>4.1.4</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
