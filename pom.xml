@@ -32,7 +32,7 @@
 
   <issueManagement>
     <system>github</system>
-    <url>http://github.com/jschneider/com.cedarsoft.serialization/issues</url>
+    <url>https://github.com/jschneider/com.cedarsoft.serialization/issues</url>
   </issueManagement>
 
   <modules>
