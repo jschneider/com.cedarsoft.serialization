@@ -33,10 +33,10 @@ package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import org.junit.*;
 
 import javax.annotation.Nonnull;

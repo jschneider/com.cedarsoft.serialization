@@ -30,31 +30,25 @@
  */
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.version.Version;
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import com.cedarsoft.serialization.jackson.JacksonSerializer;
-import org.codehaus.jackson.Base64Variant;
-import org.codehaus.jackson.FormatSchema;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonLocation;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonStreamContext;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.ObjectCodec;
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.Base64Variant;
+import com.fasterxml.jackson.core.FormatSchema;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonStreamContext;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -164,7 +158,8 @@ public class JacksonParserWrapper {
     return getParser().<T>readValueAs( valueTypeRef );
   }
 
-  public JsonNode readValueAsTree() throws IOException, JsonProcessingException {
+  @Nonnull
+  public TreeNode readValueAsTree() throws IOException, JsonProcessingException {
     return getParser().readValueAsTree();
   }
 
@@ -189,7 +184,7 @@ public class JacksonParserWrapper {
     return getParser().canUseSchema( schema );
   }
 
-  public org.codehaus.jackson.Version version() {
+  public Version version() {
     return getParser().version();
   }
 
@@ -225,20 +220,16 @@ public class JacksonParserWrapper {
     return getParser().isEnabled( f );
   }
 
-  public void setFeature( JsonParser.Feature f, boolean state ) {
-    getParser().setFeature( f, state );
-  }
-
   public void enableFeature( JsonParser.Feature f ) {
-    getParser().enableFeature( f );
+    getParser().enable( f );
   }
 
   public void disableFeature( JsonParser.Feature f ) {
-    getParser().disableFeature( f );
+    getParser().disable( f );
   }
 
   public boolean isFeatureEnabled( JsonParser.Feature f ) {
-    return getParser().isFeatureEnabled( f );
+    return getParser().isEnabled( f );
   }
 
   public JsonToken nextToken() throws IOException, JsonParseException {

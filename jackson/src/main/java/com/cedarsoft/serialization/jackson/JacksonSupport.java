@@ -31,7 +31,8 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import org.codehaus.jackson.JsonFactory;
+
+import com.fasterxml.jackson.core.JsonFactory;
 
 import javax.annotation.Nonnull;
 

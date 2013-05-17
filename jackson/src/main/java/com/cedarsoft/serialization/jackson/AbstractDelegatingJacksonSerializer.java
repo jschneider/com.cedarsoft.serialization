@@ -37,10 +37,10 @@ import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import com.cedarsoft.serialization.VersionMapping;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
