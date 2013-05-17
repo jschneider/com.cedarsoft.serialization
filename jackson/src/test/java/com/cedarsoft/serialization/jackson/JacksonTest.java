@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.test.utils.JsonUtils;
 import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -49,7 +50,7 @@ import static org.junit.Assert.*;
  *
  */
 public class JacksonTest {
-  private com.fasterxml.jackson.core.JsonFactory jsonFactory;
+  private JsonFactory jsonFactory;
   private ByteArrayOutputStream out;
   private JsonGenerator generator;
 

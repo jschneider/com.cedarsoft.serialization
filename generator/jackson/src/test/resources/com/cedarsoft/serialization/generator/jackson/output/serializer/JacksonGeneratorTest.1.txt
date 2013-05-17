@@ -10,9 +10,9 @@ import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class FooSerializer
     extends AbstractJacksonSerializer<Foo>
@@ -47,7 +47,7 @@ public class FooSerializer
         Foo object,
         @Nonnull
         Version formatVersion)
-        throws IOException, JsonProcessingException
+        throws JsonProcessingException, IOException
     {
         verifyVersionWritable(formatVersion);
         //width
@@ -73,7 +73,7 @@ public class FooSerializer
         JsonParser deserializeFrom,
         @Nonnull
         Version formatVersion)
-        throws VersionException, IOException, JsonProcessingException
+        throws VersionException, JsonProcessingException, IOException
     {
         verifyVersionReadable(formatVersion);
         JacksonParserWrapper parser = new JacksonParserWrapper(deserializeFrom);
