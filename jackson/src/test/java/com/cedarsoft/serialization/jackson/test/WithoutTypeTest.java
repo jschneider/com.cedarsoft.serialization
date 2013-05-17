@@ -31,7 +31,7 @@
 package com.cedarsoft.serialization.jackson.test;
 
 import com.cedarsoft.test.utils.JsonUtils;
-import org.codehaus.jackson.JsonParseException;
+import com.fasterxml.jackson.core.JsonParseException;
 import org.junit.*;
 
 import java.io.ByteArrayInputStream;

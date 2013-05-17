@@ -34,12 +34,17 @@ package com.cedarsoft.serialization.test.utils;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ContainerNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.io.Charsets;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ContainerNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.node.TextNode;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import org.fest.reflect.core.Reflection;
 
 import javax.annotation.Nonnull;
@@ -104,7 +109,7 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
     newProps.put( "@type", new TextNode( type ) );
     newProps.put( "@version", new TextNode( version.format() ) );
 
-    Iterator<Map.Entry<String, JsonNode>> nodeIterator = tree.getFields();
+    Iterator<Map.Entry<String, JsonNode>> nodeIterator = tree.fields();
     while ( nodeIterator.hasNext() ) {
       Map.Entry<String, JsonNode> jsonNode = nodeIterator.next();
       newProps.put( jsonNode.getKey(), jsonNode.getValue() );

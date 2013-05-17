@@ -32,9 +32,9 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.serialization.SerializingStrategy;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * @param <T> the type

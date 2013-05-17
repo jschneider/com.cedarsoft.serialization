@@ -32,10 +32,10 @@ package com.cedarsoft.serialization.jackson.test.compatible;
 
 import com.cedarsoft.serialization.jackson.JacksonSupport;
 import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParseException;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;

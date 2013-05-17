@@ -34,9 +34,10 @@ package com.cedarsoft.serialization.jackson;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.serialization.InvalidNamespaceException;
 import com.cedarsoft.serialization.PluggableSerializer;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
