@@ -1,11 +1,11 @@
 {
   "built_on": "master",
-  "duration": 47.949,
-  "full_display_name": "com.cedarsoft.serialization #47",
-  "id": "2013-05-17_18-04-52",
-  "number": 47,
+  "duration": 61.93,
+  "full_display_name": "com.cedarsoft.serialization #48",
+  "id": "2013-05-18_02-29-44",
+  "number": 48,
   "result": "FAILURE",
   "status_message": "?",
-  "time": "2013-05-17 18:04:52 +0200",
-  "url": "job/com.cedarsoft.serialization/47/"
+  "time": "2013-05-18 02:29:44 +0200",
+  "url": "job/com.cedarsoft.serialization/48/"
 }
