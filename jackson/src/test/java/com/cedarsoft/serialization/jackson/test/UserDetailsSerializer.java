@@ -31,10 +31,11 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -74,31 +75,33 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
     long lastLogin = -1;
     String passwordHash = null;
 
-    while ( deserializeFrom.nextToken() == JsonToken.FIELD_NAME ) {
-      String currentName = deserializeFrom.getCurrentName();
+    JacksonParserWrapper wrapper = new JacksonParserWrapper( deserializeFrom );
+
+    while ( wrapper.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = wrapper.getCurrentName();
 
       if ( currentName.equals( PROPERTY_REGISTRATION_DATE ) ) {
-        nextToken( deserializeFrom, JsonToken.VALUE_NUMBER_INT );
-        registrationDate = deserializeFrom.getLongValue();
+        wrapper.nextToken( JsonToken.VALUE_NUMBER_INT );
+        registrationDate = wrapper.getLongValue();
       }
 
       if ( currentName.equals( PROPERTY_LAST_LOGIN ) ) {
-        nextToken( deserializeFrom, JsonToken.VALUE_NUMBER_INT );
-        lastLogin = deserializeFrom.getLongValue();
+        wrapper.nextToken( JsonToken.VALUE_NUMBER_INT );
+        lastLogin = wrapper.getLongValue();
       }
 
       if ( currentName.equals( PROPERTY_PASSWORD_HASH ) ) {
-        nextToken( deserializeFrom, JsonToken.VALUE_STRING );
-        passwordHash = deserializeFrom.getText();
+        wrapper.nextToken( JsonToken.VALUE_STRING );
+        passwordHash = wrapper.getText();
       }
     }
 
     if ( registrationDate == -1 || lastLogin == -1 || passwordHash == null ) {
-      System.out.println( "--> invalid" );
+      throw new IllegalStateException( "Did not deserialize everything" );
     }
 
-    if ( deserializeFrom.getCurrentToken() != JsonToken.END_OBJECT ) {
-      System.out.println( "-----> Unexpected was " + deserializeFrom.getCurrentToken() );
+    if ( wrapper.getCurrentToken() != JsonToken.END_OBJECT ) {
+      throw new IllegalStateException( "Did not deserialize everything" );
     }
 
     try {
