@@ -31,14 +31,17 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.app.Application;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -74,12 +77,20 @@ public class ApplicationSerializer extends AbstractJacksonSerializer<Application
   @Override
   public Application deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws VersionException, IOException, JsonProcessingException {
     //name
-    nextFieldValue( deserializeFrom, PROPERTY_NAME );
-    String name = deserializeFrom.getText();
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_NAME.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_NAME + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    String name = parserWrapper.getText();
     //version
     Version version = deserialize( Version.class, PROPERTY_VERSION, formatVersion, deserializeFrom );
     //Finally closing element
-    closeObject( deserializeFrom );
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
     //Constructing the deserialized object
     return new Application( name, version );
   }

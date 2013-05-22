@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -39,8 +40,10 @@ import com.cedarsoft.file.FileType;
 import com.cedarsoft.file.FileTypeRegistry;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -79,14 +82,37 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
   @Override
   public FileType deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, PROPERTY_ID );
-    String id = deserializeFrom.getText();
-    nextFieldValue( deserializeFrom, PROPERTY_DEPENDENT_TYPE );
-    boolean dependentType = deserializeFrom.getBooleanValue();
-    nextFieldValue( deserializeFrom, PROPERTY_CONTENT_TYPE );
-    String contentType = deserializeFrom.getText();
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName2 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_ID.equals( currentName2 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_ID + "> but was <" + currentName2 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    String id = parserWrapper.getText();
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName1 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_DEPENDENT_TYPE.equals( currentName1 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_DEPENDENT_TYPE + "> but was <" + currentName1 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    boolean dependentType = parserWrapper.getBooleanValue();
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_CONTENT_TYPE.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_CONTENT_TYPE + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    String contentType = parserWrapper.getText();
     List<? extends Extension> extensions = deserializeArray( Extension.class, PROPERTY_EXTENSIONS, deserializeFrom, formatVersion );
-    closeObject( deserializeFrom );
+
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
     return new FileType( id, contentType, dependentType, extensions );
   }
 

@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -41,6 +42,7 @@ import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -77,7 +79,8 @@ public class FileNameSerializer extends AbstractJacksonSerializer<FileName> {
     //extension
     Extension extension = deserialize( Extension.class, PROPERTY_EXTENSION, formatVersion, deserializeFrom );
     //Finally closing element
-    closeObject( deserializeFrom );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
     //Constructing the deserialized object
     return new FileName( baseName, extension );
   }

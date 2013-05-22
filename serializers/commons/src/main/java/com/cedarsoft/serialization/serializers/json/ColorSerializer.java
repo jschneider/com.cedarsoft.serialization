@@ -31,13 +31,16 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.awt.Color;
@@ -73,16 +76,38 @@ public class ColorSerializer extends AbstractJacksonSerializer<Color> {
   public Color deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
     //red
-    nextFieldValue( deserializeFrom, PROPERTY_RED );
-    int red = deserializeFrom.getIntValue();
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName2 = parserWrapper.getCurrentName();
 
-    nextFieldValue( deserializeFrom, PROPERTY_GREEN );
-    int green = deserializeFrom.getIntValue();
+    if ( !PROPERTY_RED.equals( currentName2 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_RED + "> but was <" + currentName2 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    int red = parserWrapper.getIntValue();
 
-    nextFieldValue( deserializeFrom, PROPERTY_BLUE );
-    int blue = deserializeFrom.getIntValue();
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName1 = parserWrapper.getCurrentName();
 
-    closeObject( deserializeFrom );
+    if ( !PROPERTY_GREEN.equals( currentName1 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_GREEN + "> but was <" + currentName1 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    int green = parserWrapper.getIntValue();
+
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_BLUE.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_BLUE + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    int blue = parserWrapper.getIntValue();
+
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
 
     return new Color( red, green, blue );
   }

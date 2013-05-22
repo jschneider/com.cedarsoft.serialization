@@ -36,6 +36,7 @@ import com.cedarsoft.version.Version;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import org.junit.*;
 
@@ -72,6 +73,11 @@ public class NullSerializerTest {
   public void testStep() throws Exception {
     JsonParser parser = JacksonSupport.getJsonFactory().createJsonParser( new ByteArrayInputStream( "null".getBytes() ) );
     assertNull( getSerializer().deserialize( parser ) );
-    AbstractJacksonSerializer.ensureParserClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    if ( parserWrapper.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
+
+    parserWrapper.close();
   }
 }

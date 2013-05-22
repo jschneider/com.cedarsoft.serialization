@@ -113,11 +113,20 @@ public class JacksonParserWrapper {
   }
 
   public void ensureObjectClosed() throws JsonParseException {
-    AbstractJacksonSerializer.ensureObjectClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+
+    if ( parserWrapper.getCurrentToken() != JsonToken.END_OBJECT ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
   }
 
   public void ensureParserClosed() throws IOException {
-    AbstractJacksonSerializer.ensureParserClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    if ( parserWrapper.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
+
+    parserWrapper.close();
   }
 
   //Delegating

@@ -31,11 +31,13 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -65,13 +67,29 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
   @Nonnull
   @Override
   public Role deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, PROPERTY_ID );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName1 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_ID.equals( currentName1 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_ID + "> but was <" + currentName1 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     int id = deserializeFrom.getIntValue();
 
-    nextFieldValue( deserializeFrom, PROPERTY_DESCRIPTION );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_DESCRIPTION.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_DESCRIPTION + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     String description = deserializeFrom.getText();
 
-    nextToken( deserializeFrom, JsonToken.END_OBJECT );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.END_OBJECT );
     return new Role( id, description );
   }
 }

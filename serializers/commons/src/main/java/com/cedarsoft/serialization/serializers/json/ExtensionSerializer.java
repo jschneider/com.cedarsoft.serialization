@@ -31,14 +31,17 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -68,16 +71,30 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
   public Extension deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //delimiter
-    nextFieldValue( deserializeFrom, PROPERTY_DELIMITER );
-    String delimiter = deserializeFrom.getText();
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName1 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_DELIMITER.equals( currentName1 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_DELIMITER + "> but was <" + currentName1 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    String delimiter = parserWrapper.getText();
     //extension
-    nextFieldValue( deserializeFrom, PROPERTY_EXTENSION );
-    String extension = deserializeFrom.getText();
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_EXTENSION.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_EXTENSION + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
+    String extension = parserWrapper.getText();
     //Finally closing element
-    closeObject( deserializeFrom );
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
     //Constructing the deserialized object
-    Extension object = new Extension( delimiter, extension );
-    return object;
+    return new Extension( delimiter, extension );
   }
 
 }

@@ -31,13 +31,16 @@
 
 package com.cedarsoft.serialization.serializers.json;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -75,19 +78,48 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
   public VersionRange deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion )
     throws VersionException, IOException, JsonProcessingException {
     //min
-    nextFieldValue( deserializeFrom, PROPERTY_MIN );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName3 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_MIN.equals( currentName3 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_MIN + "> but was <" + currentName3 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     Version min = Version.parse( deserializeFrom.getText() );
     //max
-    nextFieldValue( deserializeFrom, PROPERTY_MAX );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName2 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_MAX.equals( currentName2 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_MAX + "> but was <" + currentName2 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     Version max = Version.parse( deserializeFrom.getText() );
     //includeLower
-    nextFieldValue( deserializeFrom, PROPERTY_INCLUDELOWER );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName1 = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_INCLUDELOWER.equals( currentName1 ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_INCLUDELOWER + "> but was <" + currentName1 + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     boolean includeLower = deserializeFrom.getBooleanValue();
     //includeUpper
-    nextFieldValue( deserializeFrom, PROPERTY_INCLUDEUPPER );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_INCLUDEUPPER.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_INCLUDEUPPER + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     boolean includeUpper = deserializeFrom.getBooleanValue();
     //Finally closing element
-    closeObject( deserializeFrom );
+    parserWrapper.nextToken( JsonToken.END_OBJECT );
     //Constructing the deserialized object
     return new VersionRange( min, max, includeLower, includeUpper );
   }

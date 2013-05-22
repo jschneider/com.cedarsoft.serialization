@@ -31,11 +31,13 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -80,7 +82,15 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   @Nonnull
   @Override
   public User deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, PROPERTY_NAME );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_NAME.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_NAME + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     String name = deserializeFrom.getText();
 
     List<? extends Email> mails = deserializeArray( Email.class, PROPERTY_EMAILS, deserializeFrom, formatVersion );
@@ -89,7 +99,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     UserDetails userDetails = deserialize( UserDetails.class, "userDetails", formatVersion, deserializeFrom );
     Email singleEmail = deserialize( Email.class, "singleEmail", formatVersion, deserializeFrom );
 
-    nextToken( deserializeFrom, JsonToken.END_OBJECT );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.END_OBJECT );
     return new User( name, mails, roles, singleEmail, userDetails );
   }
 }
