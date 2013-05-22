@@ -70,17 +70,38 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
   @Nonnull
   @Override
   public UserDetails deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    long registrationDate = -1;
+    long lastLogin = -1;
+    String passwordHash = null;
+
+    while ( deserializeFrom.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = deserializeFrom.getCurrentName();
+
+      if ( currentName.equals( PROPERTY_REGISTRATION_DATE ) ) {
+        nextToken( deserializeFrom, JsonToken.VALUE_NUMBER_INT );
+        registrationDate = deserializeFrom.getLongValue();
+      }
+
+      if ( currentName.equals( PROPERTY_LAST_LOGIN ) ) {
+        nextToken( deserializeFrom, JsonToken.VALUE_NUMBER_INT );
+        lastLogin = deserializeFrom.getLongValue();
+      }
+
+      if ( currentName.equals( PROPERTY_PASSWORD_HASH ) ) {
+        nextToken( deserializeFrom, JsonToken.VALUE_STRING );
+        passwordHash = deserializeFrom.getText();
+      }
+    }
+
+    if ( registrationDate == -1 || lastLogin == -1 || passwordHash == null ) {
+      System.out.println( "--> invalid" );
+    }
+
+    if ( deserializeFrom.getCurrentToken() != JsonToken.END_OBJECT ) {
+      System.out.println( "-----> Unexpected was " + deserializeFrom.getCurrentToken() );
+    }
+
     try {
-      nextFieldValue( deserializeFrom, PROPERTY_REGISTRATION_DATE );
-      long registrationDate = deserializeFrom.getLongValue();
-
-      nextFieldValue( deserializeFrom, PROPERTY_LAST_LOGIN );
-      long lastLogin = deserializeFrom.getLongValue();
-
-      nextFieldValue( deserializeFrom, PROPERTY_PASSWORD_HASH );
-      String passwordHash = deserializeFrom.getText();
-
-      nextToken( deserializeFrom, JsonToken.END_OBJECT );
       return new UserDetails( registrationDate, lastLogin, Hex.decodeHex( passwordHash.toCharArray() ) );
     } catch ( DecoderException e ) {
       throw new RuntimeException( e );
