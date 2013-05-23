@@ -75,36 +75,35 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
     long lastLogin = -1;
     String passwordHash = null;
 
-    JacksonParserWrapper wrapper = new JacksonParserWrapper( deserializeFrom );
+    JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
 
-    while ( wrapper.nextToken() == JsonToken.FIELD_NAME ) {
-      String currentName = wrapper.getCurrentName();
+    while ( parser.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = parser.getCurrentName();
 
       if ( currentName.equals( PROPERTY_REGISTRATION_DATE ) ) {
-        wrapper.nextToken( JsonToken.VALUE_NUMBER_INT );
-        registrationDate = wrapper.getLongValue();
+        parser.nextToken( JsonToken.VALUE_NUMBER_INT );
+        registrationDate = parser.getLongValue();
       }
 
       if ( currentName.equals( PROPERTY_LAST_LOGIN ) ) {
-        wrapper.nextToken( JsonToken.VALUE_NUMBER_INT );
-        lastLogin = wrapper.getLongValue();
+        parser.nextToken( JsonToken.VALUE_NUMBER_INT );
+        lastLogin = parser.getLongValue();
       }
 
       if ( currentName.equals( PROPERTY_PASSWORD_HASH ) ) {
-        wrapper.nextToken( JsonToken.VALUE_STRING );
-        passwordHash = wrapper.getText();
+        parser.nextToken( JsonToken.VALUE_STRING );
+        passwordHash = parser.getText();
       }
     }
 
-    if ( registrationDate == -1 || lastLogin == -1 || passwordHash == null ) {
-      throw new IllegalStateException( "Did not deserialize everything" );
-    }
+    parser.verifyDeserialized( registrationDate, PROPERTY_REGISTRATION_DATE );
+    parser.verifyDeserialized( lastLogin, PROPERTY_LAST_LOGIN );
+    parser.verifyDeserialized( passwordHash, PROPERTY_PASSWORD_HASH );
 
-    if ( wrapper.getCurrentToken() != JsonToken.END_OBJECT ) {
-      throw new IllegalStateException( "Did not deserialize everything" );
-    }
+    parser.ensureObjectClosed();
 
     try {
+      //noinspection ConstantConditions
       return new UserDetails( registrationDate, lastLogin, Hex.decodeHex( passwordHash.toCharArray() ) );
     } catch ( DecoderException e ) {
       throw new RuntimeException( e );
