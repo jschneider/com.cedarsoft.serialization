@@ -83,8 +83,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   @Override
   public User deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
-    parserWrapper.nextToken();
-    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    parserWrapper.nextToken( JsonToken.FIELD_NAME );
+
     String currentName = parserWrapper.getCurrentName();
 
     if ( !PROPERTY_NAME.equals( currentName ) ) {
