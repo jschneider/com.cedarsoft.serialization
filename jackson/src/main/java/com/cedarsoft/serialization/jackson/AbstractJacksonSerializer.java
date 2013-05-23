@@ -264,10 +264,10 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @Nonnull
   protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
     if ( propertyName == null ) {
-      assert deserializeFrom.getCurrentToken() == JsonToken.START_ARRAY;
+      parserWrapper.verifyCurrentToken( JsonToken.START_ARRAY );
     } else {
-      JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
       parserWrapper.nextToken();
       parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
       String currentName = parserWrapper.getCurrentName();
