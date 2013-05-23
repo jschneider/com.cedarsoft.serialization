@@ -381,4 +381,10 @@ public class JacksonParserWrapper {
       throw new IllegalStateException( "The field <" + propertyName + "> has not been deserialized" );
     }
   }
+
+  public void verifyDeserialized( @Nullable Number deserializedValue, @Nonnull String propertyName ) {
+    if ( deserializedValue == null || deserializedValue.intValue() == -1 ) {
+      throw new IllegalStateException( "The field <" + propertyName + "> has not been deserialized" );
+    }
+  }
 }
