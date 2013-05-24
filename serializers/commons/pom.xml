@@ -10,45 +10,14 @@
   <artifactId>commons-serializers</artifactId>
   <name>cedarsoft Commons Serializers</name>
 
-  <packaging>bundle</packaging>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>jackson</module>
+    <module>stax-mate</module>
+  </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>com.cedarsoft</groupId>
-      <artifactId>serialization</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>stax-mate</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>jackson</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>xml-commons</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>test-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>test-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-
     <!--The dependencies necessary for the serializers-->
     <dependency>
       <groupId>com.cedarsoft.commons</groupId>

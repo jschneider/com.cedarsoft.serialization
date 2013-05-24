@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>com.cedarsoft.serialization</groupId>
+    <artifactId>commons-serializers</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cedarsoft.serialization.commons-serializers</groupId>
+  <artifactId>stax-mate</artifactId>
+  <name>cedarsoft Commons Serializers - Stax-Mate</name>
+
+  <packaging>bundle</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cedarsoft</groupId>
+      <artifactId>serialization</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>stax-mate</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>xml-commons</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>test-utils</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>test-utils</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+</project>
