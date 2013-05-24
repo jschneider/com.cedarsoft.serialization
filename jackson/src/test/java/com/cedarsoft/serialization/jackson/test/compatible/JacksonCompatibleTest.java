@@ -56,7 +56,7 @@ public class JacksonCompatibleTest {
   public void setUp() throws Exception {
     jsonFactory = JacksonSupport.getJsonFactory();
     out = new ByteArrayOutputStream();
-    generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
   }
 
   @Test

@@ -86,7 +86,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   @Override
   public void serialize( @Nonnull T object, @WillNotClose @Nonnull OutputStream out ) throws IOException {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     serialize( object, generator );
     generator.flush();
@@ -167,7 +167,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    */
   @Nonnull
   protected JsonParser createJsonParser( @Nonnull JsonFactory jsonFactory, @Nonnull InputStream in ) throws IOException {
-    return jsonFactory.createJsonParser( in );
+    return jsonFactory.createParser( in );
   }
 
   /**
