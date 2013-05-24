@@ -142,7 +142,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   public T deserialize( @Nonnull InputStream in, @Nullable Version version ) throws IOException, VersionException {
     try {
       JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-      JsonParser parser = jsonFactory.createJsonParser( in );
+      JsonParser parser = createJsonParser( jsonFactory, in );
 
       T deserialized = deserializeInternal( parser, version );
 
@@ -156,6 +156,18 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
     } catch ( InvalidTypeException e ) {
       throw new IOException( "Could not parse due to " + e.getMessage(), e );
     }
+  }
+
+  /**
+   * This method creates the parser. This method may be overridden to create a FilteringJsonParser or something like that
+   * @param jsonFactory the json factory
+   * @param in the input stream
+   * @return the created json parser
+   * @throws IOException
+   */
+  @Nonnull
+  protected JsonParser createJsonParser( @Nonnull JsonFactory jsonFactory, @Nonnull InputStream in ) throws IOException {
+    return jsonFactory.createJsonParser( in );
   }
 
   /**
