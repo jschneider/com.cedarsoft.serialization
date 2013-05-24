@@ -6,7 +6,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.util.JsonParserDelegate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This is a special class that filters out specific fields
@@ -16,10 +19,20 @@ import java.io.IOException;
 public class FilteringJsonParser extends JsonParserDelegate {
   @Nonnull
   private final Filter filter;
+  @Nullable
+  private final List<FilteredParserListener> filteredParserListeners = new CopyOnWriteArrayList<FilteredParserListener>();
 
   public FilteringJsonParser( @Nonnull JsonParser parser, @Nonnull Filter filter ) {
     super( parser );
     this.filter = filter;
+  }
+
+  public void addListener( @Nonnull FilteredParserListener listener ) {
+    this.filteredParserListeners.add( listener );
+  }
+
+  public void removeListener( @Nonnull FilteredParserListener listener ) {
+    this.filteredParserListeners.add( listener );
   }
 
   @Override
@@ -35,15 +48,30 @@ public class FilteringJsonParser extends JsonParserDelegate {
   }
 
   protected void skipToNextField() throws IOException {
+    notifySkippingField();
     JsonToken token = super.nextToken();
 
-    if ( token == JsonToken.START_ARRAY || token == JsonToken.START_OBJECT ) {
+    if ( token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY ) {
+      notifySkippingValue();
       skipChildren();
       super.nextToken();
     } else if ( isValue( token ) ) {
+      notifySkippingValue();
       super.nextToken();
     } else {
       throw new IllegalStateException( "??? " + getCurrentToken() );
+    }
+  }
+
+  private void notifySkippingValue() throws IOException {
+    for ( FilteredParserListener filteredParserListener : filteredParserListeners ) {
+      filteredParserListener.skippingFieldValue( this );
+    }
+  }
+
+  private void notifySkippingField() throws IOException {
+    for ( FilteredParserListener filteredParserListener : filteredParserListeners ) {
+      filteredParserListener.skippingField( this, getCurrentName() );
     }
   }
 
