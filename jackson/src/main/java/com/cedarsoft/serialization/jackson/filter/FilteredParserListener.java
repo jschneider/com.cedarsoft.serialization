@@ -13,15 +13,16 @@ public interface FilteredParserListener {
   /**
    * Is called when a field is going to be skipped
    *
-   * @param parser      the parser (currently at {@link JsonToken#FIELD_NAME}
-   * @param currentName
+   * @param parser    the parser (currently at {@link JsonToken#FIELD_NAME}
+   * @param fieldName the field name
    */
-  void skippingField( @Nonnull JsonParser parser, String currentName ) throws IOException;
+  void skippingField( @Nonnull JsonParser parser, String fieldName ) throws IOException;
 
   /**
    * Is called when a field *value* is going to be skipped
    *
-   * @param parser the parser (currently at JsonToken#VALUE_*)
+   * @param parser    the parser (currently at JsonToken#VALUE_*)
+   * @param fieldName the field name
    */
-  void skippingFieldValue( @Nonnull JsonParser parser ) throws IOException;
+  void skippingFieldValue( @Nonnull JsonParser parser, String fieldName ) throws IOException;
 }

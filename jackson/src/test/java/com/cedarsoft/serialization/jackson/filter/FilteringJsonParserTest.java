@@ -72,12 +72,17 @@ public class FilteringJsonParserTest {
       @Override
       protected void verifyMocks() throws Exception {
         Mockito.verify( listener ).skippingField( parser, "_filter1" );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter1" );
         Mockito.verify( listener ).skippingField( parser, "_filter2" );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter2" );
         Mockito.verify( listener ).skippingField( parser, "_filter3" );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter3" );
         Mockito.verify( listener ).skippingField( parser, "_filter4" );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter4" );
         Mockito.verify( listener ).skippingField( parser, "_filter5" );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter5" );
         Mockito.verify( listener ).skippingField( parser, "_filter6" );
-        Mockito.verify( listener,  Mockito.times( 6 ) ).skippingFieldValue( parser );
+        Mockito.verify( listener ).skippingFieldValue( parser, "_filter6" );
 
         Mockito.verifyNoMoreInteractions( listener );
       }

@@ -48,30 +48,32 @@ public class FilteringJsonParser extends JsonParserDelegate {
   }
 
   protected void skipToNextField() throws IOException {
-    notifySkippingField();
+    String fieldName = getCurrentName();
+
+    notifySkippingField( fieldName );
     JsonToken token = super.nextToken();
 
     if ( token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY ) {
-      notifySkippingValue();
+      notifySkippingValue(fieldName);
       skipChildren();
       super.nextToken();
     } else if ( isValue( token ) ) {
-      notifySkippingValue();
+      notifySkippingValue(fieldName);
       super.nextToken();
     } else {
       throw new IllegalStateException( "??? " + getCurrentToken() );
     }
   }
 
-  private void notifySkippingValue() throws IOException {
+  private void notifySkippingValue( @Nonnull String fieldName ) throws IOException {
     for ( FilteredParserListener filteredParserListener : filteredParserListeners ) {
-      filteredParserListener.skippingFieldValue( this );
+      filteredParserListener.skippingFieldValue( this, fieldName );
     }
   }
 
-  private void notifySkippingField() throws IOException {
+  private void notifySkippingField( @Nonnull String fieldName ) throws IOException {
     for ( FilteredParserListener filteredParserListener : filteredParserListeners ) {
-      filteredParserListener.skippingField( this, getCurrentName() );
+      filteredParserListener.skippingField( this, fieldName );
     }
   }
 
