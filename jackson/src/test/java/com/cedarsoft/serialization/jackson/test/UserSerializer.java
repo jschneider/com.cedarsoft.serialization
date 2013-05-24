@@ -129,9 +129,14 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     parser.verifyDeserialized( userDetails, PROPERTY_USER_DETAILS );
     parser.verifyDeserialized( singleEmail, PROPERTY_SINGLE_EMAIL );
     parser.verifyDeserialized( name, PROPERTY_NAME );
+    assert mails != null;
+    assert roles != null;
+    assert name != null;
+    assert userDetails != null;
+    assert singleEmail != null;
 
     parser.ensureObjectClosed();
-    //noinspection ConstantConditions
+
     return new User( name, mails, roles, singleEmail, userDetails );
   }
 }

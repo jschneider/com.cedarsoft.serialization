@@ -94,6 +94,7 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
     //Verify
     parser.verifyDeserialized( id, PROPERTY_ID );
     parser.verifyDeserialized( description, PROPERTY_DESCRIPTION );
+    assert description != null;
 
 
     parser.verifyCurrentToken( JsonToken.END_OBJECT );

@@ -105,10 +105,11 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
     parser.verifyDeserialized( lastLogin, PROPERTY_LAST_LOGIN );
     parser.verifyDeserialized( passwordHash, PROPERTY_PASSWORD_HASH );
 
+    assert passwordHash != null;
+
     parser.ensureObjectClosed();
 
     try {
-      //noinspection ConstantConditions
       return new UserDetails( registrationDate, lastLogin, Hex.decodeHex( passwordHash.toCharArray() ) );
     } catch ( DecoderException e ) {
       throw new RuntimeException( e );
