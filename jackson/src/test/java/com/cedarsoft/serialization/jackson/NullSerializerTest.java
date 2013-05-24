@@ -59,7 +59,7 @@ public class NullSerializerTest {
   public void testIt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     NullSerializer serializer = getSerializer();
     serializer.serialize( generator, null, Version.valueOf( 1, 0, 0 ) );
@@ -71,7 +71,7 @@ public class NullSerializerTest {
 
   @Test
   public void testStep() throws Exception {
-    JsonParser parser = JacksonSupport.getJsonFactory().createJsonParser( new ByteArrayInputStream( "null".getBytes() ) );
+    JsonParser parser = JacksonSupport.getJsonFactory().createParser( new ByteArrayInputStream( "null".getBytes() ) );
     assertNull( getSerializer().deserialize( parser ) );
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
     if ( parserWrapper.nextToken() != null ) {

@@ -82,7 +82,7 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
   public void testIt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     getSerializer().serialize( generator, Arrays.asList( "a", "b", "c", 42, 3.141, false, null ), Version.valueOf( 1, 0, 0 ) );
 

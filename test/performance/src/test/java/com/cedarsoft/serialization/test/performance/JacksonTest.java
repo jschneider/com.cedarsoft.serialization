@@ -74,7 +74,7 @@ public class JacksonTest {
     FileType fileType = new FileType( "Canon Raw", new Extension( ".", "cr2", true ), false );
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     generator.writeStartObject();
     generator.writeStringField( "id", fileType.getId() );

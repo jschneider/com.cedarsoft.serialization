@@ -92,7 +92,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   public void testIt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     getSerializer().serialize( generator, "asdf", Version.valueOf( 1, 0, 0 ) );
 
