@@ -42,7 +42,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
- *
+ * Serializes/deserializes a number
  */
 public class NumberSerializer extends AbstractJacksonSerializer<Number> {
   public NumberSerializer() {
@@ -51,11 +51,16 @@ public class NumberSerializer extends AbstractJacksonSerializer<Number> {
 
   @Override
   public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull Number object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    if ( object instanceof Integer || object instanceof Long || object instanceof Byte || object instanceof Short ) {
+    if ( isIntegerNumber( object ) ) {
       serializeTo.writeNumber( object.longValue() );
     } else {
       serializeTo.writeNumber( object.doubleValue() );
     }
+  }
+
+  private static boolean isIntegerNumber( @Nonnull Number object ) {
+    //noinspection OverlyComplexBooleanExpression
+    return object instanceof Integer || object instanceof Long || object instanceof Byte || object instanceof Short;
   }
 
   @Nonnull
