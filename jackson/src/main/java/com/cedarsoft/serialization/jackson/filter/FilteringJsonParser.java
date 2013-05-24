@@ -39,7 +39,7 @@ public class FilteringJsonParser extends JsonParserDelegate {
   public JsonToken nextToken() throws IOException, JsonParseException {
     super.nextToken();
 
-    //If it is a couch field, please skip it
+    //If it is a filtered field, please skip it
     while ( getCurrentToken() == JsonToken.FIELD_NAME && filter.shallFilterOut( this ) ) {
       skipToNextField();
     }
