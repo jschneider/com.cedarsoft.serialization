@@ -44,11 +44,13 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -113,11 +115,20 @@ public class JacksonParserWrapper {
   }
 
   public void ensureObjectClosed() throws JsonParseException {
-    AbstractJacksonSerializer.ensureObjectClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+
+    if ( parserWrapper.getCurrentToken() != JsonToken.END_OBJECT ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
   }
 
   public void ensureParserClosed() throws IOException {
-    AbstractJacksonSerializer.ensureParserClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    if ( parserWrapper.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
+
+    parserWrapper.close();
   }
 
   //Delegating
@@ -358,5 +369,22 @@ public class JacksonParserWrapper {
 
   public byte[] getBinaryValue() throws IOException, JsonParseException {
     return getParser().getBinaryValue();
+  }
+
+  /**
+   * Helper method that throws an exception if the value is null
+   * @param deserializedValue the deserialized value
+   * @param propertyName the property name
+   */
+  public void verifyDeserialized( @Nullable Object deserializedValue, @Nonnull String propertyName ) {
+    if ( deserializedValue == null ) {
+      throw new IllegalStateException( "The field <" + propertyName + "> has not been deserialized" );
+    }
+  }
+
+  public void verifyDeserialized( @Nullable Number deserializedValue, @Nonnull String propertyName ) {
+    if ( deserializedValue == null || deserializedValue.intValue() == -1 ) {
+      throw new IllegalStateException( "The field <" + propertyName + "> has not been deserialized" );
+    }
   }
 }

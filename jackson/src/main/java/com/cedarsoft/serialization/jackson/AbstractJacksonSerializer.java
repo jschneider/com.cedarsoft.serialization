@@ -146,7 +146,12 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
       T deserialized = deserializeInternal( parser, version );
 
-      ensureParserClosed( parser );
+      JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+      if ( parserWrapper.nextToken() != null ) {
+        throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+      }
+
+      parserWrapper.close();
       return deserialized;
     } catch ( InvalidTypeException e ) {
       throw new IOException( "Could not parse due to " + e.getMessage(), e );
@@ -164,14 +169,16 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
    */
   @Nonnull
   protected T deserializeInternal( @Nonnull JsonParser parser, @Nullable Version formatVersionOverride ) throws IOException, JsonProcessingException, InvalidTypeException {
-    JacksonParserWrapper wrapper = new JacksonParserWrapper( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
 
-    Version version = prepareDeserialization( wrapper, formatVersionOverride );
+    Version version = prepareDeserialization( parserWrapper, formatVersionOverride );
 
     T deserialized = deserialize( parser, version );
 
     if ( isObjectType() ) {
-      ensureObjectClosed( parser );
+      if ( parserWrapper.getCurrentToken() != JsonToken.END_OBJECT ) {
+        throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+      }
     }
 
     return deserialized;
@@ -223,78 +230,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
   protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, InvalidTypeException {
   }
 
-  @Deprecated
-  public static void ensureParserClosedObject( @Nonnull JsonParser parser ) throws IOException {
-    ensureObjectClosed( parser );
-    ensureParserClosed( parser );
-  }
-
-  @Deprecated
-  public static void ensureObjectClosed( @Nonnull JsonParser parser ) throws JsonParseException {
-    if ( parser.getCurrentToken() != JsonToken.END_OBJECT ) {
-      throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
-    }
-  }
-
-  @Deprecated
-  public static void ensureParserClosed( @Nonnull JsonParser parser ) throws IOException {
-    if ( parser.nextToken() != null ) {
-      throw new JsonParseException( "No consumed everything " + parser.getCurrentToken(), parser.getCurrentLocation() );
-    }
-
-    parser.close();
-  }
-
-  /**
-   * Verifies the next field has the given name and prepares for read (by calling parser.nextToken).
-   *
-   * @param parser    the parser
-   * @param fieldName the field name
-   * @throws IOException
-   */
-  @Deprecated
-  public static void nextFieldValue( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
-    nextField( parser, fieldName );
-    parser.nextToken();
-  }
-
-  /**
-   * Verifies that the next field starts.
-   * When the content of the field shall be accessed, it is necessary to call parser.nextToken() afterwards.
-   *
-   * @param parser    the parser
-   * @param fieldName the field name
-   * @throws IOException
-   */
-  @Deprecated
-  public static void nextField( @Nonnull JsonParser parser, @Nonnull String fieldName ) throws IOException {
-    nextToken( parser, JsonToken.FIELD_NAME );
-    String currentName = parser.getCurrentName();
-
-    if ( !fieldName.equals( currentName ) ) {
-      throw new JsonParseException( "Invalid field. Expected <" + fieldName + "> but was <" + currentName + ">", parser.getCurrentLocation() );
-    }
-  }
-
-  @Deprecated
-  public static void nextToken( @Nonnull JsonParser parser, @Nonnull JsonToken expected ) throws IOException {
-    parser.nextToken();
-    verifyCurrentToken( parser, expected );
-  }
-
-  @Deprecated
-  public static void verifyCurrentToken( @Nonnull JsonParser parser, @Nonnull JsonToken expected ) throws JsonParseException {
-    JsonToken current = parser.getCurrentToken();
-    if ( current != expected ) {
-      throw new JsonParseException( "Invalid token. Expected <" + expected + "> but got <" + current + ">", parser.getCurrentLocation() );
-    }
-  }
-
-  @Deprecated
-  public static void closeObject( @Nonnull JsonParser deserializeFrom ) throws IOException {
-    nextToken( deserializeFrom, JsonToken.END_OBJECT );
-  }
-
   protected <T> void serializeArray( @Nonnull Iterable<? extends T> elements, @Nonnull Class<T> type, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws IOException {
     serializeArray( elements, type, null, serializeTo, formatVersion );
   }
@@ -329,10 +264,18 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @Nonnull
   protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
     if ( propertyName == null ) {
-      assert deserializeFrom.getCurrentToken() == JsonToken.START_ARRAY;
+      parserWrapper.verifyCurrentToken( JsonToken.START_ARRAY );
     } else {
-      nextFieldValue( deserializeFrom, propertyName );
+      parserWrapper.nextToken();
+      parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+      String currentName = parserWrapper.getCurrentName();
+
+      if ( !propertyName.equals( currentName ) ) {
+        throw new JsonParseException( "Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+      }
+      parserWrapper.nextToken();
     }
 
     List<T> deserialized = new ArrayList<T>();
@@ -366,9 +309,10 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @Nullable
   protected <T> T deserializeNullable( @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, propertyName );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextFieldValue( propertyName );
 
-    if ( deserializeFrom.getCurrentToken() == JsonToken.VALUE_NULL ) {
+    if ( parserWrapper.getCurrentToken() == JsonToken.VALUE_NULL ) {
       return null;
     }
 
@@ -377,7 +321,15 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T,
 
   @Nonnull
   protected <T> T deserialize( @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom ) throws IOException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, propertyName );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !propertyName.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     return deserialize( type, formatVersion, deserializeFrom );
   }
 

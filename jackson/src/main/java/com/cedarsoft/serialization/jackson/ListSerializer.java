@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Serializes a collection into a json array
+ * Serializes a collection of primitive types (java.lang.Number or java.lang.String) into a json array
  */
 public class ListSerializer extends AbstractJacksonSerializer<List<? extends Object>> {
   public ListSerializer() {

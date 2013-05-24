@@ -71,7 +71,9 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   @Nullable
   @Override
   public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
-    nextToken( parser, JsonToken.VALUE_NULL );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.VALUE_NULL );
     //noinspection ConstantConditions
     return null;
   }
