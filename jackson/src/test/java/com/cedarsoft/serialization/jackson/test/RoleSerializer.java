@@ -78,12 +78,16 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
       if ( currentName.equals( PROPERTY_ID ) ) {
         parser.nextToken( JsonToken.VALUE_NUMBER_INT );
         id = parser.getIntValue();
+        continue;
       }
 
       if ( currentName.equals( PROPERTY_DESCRIPTION ) ) {
         parser.nextToken( JsonToken.VALUE_STRING );
         description = parser.getText();
+        continue;
       }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
     }
 
 

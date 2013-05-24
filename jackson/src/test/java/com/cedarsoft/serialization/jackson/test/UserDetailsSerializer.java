@@ -83,17 +83,22 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
       if ( currentName.equals( PROPERTY_REGISTRATION_DATE ) ) {
         parser.nextToken( JsonToken.VALUE_NUMBER_INT );
         registrationDate = parser.getLongValue();
+        continue;
       }
 
       if ( currentName.equals( PROPERTY_LAST_LOGIN ) ) {
         parser.nextToken( JsonToken.VALUE_NUMBER_INT );
         lastLogin = parser.getLongValue();
+        continue;
       }
 
       if ( currentName.equals( PROPERTY_PASSWORD_HASH ) ) {
         parser.nextToken( JsonToken.VALUE_STRING );
         passwordHash = parser.getText();
+        continue;
       }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
     }
 
     parser.verifyDeserialized( registrationDate, PROPERTY_REGISTRATION_DATE );

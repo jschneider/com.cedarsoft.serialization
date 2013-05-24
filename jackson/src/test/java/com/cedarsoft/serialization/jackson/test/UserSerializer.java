@@ -97,23 +97,30 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
       if ( currentName.equals( PROPERTY_NAME ) ) {
         parser.nextToken( JsonToken.VALUE_STRING );
         name = deserializeFrom.getText();
+        continue;
       }
       if ( currentName.equals( PROPERTY_EMAILS ) ) {
         parser.nextToken( JsonToken.START_ARRAY );
         mails = deserializeArray( Email.class, deserializeFrom, formatVersion );
+        continue;
       }
       if ( currentName.equals( PROPERTY_ROLES ) ) {
         parser.nextToken( JsonToken.START_ARRAY );
         roles = deserializeArray( Role.class, deserializeFrom, formatVersion );
+        continue;
       }
       if ( currentName.equals( PROPERTY_USER_DETAILS ) ) {
         parser.nextToken( JsonToken.START_OBJECT );
         userDetails = deserialize( UserDetails.class, formatVersion, deserializeFrom );
+        continue;
       }
       if ( currentName.equals( PROPERTY_SINGLE_EMAIL ) ) {
         parser.nextToken( JsonToken.VALUE_STRING );
         singleEmail = deserialize( Email.class, formatVersion, deserializeFrom );
+        continue;
       }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
     }
 
     //Verify deserialization
