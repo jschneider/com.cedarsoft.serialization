@@ -124,8 +124,8 @@ public class JacksonSerializerGenerator {
     serializerClass.add( generateConstructor( serializerClass, delegatingSerializers ) );
 
 
-    serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, selectedFields ) );
-    serializerClass.add( generateDeserializeMethod( classToSerialize, serializerClass, selectedFields ) );
+    serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
+    serializerClass.add( generateDeserializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
 
 
     //StringBuilder builder = new StringBuilder();
@@ -252,7 +252,7 @@ public class JacksonSerializerGenerator {
 
 
   @Nonnull
-  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
     StringBuilder methodBuilder = new StringBuilder();
 
     methodBuilder.append( "@Override public void serialize (" )
@@ -273,7 +273,7 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
     StringBuilder methodBuilder = new StringBuilder();
 
     methodBuilder.append( "@Override public void deserialize(" )
