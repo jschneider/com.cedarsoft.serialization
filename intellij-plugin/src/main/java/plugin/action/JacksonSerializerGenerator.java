@@ -192,6 +192,8 @@ public class JacksonSerializerGenerator {
       .append( "com.cedarsoft.version.Version formatVersion" )
       .append( "){" );
 
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+
     methodBuilder.append( "}" );
 
     return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
@@ -210,6 +212,9 @@ public class JacksonSerializerGenerator {
       .append( notNull() )
       .append( "com.cedarsoft.version.Version formatVersion" )
       .append( "){" );
+
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+
 
     methodBuilder.append( "}" );
 

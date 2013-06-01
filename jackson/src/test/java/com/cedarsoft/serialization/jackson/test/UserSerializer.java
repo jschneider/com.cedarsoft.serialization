@@ -71,6 +71,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
 
   @Override
   public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull User object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    verifyVersionWritable( formatVersion );
+
     serializeTo.writeStringField( PROPERTY_NAME, object.getName() );
 
     serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
@@ -83,6 +85,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   @Nonnull
   @Override
   public User deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    verifyVersionWritable( formatVersion );
+
     List<? extends Email> mails = null;
     List<? extends Role> roles = null;
     String name = null;
