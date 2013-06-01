@@ -176,7 +176,7 @@ public class JacksonSerializerGenerator {
   /**
    * Generates a constructor
    *
-   * @param serializerClass       the serializer class
+   * @param serializerClass             the serializer class
    * @param delegatingSerializerEntries the delegating serializers
    * @return the generated constructor
    */
@@ -223,7 +223,7 @@ public class JacksonSerializerGenerator {
    * @return the found jackson serializer
    */
   @Nonnull
-  protected PsiType findJacksonSerializerFor( @Nonnull PsiType typeToSerialize ) {
+  protected PsiType findJacksonSerializerFor( @Nonnull final PsiType typeToSerialize ) {
     //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
     PsiClass serializerClass = javaPsiFacade.findClass( JACKSON_SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
     if ( serializerClass == null ) {
@@ -231,7 +231,7 @@ public class JacksonSerializerGenerator {
     }
 
 
-    final PsiType a = elementFactory.createTypeFromText( JACKSON_SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
+    final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( JACKSON_SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
 
     final PsiType[] foundSerializerType = new PsiType[1];
     ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
@@ -242,13 +242,50 @@ public class JacksonSerializerGenerator {
           return true;
         }
 
+        //Is it a serializer?
         PsiClassType currentSerializerType = elementFactory.createType( psiClass );
-        if ( a.isAssignableFrom( currentSerializerType ) ) {
-          foundSerializerType[0] = currentSerializerType;
-          return false;
+        if ( !jacksonSerializerWithTypeParam.isAssignableFrom( currentSerializerType ) ) {
+          return true;
         }
 
-        return true;
+        //Verify the exact type param
+        PsiClassType jacksonSerializerImplType = findJacksonSerializerImplFor( currentSerializerType );
+        if ( jacksonSerializerImplType == null ) {
+          return true;
+        }
+
+        PsiType[] parameters = jacksonSerializerImplType.getParameters();
+        if ( parameters.length != 1 ) {
+          return true;
+        }
+
+        PsiType parameter = parameters[0];
+        if ( !parameter.equals( typeToSerialize ) ) {
+          return true;
+        }
+
+        foundSerializerType[0] = currentSerializerType;
+        return false;
+      }
+
+      @javax.annotation.Nullable
+      private PsiClassType findJacksonSerializerImplFor( @Nonnull PsiClassType serializerType ) {
+        for ( PsiType superType : serializerType.getSuperTypes() ) {
+          PsiClass psiClass = ( ( PsiClassType ) superType ).resolve();
+          assert psiClass != null;
+          String qualifiedName = psiClass.getQualifiedName();
+
+          if ( JACKSON_SERIALIZER_IFACE_NAME.equals( qualifiedName ) ) {
+            return ( PsiClassType ) superType;
+          }
+
+          @javax.annotation.Nullable PsiClassType oneDown = findJacksonSerializerImplFor( ( PsiClassType ) superType );
+          if ( oneDown != null ) {
+            return oneDown;
+          }
+        }
+
+        return null;
       }
     } );
 
