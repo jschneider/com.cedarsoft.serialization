@@ -3,6 +3,7 @@ package plugin.action;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiCapturedWildcardType;
@@ -121,9 +122,9 @@ public class JacksonSerializerGenerator {
     Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields );
     Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
 
+    addPropertyConstants( fieldToSerializeEntries, serializerClass );
+
     serializerClass.add( generateConstructor( serializerClass, delegatingSerializers ) );
-
-
     serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
     serializerClass.add( generateDeserializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
 
@@ -154,6 +155,12 @@ public class JacksonSerializerGenerator {
     //PsiClass serializerClass = elementFactory.createClass( psiClass.getQualifiedName() + "Serializer" );
 
     return serializerClass;
+  }
+
+  private void addPropertyConstants( @Nonnull Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries, @Nonnull PsiClass serializerClass ) {
+    for ( FieldToSerializeEntry entry : fieldToSerializeEntries ) {
+      serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\"", serializerClass ) );
+    }
   }
 
   @Nonnull
@@ -266,6 +273,9 @@ public class JacksonSerializerGenerator {
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
+    for ( FieldToSerializeEntry field : fields ) {
+      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldType().getClassName() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+    }
 
     methodBuilder.append( "}" );
 
@@ -388,10 +398,17 @@ public class JacksonSerializerGenerator {
     private final PsiClassType fieldType;
     @Nonnull
     private final String fieldName;
+    @Nonnull
+    private final String accessor;
+    @Nonnull
+    private final String propertyConstant;
 
     public FieldToSerializeEntry( @Nonnull PsiClassType fieldType, @Nonnull String fieldName ) {
       this.fieldType = fieldType;
       this.fieldName = fieldName;
+
+      this.accessor = "get" + StringUtil.capitalizeWithJavaBeanConvention( fieldName ) + "()";
+      this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, fieldName, null, null ).names[0];
     }
 
     @Nonnull
@@ -402,6 +419,16 @@ public class JacksonSerializerGenerator {
     @Nonnull
     public String getFieldName() {
       return fieldName;
+    }
+
+    @Nonnull
+    public String getAccessor() {
+      return accessor;
+    }
+
+    @Nonnull
+    public String getPropertyConstantName() {
+      return propertyConstant;
     }
   }
 
