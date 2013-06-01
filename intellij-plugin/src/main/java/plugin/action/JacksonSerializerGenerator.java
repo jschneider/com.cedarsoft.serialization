@@ -141,8 +141,7 @@ public class JacksonSerializerGenerator {
       }
     }
 
-    PsiMethod constructor = generateConstructor( serializerClass, delegatingSerializers.values() );
-    serializerClass.add( constructor );
+    serializerClass.add( generateConstructor( serializerClass, delegatingSerializers.values() ) );
 
 
     //StringBuilder builder = new StringBuilder();
