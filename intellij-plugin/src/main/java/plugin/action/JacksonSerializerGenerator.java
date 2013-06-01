@@ -1,5 +1,6 @@
 package plugin.action;
 
+import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
@@ -8,6 +9,7 @@ import com.intellij.psi.PsiCapturedWildcardType;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
@@ -54,6 +56,8 @@ public class JacksonSerializerGenerator {
   private final JavaPsiFacade javaPsiFacade;
   @Nonnull
   private final PsiShortNamesCache shortNamesCache;
+  @Nonnull
+  private final NullableNotNullManager notNullManager;
 
   public JacksonSerializerGenerator( @Nonnull Project project ) {
     this.project = project;
@@ -63,6 +67,7 @@ public class JacksonSerializerGenerator {
     elementFactory = JavaPsiFacade.getElementFactory( project );
     javaPsiFacade = JavaPsiFacade.getInstance( project );
     shortNamesCache = PsiShortNamesCache.getInstance( project );
+    notNullManager = NullableNotNullManager.getInstance( project );
   }
 
   @Nonnull
@@ -101,10 +106,10 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  public PsiClass fillSerializerClass( @Nonnull PsiClass psiClass, @Nonnull List<? extends PsiField> selectedFields, @Nonnull PsiClass serializerClass ) {
+  public PsiClass fillSerializerClass( @Nonnull PsiClass classToSerialize, @Nonnull List<? extends PsiField> selectedFields, @Nonnull PsiClass serializerClass ) {
     //Add extends abstract base class
     {
-      PsiJavaCodeReferenceElement extendsRef = elementFactory.createReferenceFromText( "com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<" + psiClass.getName() + ">", psiClass );
+      PsiJavaCodeReferenceElement extendsRef = elementFactory.createReferenceFromText( "com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<" + classToSerialize.getName() + ">", classToSerialize );
 
       PsiReferenceList extendsList = serializerClass.getExtendsList();
       assert extendsList != null;
@@ -144,6 +149,9 @@ public class JacksonSerializerGenerator {
     serializerClass.add( generateConstructor( serializerClass, delegatingSerializers.values() ) );
 
 
+    serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, selectedFields ) );
+
+
     //StringBuilder builder = new StringBuilder();
     //builder.append( "public void deserializeStuff(){" )
     //  .append( psiClass.getName() ).append( ".class.getName();" )
@@ -154,7 +162,7 @@ public class JacksonSerializerGenerator {
     //codeStyleManager.shortenClassReferences( method );
 
 
-    PsiReferenceList implementsList = psiClass.getImplementsList();
+    PsiReferenceList implementsList = classToSerialize.getImplementsList();
     if ( implementsList == null ) {
       throw new IllegalStateException( "no implements list found" );
     }
@@ -170,6 +178,28 @@ public class JacksonSerializerGenerator {
     //PsiClass serializerClass = elementFactory.createClass( psiClass.getQualifiedName() + "Serializer" );
 
     return serializerClass;
+  }
+
+  @Nonnull
+  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public void serialize (" )
+      .append( notNull() )
+      .append( "com.fasterxml.jackson.core.JsonGenerator serializeTo, " )
+      .append( notNull() )
+      .append( classToSerialize.getQualifiedName() ).append( " object," )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( "){" );
+
+    methodBuilder.append( "}" );
+
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
+  private String notNull() {
+    return "@" + notNullManager.getDefaultNotNull() + " ";
   }
 
   /**
@@ -191,7 +221,9 @@ public class JacksonSerializerGenerator {
       PsiType delegatingSerializerType = delegatingSerializerEntry.getDelegatingSerializerType();
       String paramName = delegatingSerializerEntry.getSerializerParamName();
 
-      constructorBuilder.append( delegatingSerializerType.getCanonicalText() ).append( " " ).append( paramName );
+      constructorBuilder
+        .append( notNull() )
+        .append( delegatingSerializerType.getCanonicalText() ).append( " " ).append( paramName );
 
       if ( iterator.hasNext() ) {
         constructorBuilder.append( "," );
