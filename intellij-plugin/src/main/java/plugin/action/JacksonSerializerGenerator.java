@@ -30,10 +30,12 @@ import com.intellij.util.Processor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple class that generates a jackson serializer
@@ -110,7 +112,7 @@ public class JacksonSerializerGenerator {
     }
 
 
-    List<DelegatingSerializerEntry> delegatingSerializers = new ArrayList<DelegatingSerializerEntry>();
+    Map<PsiType, DelegatingSerializerEntry> delegatingSerializers = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
     for ( PsiField selectedField : selectedFields ) {
       @javax.annotation.Nullable DelegatingSerializerEntry entry = selectedField.getType().accept( new PsiTypeVisitor<DelegatingSerializerEntry>() {
         @Nullable
@@ -135,13 +137,11 @@ public class JacksonSerializerGenerator {
       } );
 
       if ( entry != null ) {
-        delegatingSerializers.add( entry );
+        delegatingSerializers.put( entry.serializedType, entry );
       }
     }
-    //TODO fill delegating serialiezers
 
-    PsiMethod constructor = generateConstructor( serializerClass, delegatingSerializers );
-
+    PsiMethod constructor = generateConstructor( serializerClass, delegatingSerializers.values() );
     serializerClass.add( constructor );
 
 
@@ -177,20 +177,20 @@ public class JacksonSerializerGenerator {
    * Generates a constructor
    *
    * @param serializerClass       the serializer class
-   * @param delegatingSerializers the delegating serializers
+   * @param delegatingSerializerEntries the delegating serializers
    * @return the generated constructor
    */
   @Nonnull
-  private PsiMethod generateConstructor( @Nonnull PsiClass serializerClass, @Nonnull List<DelegatingSerializerEntry> delegatingSerializers ) {
+  private PsiMethod generateConstructor( @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries ) {
     StringBuilder constructorBuilder = new StringBuilder();
     constructorBuilder.append( "public " ).append( serializerClass.getName() ).append( "(" );
 
     //Add serializers
-    for ( Iterator<DelegatingSerializerEntry> iterator = delegatingSerializers.iterator(); iterator.hasNext(); ) {
+    for ( Iterator<? extends DelegatingSerializerEntry> iterator = delegatingSerializerEntries.iterator(); iterator.hasNext(); ) {
       DelegatingSerializerEntry delegatingSerializerEntry = iterator.next();
 
       PsiType delegatingSerializerType = delegatingSerializerEntry.getDelegatingSerializerType();
-      String paramName = javaCodeStyleManager.suggestVariableName( VariableKind.PARAMETER, null, null, delegatingSerializerType ).names[0];
+      String paramName = delegatingSerializerEntry.getSerializerParamName();
 
       constructorBuilder.append( delegatingSerializerType.getCanonicalText() ).append( " " ).append( paramName );
 
@@ -203,15 +203,23 @@ public class JacksonSerializerGenerator {
       .append( "super(\"" ).append( createType( serializerClass.getName() ) ).append( "\", com.cedarsoft.version.VersionRange.from(1,0,0).to());" );
 
 
+    //register the delegating serializers
+    for ( DelegatingSerializerEntry entry : delegatingSerializerEntries ) {
+      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( entry.getSerializedType().getCanonicalText() ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
+    }
+    if ( !delegatingSerializerEntries.isEmpty() ) {
+      constructorBuilder.append( "assert getDelegatesMappings().verify();" );
+    }
+
     constructorBuilder.append( "}" );
 
     return elementFactory.createMethodFromText( constructorBuilder.toString(), null );
   }
 
   /**
-   * Returns the jackson serializer for the given type
+   * Returns the jackson serializer for the given serializedType
    *
-   * @param typeToSerialize the type that shall be serialized
+   * @param typeToSerialize the serializedType that shall be serialized
    * @return the found jackson serializer
    */
   @Nonnull
@@ -253,10 +261,10 @@ public class JacksonSerializerGenerator {
   }
 
   /**
-   * Creates the json type for the given class name
+   * Creates the json serializedType for the given class name
    *
    * @param className the class name
-   * @return the json type
+   * @return the json serializedType
    */
   @Nonnull
   private String createType( @Nonnull String className ) {
@@ -265,13 +273,16 @@ public class JacksonSerializerGenerator {
 
   public class DelegatingSerializerEntry {
     @Nonnull
-    private final PsiType type;
+    private final PsiType serializedType;
     @Nonnull
     private final PsiType delegatingSerializerType;
+    @Nonnull
+    private final String serializerParamName;
 
     public DelegatingSerializerEntry( @Nonnull PsiType typeToSerialize ) {
-      this.type = typeToSerialize;
+      this.serializedType = typeToSerialize;
       delegatingSerializerType = findJacksonSerializerFor( typeToSerialize );
+      serializerParamName = javaCodeStyleManager.suggestVariableName( VariableKind.PARAMETER, null, null, delegatingSerializerType ).names[0];
     }
 
     @Nonnull
@@ -280,8 +291,13 @@ public class JacksonSerializerGenerator {
     }
 
     @Nonnull
-    public PsiType getType() {
-      return type;
+    public PsiType getSerializedType() {
+      return serializedType;
+    }
+
+    @Nonnull
+    public String getSerializerParamName() {
+      return serializerParamName;
     }
   }
 
