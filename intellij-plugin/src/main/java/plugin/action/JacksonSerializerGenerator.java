@@ -15,6 +15,7 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeVisitor;
@@ -24,6 +25,8 @@ import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import com.intellij.util.Processor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -212,38 +215,41 @@ public class JacksonSerializerGenerator {
    * @return the found jackson serializer
    */
   @Nonnull
-  protected PsiType findJacksonSerializer( @Nonnull PsiType typeToSerialize ) {
-    String expectedSerializerName = typeToSerialize.getPresentableText() + "Serializer";
+  protected PsiType findJacksonSerializerFor( @Nonnull PsiType typeToSerialize ) {
+    //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
+    PsiClass serializerClass = javaPsiFacade.findClass( JACKSON_SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
+    if ( serializerClass == null ) {
+      throw new IllegalStateException( "No class found for <" + JACKSON_SERIALIZER_IFACE_NAME + ">. Please fix your workspace." );
+    }
 
-    PsiClass[] classesByName = shortNamesCache.getClassesByName( expectedSerializerName, GlobalSearchScope.allScope( project ) );
 
-    //Find the best class
-    PsiType bestFit = findJacksonSerializer( classesByName );
-    if ( bestFit != null ) {
-      return bestFit;
+    final PsiType a = elementFactory.createTypeFromText( JACKSON_SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
+
+    final PsiType[] foundSerializerType = new PsiType[1];
+    ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
+      @Override
+      public boolean process( PsiClass psiClass ) {
+        //Skip interfaces and abstract classes
+        if ( psiClass.isInterface() || psiClass.hasModifierProperty( PsiModifier.ABSTRACT ) ) {
+          return true;
+        }
+
+        PsiClassType currentSerializerType = elementFactory.createType( psiClass );
+        if ( a.isAssignableFrom( currentSerializerType ) ) {
+          foundSerializerType[0] = currentSerializerType;
+          return false;
+        }
+
+        return true;
+      }
+    } );
+
+    if ( foundSerializerType[0] != null ) {
+      return foundSerializerType[0];
     }
 
     //Fallback: Create a new pseudo serializer class
-    return elementFactory.createTypeByFQClassName( expectedSerializerName );
-  }
-
-  /**
-   * Returns the jackson serializer within the given classes
-   *
-   * @param classes the given classes
-   * @return the jackson serializer or null if no one has been found
-   */
-  @javax.annotation.Nullable
-  private PsiType findJacksonSerializer( @Nonnull PsiClass[] classes ) {
-    PsiClassType jacksonSerializerType = elementFactory.createTypeByFQClassName( JACKSON_SERIALIZER_IFACE_NAME );
-
-    for ( PsiClass psiClass : classes ) {
-      PsiClassType type = elementFactory.createType( psiClass );
-      if ( jacksonSerializerType.isAssignableFrom( type ) ) {
-        return type;
-      }
-    }
-    return null;
+    return elementFactory.createTypeByFQClassName( typeToSerialize.getPresentableText() + "Serializer" );
   }
 
   /**
@@ -265,7 +271,7 @@ public class JacksonSerializerGenerator {
 
     public DelegatingSerializerEntry( @Nonnull PsiType typeToSerialize ) {
       this.type = typeToSerialize;
-      delegatingSerializerType = findJacksonSerializer( typeToSerialize );
+      delegatingSerializerType = findJacksonSerializerFor( typeToSerialize );
     }
 
     @Nonnull
