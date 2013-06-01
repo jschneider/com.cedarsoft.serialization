@@ -181,50 +181,6 @@ public class JacksonSerializerGenerator {
     return serializerClass;
   }
 
-  @Nonnull
-  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
-    StringBuilder methodBuilder = new StringBuilder();
-
-    methodBuilder.append( "@Override public void deserialize(" )
-      .append( notNull() )
-      .append( "com.fasterxml.jackson.core.JsonParser deserializeFrom, " )
-      .append( notNull() )
-      .append( "com.cedarsoft.version.Version formatVersion" )
-      .append( "){" );
-
-    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
-
-    methodBuilder.append( "}" );
-
-    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
-  }
-
-
-  @Nonnull
-  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
-    StringBuilder methodBuilder = new StringBuilder();
-
-    methodBuilder.append( "@Override public void serialize (" )
-      .append( notNull() )
-      .append( "com.fasterxml.jackson.core.JsonGenerator serializeTo, " )
-      .append( notNull() )
-      .append( classToSerialize.getQualifiedName() ).append( " object," )
-      .append( notNull() )
-      .append( "com.cedarsoft.version.Version formatVersion" )
-      .append( "){" );
-
-    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
-
-
-    methodBuilder.append( "}" );
-
-    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
-  }
-
-  private String notNull() {
-    return "@" + notNullManager.getDefaultNotNull() + " ";
-  }
-
   /**
    * Generates a constructor
    *
@@ -268,6 +224,50 @@ public class JacksonSerializerGenerator {
     constructorBuilder.append( "}" );
 
     return elementFactory.createMethodFromText( constructorBuilder.toString(), null );
+  }
+
+
+  @Nonnull
+  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public void serialize (" )
+      .append( notNull() )
+      .append( "com.fasterxml.jackson.core.JsonGenerator serializeTo, " )
+      .append( notNull() )
+      .append( classToSerialize.getQualifiedName() ).append( " object," )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( "){" );
+
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+
+
+    methodBuilder.append( "}" );
+
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
+  @Nonnull
+  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public void deserialize(" )
+      .append( notNull() )
+      .append( "com.fasterxml.jackson.core.JsonParser deserializeFrom, " )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( "){" );
+
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+
+    methodBuilder.append( "}" );
+
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
+  private String notNull() {
+    return "@" + notNullManager.getDefaultNotNull() + " ";
   }
 
   /**
