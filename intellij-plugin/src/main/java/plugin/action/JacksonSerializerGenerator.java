@@ -30,6 +30,7 @@ import com.intellij.util.Processor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -117,7 +118,8 @@ public class JacksonSerializerGenerator {
     }
 
 
-    Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( selectedFields );
+    Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields );
+    Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
 
     serializerClass.add( generateConstructor( serializerClass, delegatingSerializers ) );
 
@@ -155,34 +157,49 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private Collection<? extends DelegatingSerializerEntry> calculateSerializerDelegates( @Nonnull List<? extends PsiField> selectedFields ) {
-    Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
-    for ( PsiField selectedField : selectedFields ) {
-      @javax.annotation.Nullable DelegatingSerializerEntry entry = selectedField.getType().accept( new PsiTypeVisitor<DelegatingSerializerEntry>() {
+  private Collection<? extends FieldToSerializeEntry> calculateFieldToSerializeEntries( @Nonnull List<? extends PsiField> selectedFields ) {
+    List<FieldToSerializeEntry> entries = new ArrayList<FieldToSerializeEntry>();
+
+    for ( final PsiField selectedField : selectedFields ) {
+      @javax.annotation.Nullable FieldToSerializeEntry entry = selectedField.getType().accept( new PsiTypeVisitor<FieldToSerializeEntry>() {
         @Nullable
         @Override
-        public DelegatingSerializerEntry visitClassType( PsiClassType classType ) {
-          return new DelegatingSerializerEntry( classType );
+        public FieldToSerializeEntry visitClassType( PsiClassType classType ) {
+          return new FieldToSerializeEntry( classType, selectedField.getName() );
         }
 
         @Nullable
         @Override
-        public DelegatingSerializerEntry visitWildcardType( PsiWildcardType wildcardType ) {
+        public FieldToSerializeEntry visitWildcardType( PsiWildcardType wildcardType ) {
           System.out.println( "--> FIX ME: " + wildcardType );
           return super.visitWildcardType( wildcardType );
         }
 
         @Nullable
         @Override
-        public DelegatingSerializerEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
+        public FieldToSerializeEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
           System.out.println( "--> FIX ME: " + capturedWildcardType );
           return super.visitCapturedWildcardType( capturedWildcardType );
         }
       } );
 
-      if ( entry != null ) {
-        delegatingSerializersMap.put( entry.serializedType, entry );
+
+      if ( entry == null ) {
+        throw new IllegalStateException( "No entry created for <" + selectedField + ">" );
       }
+      entries.add( entry );
+    }
+
+    return entries;
+  }
+
+  @Nonnull
+  private Collection<? extends DelegatingSerializerEntry> calculateSerializerDelegates( @Nonnull Collection<? extends FieldToSerializeEntry> fieldEntries ) {
+    Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
+
+    for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
+      DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType() );
+      delegatingSerializersMap.put( entry.getSerializedType(), entry );
     }
 
     return delegatingSerializersMap.values();
@@ -367,7 +384,25 @@ public class JacksonSerializerGenerator {
   }
 
   public class FieldToSerializeEntry {
-    private f
+    @Nonnull
+    private final PsiClassType fieldType;
+    @Nonnull
+    private final String fieldName;
+
+    public FieldToSerializeEntry( @Nonnull PsiClassType fieldType, @Nonnull String fieldName ) {
+      this.fieldType = fieldType;
+      this.fieldName = fieldName;
+    }
+
+    @Nonnull
+    public PsiClassType getFieldType() {
+      return fieldType;
+    }
+
+    @Nonnull
+    public String getFieldName() {
+      return fieldName;
+    }
   }
 
   public class DelegatingSerializerEntry {
