@@ -197,13 +197,13 @@ public class JacksonSerializerGenerator {
         @Nullable
         @Override
         public FieldToSerializeEntry visitClassType( PsiClassType classType ) {
-          return new FieldToSerializeEntry( classType, selectedField.getName(), fieldAccessProvider.getFieldAccess( selectedField ) );
+          return new FieldToSerializeEntry( classType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
         }
 
         @Nullable
         @Override
         public FieldToSerializeEntry visitPrimitiveType( PsiPrimitiveType primitiveType ) {
-          return new FieldToSerializeEntry( primitiveType, selectedField.getName(), fieldAccessProvider.getFieldAccess( selectedField ) );
+          return new FieldToSerializeEntry( primitiveType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
         }
 
         @Nullable
@@ -538,9 +538,21 @@ public class JacksonSerializerGenerator {
     return javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, className, null, null ).names[0].toLowerCase( Locale.getDefault() );
   }
 
+  @Nonnull
+  static String findGetter( @Nonnull PsiField field ) {
+    PsiMethod getter = PropertyUtil.findGetterForField( field );
+    if ( getter != null ) {
+      return getter.getName() + "()";
+
+    }
+    return "get" + StringUtil.capitalizeWithJavaBeanConvention( field.getName() ) + "()";
+  }
+
   public class FieldToSerializeEntry {
     @Nonnull
     private final PsiType fieldType;
+    @Nonnull
+    private final PsiField field;
     @Nonnull
     private final String fieldName;
     @Nonnull
@@ -552,13 +564,14 @@ public class JacksonSerializerGenerator {
     @Nonnull
     private final String defaultValue;
 
-    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull String fieldName, @Nonnull FieldSetter fieldSetter ) {
+    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
       this.fieldType = fieldType;
-      this.fieldName = fieldName;
+      this.field = field;
+      this.fieldName = field.getName();
       this.fieldSetter = fieldSetter;
 
-      this.accessor = "get" + StringUtil.capitalizeWithJavaBeanConvention( fieldName ) + "()";
-      this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, fieldName, null, null ).names[0];
+      this.accessor = findGetter( field );
+      this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
 
       if ( isPrimitive() ) {
         defaultValue = "-1";

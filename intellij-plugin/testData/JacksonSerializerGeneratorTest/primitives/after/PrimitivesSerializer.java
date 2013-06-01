@@ -25,7 +25,7 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
         serialize(object.getFoo5(), double.class, PROPERTY_FOO_5, serializeTo, formatVersion);
         serialize(object.getFoo6(), float.class, PROPERTY_FOO_6, serializeTo, formatVersion);
         serialize(object.getFoo7(), char.class, PROPERTY_FOO_7, serializeTo, formatVersion);
-        serialize(object.getFoo8(), boolean.class, PROPERTY_FOO_8, serializeTo, formatVersion);
+        serialize(object.isFoo8(), boolean.class, PROPERTY_FOO_8, serializeTo, formatVersion);
         serialize(object.getFoo9(), String.class, PROPERTY_FOO_9, serializeTo, formatVersion);
     }
 
