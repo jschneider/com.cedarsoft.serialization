@@ -304,7 +304,7 @@ public class JacksonSerializerGenerator {
       .append( classToSerialize.getQualifiedName() ).append( " object," )
       .append( notNull() )
       .append( "com.cedarsoft.version.Version formatVersion" )
-      .append( "){" );
+      .append( ")throws java.io.IOException, com.cedarsoft.version.VersionException{" );
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
@@ -326,7 +326,7 @@ public class JacksonSerializerGenerator {
       .append( "com.fasterxml.jackson.core.JsonParser deserializeFrom, " )
       .append( notNull() )
       .append( "com.cedarsoft.version.Version formatVersion" )
-      .append( "){" );
+      .append( ") throws java.io.IOException, com.cedarsoft.version.VersionException {" );
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
     methodBuilder.append( "\n\n" );
