@@ -393,7 +393,7 @@ public class JacksonSerializerGenerator {
         continue;
       }
 
-      methodBuilder.append( "object." ).append( ( ( SetterFieldAccess ) fieldAccess ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ";" );
+      methodBuilder.append( "object." ).append( ( ( SetterFieldAccess ) fieldAccess ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
     }
 
     methodBuilder.append( " return object;" );
