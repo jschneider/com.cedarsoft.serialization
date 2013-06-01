@@ -61,4 +61,20 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
       }
     } );
   }
+
+  @Test
+  public void testPrimitives() throws Throwable {
+    doTest( new PerformAction() {
+      @Override
+      public void performAction( VirtualFile rootDir, VirtualFile rootAfter ) throws Exception {
+        PsiClass foo = myJavaFacade.findClass( "Foo", GlobalSearchScope.allScope( getProject() ) );
+        assertThat( foo ).isNotNull();
+        assertThat( foo.getQualifiedName() ).isEqualTo( "Foo" );
+
+        JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
+        PsiClass serializer = generator.generate( foo, ImmutableList.copyOf( foo.getAllFields() ) );
+        assertThat( serializer.getQualifiedName() ).isEqualTo( "FooSerializer" );
+      }
+    } );
+  }
 }

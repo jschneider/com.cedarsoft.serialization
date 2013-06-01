@@ -184,7 +184,7 @@ public class JacksonSerializerGenerator {
 
   private void addPropertyConstants( @Nonnull Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries, @Nonnull PsiClass serializerClass ) {
     for ( FieldToSerializeEntry entry : fieldToSerializeEntries ) {
-      serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\"", serializerClass ) );
+      serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\";", serializerClass ) );
     }
   }
 
