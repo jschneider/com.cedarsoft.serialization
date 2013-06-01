@@ -236,6 +236,10 @@ public class JacksonSerializerGenerator {
     Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
 
     for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
+      if ( fieldEntry.isPrimitive() ) {
+        continue;
+      }
+
       DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType() );
       delegatingSerializersMap.put( entry.getSerializedType(), entry );
     }
