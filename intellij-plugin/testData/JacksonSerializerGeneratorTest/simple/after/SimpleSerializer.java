@@ -1,5 +1,5 @@
 public class SimpleSerializer extends com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<Simple> {
-    public static final String PROPERTY_FOO = "foo"
+    public static final String PROPERTY_FOO = "foo";
 
     public SimpleSerializer(@org.jetbrains.annotations.NotNull StringSerializer stringSerializer) {
         super("simple_serializer", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
@@ -8,13 +8,15 @@ public class SimpleSerializer extends com.cedarsoft.serialization.jackson.Abstra
     }
 
     @Override
-    public void serialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @org.jetbrains.annotations.NotNull Simple object, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) {
+    public void serialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @org.jetbrains.annotations.NotNull Simple object, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) throws java.io.IOException, com.cedarsoft.version.VersionException {
         verifyVersionWritable(formatVersion);
         serialize(object.getFoo(), String.class, PROPERTY_FOO, serializeTo, formatVersion);
     }
 
     @Override
-    public void deserialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) {
+    public
+    @org.jetbrains.annotations.NotNull
+    Simple deserialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) throws java.io.IOException, com.cedarsoft.version.VersionException {
         verifyVersionWritable(formatVersion);
 
         String foo = null;
