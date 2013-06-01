@@ -18,6 +18,7 @@ import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeVisitor;
@@ -201,6 +202,12 @@ public class JacksonSerializerGenerator {
 
         @Nullable
         @Override
+        public FieldToSerializeEntry visitPrimitiveType( PsiPrimitiveType primitiveType ) {
+          return new FieldToSerializeEntry( primitiveType, selectedField.getName(), fieldAccessProvider.getFieldAccess( selectedField ) );
+        }
+
+        @Nullable
+        @Override
         public FieldToSerializeEntry visitWildcardType( PsiWildcardType wildcardType ) {
           System.out.println( "--> FIX ME: " + wildcardType );
           return super.visitWildcardType( wildcardType );
@@ -298,7 +305,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
     for ( FieldToSerializeEntry field : fields ) {
-      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldType().getClassName() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldType().getCanonicalText() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
     }
 
     methodBuilder.append( "}" );
@@ -340,7 +347,7 @@ public class JacksonSerializerGenerator {
           .append( "parser.nextToken( com.fasterxml.jackson.core.JsonToken.START_OBJECT );" )
 
           .append( field.getFieldName() ).append( "=deserialize(" )
-          .append( field.getFieldType().getClassName() ).append( ".class" )
+          .append( field.getFieldType().getCanonicalText() ).append( ".class" )
           .append( ", formatVersion, deserializeFrom" )
           .append( ");" )
 
@@ -428,6 +435,7 @@ public class JacksonSerializerGenerator {
         throw new IllegalStateException( "No entry found for index <" + index + ">" );
       }
       argsSorted.add( entry );
+      index++;
     }
 
     return argsSorted;
@@ -528,7 +536,7 @@ public class JacksonSerializerGenerator {
 
   public class FieldToSerializeEntry {
     @Nonnull
-    private final PsiClassType fieldType;
+    private final PsiType fieldType;
     @Nonnull
     private final String fieldName;
     @Nonnull
@@ -540,7 +548,7 @@ public class JacksonSerializerGenerator {
     @Nonnull
     private final String defaultValue;
 
-    public FieldToSerializeEntry( @Nonnull PsiClassType fieldType, @Nonnull String fieldName, @Nonnull FieldAccess fieldAccess ) {
+    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull String fieldName, @Nonnull FieldAccess fieldAccess ) {
       this.fieldType = fieldType;
       this.fieldName = fieldName;
       this.fieldAccess = fieldAccess;
@@ -561,7 +569,7 @@ public class JacksonSerializerGenerator {
     }
 
     @Nonnull
-    public PsiClassType getFieldType() {
+    public PsiType getFieldType() {
       return fieldType;
     }
 
