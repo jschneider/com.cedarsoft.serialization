@@ -117,36 +117,9 @@ public class JacksonSerializerGenerator {
     }
 
 
-    Map<PsiType, DelegatingSerializerEntry> delegatingSerializers = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
-    for ( PsiField selectedField : selectedFields ) {
-      @javax.annotation.Nullable DelegatingSerializerEntry entry = selectedField.getType().accept( new PsiTypeVisitor<DelegatingSerializerEntry>() {
-        @Nullable
-        @Override
-        public DelegatingSerializerEntry visitClassType( PsiClassType classType ) {
-          return new DelegatingSerializerEntry( classType );
-        }
+    Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( selectedFields );
 
-        @Nullable
-        @Override
-        public DelegatingSerializerEntry visitWildcardType( PsiWildcardType wildcardType ) {
-          System.out.println( "--> FIX ME: " + wildcardType );
-          return super.visitWildcardType( wildcardType );
-        }
-
-        @Nullable
-        @Override
-        public DelegatingSerializerEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
-          System.out.println( "--> FIX ME: " + capturedWildcardType );
-          return super.visitCapturedWildcardType( capturedWildcardType );
-        }
-      } );
-
-      if ( entry != null ) {
-        delegatingSerializers.put( entry.serializedType, entry );
-      }
-    }
-
-    serializerClass.add( generateConstructor( serializerClass, delegatingSerializers.values() ) );
+    serializerClass.add( generateConstructor( serializerClass, delegatingSerializers ) );
 
 
     serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, selectedFields ) );
@@ -179,6 +152,40 @@ public class JacksonSerializerGenerator {
     //PsiClass serializerClass = elementFactory.createClass( psiClass.getQualifiedName() + "Serializer" );
 
     return serializerClass;
+  }
+
+  @Nonnull
+  private Collection<? extends DelegatingSerializerEntry> calculateSerializerDelegates( @Nonnull List<? extends PsiField> selectedFields ) {
+    Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
+    for ( PsiField selectedField : selectedFields ) {
+      @javax.annotation.Nullable DelegatingSerializerEntry entry = selectedField.getType().accept( new PsiTypeVisitor<DelegatingSerializerEntry>() {
+        @Nullable
+        @Override
+        public DelegatingSerializerEntry visitClassType( PsiClassType classType ) {
+          return new DelegatingSerializerEntry( classType );
+        }
+
+        @Nullable
+        @Override
+        public DelegatingSerializerEntry visitWildcardType( PsiWildcardType wildcardType ) {
+          System.out.println( "--> FIX ME: " + wildcardType );
+          return super.visitWildcardType( wildcardType );
+        }
+
+        @Nullable
+        @Override
+        public DelegatingSerializerEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
+          System.out.println( "--> FIX ME: " + capturedWildcardType );
+          return super.visitCapturedWildcardType( capturedWildcardType );
+        }
+      } );
+
+      if ( entry != null ) {
+        delegatingSerializersMap.put( entry.serializedType, entry );
+      }
+    }
+
+    return delegatingSerializersMap.values();
   }
 
   /**
@@ -357,6 +364,10 @@ public class JacksonSerializerGenerator {
   @Nonnull
   private String createType( @Nonnull String className ) {
     return javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, className, null, null ).names[0].toLowerCase( Locale.getDefault() );
+  }
+
+  public class FieldToSerializeEntry {
+    private f
   }
 
   public class DelegatingSerializerEntry {
