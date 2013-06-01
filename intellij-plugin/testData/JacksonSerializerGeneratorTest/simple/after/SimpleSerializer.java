@@ -16,5 +16,26 @@ public class SimpleSerializer extends com.cedarsoft.serialization.jackson.Abstra
     @Override
     public void deserialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) {
         verifyVersionWritable(formatVersion);
+
+        String foo = null;
+
+        JacksonParserWrapper parser = new JacksonParserWrapper(deserializeFrom);
+        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+            String currentName = parser.getCurrentName();
+
+            if (currentName.equals(PROPERTY_FOO)) {
+                parser.nextToken(JsonToken.START_OBJECT);
+                foo = deserialize(String.class, formatVersion, deserializeFrom);
+                continue;
+            }
+        }
+
+        parser.verifyDeserialized(foo, PROPERTY_FOO);
+        assert foo != null;
+
+        parser.ensureObjectClosed();
+
+        Simple object = new Simple(foo);
+        return object;
     }
 }

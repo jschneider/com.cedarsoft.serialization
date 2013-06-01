@@ -17,6 +17,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
+import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeVisitor;
@@ -27,12 +28,15 @@ import com.intellij.psi.codeStyle.VariableKind;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import com.intellij.psi.util.PropertyUtil;
+import com.intellij.psi.util.TypeConversionUtil;
 import com.intellij.util.Processor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -119,7 +123,9 @@ public class JacksonSerializerGenerator {
     }
 
 
-    Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields );
+    FieldAccessProvider fieldAccessProvider = new FieldAccessProvider( classToSerialize );
+
+    Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields, fieldAccessProvider );
     Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
 
     addPropertyConstants( fieldToSerializeEntries, serializerClass );
@@ -157,6 +163,24 @@ public class JacksonSerializerGenerator {
     return serializerClass;
   }
 
+  @javax.annotation.Nullable
+  private static PsiMethod findLongestConstructor( @Nonnull PsiClass classToSerialize ) {
+    PsiMethod bestConstructor = null;
+
+    for ( PsiMethod constructor : classToSerialize.getConstructors() ) {
+      if ( bestConstructor == null ) {
+        bestConstructor = constructor;
+        continue;
+      }
+
+      if ( constructor.getParameterList().getParameters().length > bestConstructor.getParameterList().getParameters().length ) {
+        bestConstructor = constructor;
+      }
+    }
+
+    return bestConstructor;
+  }
+
   private void addPropertyConstants( @Nonnull Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries, @Nonnull PsiClass serializerClass ) {
     for ( FieldToSerializeEntry entry : fieldToSerializeEntries ) {
       serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\"", serializerClass ) );
@@ -164,7 +188,7 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private Collection<? extends FieldToSerializeEntry> calculateFieldToSerializeEntries( @Nonnull List<? extends PsiField> selectedFields ) {
+  private Collection<? extends FieldToSerializeEntry> calculateFieldToSerializeEntries( @Nonnull List<? extends PsiField> selectedFields, @Nonnull final FieldAccessProvider fieldAccessProvider ) {
     List<FieldToSerializeEntry> entries = new ArrayList<FieldToSerializeEntry>();
 
     for ( final PsiField selectedField : selectedFields ) {
@@ -172,7 +196,7 @@ public class JacksonSerializerGenerator {
         @Nullable
         @Override
         public FieldToSerializeEntry visitClassType( PsiClassType classType ) {
-          return new FieldToSerializeEntry( classType, selectedField.getName() );
+          return new FieldToSerializeEntry( classType, selectedField.getName(), fieldAccessProvider.getFieldAccess( selectedField ) );
         }
 
         @Nullable
@@ -294,10 +318,119 @@ public class JacksonSerializerGenerator {
       .append( "){" );
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+    methodBuilder.append( "\n\n" );
 
+    //Declare the fields
+    for ( FieldToSerializeEntry field : fields ) {
+      methodBuilder.append( field.getFieldType().getCanonicalText() ).append( " " ).append( field.getFieldName() ).append( "=" ).append( field.getDefaultValue() ).append( ";" );
+
+    }
+
+    methodBuilder.append( "\n\n" );
+
+    {
+      //While for fields
+      methodBuilder.append( "JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );" +
+                              "while ( parser.nextToken() == JsonToken.FIELD_NAME ) {" +
+                              "String currentName = parser.getCurrentName();\n\n" );
+
+      //add the ifs for the field names
+      for ( FieldToSerializeEntry field : fields ) {
+        methodBuilder.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
+          .append( "parser.nextToken( JsonToken.START_OBJECT );" )
+
+          .append( field.getFieldName() ).append( "=deserialize(" )
+          .append( field.getFieldType().getClassName() ).append( ".class" )
+          .append( ", formatVersion, deserializeFrom" )
+          .append( ");" )
+
+          .append( "continue;" )
+          .append( "}" )
+        ;
+      }
+
+      methodBuilder.append( "}" );
+    }
+
+    methodBuilder.append( "\n\n" );
+
+    //Verify deserialization
+    for ( FieldToSerializeEntry field : fields ) {
+      methodBuilder.append( "parser.verifyDeserialized(" ).append( field.getFieldName() ).append( "," ).append( field.getPropertyConstantName() ).append( ");" );
+      if ( !field.isPrimitive() ) {
+        methodBuilder.append( "assert " ).append( field.getFieldName() ).append( " !=" ).append( field.getDefaultValue() ).append( ";" );
+      }
+    }
+
+    methodBuilder.append( "\n\n" );
+
+    //clean up
+    methodBuilder.append( "parser.ensureObjectClosed();" );
+    methodBuilder.append( "\n\n" );
+
+    //Create the deserialized object
+
+
+    methodBuilder.append( classToSerialize.getQualifiedName() ).append( " object = new " ).append( classToSerialize.getQualifiedName() ).append( "(" );
+
+    List<FieldToSerializeEntry> constructorArguments = findConstructorArgs( fields );
+
+    for ( Iterator<FieldToSerializeEntry> iterator = constructorArguments.iterator(); iterator.hasNext(); ) {
+      FieldToSerializeEntry constructorArgument = iterator.next();
+      methodBuilder.append( constructorArgument.getFieldName() );
+
+      if ( iterator.hasNext() ) {
+        methodBuilder.append( "," );
+      }
+    }
+
+    methodBuilder.append( ");" );
+
+    //Adding the setters
+    for ( FieldToSerializeEntry field : fields ) {
+      FieldAccess fieldAccess = field.getFieldAccess();
+      if ( !fieldAccess.isSetterAccess() ) {
+        continue;
+      }
+
+      methodBuilder.append( "object." ).append( ( ( SetterFieldAccess ) fieldAccess ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ";" );
+    }
+
+    methodBuilder.append( " return object;" );
     methodBuilder.append( "}" );
-
     return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
+  @Nonnull
+  private List<FieldToSerializeEntry> findConstructorArgs( @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
+    Map<Integer, FieldToSerializeEntry> fieldsWithConstructor = new HashMap<Integer, FieldToSerializeEntry>();
+
+    for ( FieldToSerializeEntry entry : fields ) {
+      FieldAccess fieldAccess = entry.getFieldAccess();
+      if ( !fieldAccess.isConstructorAccess() ) {
+        continue;
+      }
+
+      int index = ( ( ConstructorFieldAccess ) fieldAccess ).getParameterIndex();
+      @Nullable FieldToSerializeEntry oldValue = fieldsWithConstructor.put( index, entry );
+      if ( oldValue != null ) {
+        throw new IllegalStateException( "Duplicate entries for index <" + index + ">: " + oldValue.getFieldName() + " - " + entry.getFieldName() );
+      }
+    }
+
+
+    List<FieldToSerializeEntry> argsSorted = new ArrayList<FieldToSerializeEntry>();
+
+    int index = 0;
+    while ( !fieldsWithConstructor.isEmpty() ) {
+      @Nullable FieldToSerializeEntry entry = fieldsWithConstructor.remove( index );
+      if ( entry == null ) {
+        throw new IllegalStateException( "No entry found for index <" + index + ">" );
+      }
+      argsSorted.add( entry );
+    }
+
+    return argsSorted;
   }
 
   private String notNull() {
@@ -399,16 +532,32 @@ public class JacksonSerializerGenerator {
     @Nonnull
     private final String fieldName;
     @Nonnull
+    private final FieldAccess fieldAccess;
+    @Nonnull
     private final String accessor;
     @Nonnull
     private final String propertyConstant;
+    @Nonnull
+    private final String defaultValue;
 
-    public FieldToSerializeEntry( @Nonnull PsiClassType fieldType, @Nonnull String fieldName ) {
+    public FieldToSerializeEntry( @Nonnull PsiClassType fieldType, @Nonnull String fieldName, @Nonnull FieldAccess fieldAccess ) {
       this.fieldType = fieldType;
       this.fieldName = fieldName;
+      this.fieldAccess = fieldAccess;
 
       this.accessor = "get" + StringUtil.capitalizeWithJavaBeanConvention( fieldName ) + "()";
       this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, fieldName, null, null ).names[0];
+
+      if ( isPrimitive() ) {
+        defaultValue = "-1";
+      } else {
+        defaultValue = "null";
+      }
+    }
+
+    @Nonnull
+    public FieldAccess getFieldAccess() {
+      return fieldAccess;
     }
 
     @Nonnull
@@ -429,6 +578,15 @@ public class JacksonSerializerGenerator {
     @Nonnull
     public String getPropertyConstantName() {
       return propertyConstant;
+    }
+
+    public final boolean isPrimitive() {
+      return TypeConversionUtil.isPrimitiveAndNotNull( fieldType );
+    }
+
+    @Nonnull
+    public String getDefaultValue() {
+      return defaultValue;
     }
   }
 
@@ -462,4 +620,119 @@ public class JacksonSerializerGenerator {
     }
   }
 
+  public class FieldAccessProvider {
+    @Nonnull
+    private final PsiClass classToSerialize;
+    @Nullable
+    private final PsiMethod constructor;
+
+    public FieldAccessProvider( @Nonnull PsiClass classToSerialize ) {
+      this.classToSerialize = classToSerialize;
+      constructor = findLongestConstructor( classToSerialize );
+    }
+
+    @Nullable
+    public PsiMethod getConstructor() {
+      return constructor;
+    }
+
+    @Nonnull
+    public PsiClass getClassToSerialize() {
+      return classToSerialize;
+    }
+
+    @Nonnull
+    public FieldAccess getFieldAccess( @Nonnull PsiField field ) {
+      @Nullable ConstructorFieldAccess constructorFieldAccess = getConstructorAccess( field );
+      if ( constructorFieldAccess != null ) {
+        return constructorFieldAccess;
+      }
+
+      return findGetter( field );
+    }
+
+    @Nullable
+    private ConstructorFieldAccess getConstructorAccess( @Nonnull PsiField field ) {
+      if ( constructor == null ) {
+        return null;
+      }
+      for ( PsiParameter psiParameter : constructor.getParameterList().getParameters() ) {
+        PsiType type = psiParameter.getType();
+        String name = psiParameter.getName();
+
+        if ( !field.getName().equals( name ) ) {
+          continue;
+        }
+
+        if ( !field.getType().equals( type ) ) {
+          continue;
+        }
+
+        return new ConstructorFieldAccess( constructor.getParameterList().getParameterIndex( psiParameter ) );
+      }
+
+      return null;
+    }
+
+    @Nonnull
+    private SetterFieldAccess findGetter( @Nonnull PsiField field ) {
+      @Nullable PsiMethod setter = PropertyUtil.findPropertySetter( classToSerialize, field.getName(), false, true );
+      if ( setter != null ) {
+        return new SetterFieldAccess( setter.getName() );
+      }
+      return new SetterFieldAccess( PropertyUtil.suggestSetterName( field.getName() ) );
+    }
+  }
+
+  public interface FieldAccess {
+    boolean isConstructorAccess();
+
+    boolean isSetterAccess();
+  }
+
+  public static class SetterFieldAccess implements FieldAccess {
+    @Nonnull
+    private final String setter;
+
+    public SetterFieldAccess( @Nonnull String setter ) {
+      this.setter = setter;
+    }
+
+    @Nonnull
+    public String getSetter() {
+      return setter;
+    }
+
+    @Override
+    public boolean isConstructorAccess() {
+      return false;
+    }
+
+    @Override
+    public boolean isSetterAccess() {
+      return true;
+    }
+  }
+
+  public static class ConstructorFieldAccess implements FieldAccess {
+    private final int parameterIndex;
+
+    public ConstructorFieldAccess( int parameterIndex ) {
+      this.parameterIndex = parameterIndex;
+    }
+
+    public int getParameterIndex() {
+      return parameterIndex;
+    }
+
+    @Override
+    public boolean isConstructorAccess() {
+      return true;
+    }
+
+    @Override
+    public boolean isSetterAccess() {
+      return false;
+    }
+  }
 }
