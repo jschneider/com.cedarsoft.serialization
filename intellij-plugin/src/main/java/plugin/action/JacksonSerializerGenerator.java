@@ -321,7 +321,7 @@ public class JacksonSerializerGenerator {
   private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( "@Override public void deserialize(" )
+    methodBuilder.append( "@Override public " ).append( notNull() ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
       .append( notNull() )
       .append( "com.fasterxml.jackson.core.JsonParser deserializeFrom, " )
       .append( notNull() )
