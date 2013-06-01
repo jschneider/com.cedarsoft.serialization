@@ -41,8 +41,8 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
         long foo4 = -1;
         double foo5 = -1;
         float foo6 = -1;
-        char foo7 = -1;
-        boolean foo8 = -1;
+        char foo7 = (char) -1;
+        boolean foo8 = false;
         String foo9 = null;
 
         com.cedarsoft.serialization.jackson.JacksonParserWrapper parser = new com.cedarsoft.serialization.jackson.JacksonParserWrapper(deserializeFrom);
@@ -103,7 +103,6 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
         parser.verifyDeserialized(foo5, PROPERTY_FOO_5);
         parser.verifyDeserialized(foo6, PROPERTY_FOO_6);
         parser.verifyDeserialized(foo7, PROPERTY_FOO_7);
-        parser.verifyDeserialized(foo8, PROPERTY_FOO_8);
         parser.verifyDeserialized(foo9, PROPERTY_FOO_9);
         assert foo9 != null;
 

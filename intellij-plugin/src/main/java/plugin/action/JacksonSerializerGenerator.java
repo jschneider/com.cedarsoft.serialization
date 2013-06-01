@@ -367,6 +367,10 @@ public class JacksonSerializerGenerator {
 
     //Verify deserialization
     for ( FieldToSerializeEntry field : fields ) {
+      if ( !field.shallVerifyDeserialized() ) {
+        continue;
+      }
+
       methodBuilder.append( "parser.verifyDeserialized(" ).append( field.getFieldName() ).append( "," ).append( field.getPropertyConstantName() ).append( ");" );
       if ( !field.isPrimitive() ) {
         methodBuilder.append( "assert " ).append( field.getFieldName() ).append( " !=" ).append( field.getDefaultValue() ).append( ";" );
@@ -573,11 +577,28 @@ public class JacksonSerializerGenerator {
       this.accessor = findGetter( field );
       this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
 
+      defaultValue = getDefaultValue( fieldType );
+    }
+
+    @Nonnull
+    private String getDefaultValue( @Nonnull PsiType fieldType ) {
       if ( isPrimitive() ) {
-        defaultValue = "-1";
+        if ( TypeConversionUtil.isBooleanType( fieldType ) ) {
+          return "false";
+        }
+        if ( PsiType.CHAR.equals( fieldType ) ) {
+          return "(char)-1";
+        }
+
+        return "-1";
       } else {
-        defaultValue = "null";
+        return "null";
       }
+    }
+
+    @Nonnull
+    public PsiField getField() {
+      return field;
     }
 
     @Nonnull
@@ -612,6 +633,10 @@ public class JacksonSerializerGenerator {
     @Nonnull
     public String getDefaultValue() {
       return defaultValue;
+    }
+
+    public boolean shallVerifyDeserialized() {
+      return !PsiType.BOOLEAN.equals( fieldType );
     }
   }
 
