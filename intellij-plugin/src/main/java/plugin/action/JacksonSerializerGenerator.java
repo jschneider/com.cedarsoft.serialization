@@ -150,6 +150,7 @@ public class JacksonSerializerGenerator {
 
 
     serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, selectedFields ) );
+    serializerClass.add( generateDeserializeMethod( classToSerialize, serializerClass, selectedFields ) );
 
 
     //StringBuilder builder = new StringBuilder();
@@ -179,6 +180,23 @@ public class JacksonSerializerGenerator {
 
     return serializerClass;
   }
+
+  @Nonnull
+  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public void deserialize(" )
+      .append( notNull() )
+      .append( "com.fasterxml.jackson.core.JsonParser deserializeFrom, " )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( "){" );
+
+    methodBuilder.append( "}" );
+
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
 
   @Nonnull
   private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull List<? extends PsiField> selectedFields ) {
