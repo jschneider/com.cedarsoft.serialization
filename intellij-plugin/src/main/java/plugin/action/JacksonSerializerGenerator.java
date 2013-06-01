@@ -399,12 +399,12 @@ public class JacksonSerializerGenerator {
 
     //Adding the setters
     for ( FieldToSerializeEntry field : fields ) {
-      FieldAccess fieldAccess = field.getFieldAccess();
-      if ( !fieldAccess.isSetterAccess() ) {
+      FieldSetter fieldSetter = field.getFieldSetter();
+      if ( !fieldSetter.isSetterAccess() ) {
         continue;
       }
 
-      methodBuilder.append( "object." ).append( ( ( SetterFieldAccess ) fieldAccess ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
+      methodBuilder.append( "object." ).append( ( ( SetterFieldSetter ) fieldSetter ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
     }
 
     methodBuilder.append( " return object;" );
@@ -417,12 +417,12 @@ public class JacksonSerializerGenerator {
     Map<Integer, FieldToSerializeEntry> fieldsWithConstructor = new HashMap<Integer, FieldToSerializeEntry>();
 
     for ( FieldToSerializeEntry entry : fields ) {
-      FieldAccess fieldAccess = entry.getFieldAccess();
-      if ( !fieldAccess.isConstructorAccess() ) {
+      FieldSetter fieldSetter = entry.getFieldSetter();
+      if ( !fieldSetter.isConstructorAccess() ) {
         continue;
       }
 
-      int index = ( ( ConstructorFieldAccess ) fieldAccess ).getParameterIndex();
+      int index = ( ( ConstructorFieldSetter ) fieldSetter ).getParameterIndex();
       @Nullable FieldToSerializeEntry oldValue = fieldsWithConstructor.put( index, entry );
       if ( oldValue != null ) {
         throw new IllegalStateException( "Duplicate entries for index <" + index + ">: " + oldValue.getFieldName() + " - " + entry.getFieldName() );
@@ -544,7 +544,7 @@ public class JacksonSerializerGenerator {
     @Nonnull
     private final String fieldName;
     @Nonnull
-    private final FieldAccess fieldAccess;
+    private final FieldSetter fieldSetter;
     @Nonnull
     private final String accessor;
     @Nonnull
@@ -552,10 +552,10 @@ public class JacksonSerializerGenerator {
     @Nonnull
     private final String defaultValue;
 
-    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull String fieldName, @Nonnull FieldAccess fieldAccess ) {
+    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull String fieldName, @Nonnull FieldSetter fieldSetter ) {
       this.fieldType = fieldType;
       this.fieldName = fieldName;
-      this.fieldAccess = fieldAccess;
+      this.fieldSetter = fieldSetter;
 
       this.accessor = "get" + StringUtil.capitalizeWithJavaBeanConvention( fieldName ) + "()";
       this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, fieldName, null, null ).names[0];
@@ -568,8 +568,8 @@ public class JacksonSerializerGenerator {
     }
 
     @Nonnull
-    public FieldAccess getFieldAccess() {
-      return fieldAccess;
+    public FieldSetter getFieldSetter() {
+      return fieldSetter;
     }
 
     @Nonnull
@@ -654,17 +654,17 @@ public class JacksonSerializerGenerator {
     }
 
     @Nonnull
-    public FieldAccess getFieldAccess( @Nonnull PsiField field ) {
-      @Nullable ConstructorFieldAccess constructorFieldAccess = getConstructorAccess( field );
+    public FieldSetter getFieldAccess( @Nonnull PsiField field ) {
+      @Nullable ConstructorFieldSetter constructorFieldAccess = getConstructorAccess( field );
       if ( constructorFieldAccess != null ) {
         return constructorFieldAccess;
       }
 
-      return findGetter( field );
+      return findSetter( field );
     }
 
     @Nullable
-    private ConstructorFieldAccess getConstructorAccess( @Nonnull PsiField field ) {
+    private ConstructorFieldSetter getConstructorAccess( @Nonnull PsiField field ) {
       if ( constructor == null ) {
         return null;
       }
@@ -680,33 +680,33 @@ public class JacksonSerializerGenerator {
           continue;
         }
 
-        return new ConstructorFieldAccess( constructor.getParameterList().getParameterIndex( psiParameter ) );
+        return new ConstructorFieldSetter( constructor.getParameterList().getParameterIndex( psiParameter ) );
       }
 
       return null;
     }
 
     @Nonnull
-    private SetterFieldAccess findGetter( @Nonnull PsiField field ) {
-      @Nullable PsiMethod setter = PropertyUtil.findPropertySetter( classToSerialize, field.getName(), false, true );
+    private SetterFieldSetter findSetter( @Nonnull PsiField field ) {
+      @Nullable PsiMethod setter = PropertyUtil.findSetterForField( field );
       if ( setter != null ) {
-        return new SetterFieldAccess( setter.getName() );
+        return new SetterFieldSetter( setter.getName() );
       }
-      return new SetterFieldAccess( PropertyUtil.suggestSetterName( field.getName() ) );
+      return new SetterFieldSetter( PropertyUtil.suggestSetterName( project, field ) );
     }
   }
 
-  public interface FieldAccess {
+  public interface FieldSetter {
     boolean isConstructorAccess();
 
     boolean isSetterAccess();
   }
 
-  public static class SetterFieldAccess implements FieldAccess {
+  public static class SetterFieldSetter implements FieldSetter {
     @Nonnull
     private final String setter;
 
-    public SetterFieldAccess( @Nonnull String setter ) {
+    public SetterFieldSetter( @Nonnull String setter ) {
       this.setter = setter;
     }
 
@@ -726,10 +726,10 @@ public class JacksonSerializerGenerator {
     }
   }
 
-  public static class ConstructorFieldAccess implements FieldAccess {
+  public static class ConstructorFieldSetter implements FieldSetter {
     private final int parameterIndex;
 
-    public ConstructorFieldAccess( int parameterIndex ) {
+    public ConstructorFieldSetter( int parameterIndex ) {
       this.parameterIndex = parameterIndex;
     }
 
