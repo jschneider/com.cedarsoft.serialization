@@ -73,7 +73,9 @@ public class GenerateSerializerAction extends AnAction {
     }
 
     JacksonSerializerGenerator generator = new JacksonSerializerGenerator( psiClass.getProject() );
-    generator.generate( psiClass, generateSerializerDialog.getSelectedFields() );
+    PsiClass serializer = generator.generate( psiClass, generateSerializerDialog.getSelectedFields() );
+
+    Editor editor = CodeInsightUtil.positionCursor( serializer.getProject(), serializer.getContainingFile(), serializer.getLBrace() );
 
     System.out.println( "Finished: " + psiClass );
 
