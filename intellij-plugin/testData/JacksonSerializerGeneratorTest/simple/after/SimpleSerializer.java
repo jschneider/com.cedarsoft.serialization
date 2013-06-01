@@ -19,12 +19,12 @@ public class SimpleSerializer extends com.cedarsoft.serialization.jackson.Abstra
 
         String foo = null;
 
-        JacksonParserWrapper parser = new JacksonParserWrapper(deserializeFrom);
-        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+        com.cedarsoft.serialization.jackson.JacksonParserWrapper parser = new com.cedarsoft.serialization.jackson.JacksonParserWrapper(deserializeFrom);
+        while (parser.nextToken() == com.fasterxml.jackson.core.JsonToken.FIELD_NAME) {
             String currentName = parser.getCurrentName();
 
             if (currentName.equals(PROPERTY_FOO)) {
-                parser.nextToken(JsonToken.START_OBJECT);
+                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo = deserialize(String.class, formatVersion, deserializeFrom);
                 continue;
             }

@@ -330,14 +330,14 @@ public class JacksonSerializerGenerator {
 
     {
       //While for fields
-      methodBuilder.append( "JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );" +
-                              "while ( parser.nextToken() == JsonToken.FIELD_NAME ) {" +
+      methodBuilder.append( "com.cedarsoft.serialization.jackson.JacksonParserWrapper parser = new com.cedarsoft.serialization.jackson.JacksonParserWrapper( deserializeFrom );" +
+                              "while ( parser.nextToken() == com.fasterxml.jackson.core.JsonToken.FIELD_NAME ) {" +
                               "String currentName = parser.getCurrentName();\n\n" );
 
       //add the ifs for the field names
       for ( FieldToSerializeEntry field : fields ) {
         methodBuilder.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
-          .append( "parser.nextToken( JsonToken.START_OBJECT );" )
+          .append( "parser.nextToken( com.fasterxml.jackson.core.JsonToken.START_OBJECT );" )
 
           .append( field.getFieldName() ).append( "=deserialize(" )
           .append( field.getFieldType().getClassName() ).append( ".class" )
