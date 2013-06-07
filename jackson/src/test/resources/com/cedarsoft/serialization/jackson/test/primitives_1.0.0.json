@@ -1,0 +1,13 @@
+{
+  "@type" : "primitives_serializer",
+  "@version" : "1.0.0",
+  "foo1" : 1,
+  "foo2" : 2,
+  "foo3" : 3,
+  "foo4" : 4,
+  "foo5" : 5.5,
+  "foo6" : 6.4,
+  "foo7" : "7",
+  "foo8" : true,
+  "foo9" : "asdf"
+}
