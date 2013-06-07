@@ -99,16 +99,7 @@ public class JacksonSerializerGenerator {
   @Nonnull
   public PsiClass fillSerializerClass( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
     PsiClass classToSerialize = serializerModel.getClassToSerialize();
-
-    //Add extends abstract base class
-    {
-      PsiJavaCodeReferenceElement extendsRef = elementFactory.createReferenceFromText( "com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<" + classToSerialize.getName() + ">", classToSerialize );
-
-      PsiReferenceList extendsList = serializerClass.getExtendsList();
-      assert extendsList != null;
-      extendsList.add( extendsRef );
-    }
-
+    addExtends( serializerClass, classToSerialize );
 
     addPropertyConstants( serializerModel, serializerClass );
 
@@ -116,33 +107,18 @@ public class JacksonSerializerGenerator {
     serializerClass.add( generateSerializeMethod( serializerModel, serializerClass ) );
     serializerClass.add( generateDeserializeMethod( serializerModel, serializerClass ) );
 
-
-    //StringBuilder builder = new StringBuilder();
-    //builder.append( "public void deserializeStuff(){" )
-    //  .append( psiClass.getName() ).append( ".class.getName();" )
-    //  .append( "}" );
-    //
-    //PsiElement method = psiClass.add( elementFactory.createMethodFromText( builder.toString(), psiClass ) );
-    //
-    //codeStyleManager.shortenClassReferences( method );
-
-
-    PsiReferenceList implementsList = classToSerialize.getImplementsList();
-    if ( implementsList == null ) {
-      throw new IllegalStateException( "no implements list found" );
-    }
-
-    //PsiElement implementsReference = implementsList.add( elementFactory.createReferenceFromText( "Comparable<" + psiClass.getQualifiedName() + ">", psiClass ) );
-    //codeStyleManager.shortenClassReferences( implementsReference );
-
-
-    //PsiDirectory srcDir = psiClass.getContainingFile().getContainingDirectory();
-    //PsiPackage srcPackage = JavaDirectoryService.getInstance().getPackage( srcDir );
-
-
-    //PsiClass serializerClass = elementFactory.createClass( psiClass.getQualifiedName() + "Serializer" );
-
     return serializerClass;
+  }
+
+  private void addExtends( @Nonnull PsiClass serializerClass, @Nonnull PsiClass classToSerialize ) {
+    //Add extends abstract base class
+    {
+      PsiJavaCodeReferenceElement extendsRef = elementFactory.createReferenceFromText( "com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<" + classToSerialize.getQualifiedName() + ">", classToSerialize );
+
+      PsiReferenceList extendsList = serializerClass.getExtendsList();
+      assert extendsList != null;
+      extendsList.add( extendsRef );
+    }
   }
 
   private void addPropertyConstants( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
