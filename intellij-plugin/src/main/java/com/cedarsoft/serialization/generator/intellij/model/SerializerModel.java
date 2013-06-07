@@ -36,6 +36,16 @@ public class SerializerModel {
   }
 
   @Nonnull
+  public String generateSerializerTestClassName() {
+    return getClassToSerialize().getName() + "SerializerTest";
+  }
+
+  @Nonnull
+  public String generateSerializerVersionTestClassName() {
+    return getClassToSerialize().getName() + "SerializerVersionTest";
+  }
+
+  @Nonnull
   public ImmutableList<? extends FieldToSerializeEntry> getFieldToSerializeEntries() {
     //noinspection ReturnOfCollectionOrArrayField
     return fieldToSerializeEntries;

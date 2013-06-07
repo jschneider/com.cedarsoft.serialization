@@ -54,4 +54,6 @@ public class LicenseSerializerVersionTest extends AbstractJsonVersionTest2<Licen
   protected void verifyDeserialized( @Nonnull License deserialized, @Nonnull Version version ) throws Exception {
     Assert.assertSame( License.GPL_3, deserialized );
   }
+
+  @Override protected void verifyDeserialized(@org.jetbrains.annotations.NotNull Simple deserialized, @org.jetbrains.annotations.NotNull  com.cedarsoft.version.Version version){org.fest.assertions.Assertions.assertThat(deserialized.getFoo()()).isNotNull();}
 }
