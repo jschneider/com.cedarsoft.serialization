@@ -1,5 +1,6 @@
-import java.lang.Character;
-import java.lang.Integer;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<Primitives> {
     public static final String PROPERTY_FOO_1 = "foo1";
@@ -12,14 +13,22 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
     public static final String PROPERTY_FOO_8 = "foo8";
     public static final String PROPERTY_FOO_9 = "foo9";
 
-    public PrimitivesSerializer(@org.jetbrains.annotations.NotNull StringSerializer stringSerializer) {
+    public PrimitivesSerializer(@NotNull IntegerSerializer integerSerializer, @NotNull ShortSerializer shortSerializer, @NotNull ByteSerializer byteSerializer, @NotNull LongSerializer longSerializer, @NotNull DoubleSerializer doubleSerializer, @NotNull FloatSerializer floatSerializer, @NotNull CharacterSerializer characterSerializer, @NotNull BooleanSerializer booleanSerializer, @NotNull StringSerializer stringSerializer) {
         super("primitives_serializer", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
+        getDelegatesMappings().add(integerSerializer).responsibleFor(Integer.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(shortSerializer).responsibleFor(Short.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(byteSerializer).responsibleFor(Byte.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(longSerializer).responsibleFor(Long.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(doubleSerializer).responsibleFor(Double.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(floatSerializer).responsibleFor(Float.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(characterSerializer).responsibleFor(Character.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
+        getDelegatesMappings().add(booleanSerializer).responsibleFor(Boolean.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         getDelegatesMappings().add(stringSerializer).responsibleFor(String.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         assert getDelegatesMappings().verify();
     }
 
     @Override
-    public void serialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @org.jetbrains.annotations.NotNull Primitives object, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) throws java.io.IOException, com.cedarsoft.version.VersionException {
+    public void serialize(@NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @NotNull Primitives object, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
         verifyVersionWritable(formatVersion);
         serialize(object.getFoo1(), Integer.class, PROPERTY_FOO_1, serializeTo, formatVersion);
         serialize(object.getFoo2(), Short.class, PROPERTY_FOO_2, serializeTo, formatVersion);
@@ -34,8 +43,8 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
 
     @Override
     public
-    @org.jetbrains.annotations.NotNull
-    Primitives deserialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) throws java.io.IOException, com.cedarsoft.version.VersionException {
+    @NotNull
+    Primitives deserialize(@NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
         verifyVersionWritable(formatVersion);
 
         int foo1 = -1;
@@ -53,39 +62,39 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
             String currentName = parser.getCurrentName();
 
             if (currentName.equals(PROPERTY_FOO_1)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo1 = deserialize(Integer.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_2)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo2 = deserialize(Short.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_3)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo3 = deserialize(Byte.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_4)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo4 = deserialize(Long.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_5)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo5 = deserialize(Double.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_6)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo6 = deserialize(Float.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_7)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo7 = deserialize(Character.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_8)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_9)) {
-                parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
+                parser.nextToken();
                 foo9 = deserialize(String.class, formatVersion, deserializeFrom);
                 continue;
             }

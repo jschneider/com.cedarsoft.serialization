@@ -15,6 +15,7 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiParameter;
@@ -529,7 +530,20 @@ public class JacksonSerializerGenerator {
     }
 
     //Fallback: Create a new pseudo serializer class
-    return elementFactory.createTypeByFQClassName( typeToSerialize.getPresentableText() + "Serializer" );
+    return elementFactory.createTypeByFQClassName( guessSerializerName( typeToSerialize ) );
+  }
+
+  @Nonnull
+  private String guessSerializerName( @Nonnull PsiType typeToSerialize ) {
+    if ( typeToSerialize instanceof PsiPrimitiveType ) {
+      PsiClassType boxedType = ( ( PsiPrimitiveType ) typeToSerialize ).getBoxedType( PsiManager.getInstance( project ), GlobalSearchScope.allScope( project ) );
+      if ( boxedType == null ) {
+        throw new IllegalStateException( "No boxed type found for <" + typeToSerialize + ">" );
+      }
+      return boxedType.getPresentableText() + "Serializer";
+    }
+
+    return typeToSerialize.getPresentableText() + "Serializer";
   }
 
   /**

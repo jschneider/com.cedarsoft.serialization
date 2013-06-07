@@ -1,6 +1,7 @@
 package plugin.action;
 
 import com.google.common.collect.ImmutableList;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -15,6 +16,11 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
+  @Override
+  protected Sdk getTestProjectJdk() {
+    return new Jdk17MockProjectDescriptor().getSdk();
+  }
+
   @Override
   protected String getTestDataPath() {
     return new File( "testData" ).getAbsolutePath();
@@ -73,7 +79,7 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
 
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
         PsiClass serializer = generator.generate( foo, ImmutableList.copyOf( foo.getAllFields() ) );
-        assertThat( serializer.getQualifiedName() ).isEqualTo( "PrimitivesSerializer" );
+        assertThat( serializer.getName() ).isEqualTo( "PrimitivesSerializer" );
       }
     } );
   }
