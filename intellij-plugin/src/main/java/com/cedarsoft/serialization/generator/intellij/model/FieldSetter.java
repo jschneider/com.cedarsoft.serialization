@@ -1,4 +1,4 @@
-package plugin.action;
+package com.cedarsoft.serialization.generator.intellij.model;
 
 import javax.annotation.Nonnull;
 

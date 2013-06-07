@@ -1,16 +1,18 @@
-package plugin.action;
+package com.cedarsoft.serialization.generator.intellij;
 
+import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializerEntry;
+import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
+import com.cedarsoft.serialization.generator.intellij.model.FieldToSerializeEntry;
+import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
-import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
@@ -21,7 +23,6 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
 import com.intellij.psi.search.PsiShortNamesCache;
-import com.intellij.psi.util.PropertyUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -377,16 +378,6 @@ public class JacksonSerializerGenerator {
   @Nonnull
   private String createType( @Nonnull String className ) {
     return javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, className, null, null ).names[0].toLowerCase( Locale.getDefault() );
-  }
-
-  @Nonnull
-  static String findGetter( @Nonnull PsiField field ) {
-    PsiMethod getter = PropertyUtil.findGetterForField( field );
-    if ( getter != null ) {
-      return getter.getName() + "()";
-
-    }
-    return "get" + StringUtil.capitalizeWithJavaBeanConvention( field.getName() ) + "()";
   }
 
   @Nonnull

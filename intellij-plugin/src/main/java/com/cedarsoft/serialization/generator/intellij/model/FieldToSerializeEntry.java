@@ -1,10 +1,13 @@
-package plugin.action;
+package com.cedarsoft.serialization.generator.intellij.model;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
+import com.intellij.psi.util.PropertyUtil;
 import com.intellij.psi.util.TypeConversionUtil;
 
 import javax.annotation.Nonnull;
@@ -35,7 +38,7 @@ public class FieldToSerializeEntry {
     this.fieldName = field.getName();
     this.fieldSetter = fieldSetter;
 
-    this.accessor = JacksonSerializerGenerator.findGetter( field );
+    this.accessor = findGetter( field );
     this.propertyConstant = "PROPERTY_" + JavaCodeStyleManager.getInstance( getProject() ).suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
 
     defaultValue = getDefaultValue( fieldType );
@@ -103,5 +106,15 @@ public class FieldToSerializeEntry {
   @Nonnull
   private Project getProject() {
     return field.getProject();
+  }
+
+  @Nonnull
+  static String findGetter( @Nonnull PsiField field ) {
+    PsiMethod getter = PropertyUtil.findGetterForField( field );
+    if ( getter != null ) {
+      return getter.getName() + "()";
+
+    }
+    return "get" + StringUtil.capitalizeWithJavaBeanConvention( field.getName() ) + "()";
   }
 }

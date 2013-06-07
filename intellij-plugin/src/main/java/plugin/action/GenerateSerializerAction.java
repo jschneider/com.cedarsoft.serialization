@@ -1,5 +1,9 @@
 package plugin.action;
 
+import com.cedarsoft.serialization.generator.intellij.JacksonSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
+import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
+import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.lang.Language;
 import com.intellij.lang.java.JavaLanguage;
