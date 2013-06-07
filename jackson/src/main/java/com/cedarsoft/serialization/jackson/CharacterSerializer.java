@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class CharSerializer extends AbstractJacksonSerializer<Character> {
-  public CharSerializer() {
+public class CharacterSerializer extends AbstractJacksonSerializer<Character> {
+  public CharacterSerializer() {
     super( "char", VersionRange.single( 1, 0, 0 ) );
   }
 
