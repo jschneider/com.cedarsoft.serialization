@@ -73,7 +73,15 @@ public class GenerateSerializerAction extends AnAction {
     }
 
     JacksonSerializerGenerator generator = new JacksonSerializerGenerator( psiClass.getProject() );
-    PsiClass serializer = generator.generate( psiClass, generateSerializerDialog.getSelectedFields() );
+
+
+    Project project = getEventProject( e );
+    assert project != null;
+
+    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
+    SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
+
+    PsiClass serializer = generator.generate( model );
 
     Editor editor = CodeInsightUtil.positionCursor( serializer.getProject(), serializer.getContainingFile(), serializer.getLBrace() );
 

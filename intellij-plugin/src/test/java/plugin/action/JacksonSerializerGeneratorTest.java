@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.refactoring.MultiFileTestCase;
 import org.junit.*;
@@ -45,8 +47,11 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
+
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
-        PsiClass serializer = generator.generate( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
+        PsiClass serializer = generator.generate( model );
         assertThat( serializer.getName() ).isEqualTo( "SimpleSerializer" );
       }
     } );
@@ -61,8 +66,11 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
+
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
-        PsiClass serializer = generator.generate( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
+        PsiClass serializer = generator.generate( model );
         assertThat( serializer.getName() ).isEqualTo( "SetterSerializer" );
       }
     } );
@@ -77,8 +85,11 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
         assertThat( foo ).isNotNull();
         assertThat( foo.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModel model = serializerModelFactory.create( foo, ImmutableList.<PsiField>copyOf( foo.getAllFields() ) );
+
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
-        PsiClass serializer = generator.generate( foo, ImmutableList.copyOf( foo.getAllFields() ) );
+        PsiClass serializer = generator.generate( model );
         assertThat( serializer.getName() ).isEqualTo( "PrimitivesSerializer" );
       }
     } );

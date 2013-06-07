@@ -6,33 +6,22 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiCapturedWildcardType;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
-import com.intellij.psi.PsiTypeVisitor;
-import com.intellij.psi.PsiWildcardType;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
-import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import com.intellij.psi.util.PropertyUtil;
-import com.intellij.psi.util.TypeConversionUtil;
-import com.intellij.util.Processor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -40,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,7 +39,6 @@ import java.util.Map;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class JacksonSerializerGenerator {
-  public static final String JACKSON_SERIALIZER_IFACE_NAME = "com.cedarsoft.serialization.jackson.JacksonSerializer";
   @Nonnull
   private final Project project;
   @Nonnull
@@ -79,18 +66,18 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  public PsiClass generate( @Nonnull final PsiClass classToSerialize, @Nonnull final List<? extends PsiField> selectedFields ) {
-    final PsiFile psiFile = classToSerialize.getContainingFile();
+  public PsiClass generate( @Nonnull final SerializerModel serializerModel ) {
+    final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();
 
     //The directory the serializer is generated in
-    final PsiDirectory directory = selectTargetDir( classToSerialize );
+    final PsiDirectory directory = selectTargetDir( serializerModel.getClassToSerialize() );
 
     final PsiClass[] serializerClass = new PsiClass[1];
-    new WriteCommandAction.Simple( classToSerialize.getProject(), psiFile ) {
+    new WriteCommandAction.Simple( serializerModel.getClassToSerialize().getProject(), psiFile ) {
       @Override
       protected void run() throws Throwable {
-        serializerClass[0] = JavaDirectoryService.getInstance().createClass( directory, generateSerializerClassName( classToSerialize.getName() ) );
-        fillSerializerClass( classToSerialize, selectedFields, serializerClass[0] );
+        serializerClass[0] = JavaDirectoryService.getInstance().createClass( directory, serializerModel.generateSerializerClassName() );
+        fillSerializerClass( serializerModel, serializerClass[0] );
 
         //Now beautify the code
         codeStyleManager.reformat( serializerClass[0] );
@@ -103,18 +90,15 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  protected String generateSerializerClassName( @Nonnull String psiClassName ) {
-    return psiClassName + "Serializer";
-  }
-
-  @Nonnull
   protected PsiDirectory selectTargetDir( @Nonnull PsiClass psiClass ) {
     //TODO implement me!
     return psiClass.getContainingFile().getParent();
   }
 
   @Nonnull
-  public PsiClass fillSerializerClass( @Nonnull PsiClass classToSerialize, @Nonnull List<? extends PsiField> selectedFields, @Nonnull PsiClass serializerClass ) {
+  public PsiClass fillSerializerClass( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    PsiClass classToSerialize = serializerModel.getClassToSerialize();
+
     //Add extends abstract base class
     {
       PsiJavaCodeReferenceElement extendsRef = elementFactory.createReferenceFromText( "com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<" + classToSerialize.getName() + ">", classToSerialize );
@@ -125,16 +109,11 @@ public class JacksonSerializerGenerator {
     }
 
 
-    FieldAccessProvider fieldAccessProvider = new FieldAccessProvider( classToSerialize );
+    addPropertyConstants( serializerModel, serializerClass );
 
-    Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields, fieldAccessProvider );
-    Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
-
-    addPropertyConstants( fieldToSerializeEntries, serializerClass );
-
-    serializerClass.add( generateConstructor( serializerClass, delegatingSerializers ) );
-    serializerClass.add( generateSerializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
-    serializerClass.add( generateDeserializeMethod( classToSerialize, serializerClass, fieldToSerializeEntries ) );
+    serializerClass.add( generateConstructor( serializerModel, serializerClass ) );
+    serializerClass.add( generateSerializeMethod( serializerModel, serializerClass ) );
+    serializerClass.add( generateDeserializeMethod( serializerModel, serializerClass ) );
 
 
     //StringBuilder builder = new StringBuilder();
@@ -165,94 +144,22 @@ public class JacksonSerializerGenerator {
     return serializerClass;
   }
 
-  @javax.annotation.Nullable
-  private static PsiMethod findLongestConstructor( @Nonnull PsiClass classToSerialize ) {
-    PsiMethod bestConstructor = null;
-
-    for ( PsiMethod constructor : classToSerialize.getConstructors() ) {
-      if ( bestConstructor == null ) {
-        bestConstructor = constructor;
-        continue;
-      }
-
-      if ( constructor.getParameterList().getParameters().length > bestConstructor.getParameterList().getParameters().length ) {
-        bestConstructor = constructor;
-      }
-    }
-
-    return bestConstructor;
-  }
-
-  private void addPropertyConstants( @Nonnull Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries, @Nonnull PsiClass serializerClass ) {
-    for ( FieldToSerializeEntry entry : fieldToSerializeEntries ) {
+  private void addPropertyConstants( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    for ( FieldToSerializeEntry entry : serializerModel.getFieldToSerializeEntries() ) {
       serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\";", serializerClass ) );
     }
-  }
-
-  @Nonnull
-  private Collection<? extends FieldToSerializeEntry> calculateFieldToSerializeEntries( @Nonnull List<? extends PsiField> selectedFields, @Nonnull final FieldAccessProvider fieldAccessProvider ) {
-    List<FieldToSerializeEntry> entries = new ArrayList<FieldToSerializeEntry>();
-
-    for ( final PsiField selectedField : selectedFields ) {
-      @javax.annotation.Nullable FieldToSerializeEntry entry = selectedField.getType().accept( new PsiTypeVisitor<FieldToSerializeEntry>() {
-        @Nullable
-        @Override
-        public FieldToSerializeEntry visitClassType( PsiClassType classType ) {
-          return new FieldToSerializeEntry( classType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
-        }
-
-        @Nullable
-        @Override
-        public FieldToSerializeEntry visitPrimitiveType( PsiPrimitiveType primitiveType ) {
-          return new FieldToSerializeEntry( primitiveType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
-        }
-
-        @Nullable
-        @Override
-        public FieldToSerializeEntry visitWildcardType( PsiWildcardType wildcardType ) {
-          System.out.println( "--> FIX ME: " + wildcardType );
-          return super.visitWildcardType( wildcardType );
-        }
-
-        @Nullable
-        @Override
-        public FieldToSerializeEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
-          System.out.println( "--> FIX ME: " + capturedWildcardType );
-          return super.visitCapturedWildcardType( capturedWildcardType );
-        }
-      } );
-
-
-      if ( entry == null ) {
-        throw new IllegalStateException( "No entry created for <" + selectedField + ">" );
-      }
-      entries.add( entry );
-    }
-
-    return entries;
-  }
-
-  @Nonnull
-  private Collection<? extends DelegatingSerializerEntry> calculateSerializerDelegates( @Nonnull Collection<? extends FieldToSerializeEntry> fieldEntries ) {
-    Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
-
-    for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
-      DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType() );
-      delegatingSerializersMap.put( entry.getSerializedType(), entry );
-    }
-
-    return delegatingSerializersMap.values();
   }
 
   /**
    * Generates a constructor
    *
-   * @param serializerClass             the serializer class
-   * @param delegatingSerializerEntries the delegating serializers
+   * @param serializerModel the serializer model
    * @return the generated constructor
    */
   @Nonnull
-  private PsiMethod generateConstructor( @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries ) {
+  private PsiMethod generateConstructor( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries = serializerModel.getDelegatingSerializerEntries();
+
     StringBuilder constructorBuilder = new StringBuilder();
     constructorBuilder.append( "@javax.inject.Inject public " ).append( serializerClass.getName() ).append( "(" );
 
@@ -278,7 +185,7 @@ public class JacksonSerializerGenerator {
 
     //register the delegating serializers
     for ( DelegatingSerializerEntry entry : delegatingSerializerEntries ) {
-      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( box( entry.serializedType ) ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
+      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( box( entry.getSerializedType() ) ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
     }
     if ( !delegatingSerializerEntries.isEmpty() ) {
       constructorBuilder.append( "assert getDelegatesMappings().verify();" );
@@ -291,7 +198,10 @@ public class JacksonSerializerGenerator {
 
 
   @Nonnull
-  private PsiElement generateSerializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
+  private PsiElement generateSerializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
+    @Nonnull Collection<? extends FieldToSerializeEntry> fields = serializerModel.getFieldToSerializeEntries();
+
     StringBuilder methodBuilder = new StringBuilder();
 
     methodBuilder.append( "@Override public void serialize (" )
@@ -315,7 +225,10 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private PsiElement generateDeserializeMethod( @Nonnull PsiClass classToSerialize, @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
+  private PsiElement generateDeserializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
+    @Nonnull Collection<? extends FieldToSerializeEntry> fields = serializerModel.getFieldToSerializeEntries();
+
     StringBuilder methodBuilder = new StringBuilder();
 
     methodBuilder.append( "@Override public " ).append( notNull() ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
@@ -410,7 +323,7 @@ public class JacksonSerializerGenerator {
         continue;
       }
 
-      methodBuilder.append( "object." ).append( ( ( SetterFieldSetter ) fieldSetter ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
+      methodBuilder.append( "object." ).append( ( ( FieldSetter.SetterFieldSetter ) fieldSetter ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
     }
 
     methodBuilder.append( " return object;" );
@@ -419,7 +332,7 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private List<FieldToSerializeEntry> findConstructorArgs( @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
+  private static List<FieldToSerializeEntry> findConstructorArgs( @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
     Map<Integer, FieldToSerializeEntry> fieldsWithConstructor = new HashMap<Integer, FieldToSerializeEntry>();
 
     for ( FieldToSerializeEntry entry : fields ) {
@@ -428,7 +341,7 @@ public class JacksonSerializerGenerator {
         continue;
       }
 
-      int index = ( ( ConstructorFieldSetter ) fieldSetter ).getParameterIndex();
+      int index = ( ( FieldSetter.ConstructorFieldSetter ) fieldSetter ).getParameterIndex();
       @Nullable FieldToSerializeEntry oldValue = fieldsWithConstructor.put( index, entry );
       if ( oldValue != null ) {
         throw new IllegalStateException( "Duplicate entries for index <" + index + ">: " + oldValue.getFieldName() + " - " + entry.getFieldName() );
@@ -453,97 +366,6 @@ public class JacksonSerializerGenerator {
 
   private String notNull() {
     return "@" + notNullManager.getDefaultNotNull() + " ";
-  }
-
-  /**
-   * Returns the jackson serializer for the given serializedType
-   *
-   * @param typeToSerialize the serializedType that shall be serialized
-   * @return the found jackson serializer
-   */
-  @Nonnull
-  protected PsiType findJacksonSerializerFor( @Nonnull final PsiType typeToSerialize ) {
-    //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
-    PsiClass serializerClass = javaPsiFacade.findClass( JACKSON_SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
-    if ( serializerClass != null ) {
-      final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( JACKSON_SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
-
-      final PsiType[] foundSerializerType = new PsiType[1];
-      ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
-        @Override
-        public boolean process( PsiClass psiClass ) {
-          //Skip interfaces and abstract classes
-          if ( psiClass.isInterface() || psiClass.hasModifierProperty( PsiModifier.ABSTRACT ) ) {
-            return true;
-          }
-
-          //Is it a serializer?
-          PsiClassType currentSerializerType = elementFactory.createType( psiClass );
-          if ( !jacksonSerializerWithTypeParam.isAssignableFrom( currentSerializerType ) ) {
-            return true;
-          }
-
-          //Verify the exact type param
-          PsiClassType jacksonSerializerImplType = findJacksonSerializerImplFor( currentSerializerType );
-          if ( jacksonSerializerImplType == null ) {
-            return true;
-          }
-
-          PsiType[] parameters = jacksonSerializerImplType.getParameters();
-          if ( parameters.length != 1 ) {
-            return true;
-          }
-
-          PsiType parameter = parameters[0];
-          if ( !parameter.equals( typeToSerialize ) ) {
-            return true;
-          }
-
-          foundSerializerType[0] = currentSerializerType;
-          return false;
-        }
-
-        @javax.annotation.Nullable
-        private PsiClassType findJacksonSerializerImplFor( @Nonnull PsiClassType serializerType ) {
-          for ( PsiType superType : serializerType.getSuperTypes() ) {
-            PsiClass psiClass = ( ( PsiClassType ) superType ).resolve();
-            assert psiClass != null;
-            String qualifiedName = psiClass.getQualifiedName();
-
-            if ( JACKSON_SERIALIZER_IFACE_NAME.equals( qualifiedName ) ) {
-              return ( PsiClassType ) superType;
-            }
-
-            @javax.annotation.Nullable PsiClassType oneDown = findJacksonSerializerImplFor( ( PsiClassType ) superType );
-            if ( oneDown != null ) {
-              return oneDown;
-            }
-          }
-
-          return null;
-        }
-      } );
-
-      if ( foundSerializerType[0] != null ) {
-        return foundSerializerType[0];
-      }
-    }
-
-    //Fallback: Create a new pseudo serializer class
-    return elementFactory.createTypeByFQClassName( guessSerializerName( typeToSerialize ) );
-  }
-
-  @Nonnull
-  private String guessSerializerName( @Nonnull PsiType typeToSerialize ) {
-    if ( typeToSerialize instanceof PsiPrimitiveType ) {
-      PsiClassType boxedType = ( ( PsiPrimitiveType ) typeToSerialize ).getBoxedType( PsiManager.getInstance( project ), GlobalSearchScope.allScope( project ) );
-      if ( boxedType == null ) {
-        throw new IllegalStateException( "No boxed type found for <" + typeToSerialize + ">" );
-      }
-      return boxedType.getPresentableText() + "Serializer";
-    }
-
-    return typeToSerialize.getPresentableText() + "Serializer";
   }
 
   /**
@@ -576,238 +398,4 @@ public class JacksonSerializerGenerator {
     return type.getCanonicalText();
   }
 
-  public class FieldToSerializeEntry {
-    @Nonnull
-    private final PsiType fieldType;
-    @Nonnull
-    private final PsiField field;
-    @Nonnull
-    private final String fieldName;
-    @Nonnull
-    private final FieldSetter fieldSetter;
-    @Nonnull
-    private final String accessor;
-    @Nonnull
-    private final String propertyConstant;
-    @Nonnull
-    private final String defaultValue;
-
-    public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
-      this.fieldType = fieldType;
-      this.field = field;
-      this.fieldName = field.getName();
-      this.fieldSetter = fieldSetter;
-
-      this.accessor = findGetter( field );
-      this.propertyConstant = "PROPERTY_" + javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
-
-      defaultValue = getDefaultValue( fieldType );
-    }
-
-    @Nonnull
-    private String getDefaultValue( @Nonnull PsiType fieldType ) {
-      if ( isPrimitive() ) {
-        if ( TypeConversionUtil.isBooleanType( fieldType ) ) {
-          return "false";
-        }
-        if ( PsiType.CHAR.equals( fieldType ) ) {
-          return "(char)-1";
-        }
-
-        return "-1";
-      } else {
-        return "null";
-      }
-    }
-
-    @Nonnull
-    public PsiField getField() {
-      return field;
-    }
-
-    @Nonnull
-    public FieldSetter getFieldSetter() {
-      return fieldSetter;
-    }
-
-    @Nonnull
-    public PsiType getFieldType() {
-      return fieldType;
-    }
-
-    @Nonnull
-    public String getFieldName() {
-      return fieldName;
-    }
-
-    @Nonnull
-    public String getAccessor() {
-      return accessor;
-    }
-
-    @Nonnull
-    public String getPropertyConstantName() {
-      return propertyConstant;
-    }
-
-    public final boolean isPrimitive() {
-      return TypeConversionUtil.isPrimitiveAndNotNull( fieldType );
-    }
-
-    @Nonnull
-    public String getDefaultValue() {
-      return defaultValue;
-    }
-
-    public boolean shallVerifyDeserialized() {
-      return !PsiType.BOOLEAN.equals( fieldType );
-    }
-  }
-
-  public class DelegatingSerializerEntry {
-    @Nonnull
-    private final PsiType serializedType;
-    @Nonnull
-    private final PsiType delegatingSerializerType;
-    @Nonnull
-    private final String serializerParamName;
-
-    public DelegatingSerializerEntry( @Nonnull PsiType typeToSerialize ) {
-      this.serializedType = typeToSerialize;
-      delegatingSerializerType = findJacksonSerializerFor( typeToSerialize );
-      serializerParamName = javaCodeStyleManager.suggestVariableName( VariableKind.PARAMETER, null, null, delegatingSerializerType ).names[0];
-    }
-
-    @Nonnull
-    public PsiType getDelegatingSerializerType() {
-      return delegatingSerializerType;
-    }
-
-    @Nonnull
-    public PsiType getSerializedType() {
-      return serializedType;
-    }
-
-    @Nonnull
-    public String getSerializerParamName() {
-      return serializerParamName;
-    }
-
-  }
-
-  public class FieldAccessProvider {
-    @Nonnull
-    private final PsiClass classToSerialize;
-    @Nullable
-    private final PsiMethod constructor;
-
-    public FieldAccessProvider( @Nonnull PsiClass classToSerialize ) {
-      this.classToSerialize = classToSerialize;
-      constructor = findLongestConstructor( classToSerialize );
-    }
-
-    @Nullable
-    public PsiMethod getConstructor() {
-      return constructor;
-    }
-
-    @Nonnull
-    public PsiClass getClassToSerialize() {
-      return classToSerialize;
-    }
-
-    @Nonnull
-    public FieldSetter getFieldAccess( @Nonnull PsiField field ) {
-      @Nullable ConstructorFieldSetter constructorFieldAccess = getConstructorAccess( field );
-      if ( constructorFieldAccess != null ) {
-        return constructorFieldAccess;
-      }
-
-      return findSetter( field );
-    }
-
-    @Nullable
-    private ConstructorFieldSetter getConstructorAccess( @Nonnull PsiField field ) {
-      if ( constructor == null ) {
-        return null;
-      }
-      for ( PsiParameter psiParameter : constructor.getParameterList().getParameters() ) {
-        PsiType type = psiParameter.getType();
-        String name = psiParameter.getName();
-
-        if ( !field.getName().equals( name ) ) {
-          continue;
-        }
-
-        if ( !field.getType().equals( type ) ) {
-          continue;
-        }
-
-        return new ConstructorFieldSetter( constructor.getParameterList().getParameterIndex( psiParameter ) );
-      }
-
-      return null;
-    }
-
-    @Nonnull
-    private SetterFieldSetter findSetter( @Nonnull PsiField field ) {
-      @Nullable PsiMethod setter = PropertyUtil.findSetterForField( field );
-      if ( setter != null ) {
-        return new SetterFieldSetter( setter.getName() );
-      }
-      return new SetterFieldSetter( PropertyUtil.suggestSetterName( project, field ) );
-    }
-  }
-
-  public interface FieldSetter {
-    boolean isConstructorAccess();
-
-    boolean isSetterAccess();
-  }
-
-  public static class SetterFieldSetter implements FieldSetter {
-    @Nonnull
-    private final String setter;
-
-    public SetterFieldSetter( @Nonnull String setter ) {
-      this.setter = setter;
-    }
-
-    @Nonnull
-    public String getSetter() {
-      return setter;
-    }
-
-    @Override
-    public boolean isConstructorAccess() {
-      return false;
-    }
-
-    @Override
-    public boolean isSetterAccess() {
-      return true;
-    }
-  }
-
-  public static class ConstructorFieldSetter implements FieldSetter {
-    private final int parameterIndex;
-
-    public ConstructorFieldSetter( int parameterIndex ) {
-      this.parameterIndex = parameterIndex;
-    }
-
-    public int getParameterIndex() {
-      return parameterIndex;
-    }
-
-    @Override
-    public boolean isConstructorAccess() {
-      return true;
-    }
-
-    @Override
-    public boolean isSetterAccess() {
-      return false;
-    }
-  }
 }
