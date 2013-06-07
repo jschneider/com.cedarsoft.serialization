@@ -254,7 +254,7 @@ public class JacksonSerializerGenerator {
   @Nonnull
   private PsiMethod generateConstructor( @Nonnull PsiClass serializerClass, @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries ) {
     StringBuilder constructorBuilder = new StringBuilder();
-    constructorBuilder.append( "public " ).append( serializerClass.getName() ).append( "(" );
+    constructorBuilder.append( "@javax.inject.Inject public " ).append( serializerClass.getName() ).append( "(" );
 
     //Add serializers
     for ( Iterator<? extends DelegatingSerializerEntry> iterator = delegatingSerializerEntries.iterator(); iterator.hasNext(); ) {

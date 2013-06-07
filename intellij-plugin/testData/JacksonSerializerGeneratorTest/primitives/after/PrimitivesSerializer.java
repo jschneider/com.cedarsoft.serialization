@@ -13,6 +13,7 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
     public static final String PROPERTY_FOO_8 = "foo8";
     public static final String PROPERTY_FOO_9 = "foo9";
 
+    @javax.inject.Inject
     public PrimitivesSerializer(@NotNull IntegerSerializer integerSerializer, @NotNull ShortSerializer shortSerializer, @NotNull ByteSerializer byteSerializer, @NotNull LongSerializer longSerializer, @NotNull DoubleSerializer doubleSerializer, @NotNull FloatSerializer floatSerializer, @NotNull CharacterSerializer characterSerializer, @NotNull BooleanSerializer booleanSerializer, @NotNull StringSerializer stringSerializer) {
         super("primitives_serializer", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
         getDelegatesMappings().add(integerSerializer).responsibleFor(Integer.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
