@@ -1,3 +1,6 @@
+import java.lang.Character;
+import java.lang.Integer;
+
 public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.AbstractJacksonSerializer<Primitives> {
     public static final String PROPERTY_FOO_1 = "foo1";
     public static final String PROPERTY_FOO_2 = "foo2";
@@ -18,14 +21,14 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
     @Override
     public void serialize(@org.jetbrains.annotations.NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @org.jetbrains.annotations.NotNull Primitives object, @org.jetbrains.annotations.NotNull com.cedarsoft.version.Version formatVersion) throws java.io.IOException, com.cedarsoft.version.VersionException {
         verifyVersionWritable(formatVersion);
-        serialize(object.getFoo1(), int.class, PROPERTY_FOO_1, serializeTo, formatVersion);
-        serialize(object.getFoo2(), short.class, PROPERTY_FOO_2, serializeTo, formatVersion);
-        serialize(object.getFoo3(), byte.class, PROPERTY_FOO_3, serializeTo, formatVersion);
-        serialize(object.getFoo4(), long.class, PROPERTY_FOO_4, serializeTo, formatVersion);
-        serialize(object.getFoo5(), double.class, PROPERTY_FOO_5, serializeTo, formatVersion);
-        serialize(object.getFoo6(), float.class, PROPERTY_FOO_6, serializeTo, formatVersion);
-        serialize(object.getFoo7(), char.class, PROPERTY_FOO_7, serializeTo, formatVersion);
-        serialize(object.isFoo8(), boolean.class, PROPERTY_FOO_8, serializeTo, formatVersion);
+        serialize(object.getFoo1(), Integer.class, PROPERTY_FOO_1, serializeTo, formatVersion);
+        serialize(object.getFoo2(), Short.class, PROPERTY_FOO_2, serializeTo, formatVersion);
+        serialize(object.getFoo3(), Byte.class, PROPERTY_FOO_3, serializeTo, formatVersion);
+        serialize(object.getFoo4(), Long.class, PROPERTY_FOO_4, serializeTo, formatVersion);
+        serialize(object.getFoo5(), Double.class, PROPERTY_FOO_5, serializeTo, formatVersion);
+        serialize(object.getFoo6(), Float.class, PROPERTY_FOO_6, serializeTo, formatVersion);
+        serialize(object.getFoo7(), Character.class, PROPERTY_FOO_7, serializeTo, formatVersion);
+        serialize(object.isFoo8(), Boolean.class, PROPERTY_FOO_8, serializeTo, formatVersion);
         serialize(object.getFoo9(), String.class, PROPERTY_FOO_9, serializeTo, formatVersion);
     }
 
@@ -51,35 +54,35 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
 
             if (currentName.equals(PROPERTY_FOO_1)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo1 = deserialize(int.class, formatVersion, deserializeFrom);
+                foo1 = deserialize(Integer.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_2)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo2 = deserialize(short.class, formatVersion, deserializeFrom);
+                foo2 = deserialize(Short.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_3)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo3 = deserialize(byte.class, formatVersion, deserializeFrom);
+                foo3 = deserialize(Byte.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_4)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo4 = deserialize(long.class, formatVersion, deserializeFrom);
+                foo4 = deserialize(Long.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_5)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo5 = deserialize(double.class, formatVersion, deserializeFrom);
+                foo5 = deserialize(Double.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_6)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo6 = deserialize(float.class, formatVersion, deserializeFrom);
+                foo6 = deserialize(Float.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_7)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo7 = deserialize(char.class, formatVersion, deserializeFrom);
+                foo7 = deserialize(Character.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_8)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
-                foo8 = deserialize(boolean.class, formatVersion, deserializeFrom);
+                foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
                 continue;
             } else if (currentName.equals(PROPERTY_FOO_9)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);

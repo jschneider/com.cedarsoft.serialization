@@ -236,10 +236,6 @@ public class JacksonSerializerGenerator {
     Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
 
     for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
-      if ( fieldEntry.isPrimitive() ) {
-        continue;
-      }
-
       DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType() );
       delegatingSerializersMap.put( entry.getSerializedType(), entry );
     }
@@ -281,7 +277,7 @@ public class JacksonSerializerGenerator {
 
     //register the delegating serializers
     for ( DelegatingSerializerEntry entry : delegatingSerializerEntries ) {
-      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( entry.getSerializedType().getCanonicalText() ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
+      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( box( entry.serializedType ) ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
     }
     if ( !delegatingSerializerEntries.isEmpty() ) {
       constructorBuilder.append( "assert getDelegatesMappings().verify();" );
@@ -309,7 +305,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
     for ( FieldToSerializeEntry field : fields ) {
-      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldType().getCanonicalText() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( box( field.getFieldType() ) ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
     }
 
     methodBuilder.append( "}" );
@@ -349,10 +345,10 @@ public class JacksonSerializerGenerator {
       for ( Iterator<? extends FieldToSerializeEntry> iterator = fields.iterator(); iterator.hasNext(); ) {
         FieldToSerializeEntry field = iterator.next();
         methodBuilder.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
-          .append( "parser.nextToken( com.fasterxml.jackson.core.JsonToken.START_OBJECT );" )
+          .append( "parser.nextToken();" )
 
           .append( field.getFieldName() ).append( "=deserialize(" )
-          .append( field.getFieldType().getCanonicalText() ).append( ".class" )
+          .append( box( field.getFieldType() ) ).append( ".class" )
           .append( ", formatVersion, deserializeFrom" )
           .append( ");" )
 
@@ -557,6 +553,15 @@ public class JacksonSerializerGenerator {
     return "get" + StringUtil.capitalizeWithJavaBeanConvention( field.getName() ) + "()";
   }
 
+  @Nonnull
+  public static String box( @Nonnull PsiType type ) {
+    if ( type instanceof PsiPrimitiveType ) {
+      return ( ( PsiPrimitiveType ) type ).getBoxedTypeName();
+    }
+
+    return type.getCanonicalText();
+  }
+
   public class FieldToSerializeEntry {
     @Nonnull
     private final PsiType fieldType;
@@ -673,6 +678,7 @@ public class JacksonSerializerGenerator {
     public String getSerializerParamName() {
       return serializerParamName;
     }
+
   }
 
   public class FieldAccessProvider {
