@@ -66,39 +66,48 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
                 parser.nextToken();
                 foo1 = deserialize(Integer.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_2)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_2)) {
                 parser.nextToken();
                 foo2 = deserialize(Short.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_3)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_3)) {
                 parser.nextToken();
                 foo3 = deserialize(Byte.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_4)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_4)) {
                 parser.nextToken();
                 foo4 = deserialize(Long.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_5)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_5)) {
                 parser.nextToken();
                 foo5 = deserialize(Double.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_6)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_6)) {
                 parser.nextToken();
                 foo6 = deserialize(Float.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_7)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_7)) {
                 parser.nextToken();
                 foo7 = deserialize(Character.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_8)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_8)) {
                 parser.nextToken();
                 foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
                 continue;
-            } else if (currentName.equals(PROPERTY_FOO_9)) {
+            }
+            if (currentName.equals(PROPERTY_FOO_9)) {
                 parser.nextToken();
                 foo9 = deserialize(String.class, formatVersion, deserializeFrom);
                 continue;
             }
+            throw new IllegalStateException("Unexpected field reached <" + currentName + ">");
         }
 
         parser.verifyDeserialized(foo1, PROPERTY_FOO_1);

@@ -35,6 +35,7 @@ public class SimpleSerializer extends com.cedarsoft.serialization.jackson.Abstra
                 foo = deserialize(String.class, formatVersion, deserializeFrom);
                 continue;
             }
+            throw new IllegalStateException("Unexpected field reached <" + currentName + ">");
         }
 
         parser.verifyDeserialized(foo, PROPERTY_FOO);

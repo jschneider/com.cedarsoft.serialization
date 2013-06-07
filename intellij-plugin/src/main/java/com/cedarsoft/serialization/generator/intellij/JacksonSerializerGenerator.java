@@ -232,8 +232,7 @@ public class JacksonSerializerGenerator {
                               "String currentName = parser.getCurrentName();\n\n" );
 
       //add the ifs for the field names
-      for ( Iterator<? extends FieldToSerializeEntry> iterator = fields.iterator(); iterator.hasNext(); ) {
-        FieldToSerializeEntry field = iterator.next();
+      for ( FieldToSerializeEntry field : fields ) {
         methodBuilder.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
           .append( "parser.nextToken();" )
 
@@ -245,12 +244,9 @@ public class JacksonSerializerGenerator {
           .append( "continue;" )
           .append( "}" )
         ;
-
-        if ( iterator.hasNext() ) {
-          methodBuilder.append( "else " );
-        }
       }
 
+      methodBuilder.append( "throw new IllegalStateException( \"Unexpected field reached <\" + currentName + \">\" );" );
       methodBuilder.append( "}" );
     }
 
