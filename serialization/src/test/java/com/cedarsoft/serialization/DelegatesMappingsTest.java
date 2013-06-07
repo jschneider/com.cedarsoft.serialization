@@ -38,8 +38,13 @@ import com.cedarsoft.version.VersionRange;
 import org.junit.*;
 import org.junit.rules.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 /**
@@ -54,6 +59,26 @@ public class DelegatesMappingsTest {
   public void setup() {
     serializer = new VersionMappingTest.MySerializer( VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 ) );
     delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
+  }
+
+  @Test
+  public void testPrimitiveTypes() throws Exception {
+    Class<Integer> primitiveType = int.class;
+
+    Class<?> wrapper = ClassUtils.primitiveToWrapper( primitiveType );
+    assertThat( wrapper ).isEqualTo( Integer.class );
+
+    assertThat( primitiveType.isPrimitive() ).isTrue();
+    Object cast = wrapper.cast( new Integer( 7 ) );
+
+    assertThat( cast ).isNotNull();
+    assertThat( cast ).isEqualTo( new Integer( 7 ) );
+
+    try {
+      primitiveType.cast( new Integer( 7 ) );
+      fail("Where is the Exception");
+    } catch ( ClassCastException ignore ) {
+    }
   }
 
   @Test
@@ -183,4 +208,35 @@ public class DelegatesMappingsTest {
 
   @Rule
   public final ExpectedException expectedException = ExpectedException.none();
+
+
+  public static class ClassUtils {
+    @Nonnull
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP;
+
+    static {
+      PRIMITIVE_WRAPPER_MAP = new HashMap<Class<?>, Class<?>>();
+
+      PRIMITIVE_WRAPPER_MAP.put( Boolean.TYPE, Boolean.class );
+      PRIMITIVE_WRAPPER_MAP.put( Byte.TYPE, Byte.class );
+      PRIMITIVE_WRAPPER_MAP.put( Character.TYPE, Character.class );
+      PRIMITIVE_WRAPPER_MAP.put( Short.TYPE, Short.class );
+      PRIMITIVE_WRAPPER_MAP.put( Integer.TYPE, Integer.class );
+      PRIMITIVE_WRAPPER_MAP.put( Long.TYPE, Long.class );
+      PRIMITIVE_WRAPPER_MAP.put( Double.TYPE, Double.class );
+      PRIMITIVE_WRAPPER_MAP.put( Float.TYPE, Float.class );
+    }
+
+    private ClassUtils() {
+    }
+
+    @Nonnull
+    public static Class<?> primitiveToWrapper( @Nonnull Class<?> primitiveType ) {
+      @Nullable Class<?> wrapper = PRIMITIVE_WRAPPER_MAP.get( primitiveType );
+      if ( wrapper == null ) {
+        throw new IllegalStateException( "No wrapper found for <" + primitiveType + ">" );
+      }
+      return wrapper;
+    }
+  }
 }
