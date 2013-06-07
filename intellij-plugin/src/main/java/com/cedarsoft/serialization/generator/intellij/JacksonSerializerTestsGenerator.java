@@ -74,6 +74,10 @@ public class JacksonSerializerTestsGenerator {
         fillTest( serializerModel, testClasses[0] );
         fillVersionTest( serializerModel, testClasses[1] );
 
+
+        //Now create the resource file
+        directory.createFile( generateTestResourceName( serializerModel.getClassToSerialize().getName(), 1 ) );
+
         //Now beautify the code
         codeStyleManager.reformat( testClasses[0] );
         javaCodeStyleManager.shortenClassReferences( testClasses[0] );
@@ -140,7 +144,7 @@ public class JacksonSerializerTestsGenerator {
   private PsiField generateEntry( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass, int entryIndex ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( notNull() ).append( "@DataPoint public static final Entry<? extends " )
+    methodBuilder.append( notNull() ).append( "@org.junit.experimental.theories.DataPoint public static final com.cedarsoft.serialization.test.utils.Entry<? extends " )
       .append( serializerModel.getClassToSerialize().getQualifiedName() )
       .append( "> ENTRY" ).append( entryIndex )
       .append( "=" )
@@ -150,7 +154,7 @@ public class JacksonSerializerTestsGenerator {
 
     //TODO add object generation
     methodBuilder.append( "new " ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "()" );
-    methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getQualifiedName(), entryIndex ) ).append( "\"));" );
+    methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getName(), entryIndex ) ).append( "\"));" );
 
     return elementFactory.createFieldFromText( methodBuilder.toString(), testClass );
   }
@@ -159,12 +163,12 @@ public class JacksonSerializerTestsGenerator {
   private PsiField generateVersionEntry( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass, int entryIndex ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( notNull() ).append( "@DataPoint public static final VersionEntry ENTRY" ).append( entryIndex )
+    methodBuilder.append( notNull() ).append( "@org.junit.experimental.theories.DataPoint public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY" ).append( entryIndex )
       .append( "=" )
       .append( "com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2" ).append( ".create(com.cedarsoft.version.Version.valueOf( 1, 0, 0 )" )
     ;
 
-    methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getQualifiedName(), entryIndex ) ).append( "\"));" );
+    methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getName(), entryIndex ) ).append( "\"));" );
 
     return elementFactory.createFieldFromText( methodBuilder.toString(), testClass );
   }
@@ -189,7 +193,7 @@ public class JacksonSerializerTestsGenerator {
   private PsiElement generateGetSerializerMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected Serializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
+    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.Serializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
     methodBuilder.append( "return com.google.inject.Guice.createInject().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
     methodBuilder.append( "}" );
 

@@ -56,4 +56,14 @@ public class SerializerModel {
     //noinspection ReturnOfCollectionOrArrayField
     return delegatingSerializerEntries;
   }
+
+  @Nonnull
+  public String getClassToSerializeQualifiedName() {
+    String qualifiedName = getClassToSerialize().getQualifiedName();
+    if ( qualifiedName == null ) {
+      throw new IllegalStateException( "No qualified name found for <" + getClassToSerialize() + ">" );
+    }
+
+    return qualifiedName;
+  }
 }

@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.cedarsoft.serialization.generator.intellij.JacksonSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.JacksonSerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
@@ -76,8 +77,6 @@ public class GenerateSerializerAction extends AnAction {
       return;
     }
 
-    JacksonSerializerGenerator generator = new JacksonSerializerGenerator( psiClass.getProject() );
-
 
     Project project = getEventProject( e );
     assert project != null;
@@ -85,10 +84,11 @@ public class GenerateSerializerAction extends AnAction {
     SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
     SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
 
-    PsiClass serializer = generator.generate( model );
+    PsiClass serializer = new JacksonSerializerGenerator( psiClass.getProject() ).generate( model );
+    new JacksonSerializerTestsGenerator( psiClass.getProject() ).generate( model );
+
 
     Editor editor = CodeInsightUtil.positionCursor( serializer.getProject(), serializer.getContainingFile(), serializer.getLBrace() );
-
     System.out.println( "Finished: " + psiClass );
 
 
