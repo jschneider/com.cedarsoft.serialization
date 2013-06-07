@@ -53,43 +53,35 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo1 = deserialize(int.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_2)) {
+            } else if (currentName.equals(PROPERTY_FOO_2)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo2 = deserialize(short.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_3)) {
+            } else if (currentName.equals(PROPERTY_FOO_3)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo3 = deserialize(byte.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_4)) {
+            } else if (currentName.equals(PROPERTY_FOO_4)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo4 = deserialize(long.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_5)) {
+            } else if (currentName.equals(PROPERTY_FOO_5)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo5 = deserialize(double.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_6)) {
+            } else if (currentName.equals(PROPERTY_FOO_6)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo6 = deserialize(float.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_7)) {
+            } else if (currentName.equals(PROPERTY_FOO_7)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo7 = deserialize(char.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_8)) {
+            } else if (currentName.equals(PROPERTY_FOO_8)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo8 = deserialize(boolean.class, formatVersion, deserializeFrom);
                 continue;
-            }
-            if (currentName.equals(PROPERTY_FOO_9)) {
+            } else if (currentName.equals(PROPERTY_FOO_9)) {
                 parser.nextToken(com.fasterxml.jackson.core.JsonToken.START_OBJECT);
                 foo9 = deserialize(String.class, formatVersion, deserializeFrom);
                 continue;
