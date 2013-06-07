@@ -156,7 +156,7 @@ public class JacksonSerializerGenerator {
     }
 
     constructorBuilder.append( "){" )
-      .append( "super(\"" ).append( createType( serializerClass.getName() ) ).append( "\", com.cedarsoft.version.VersionRange.from(1,0,0).to());" );
+      .append( "super(\"" ).append( createType( serializerModel.getClassToSerializeQualifiedName() ) ).append( "\", com.cedarsoft.version.VersionRange.from(1,0,0).to());" );
 
 
     //register the delegating serializers

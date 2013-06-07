@@ -15,7 +15,7 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
 
     @javax.inject.Inject
     public PrimitivesSerializer(@NotNull IntegerSerializer integerSerializer, @NotNull ShortSerializer shortSerializer, @NotNull ByteSerializer byteSerializer, @NotNull LongSerializer longSerializer, @NotNull DoubleSerializer doubleSerializer, @NotNull FloatSerializer floatSerializer, @NotNull CharacterSerializer characterSerializer, @NotNull BooleanSerializer booleanSerializer, @NotNull StringSerializer stringSerializer) {
-        super("primitives_serializer", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
+        super("primitives", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
         getDelegatesMappings().add(integerSerializer).responsibleFor(Integer.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         getDelegatesMappings().add(shortSerializer).responsibleFor(Short.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         getDelegatesMappings().add(byteSerializer).responsibleFor(Byte.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);

@@ -7,7 +7,7 @@ public class SetterSerializer extends com.cedarsoft.serialization.jackson.Abstra
 
     @javax.inject.Inject
     public SetterSerializer(@NotNull StringSerializer stringSerializer) {
-        super("setter_serializer", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
+        super("setter", com.cedarsoft.version.VersionRange.from(1, 0, 0).to());
         getDelegatesMappings().add(stringSerializer).responsibleFor(String.class).map(1, 0, 0).toDelegateVersion(1, 0, 0);
         assert getDelegatesMappings().verify();
     }
