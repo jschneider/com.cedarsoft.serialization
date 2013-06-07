@@ -1,4 +1,4 @@
-package plugin.action;
+package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.cedarsoft.serialization.generator.intellij.JacksonSerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
