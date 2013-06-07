@@ -16,7 +16,6 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.codeStyle.CodeStyleManager;
@@ -162,7 +161,7 @@ public class JacksonSerializerGenerator {
 
     //register the delegating serializers
     for ( DelegatingSerializerEntry entry : delegatingSerializerEntries ) {
-      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( box( entry.getSerializedType() ) ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
+      constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( entry.getSerializedTypeBoxed() ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
     }
     if ( !delegatingSerializerEntries.isEmpty() ) {
       constructorBuilder.append( "assert getDelegatesMappings().verify();" );
@@ -193,7 +192,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
     for ( FieldToSerializeEntry field : fields ) {
-      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( box( field.getFieldType() ) ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldTypeBoxed() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
     }
 
     methodBuilder.append( "}" );
@@ -239,7 +238,7 @@ public class JacksonSerializerGenerator {
           .append( "parser.nextToken();" )
 
           .append( field.getFieldName() ).append( "=deserialize(" )
-          .append( box( field.getFieldType() ) ).append( ".class" )
+          .append( field.getFieldTypeBoxed() ).append( ".class" )
           .append( ", formatVersion, deserializeFrom" )
           .append( ");" )
 
@@ -355,14 +354,4 @@ public class JacksonSerializerGenerator {
   private String createType( @Nonnull String className ) {
     return javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, className, null, null ).names[0].toLowerCase( Locale.getDefault() );
   }
-
-  @Nonnull
-  public static String box( @Nonnull PsiType type ) {
-    if ( type instanceof PsiPrimitiveType ) {
-      return ( ( PsiPrimitiveType ) type ).getBoxedTypeName();
-    }
-
-    return type.getCanonicalText();
-  }
-
 }

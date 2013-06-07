@@ -109,6 +109,11 @@ public class FieldToSerializeEntry {
   }
 
   @Nonnull
+  public String getFieldTypeBoxed() {
+    return DelegatingSerializerEntry.box( getFieldType() );
+  }
+
+  @Nonnull
   static String findGetter( @Nonnull PsiField field ) {
     PsiMethod getter = PropertyUtil.findGetterForField( field );
     if ( getter != null ) {

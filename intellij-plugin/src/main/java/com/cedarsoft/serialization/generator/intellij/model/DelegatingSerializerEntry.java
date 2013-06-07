@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.generator.intellij.model;
 
+import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.psi.PsiType;
 
 import javax.annotation.Nonnull;
@@ -32,8 +33,21 @@ public class DelegatingSerializerEntry {
   }
 
   @Nonnull
+  public String getSerializedTypeBoxed() {
+    return box( getSerializedType() );
+  }
+
+  @Nonnull
   public String getSerializerParamName() {
     return serializerParamName;
   }
 
+  @Nonnull
+  public static String box( @Nonnull PsiType type ) {
+    if ( type instanceof PsiPrimitiveType ) {
+      return ( ( PsiPrimitiveType ) type ).getBoxedTypeName();
+    }
+
+    return type.getCanonicalText();
+  }
 }
