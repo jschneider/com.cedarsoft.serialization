@@ -47,6 +47,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 
 /**
@@ -67,10 +68,9 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   @Test
   public void testNotClose() throws Exception {
     final boolean[] shallAcceptClose = {false};
+    final boolean[] closed = new boolean[1];
 
-    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     OutputStream out = new FilterOutputStream( new ByteArrayOutputStream() ) {
-      private boolean closed;
 
       @Override
       public void close() throws IOException {
@@ -79,13 +79,14 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
         }
 
         super.close();
-        closed = true;
+        closed[0] = true;
       }
     };
 
     getSerializer().serialize( "daString", out );
     shallAcceptClose[0] = true;
     out.close();
+    assertThat( closed[0] ).isTrue();
   }
 
   @Test
