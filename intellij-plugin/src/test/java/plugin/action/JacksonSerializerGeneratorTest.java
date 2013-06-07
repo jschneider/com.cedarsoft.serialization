@@ -47,7 +47,7 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
 
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
         PsiClass serializer = generator.generate( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
-        assertThat( serializer.getQualifiedName() ).isEqualTo( "SimpleSerializer" );
+        assertThat( serializer.getName() ).isEqualTo( "SimpleSerializer" );
       }
     } );
   }
@@ -63,7 +63,7 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
 
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
         PsiClass serializer = generator.generate( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
-        assertThat( serializer.getQualifiedName() ).isEqualTo( "SetterSerializer" );
+        assertThat( serializer.getName() ).isEqualTo( "SetterSerializer" );
       }
     } );
   }
