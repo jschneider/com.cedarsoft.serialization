@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.test.utils.JsonUtils;
-import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
+import com.cedarsoft.test.utils.JsonUtils;
+import com.cedarsoft.version.Version;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -53,7 +53,7 @@ import static org.fest.assertions.Fail.fail;
 /**
  *
  */
-public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
+public class IntegerSerializerTest extends AbstractJsonSerializerTest2<Integer> {
   @Override
   protected boolean addTypeInformation() {
     return false;
@@ -61,8 +61,8 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
 
   @Nonnull
   @Override
-  protected StringSerializer getSerializer() throws Exception {
-    return new StringSerializer();
+  protected IntegerSerializer getSerializer() throws Exception {
+    return new IntegerSerializer();
   }
 
   @Test
@@ -83,7 +83,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
       }
     };
 
-    getSerializer().serialize( "daString", out );
+    getSerializer().serialize( 12, out );
     shallAcceptClose[0] = true;
     out.close();
     assertThat( closed[0] ).isTrue();
@@ -95,12 +95,12 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
-    getSerializer().serialize( generator, "asdf", Version.valueOf( 1, 0, 0 ) );
+    getSerializer().serialize( generator, 12, Version.valueOf( 1, 0, 0 ) );
 
     generator.close();
-    JsonUtils.assertJsonEquals("\"asdf\"", out.toString());
+    JsonUtils.assertJsonEquals("12", out.toString());
   }
 
   @DataPoint
-  public static final Entry<?> ENTRY1 = create( "asdf", "\"asdf\"" );
+  public static final Entry<?> ENTRY1 = create( 123, "123" );
 }
