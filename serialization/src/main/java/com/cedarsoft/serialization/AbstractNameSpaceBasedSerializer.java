@@ -120,7 +120,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
     }
     String expectedBase = getNameSpaceBase();
     if ( !namespace.startsWith( expectedBase ) ) {
-      throw new InvalidNamespaceException( namespace, expectedBase + "/$VERSION>" );
+      throw new InvalidNamespaceException( namespace, expectedBase + "/" + getFormatVersion() );
     }
   }
 

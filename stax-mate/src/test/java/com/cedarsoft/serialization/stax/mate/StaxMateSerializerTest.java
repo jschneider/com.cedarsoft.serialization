@@ -131,7 +131,7 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
   @Test
   public void testWrongNamespaceVersion() throws IOException {
     expectedException.expect( IOException.class );
-    expectedException.expectMessage( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/$VERSION>" );
+    expectedException.expectMessage( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/1.5.3>" );
 
     getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
   }

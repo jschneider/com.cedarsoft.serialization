@@ -42,6 +42,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
+
 /**
  *
  */
@@ -62,8 +65,20 @@ public class DaAbstractXmlSerializerTest {
     serializer.verifyNamespace( "nsBaseADDITIONAL" );
 
     expectedException.expect( InvalidNamespaceException.class );
-    expectedException.expectMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/$VERSION>>" );
+    expectedException.expectMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/1.0.0>" );
     serializer.verifyNamespace( "WrongnsBaseWRONG" );
+  }
+
+  @Test
+  public void testVerifyNsException() throws Exception {
+    serializer.getFormatVersion();
+
+    try {
+      serializer.verifyNamespace( "WrongnsBaseWRONG" );
+      fail( "Where is the Exception" );
+    } catch ( InvalidNamespaceException e ) {
+      assertThat( e ).hasMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/1.0.0>" );
+    }
   }
 
   public static class MySerializer extends AbstractXmlSerializer<String, StringBuffer, String, IOException> {
