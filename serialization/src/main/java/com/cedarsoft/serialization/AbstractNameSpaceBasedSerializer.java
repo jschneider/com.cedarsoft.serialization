@@ -98,7 +98,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    */
   @Nonnull
   public static Version parseVersionFromNamespace( @Nullable String namespaceURI ) throws IllegalArgumentException, VersionException {
-    if ( namespaceURI == null || namespaceURI.length() == 0 ) {
+    if ( namespaceURI == null || namespaceURI.isEmpty() ) {
       throw new VersionException( "No version information found" );
     }
 
@@ -115,12 +115,12 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @throws VersionException          the if the version does not fit the expected range
    */
   public void verifyNamespace( @Nullable String namespace ) throws InvalidNamespaceException, VersionException {
-    if ( namespace == null || namespace.trim().length() == 0 ) {
+    if ( namespace == null || namespace.trim().isEmpty() ) {
       throw new VersionException( "No version information available" );
     }
     String expectedBase = getNameSpaceBase();
     if ( !namespace.startsWith( expectedBase ) ) {
-      throw new InvalidNamespaceException( namespace, expectedBase + "/$VERSION>" );
+      throw new InvalidNamespaceException( namespace, expectedBase + "/" + getFormatVersion() );
     }
   }
 
