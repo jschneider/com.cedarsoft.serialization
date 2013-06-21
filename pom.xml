@@ -220,7 +220,7 @@
   <properties>
     <currentStableVersion>4.1.5</currentStableVersion>
     <currentDevelopmentVersion>5.0.0-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>6.0.0-SNAPSHOT</commons.version>
+    <commons.version>6.0.0</commons.version>
     <java.version>1.6</java.version>
   </properties>
 
