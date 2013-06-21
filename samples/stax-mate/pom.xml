@@ -23,8 +23,8 @@
       <artifactId>stax-mate</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.cedarsoft.serialization</groupId>
-      <artifactId>commons-serializers</artifactId>
+      <groupId>com.cedarsoft.serialization.commons-serializers</groupId>
+      <artifactId>stax-mate</artifactId>
     </dependency>
 
     <dependency>
