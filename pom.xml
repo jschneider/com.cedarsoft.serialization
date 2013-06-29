@@ -238,4 +238,21 @@
     </repository>
   </repositories>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-jgitflow-plugin</artifactId>
+        <version>1.0-alpha9-SNAPSHOT</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>false</pushChanges>
+          <enableFeatureVersions>true</enableFeatureVersions>
+          <enableSshPass>true</enableSshPass>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
 </project>
