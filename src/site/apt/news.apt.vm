@@ -31,6 +31,40 @@
 
 News
 
+* 2013-06-29: Preparing 5.0.0
+
+ * Major changes: Generator as IntelliJ Idea plugin
+
+ * Upgraded Jackson to 2.0 (package changes)
+
+ * JSON: No longer dependent on order
+
+ * JSON: Improved verification
+
+ * JSON: Added serializers for primitives
+
+* 2013-03-29: Released 4.1.5
+
+ * Downgraded language level to "1.6"
+
+ * Cleaned up package structure for generator
+
+ * Updated dependencies
+
+* 2013-03-15: Released 4.1.4
+
+ * Fixed encoding issues for JSON based serializers
+
+ * Updated dependencies
+
+* 2013-02-11: Released 4.1.3
+
+ * Fixed MANIFEST.MF: No longer exporting "internal" packages
+
+ * Upgraded FEST-Assert dependencies
+
+ * Updated dependencies
+
 * 2012-08-15: Released 4.1.2
 
  * Collection Serializer added
