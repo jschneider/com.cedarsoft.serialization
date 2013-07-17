@@ -14,6 +14,10 @@
 
   <inceptionYear>2010</inceptionYear>
 
+  <scm>
+    <url>https://github.com/jschneider/com.cedarsoft.serialization/tree/ci/generator/serializer-generator-maven-plugin</url>
+  </scm>
+
   <prerequisites>
     <maven>3.0.0</maven>
   </prerequisites>
