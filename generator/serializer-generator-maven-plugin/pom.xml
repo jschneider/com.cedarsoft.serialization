@@ -15,7 +15,7 @@
   <inceptionYear>2010</inceptionYear>
 
   <prerequisites>
-    <maven>2.1.0</maven>
+    <maven>3.0.0</maven>
   </prerequisites>
 
   <dependencies>
