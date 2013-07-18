@@ -90,7 +90,7 @@ public class DaBallSerializerTest {
   @Test
   public void testInvalidNamespace() throws IOException {
     expectedException.expect( IOException.class );
-    expectedException.expectMessage( "Could not parse stream due to Invalid namespace. Was <http://test/wrong/1.1.0> but expected <http://test/ball/$VERSION>>" );
+    expectedException.expectMessage( "Could not parse stream due to Invalid namespace. Was <http://test/wrong/1.1.0> but expected <http://test/ball/1.1.0>" );
     new DaBallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/wrong/1.1.0\" id=\"77\"/>".getBytes() ) );
   }
 }

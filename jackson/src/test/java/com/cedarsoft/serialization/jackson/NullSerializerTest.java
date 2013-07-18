@@ -33,10 +33,11 @@ package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import org.junit.*;
 
 import javax.annotation.Nonnull;
@@ -58,7 +59,7 @@ public class NullSerializerTest {
   public void testIt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     NullSerializer serializer = getSerializer();
     serializer.serialize( generator, null, Version.valueOf( 1, 0, 0 ) );
@@ -70,8 +71,13 @@ public class NullSerializerTest {
 
   @Test
   public void testStep() throws Exception {
-    JsonParser parser = JacksonSupport.getJsonFactory().createJsonParser( new ByteArrayInputStream( "null".getBytes() ) );
+    JsonParser parser = JacksonSupport.getJsonFactory().createParser( new ByteArrayInputStream( "null".getBytes() ) );
     assertNull( getSerializer().deserialize( parser ) );
-    AbstractJacksonSerializer.ensureParserClosed( parser );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    if ( parserWrapper.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
+    }
+
+    parserWrapper.close();
   }
 }

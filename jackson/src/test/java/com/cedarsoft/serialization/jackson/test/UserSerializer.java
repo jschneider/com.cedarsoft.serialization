@@ -31,14 +31,15 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -54,6 +55,8 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   public static final String PROPERTY_EMAILS = "emails";
 
   public static final String PROPERTY_ROLES = "roles";
+  public static final String PROPERTY_USER_DETAILS = "userDetails";
+  public static final String PROPERTY_SINGLE_EMAIL = "singleEmail";
 
   public UserSerializer( @Nonnull EmailSerializer emailSerializer, @Nonnull RoleSerializer roleSerializer, @Nonnull UserDetailsSerializer userDetailsSerializer ) {
     super( "user", VersionRange.from( 1, 0, 0 ).to() );
@@ -73,23 +76,67 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
     serializeArray( object.getEmails(), Email.class, PROPERTY_EMAILS, serializeTo, formatVersion );
     serializeArray( object.getRoles(), Role.class, PROPERTY_ROLES, serializeTo, formatVersion );
 
-    serialize( object.getUserDetails(), UserDetails.class, "userDetails", serializeTo, formatVersion );
-    serialize( object.getSingleEmail(), Email.class, "singleEmail", serializeTo, formatVersion );
+    serialize( object.getUserDetails(), UserDetails.class, PROPERTY_USER_DETAILS, serializeTo, formatVersion );
+    serialize( object.getSingleEmail(), Email.class, PROPERTY_SINGLE_EMAIL, serializeTo, formatVersion );
   }
 
   @Nonnull
   @Override
   public User deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, PROPERTY_NAME );
-    String name = deserializeFrom.getText();
+    List<? extends Email> mails = null;
+    List<? extends Role> roles = null;
+    String name = null;
+    UserDetails userDetails = null;
+    Email singleEmail = null;
 
-    List<? extends Email> mails = deserializeArray( Email.class, PROPERTY_EMAILS, deserializeFrom, formatVersion );
-    List<? extends Role> roles = deserializeArray( Role.class, PROPERTY_ROLES, deserializeFrom, formatVersion );
 
-    UserDetails userDetails = deserialize( UserDetails.class, "userDetails", formatVersion, deserializeFrom );
-    Email singleEmail = deserialize( Email.class, "singleEmail", formatVersion, deserializeFrom );
+    JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
+    while ( parser.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = parser.getCurrentName();
 
-    nextToken( deserializeFrom, JsonToken.END_OBJECT );
+      if ( currentName.equals( PROPERTY_NAME ) ) {
+        parser.nextToken( JsonToken.VALUE_STRING );
+        name = deserializeFrom.getText();
+        continue;
+      }
+      if ( currentName.equals( PROPERTY_EMAILS ) ) {
+        parser.nextToken( JsonToken.START_ARRAY );
+        mails = deserializeArray( Email.class, deserializeFrom, formatVersion );
+        continue;
+      }
+      if ( currentName.equals( PROPERTY_ROLES ) ) {
+        parser.nextToken( JsonToken.START_ARRAY );
+        roles = deserializeArray( Role.class, deserializeFrom, formatVersion );
+        continue;
+      }
+      if ( currentName.equals( PROPERTY_USER_DETAILS ) ) {
+        parser.nextToken( JsonToken.START_OBJECT );
+        userDetails = deserialize( UserDetails.class, formatVersion, deserializeFrom );
+        continue;
+      }
+      if ( currentName.equals( PROPERTY_SINGLE_EMAIL ) ) {
+        parser.nextToken( JsonToken.VALUE_STRING );
+        singleEmail = deserialize( Email.class, formatVersion, deserializeFrom );
+        continue;
+      }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
+    }
+
+    //Verify deserialization
+    parser.verifyDeserialized( mails, PROPERTY_EMAILS );
+    parser.verifyDeserialized( roles, PROPERTY_ROLES );
+    parser.verifyDeserialized( userDetails, PROPERTY_USER_DETAILS );
+    parser.verifyDeserialized( singleEmail, PROPERTY_SINGLE_EMAIL );
+    parser.verifyDeserialized( name, PROPERTY_NAME );
+    assert mails != null;
+    assert roles != null;
+    assert name != null;
+    assert userDetails != null;
+    assert singleEmail != null;
+
+    parser.ensureObjectClosed();
+
     return new User( name, mails, roles, singleEmail, userDetails );
   }
 }

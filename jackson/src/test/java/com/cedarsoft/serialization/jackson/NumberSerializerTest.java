@@ -35,9 +35,9 @@ import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -92,7 +92,7 @@ public class NumberSerializerTest extends AbstractJsonSerializerTest2<Number> {
   public void testInt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     getSerializer().serialize( generator, 11133, Version.valueOf( 1, 0, 0 ) );
 
@@ -104,7 +104,7 @@ public class NumberSerializerTest extends AbstractJsonSerializerTest2<Number> {
   public void testDouble() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
     getSerializer().serialize( generator, 11133.4, Version.valueOf( 1, 0, 0 ) );
     generator.close();
     JsonUtils.assertJsonEquals("11133.4", out.toString());
@@ -114,7 +114,7 @@ public class NumberSerializerTest extends AbstractJsonSerializerTest2<Number> {
   public void testDouble2() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
     getSerializer().serialize( generator, 11133.0, Version.valueOf( 1, 0, 0 ) );
     generator.close();
     JsonUtils.assertJsonEquals("11133.0", out.toString());

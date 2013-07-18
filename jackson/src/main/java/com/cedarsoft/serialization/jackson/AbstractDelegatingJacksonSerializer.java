@@ -37,10 +37,11 @@ import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import com.cedarsoft.serialization.VersionMapping;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -75,7 +76,15 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
   public T deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionReadable( formatVersion );
 
-    nextFieldValue( deserializeFrom, PROPERTY_SUB_TYPE );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
+    parserWrapper.nextToken();
+    parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+    String currentName = parserWrapper.getCurrentName();
+
+    if ( !PROPERTY_SUB_TYPE.equals( currentName ) ) {
+      throw new JsonParseException( "Invalid field. Expected <" + PROPERTY_SUB_TYPE + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+    }
+    parserWrapper.nextToken();
     String type = deserializeFrom.getText();
 
     if ( type == null ) {

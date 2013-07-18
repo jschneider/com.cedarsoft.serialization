@@ -31,9 +31,9 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.version.Version;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
@@ -59,7 +59,7 @@ public class IgnoringSerializerTest {
   @Theory
   public void testIt( @Nonnull String json ) throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-    JsonParser parser = jsonFactory.createJsonParser( new ByteArrayInputStream( json.getBytes() ) );
+    JsonParser parser = jsonFactory.createParser( new ByteArrayInputStream( json.getBytes() ) );
 
     Void result = serializer.deserialize( parser, Version.valueOf( 1, 0, 0 ) ); //we use the override stuff to avoid version/type check
     assertThat( result ).isNull();

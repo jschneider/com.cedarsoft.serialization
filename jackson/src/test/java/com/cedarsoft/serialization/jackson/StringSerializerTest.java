@@ -35,9 +35,9 @@ import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 
@@ -47,6 +47,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 
 /**
@@ -67,10 +68,9 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
   @Test
   public void testNotClose() throws Exception {
     final boolean[] shallAcceptClose = {false};
+    final boolean[] closed = new boolean[1];
 
-    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     OutputStream out = new FilterOutputStream( new ByteArrayOutputStream() ) {
-      private boolean closed;
 
       @Override
       public void close() throws IOException {
@@ -79,20 +79,21 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
         }
 
         super.close();
-        closed = true;
+        closed[0] = true;
       }
     };
 
     getSerializer().serialize( "daString", out );
     shallAcceptClose[0] = true;
     out.close();
+    assertThat( closed[0] ).isTrue();
   }
 
   @Test
   public void testIt() throws Exception {
     JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    JsonGenerator generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    JsonGenerator generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
 
     getSerializer().serialize( generator, "asdf", Version.valueOf( 1, 0, 0 ) );
 

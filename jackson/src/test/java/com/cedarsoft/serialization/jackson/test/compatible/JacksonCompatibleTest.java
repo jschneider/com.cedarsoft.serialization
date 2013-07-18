@@ -30,15 +30,14 @@
  */
 package com.cedarsoft.serialization.jackson.test.compatible;
 
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
 import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.serialization.jackson.JacksonSupport;
 import com.cedarsoft.test.utils.JsonUtils;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
@@ -57,7 +56,7 @@ public class JacksonCompatibleTest {
   public void setUp() throws Exception {
     jsonFactory = JacksonSupport.getJsonFactory();
     out = new ByteArrayOutputStream();
-    generator = jsonFactory.createJsonGenerator( out, JsonEncoding.UTF8 );
+    generator = jsonFactory.createGenerator( out, JsonEncoding.UTF8 );
   }
 
   @Test

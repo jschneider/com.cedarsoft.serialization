@@ -31,14 +31,16 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -65,13 +67,37 @@ public class RoleSerializer extends AbstractJacksonSerializer<Role> {
   @Nonnull
   @Override
   public Role deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    nextFieldValue( deserializeFrom, PROPERTY_ID );
-    int id = deserializeFrom.getIntValue();
+    int id = -1;
+    String description = null;
 
-    nextFieldValue( deserializeFrom, PROPERTY_DESCRIPTION );
-    String description = deserializeFrom.getText();
+    JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
 
-    nextToken( deserializeFrom, JsonToken.END_OBJECT );
+    while ( parser.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = parser.getCurrentName();
+
+      if ( currentName.equals( PROPERTY_ID ) ) {
+        parser.nextToken( JsonToken.VALUE_NUMBER_INT );
+        id = parser.getIntValue();
+        continue;
+      }
+
+      if ( currentName.equals( PROPERTY_DESCRIPTION ) ) {
+        parser.nextToken( JsonToken.VALUE_STRING );
+        description = parser.getText();
+        continue;
+      }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
+    }
+
+
+    //Verify
+    parser.verifyDeserialized( id, PROPERTY_ID );
+    parser.verifyDeserialized( description, PROPERTY_DESCRIPTION );
+    assert description != null;
+
+
+    parser.verifyCurrentToken( JsonToken.END_OBJECT );
     return new Role( id, description );
   }
 }

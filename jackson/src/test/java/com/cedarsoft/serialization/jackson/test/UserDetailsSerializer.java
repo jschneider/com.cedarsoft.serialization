@@ -31,16 +31,17 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.cedarsoft.serialization.jackson.JacksonParserWrapper;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.cedarsoft.serialization.jackson.AbstractJacksonSerializer;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -70,17 +71,45 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
   @Nonnull
   @Override
   public UserDetails deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
+    long registrationDate = -1;
+    long lastLogin = -1;
+    String passwordHash = null;
+
+    JacksonParserWrapper parser = new JacksonParserWrapper( deserializeFrom );
+
+    while ( parser.nextToken() == JsonToken.FIELD_NAME ) {
+      String currentName = parser.getCurrentName();
+
+      if ( currentName.equals( PROPERTY_REGISTRATION_DATE ) ) {
+        parser.nextToken( JsonToken.VALUE_NUMBER_INT );
+        registrationDate = parser.getLongValue();
+        continue;
+      }
+
+      if ( currentName.equals( PROPERTY_LAST_LOGIN ) ) {
+        parser.nextToken( JsonToken.VALUE_NUMBER_INT );
+        lastLogin = parser.getLongValue();
+        continue;
+      }
+
+      if ( currentName.equals( PROPERTY_PASSWORD_HASH ) ) {
+        parser.nextToken( JsonToken.VALUE_STRING );
+        passwordHash = parser.getText();
+        continue;
+      }
+
+      throw new IllegalStateException( "Unexpected field reached <" + currentName + ">" );
+    }
+
+    parser.verifyDeserialized( registrationDate, PROPERTY_REGISTRATION_DATE );
+    parser.verifyDeserialized( lastLogin, PROPERTY_LAST_LOGIN );
+    parser.verifyDeserialized( passwordHash, PROPERTY_PASSWORD_HASH );
+
+    assert passwordHash != null;
+
+    parser.ensureObjectClosed();
+
     try {
-      nextFieldValue( deserializeFrom, PROPERTY_REGISTRATION_DATE );
-      long registrationDate = deserializeFrom.getLongValue();
-
-      nextFieldValue( deserializeFrom, PROPERTY_LAST_LOGIN );
-      long lastLogin = deserializeFrom.getLongValue();
-
-      nextFieldValue( deserializeFrom, PROPERTY_PASSWORD_HASH );
-      String passwordHash = deserializeFrom.getText();
-
-      nextToken( deserializeFrom, JsonToken.END_OBJECT );
       return new UserDetails( registrationDate, lastLogin, Hex.decodeHex( passwordHash.toCharArray() ) );
     } catch ( DecoderException e ) {
       throw new RuntimeException( e );

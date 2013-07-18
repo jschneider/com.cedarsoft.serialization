@@ -1,0 +1,16 @@
+{
+  "_filter1": "asdf",
+  "_filter2": 1323,
+  "id" : "daId",
+  "key" : {
+    "description" : "inKey"
+  },
+  "_filter3": 1323,
+  "value" : {
+    "@version" : "1.0.0",
+    "_filter6": {},
+    "aValue" : 7
+  },
+  "_filter4": {},
+  "_filter5": []
+}
