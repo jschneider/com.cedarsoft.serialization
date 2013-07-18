@@ -18,6 +18,7 @@
     <connection>scm:git:git://github.com/jschneider/com.cedarsoft.serialization.git</connection>
     <developerConnection>scm:git:git@github.com:jschneider/com.cedarsoft.serialization.git</developerConnection>
     <url>https://github.com/jschneider/com.cedarsoft.serialization/tree/ci/generator/serializer-generator-maven-plugin</url>
+      <tag>HEAD</tag>
   </scm>
 
   <prerequisites>
