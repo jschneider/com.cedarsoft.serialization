@@ -49,10 +49,18 @@ import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.junit.*;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.test.TestGraphDatabaseFactory;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
@@ -174,6 +182,11 @@ public class XmlParserPerformance {
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
     System.out.println();
+    System.out.println( "Neo4J (1 t" +
+                          "ransaction)" );
+    new XmlParserPerformance().benchNeo4j1Transaction();
+    System.out.println( "Neo4J (Multiple transactions)" );
+    new XmlParserPerformance().benchNeo4jMultiTransaction();
     System.out.println( "Jackson (Mapper)" );
     new XmlParserPerformance().benchJacksonMapper();
     System.out.println( "Jackson (Stream)" );
@@ -434,6 +447,76 @@ public class XmlParserPerformance {
                   }, 4 );
   }
 
+  public void benchNeo4j1Transaction() {
+    runBenchmark( new Runnable() {
+                    @Override
+                    public void run() {
+                      try {
+                        GraphDatabaseService graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
+
+                        //{"dependent":false,"id":"Canon Raw","extension":{"isDefault":true,"delimiter":".","extension":"cr2"}}
+
+
+                        Node node;
+                        try ( Transaction transaction = graphDb.beginTx() ) {
+                          node = graphDb.createNode();
+                          node.setProperty( "dependent", false );
+                          node.setProperty( "id", "Canon Raw" );
+
+                          Node extension = graphDb.createNode();
+                          extension.setProperty( "isDefault", true );
+                          extension.setProperty( "delimiter", true );
+                          extension.setProperty( "extension", "cr2" );
+
+                          node.createRelationshipTo( extension, Type.EXTENSION );
+                          transaction.success();
+                        }
+
+                        benchParse1Transaction1Transaction( node );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
+  }
+
+  public void benchNeo4jMultiTransaction() {
+    runBenchmark( new Runnable() {
+                    @Override
+                    public void run() {
+                      try {
+                        GraphDatabaseService graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
+
+                        //{"dependent":false,"id":"Canon Raw","extension":{"isDefault":true,"delimiter":".","extension":"cr2"}}
+
+
+                        Node node;
+                        try ( Transaction transaction = graphDb.beginTx() ) {
+                          node = graphDb.createNode();
+                          node.setProperty( "dependent", false );
+                          node.setProperty( "id", "Canon Raw" );
+
+                          Node extension = graphDb.createNode();
+                          extension.setProperty( "isDefault", true );
+                          extension.setProperty( "delimiter", true );
+                          extension.setProperty( "extension", "cr2" );
+
+                          node.createRelationshipTo( extension, Type.EXTENSION );
+                          transaction.success();
+                        }
+
+                        benchParse1Transaction( node );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
+  }
+
+  public enum Type implements RelationshipType{
+    EXTENSION
+  }
+
   public void benchJackson() {
     runBenchmark( new Runnable() {
                     @Override
@@ -552,6 +635,46 @@ public class XmlParserPerformance {
                     }
                   }, 4 );
   }
+
+  private void benchParse1Transaction( @Nonnull Node node ) {
+    for ( int i = 0; i < BIG; i++ ) {
+
+      GraphDatabaseService graphDatabase = node.getGraphDatabase();
+      try ( Transaction transaction = graphDatabase.beginTx() ) {
+        node.getProperty( "dependent" );
+        node.getProperty( "id" );
+
+        @Nullable Relationship singleRelationship = node.getSingleRelationship( Type.EXTENSION, Direction.OUTGOING );
+        assert singleRelationship != null;
+
+        Node endNode = singleRelationship.getEndNode();
+
+        endNode.getProperty( "isDefault" );
+        endNode.getProperty( "delimiter" );
+        endNode.getProperty( "extension" );
+      }
+    }
+  }
+
+  private void benchParse1Transaction1Transaction( @Nonnull Node node ) {
+    GraphDatabaseService graphDatabase = node.getGraphDatabase();
+    try ( Transaction transaction = graphDatabase.beginTx() ) {
+      for ( int i = 0; i < BIG; i++ ) {
+        node.getProperty( "dependent" );
+        node.getProperty( "id" );
+
+        @Nullable Relationship singleRelationship = node.getSingleRelationship( Type.EXTENSION, Direction.OUTGOING );
+        assert singleRelationship != null;
+
+        Node endNode = singleRelationship.getEndNode();
+
+        endNode.getProperty( "isDefault" );
+        endNode.getProperty( "delimiter" );
+        endNode.getProperty( "extension" );
+      }
+    }
+  }
+
 
   private void benchParse( javolution.xml.stream.XMLInputFactory inputFactory ) throws XMLStreamException, javolution.xml.stream.XMLStreamException {
     for ( int i = 0; i < BIG; i++ ) {
