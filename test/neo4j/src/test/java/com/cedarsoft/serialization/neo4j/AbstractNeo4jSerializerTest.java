@@ -8,16 +8,12 @@ import com.ecyrd.speed4j.StopWatch;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.junit.*;
-import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -93,16 +89,16 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
     @Nonnull
     private final Address address;
     @Nonnull
-    private final List<Email> mails;
+    private final List<? extends Email> mails;
 
-    public Person( @Nonnull String name, @Nonnull Address address, @Nonnull List<Email> mails ) {
+    public Person( @Nonnull String name, @Nonnull Address address, @Nonnull List<? extends Email> mails ) {
       this.name = name;
       this.address = address;
       this.mails = mails;
     }
 
     @Nonnull
-    public List<Email> getMails() {
+    public List<? extends Email> getMails() {
       return mails;
     }
 
@@ -194,29 +190,23 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
     }
 
     @Override
-    public void serialize( @Nonnull Node node, @Nonnull Person object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
-      node.setProperty( "name", object.getName() );
+    public void serialize( @Nonnull Node serializeTo, @Nonnull Person object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+      serializeTo.setProperty( "name", object.getName() );
 
-      serializeWithRelation( object.getAddress(), Address.class, node, Relations.ADDRESS, formatVersion );
+      serializeWithRelation( object.getAddress(), Address.class, serializeTo, Relations.ADDRESS, formatVersion );
       for ( Email email : object.getMails() ) {
-        serializeWithRelation( email, Email.class, node, Relations.EMAIL, formatVersion );
+        serializeWithRelation( email, Email.class, serializeTo, Relations.EMAIL, formatVersion );
       }
     }
 
     @Nonnull
     @Override
-    public Person deserialize( @Nonnull Node node, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
-      String name = ( String ) node.getProperty( "name" );
+    public Person deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+      String name = ( String ) deserializeFrom.getProperty( "name" );
 
-      @Nullable Relationship relationship = node.getSingleRelationship( Relations.ADDRESS, Direction.OUTGOING );
-      assert relationship != null;
-      Address address = deserialize( Address.class, formatVersion, relationship.getEndNode() );
+      Address address = deserializeWithRelationship( Address.class, Relations.ADDRESS, deserializeFrom, formatVersion );
 
-      List<Email> emails = new ArrayList<>();
-      for ( Relationship emailRelationShip : node.getRelationships( Relations.EMAIL, Direction.OUTGOING ) ) {
-        emails.add( deserialize( Email.class, formatVersion, emailRelationShip.getEndNode() ) );
-      }
-
+      List<? extends Email> emails = deserializeWithRelationships( Email.class, Relations.EMAIL, deserializeFrom, formatVersion );
       return new Person( name, address, emails );
     }
 

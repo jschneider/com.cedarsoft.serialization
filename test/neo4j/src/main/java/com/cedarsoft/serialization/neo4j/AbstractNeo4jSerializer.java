@@ -5,6 +5,7 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
@@ -12,6 +13,8 @@ import org.neo4j.graphdb.RelationshipType;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -74,6 +77,23 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     Node targetNode = node.getGraphDatabase().createNode();
     Relationship relationshipTo = node.createRelationshipTo( targetNode, relationshipType );
     serialize( object, type, targetNode, formatVersion );
+  }
+
+  @Nonnull
+  public <T> T deserializeWithRelationship( @Nonnull Class<T> type, @Nonnull RelationshipType relationshipType, @Nonnull Node node, @Nonnull Version formatVersion ) throws IOException {
+    @Nullable Relationship relationship = node.getSingleRelationship( relationshipType, Direction.OUTGOING );
+    assert relationship != null;
+    return deserialize( type, formatVersion, relationship.getEndNode() );
+  }
+
+  @Nonnull
+  public <T> List<? extends T> deserializeWithRelationships( @Nonnull Class<T> type, @Nonnull RelationshipType relationshipType, @Nonnull Node node, @Nonnull Version formatVersion ) throws IOException {
+    List<T> deserializedList = new ArrayList<>();
+    for ( Relationship relationship : node.getRelationships( relationshipType, Direction.OUTGOING ) ) {
+      deserializedList.add( deserialize( type, formatVersion, relationship.getEndNode() ) );
+    }
+
+    return deserializedList;
   }
 
   public static class InvalidTypeException extends Exception {
