@@ -51,7 +51,7 @@ public class HashSerializerVersionTest
 
   @Nonnull
   @Override
-  protected Serializer<Hash> getSerializer() throws Exception {
+  protected HashSerializer getSerializer() throws Exception {
     return new HashSerializer();
   }
 

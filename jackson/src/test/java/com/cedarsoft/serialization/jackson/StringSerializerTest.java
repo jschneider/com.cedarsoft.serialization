@@ -62,7 +62,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
 
   @Nonnull
   @Override
-  protected StreamSerializer<String> getSerializer() throws Exception {
+  protected StringSerializer getSerializer() throws Exception {
     return new StringSerializer();
   }
 

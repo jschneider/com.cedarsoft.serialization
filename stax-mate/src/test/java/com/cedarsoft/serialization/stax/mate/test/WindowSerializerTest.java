@@ -35,6 +35,8 @@ import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  *
@@ -42,7 +44,7 @@ import javax.annotation.Nonnull;
 public class WindowSerializerTest extends AbstractXmlSerializerTest<Window> {
   @Nonnull
   @Override
-  protected Serializer<Window> getSerializer() throws Exception {
+  protected Serializer<Window, OutputStream, InputStream> getSerializer() throws Exception {
     return new Window.Serializer();
   }
 

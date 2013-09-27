@@ -39,6 +39,9 @@ import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import static org.junit.Assert.*;
 
 /**
@@ -47,7 +50,7 @@ import static org.junit.Assert.*;
 public class BallSerializerVersionTest extends AbstractXmlVersionTest2<Ball> {
   @Nonnull
   @Override
-  protected Serializer<Ball> getSerializer() throws Exception {
+  protected Serializer<Ball, OutputStream, InputStream> getSerializer() throws Exception {
     return new BallSerializer();
   }
 

@@ -62,7 +62,7 @@ public class IntegerSerializerTest extends AbstractJsonSerializerTest2<Integer> 
 
   @Nonnull
   @Override
-  protected StreamSerializer<Integer> getSerializer() throws Exception {
+  protected IntegerSerializer getSerializer() throws Exception {
     return new IntegerSerializer();
   }
 

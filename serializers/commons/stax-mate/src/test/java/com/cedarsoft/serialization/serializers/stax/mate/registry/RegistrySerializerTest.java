@@ -46,6 +46,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -56,13 +58,13 @@ import static org.junit.Assert.*;
  *
  */
 public class RegistrySerializerTest {
-  private RegistrySerializer<String, Registry<String>> serializer;
+  private RegistrySerializer<String, Registry<String>, OutputStream, InputStream> serializer;
   private InMemoryObjectsAccess access;
 
   @Before
   public void setup() {
     access = new InMemoryObjectsAccess();
-    serializer = new RegistrySerializer<String, Registry<String>>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
+    serializer = new RegistrySerializer<String, Registry<String>, OutputStream, InputStream>( access, new AbstractStaxSerializer<String>( "text", "asdf", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) ) {
       @Override
       public void serialize( @Nonnull XMLStreamWriter serializeTo, @Nonnull String object, @Nonnull Version formatVersion ) throws IOException, XMLStreamException {
         assert isVersionWritable( formatVersion );

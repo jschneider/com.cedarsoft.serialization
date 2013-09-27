@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
 public class MoneySerializerVersionsTest extends AbstractXmlVersionTest2<Money> {
   @Nonnull
   @Override
-  protected Serializer<Money> getSerializer() {
+  protected MoneySerializer getSerializer() {
     return new MoneySerializer();
   }
 

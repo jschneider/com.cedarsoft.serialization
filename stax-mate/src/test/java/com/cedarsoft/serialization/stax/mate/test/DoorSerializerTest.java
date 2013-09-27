@@ -35,6 +35,8 @@ import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  *
@@ -50,7 +52,7 @@ public class DoorSerializerTest extends AbstractXmlSerializerTest<Door> {
 
   @Nonnull
   @Override
-  protected Serializer<Door> getSerializer() throws Exception {
+  protected Serializer<Door, OutputStream, InputStream> getSerializer() throws Exception {
     return new Door.Serializer();
   }
 

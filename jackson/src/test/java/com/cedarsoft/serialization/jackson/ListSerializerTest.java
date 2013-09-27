@@ -62,7 +62,7 @@ public class ListSerializerTest extends AbstractJsonSerializerTest2<List<? exten
 
   @Nonnull
   @Override
-  protected StreamSerializer<List<? extends Object>> getSerializer() throws Exception {
+  protected ListSerializer getSerializer() throws Exception {
     return new ListSerializer();
   }
 

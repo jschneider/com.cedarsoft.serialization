@@ -104,7 +104,7 @@ public class CarSerializerVersionTest extends AbstractXmlVersionTest<Car> {
 
   @Test
   public void testAsciiArt() throws Exception {
-    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
+    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
     assertEquals( visualizer.visualize(),
                   "         -->     Extra     Model     Money\n" +
                     "------------------------------------------\n" +

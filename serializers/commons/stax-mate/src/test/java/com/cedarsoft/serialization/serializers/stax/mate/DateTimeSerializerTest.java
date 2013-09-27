@@ -63,7 +63,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
 
   @Nonnull
   @Override
-  protected StreamSerializer<DateTime> getSerializer() {
+  protected DateTimeSerializer getSerializer() {
     return new DateTimeSerializer();
   }
 

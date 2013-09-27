@@ -48,6 +48,8 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Comparator;
 
@@ -130,20 +132,20 @@ public class DelegatingStaxMateSerializerTest extends AbstractXmlSerializerTest<
 
   @Test
   public void testVis() throws IOException {
-    VersionMappings<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> versionMappings = serializer.getSerializingStrategySupport().getVersionMappings();
+    VersionMappings<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>> versionMappings = serializer.getSerializingStrategySupport().getVersionMappings();
 
     assertTrue( versionMappings.verify() );
     assertEquals( 2, versionMappings.getMappings().size() );
 
-    VersionMappingsVisualizer<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>> visualizer = VersionMappingsVisualizer.create( versionMappings, new Comparator<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+    VersionMappingsVisualizer<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>> visualizer = VersionMappingsVisualizer.create( versionMappings, new Comparator<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>>() {
                                                                                                                                                                             @Override
-                                                                                                                                                                            public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> o2 ) {
+                                                                                                                                                                            public int compare( SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> o1, SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> o2 ) {
                                                                                                                                                                               return o1.getId().compareTo( o2.getId() );
                                                                                                                                                                             }
-                                                                                                                                                                          }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+                                                                                                                                                                          }, new ToString<SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>>() {
       @Nonnull
       @Override
-      public String convert( @Nonnull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Number, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> object ) {
         return object.getId();
       }
     }

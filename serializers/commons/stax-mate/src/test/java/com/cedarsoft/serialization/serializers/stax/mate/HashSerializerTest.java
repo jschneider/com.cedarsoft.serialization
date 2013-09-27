@@ -50,7 +50,7 @@ import java.io.ByteArrayInputStream;
 public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
   @Nonnull
   @Override
-  protected StreamSerializer<Hash> getSerializer() {
+  protected HashSerializer getSerializer() {
     return new HashSerializer();
   }
 

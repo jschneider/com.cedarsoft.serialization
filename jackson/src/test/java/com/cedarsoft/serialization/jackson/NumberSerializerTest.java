@@ -61,7 +61,7 @@ public class NumberSerializerTest extends AbstractJsonSerializerTest2<Number> {
 
   @Nonnull
   @Override
-  protected StreamSerializer<Number> getSerializer() throws Exception {
+  protected NumberSerializer getSerializer() throws Exception {
     return new NumberSerializer();
   }
 
