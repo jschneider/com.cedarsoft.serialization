@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.stax.mate;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -44,7 +45,7 @@ import javax.annotation.Nonnull;
 public class VersionSerializerTest extends AbstractXmlSerializerTest2<Version> {
   @Override
   @Nonnull
-  protected VersionSerializer getSerializer() {
+  protected StreamSerializer<Version> getSerializer() {
     return new VersionSerializer();
   }
 

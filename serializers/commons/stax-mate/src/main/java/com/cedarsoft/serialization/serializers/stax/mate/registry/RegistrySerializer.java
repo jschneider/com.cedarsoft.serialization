@@ -52,7 +52,7 @@ import java.util.List;
  * @param <T> the type
  * @param <R> the registry for the given type
  */
-public class RegistrySerializer<T, R extends Registry<T>> {
+public class RegistrySerializer<T, R extends Registry<T>, O, I> {
   @Nonnull
   private final IdResolver<T> idResolver;
   @Nullable
@@ -68,7 +68,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver    the id resolver
    */
   @Deprecated
-  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver ) {
+  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T, O, I> serializer, @Nonnull IdResolver<T> idResolver ) {
     this( objectsAccess, serializer, idResolver, null );
   }
 
@@ -81,7 +81,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param comparator    the (optional) comparator
    */
   @Deprecated
-  public RegistrySerializer( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public RegistrySerializer( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T, O, I> serializer, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( new SerializerBasedRegistrySerializingStrategy( objectsAccess, serializer ), idResolver, comparator );
   }
 
@@ -196,7 +196,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @Deprecated
   @Nonnull
-  public Serializer<T> getSerializer() {
+  public Serializer<T, O, I> getSerializer() {
     if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy ) {
       return ( ( SerializerBasedRegistrySerializingStrategy ) serializingStrategy ).getSerializer();
     }

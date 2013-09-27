@@ -136,7 +136,7 @@ public class DaAbstractSerializerTest {
     serializer.getDelegatesMappings().verify();
   }
 
-  public static class MySerializer extends AbstractSerializer<String, StringBuffer, String, IOException> {
+  public static class MySerializer extends AbstractStreamSerializer<String, StringBuffer, String, IOException> {
     public MySerializer() {
       super( VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
     }

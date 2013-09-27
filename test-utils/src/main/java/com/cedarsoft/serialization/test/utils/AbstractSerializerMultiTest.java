@@ -39,6 +39,8 @@ import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,7 @@ import static org.junit.Assert.*;
 public abstract class AbstractSerializerMultiTest<T> {
   @Test
   public void testSerializer() throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     Iterable<? extends T> objectsToSerialize = createObjectsToSerialize();
 
@@ -74,7 +76,7 @@ public abstract class AbstractSerializerMultiTest<T> {
   }
 
   @Nonnull
-  private List<? extends byte[]> serialize( @Nonnull Serializer<T> serializer, @Nonnull Iterable<? extends T> objectsToSerialize ) throws IOException {
+  private List<? extends byte[]> serialize( @Nonnull Serializer<T, OutputStream, InputStream> serializer, @Nonnull Iterable<? extends T> objectsToSerialize ) throws IOException {
     List<byte[]> serialized = new ArrayList<byte[]>();
 
     int index = 0;
@@ -90,7 +92,7 @@ public abstract class AbstractSerializerMultiTest<T> {
   }
 
   @Nonnull
-  protected byte[] serialize( @Nonnull Serializer<T> serializer, @Nonnull T objectToSerialize ) throws IOException {
+  protected byte[] serialize( @Nonnull Serializer<T, OutputStream, InputStream> serializer, @Nonnull T objectToSerialize ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( objectToSerialize, out );
     return out.toByteArray();
@@ -102,7 +104,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract Serializer<T> getSerializer() throws Exception;
+  protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
 
   /**
    * Verifies the serialized object

@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.AbstractStreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -56,7 +56,7 @@ import java.util.List;
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractJacksonSerializer<T> extends AbstractSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
+public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> implements JacksonSerializer<T> {
   public static final String FIELD_NAME_DEFAULT_TEXT = "$";
   public static final String PROPERTY_TYPE = "@type";
   public static final String PROPERTY_VERSION = "@version";

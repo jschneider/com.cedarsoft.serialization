@@ -40,6 +40,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -51,11 +53,11 @@ public class SerializingStrategySupportTest {
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
-  private SerializingStrategySupport<Integer, StringBuilder, String, IOException> support;
+  private SerializingStrategySupport<Integer, StringBuilder, String, IOException, OutputStream, InputStream> support;
 
   @Before
   public void setUp() throws Exception {
-    support = new SerializingStrategySupport<Integer, StringBuilder, String, IOException>( VersionRange.single(1, 0, 0) );
+    support = new SerializingStrategySupport<Integer, StringBuilder, String, IOException, OutputStream, InputStream>( VersionRange.single(1, 0, 0) );
   }
 
   @Test
@@ -87,9 +89,9 @@ public class SerializingStrategySupportTest {
   public void testVersionMappings() throws Exception {
     new MockitoTemplate() {
       @Mock
-      private SerializingStrategy<Integer, StringBuilder, String, IOException> strategy1;
+      private SerializingStrategy<Integer, StringBuilder, String, IOException, OutputStream, InputStream> strategy1;
       @Mock
-      private SerializingStrategy<Integer, StringBuilder, String, IOException> strategy2;
+      private SerializingStrategy<Integer, StringBuilder, String, IOException, OutputStream, InputStream> strategy2;
 
       @Override
       protected void stub() throws Exception {
@@ -126,7 +128,7 @@ public class SerializingStrategySupportTest {
   public void festFind3() throws Exception {
     new MockitoTemplate() {
       @Mock
-      private SerializingStrategy<Integer, StringBuilder, String, IOException> strategy;
+      private SerializingStrategy<Integer, StringBuilder, String, IOException, OutputStream, InputStream> strategy;
 
       @Override
       protected void stub() throws Exception {

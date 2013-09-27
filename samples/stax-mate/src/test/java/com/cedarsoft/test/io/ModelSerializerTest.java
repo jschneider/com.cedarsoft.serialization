@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Model;
 import org.junit.experimental.theories.*;
 
@@ -45,7 +45,7 @@ import javax.annotation.Nonnull;
 public class ModelSerializerTest extends AbstractXmlSerializerTest2<Model> {
   @Nonnull
   @Override
-  protected Serializer<Model> getSerializer() {
+  protected StreamSerializer<Model> getSerializer() {
     //We create a serializer. This one is very easy. But sometimes it needs a little bit of work...
     return new ModelSerializer();
   }

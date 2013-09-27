@@ -38,6 +38,8 @@ import org.fest.reflect.core.Reflection;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 /**
@@ -86,7 +88,7 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
 
     @Nonnull
     @Override
-    public byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception {
+    public byte[] getSerialized( @Nonnull Serializer<?, ?, ?> serializer ) throws Exception {
       boolean isObjectType = Reflection.method( "isObjectType" ).withReturnType( Boolean.TYPE ).in( serializer ).invoke();
       if ( isObjectType ) {
         return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes();

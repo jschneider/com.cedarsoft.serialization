@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.serializers.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.experimental.theories.*;
@@ -54,7 +54,7 @@ public class DateTimeSerializerTest extends AbstractJsonSerializerTest2<DateTime
 
   @Nonnull
   @Override
-  protected Serializer<DateTime> getSerializer() throws Exception {
+  protected StreamSerializer<DateTime> getSerializer() throws Exception {
     return new DateTimeSerializer();
   }
 

@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.serializers.stax.mate;
 
 import com.cedarsoft.file.BaseName;
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.*;
@@ -45,7 +45,7 @@ import javax.annotation.Nonnull;
 public class BaseNameSerializerTest extends AbstractXmlSerializerTest2<BaseName> {
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<BaseName> getSerializer() {
+  protected StreamSerializer<BaseName> getSerializer() {
     return new BaseNameSerializer();
   }
 

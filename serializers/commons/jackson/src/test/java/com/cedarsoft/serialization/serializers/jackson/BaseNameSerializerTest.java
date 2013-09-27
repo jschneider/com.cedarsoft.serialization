@@ -32,9 +32,9 @@
 package com.cedarsoft.serialization.serializers.jackson;
 
 import com.cedarsoft.file.BaseName;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -46,7 +46,7 @@ public class BaseNameSerializerTest extends AbstractJsonSerializerTest2<BaseName
 
   @Nonnull
   @Override
-  protected Serializer<BaseName> getSerializer() throws Exception {
+  protected StreamSerializer<BaseName> getSerializer() throws Exception {
     return new BaseNameSerializer();
   }
 

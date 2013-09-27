@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.stax.mate.test;
 
 import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -53,7 +54,7 @@ import static org.junit.Assert.*;
 public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
   @Nonnull
   @Override
-  protected BallSerializer getSerializer() throws Exception {
+  protected StreamSerializer<Ball> getSerializer() throws Exception {
     return new BallSerializer();
   }
 

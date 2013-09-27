@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.serializers.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.app.Application;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 public class ApplicationSerializerTest extends AbstractJsonSerializerTest2<Application> {
@@ -45,7 +45,7 @@ public class ApplicationSerializerTest extends AbstractJsonSerializerTest2<Appli
     new Application( "name", Version.valueOf( 1, 2, 3 ) ), ApplicationSerializerTest.class.getResource( "Application_1.0.0_1.json" ) );
 
   @Override
-  protected Serializer<Application> getSerializer() throws Exception {
+  protected StreamSerializer<Application> getSerializer() throws Exception {
     return new ApplicationSerializer( new VersionSerializer() );
   }
 

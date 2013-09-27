@@ -46,7 +46,7 @@ import java.io.OutputStream;
 /**
  *
  */
-public class ZoneInfoSerializer implements Serializer<DateTimeZone> {
+public class ZoneInfoSerializer implements Serializer<DateTimeZone,OutputStream,InputStream> {
   @Override
   public void serialize( @Nonnull DateTimeZone object, @Nonnull OutputStream out ) throws IOException {
     out.write( object.getID().getBytes() );

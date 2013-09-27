@@ -32,15 +32,18 @@
 package com.cedarsoft.serialization.stax.mate;
 
 import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.StreamSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Serializing strategy based on stax mate
  *
  * @param <T> the type this strategy serializes
  */
-public interface StaxMateSerializingStrategy<T> extends SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException> {
+public interface StaxMateSerializingStrategy<T> extends SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>, StreamSerializer<T> {
 }

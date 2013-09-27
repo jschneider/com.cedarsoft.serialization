@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -53,7 +54,7 @@ import static org.junit.Assert.*;
 public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
   @Nonnull
   @Override
-  protected BallSerializer getSerializer() throws Exception {
+  protected StreamSerializer<Ball> getSerializer() throws Exception {
     return new BallSerializer();
   }
 

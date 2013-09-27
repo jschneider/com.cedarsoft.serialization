@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.serializers.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -47,7 +47,7 @@ public class VersionSerializerTest extends AbstractJsonSerializerTest2<Version> 
 
   @Nonnull
   @Override
-  protected Serializer<Version> getSerializer() throws Exception {
+  protected StreamSerializer<Version> getSerializer() throws Exception {
     return new VersionSerializer();
   }
 

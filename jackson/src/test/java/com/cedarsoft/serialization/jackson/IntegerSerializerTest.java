@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.JsonUtils;
@@ -61,7 +62,7 @@ public class IntegerSerializerTest extends AbstractJsonSerializerTest2<Integer> 
 
   @Nonnull
   @Override
-  protected IntegerSerializer getSerializer() throws Exception {
+  protected StreamSerializer<Integer> getSerializer() throws Exception {
     return new IntegerSerializer();
   }
 

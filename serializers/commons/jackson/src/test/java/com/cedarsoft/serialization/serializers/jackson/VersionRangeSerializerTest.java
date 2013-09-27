@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.serializers.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 public class VersionRangeSerializerTest
@@ -45,7 +45,7 @@ public class VersionRangeSerializerTest
     VersionRange.from( 1, 0, 0 ).to( 1, 9, 17 ), VersionRangeSerializerTest.class.getResource( "VersionRange_1.0.0_1.json" ) );
 
   @Override
-  protected Serializer<VersionRange> getSerializer() throws Exception {
+  protected StreamSerializer<VersionRange> getSerializer() throws Exception {
     return new VersionRangeSerializer();
   }
 

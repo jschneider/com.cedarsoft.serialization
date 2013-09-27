@@ -38,6 +38,8 @@ import com.cedarsoft.serialization.VersionMappingTest;
 import org.junit.*;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
@@ -46,13 +48,13 @@ import static org.junit.Assert.*;
  */
 public class DelegatesMappingVisualizerTest {
   private VersionRange mine;
-  private DelegatesMappings<Object, Object, IOException> delegatesMappings;
+  private DelegatesMappings<Object, Object, IOException, OutputStream, InputStream> delegatesMappings;
   private VersionMappingTest.MySerializer serializer;
 
   @Before
   public void setUp() throws Exception {
     mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
-    delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
+    delegatesMappings = new DelegatesMappings<Object, Object, IOException, OutputStream, InputStream>( mine );
     serializer = new VersionMappingTest.MySerializer( new VersionRange( new Version( 7, 0, 0 ), new Version( 7, 5, 9 ) ) );
   }
 

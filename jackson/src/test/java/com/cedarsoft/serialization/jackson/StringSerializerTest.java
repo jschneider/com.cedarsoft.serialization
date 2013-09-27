@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
@@ -61,7 +62,7 @@ public class StringSerializerTest extends AbstractJsonSerializerTest2<String> {
 
   @Nonnull
   @Override
-  protected StringSerializer getSerializer() throws Exception {
+  protected StreamSerializer<String> getSerializer() throws Exception {
     return new StringSerializer();
   }
 

@@ -37,8 +37,6 @@ import com.cedarsoft.version.VersionRange;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Interface for all types of serializers.<br/>
@@ -48,28 +46,30 @@ import java.io.OutputStream;
  * A format version is supported for each serializer.
  *
  * @param <T> the type of the objects this serializer is able to (de)serialize
+ * @param <O> the type of the object that is serialized to
+ * @param <I> the type of the object that is serialized from
  */
-public interface Serializer<T> {
+public interface Serializer<T, O, I> {
   /**
-   * Serializes the object to the given output stream
+   * Serializes the object to the given output object
    *
    * @param object the object to serialize
    * @param out    the out stream
    * @throws IOException
    */
-  void serialize( @Nonnull T object, @Nonnull OutputStream out ) throws IOException;
+  void serialize( @Nonnull T object, @Nonnull O out ) throws IOException;
 
   /**
    * Deserializes the object from the input stream
    *
-   * @param in the input stream
+   * @param in the input object
    * @return the deserialized object
    *
    * @throws VersionException if any version related problem occurred
    * @throws IOException
    */
   @Nonnull
-  T deserialize( @Nonnull InputStream in ) throws IOException, VersionException;
+  T deserialize( @Nonnull I in ) throws IOException, VersionException;
 
   /**
    * Returns the format version that is written.

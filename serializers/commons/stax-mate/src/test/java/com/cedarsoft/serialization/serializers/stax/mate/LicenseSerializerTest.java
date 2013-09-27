@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.serializers.stax.mate;
 
 import com.cedarsoft.license.License;
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.*;
@@ -45,7 +45,7 @@ import javax.annotation.Nonnull;
 public class LicenseSerializerTest extends AbstractXmlSerializerTest2<License> {
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<License> getSerializer() {
+  protected StreamSerializer<License> getSerializer() {
     return new LicenseSerializer();
   }
 

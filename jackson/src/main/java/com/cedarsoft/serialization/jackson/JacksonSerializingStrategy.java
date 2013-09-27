@@ -32,13 +32,17 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @param <T> the type
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public interface JacksonSerializingStrategy<T> extends SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public interface JacksonSerializingStrategy<T> extends SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream>, StreamSerializer<T> {
 }

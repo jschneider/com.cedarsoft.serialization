@@ -115,7 +115,7 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
 
     @Nonnull
     @Override
-    public byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception {
+    public byte[] getSerialized( @Nonnull Serializer<?, ?, ?> serializer ) throws Exception {
       return processXml( xml, version, ( AbstractXmlSerializer<?, ?, ?, ?> ) serializer );
     }
   }

@@ -43,9 +43,9 @@ import java.util.Comparator;
  */
 public class DelegatesMappingVisualizer {
   @Nonnull
-  private final DelegatesMappings<?, ?, ?> mappings;
+  private final DelegatesMappings<?, ?, ?, ?, ?> mappings;
 
-  public DelegatesMappingVisualizer( @Nonnull DelegatesMappings<?, ?, ?> mappings ) {
+  public DelegatesMappingVisualizer( @Nonnull DelegatesMappings<?, ?, ?, ?, ?> mappings ) {
     this.mappings = mappings;
   }
 
@@ -70,12 +70,12 @@ public class DelegatesMappingVisualizer {
   }
 
   @Nonnull
-  public static DelegatesMappingVisualizer create( @Nonnull DelegatesMappings<?, ?, ?> mappings ) {
+  public static DelegatesMappingVisualizer create( @Nonnull DelegatesMappings<?, ?, ?, ?, ?> mappings ) {
     return new DelegatesMappingVisualizer( mappings );
   }
 
   @Nonnull
-  public static String toString( @Nonnull DelegatesMappings<?, ?, ?> mappings ) throws IOException {
+  public static String toString( @Nonnull DelegatesMappings<?, ?, ?, ?, ?> mappings ) throws IOException {
     return new DelegatesMappingVisualizer( mappings ).visualize();
   }
 }

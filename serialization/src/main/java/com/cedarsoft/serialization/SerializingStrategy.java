@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
  * @param <D> the deserializing object
  * @param <E> the exception that might be thrown
  */
-public interface SerializingStrategy<T, S, D, E extends Throwable> extends PluggableSerializer<T, S, D, E> {
+public interface SerializingStrategy<T, S, D, E extends Throwable, O, I> extends PluggableSerializer<T, S, D, E, O, I> {
   /**
    * Returns the id that is used to identify the strategy/object
    *

@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -52,7 +53,7 @@ import static org.junit.Assert.*;
  */
 public class WindowSerializerNamespaceSkipTest {
   @Nonnull
-  protected Serializer<Window> getSerializer() throws Exception {
+  protected StreamSerializer<Window> getSerializer() throws Exception {
     return new DaSkippingSerializer();
   }
 

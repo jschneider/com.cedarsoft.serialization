@@ -57,5 +57,5 @@ public interface VersionEntry {
    * @throws Exception
    */
   @Nonnull
-  byte[] getSerialized( @Nonnull Serializer<?> serializer ) throws Exception;
+  byte[] getSerialized( @Nonnull Serializer<?, ?, ?> serializer ) throws Exception;
 }
