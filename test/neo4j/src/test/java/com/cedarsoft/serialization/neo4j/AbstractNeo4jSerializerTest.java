@@ -197,18 +197,9 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
     public void serialize( @Nonnull Node node, @Nonnull Person object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       node.setProperty( "name", object.getName() );
 
-      {
-        Node addressNode = node.getGraphDatabase().createNode();
-        Relationship relationshipTo = node.createRelationshipTo( addressNode, Relations.ADDRESS );
-        serialize( object.getAddress(), Address.class, addressNode, formatVersion );
-      }
-
-      {
-        for ( Email email : object.getMails() ) {
-          Node emailNode = node.getGraphDatabase().createNode();
-          Relationship relationshipTo = node.createRelationshipTo( emailNode, Relations.EMAIL );
-          serialize( email, Email.class, emailNode, formatVersion );
-        }
+      serializeWithRelation( object.getAddress(), Address.class, node, Relations.ADDRESS, formatVersion );
+      for ( Email email : object.getMails() ) {
+        serializeWithRelation( email, Email.class, node, Relations.EMAIL, formatVersion );
       }
     }
 

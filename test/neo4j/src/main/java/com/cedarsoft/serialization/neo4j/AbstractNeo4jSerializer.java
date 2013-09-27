@@ -6,6 +6,8 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,6 +57,23 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     if ( !this.type.equals( readType ) ) {//$NON-NLS-1$
       throw new InvalidTypeException( readType, this.type );
     }
+  }
+
+  /**
+   * Serializes the given object using a relation
+   *
+   * @param object           the object that is serialized
+   * @param type             the type
+   * @param node             the (current) node that is the start for the relationship
+   * @param relationshipType the type of the relationship
+   * @param formatVersion    the format version
+   * @param <T>              the type
+   * @throws IOException
+   */
+  public <T> void serializeWithRelation( @Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
+    Node targetNode = node.getGraphDatabase().createNode();
+    Relationship relationshipTo = node.createRelationshipTo( targetNode, relationshipType );
+    serialize( object, type, targetNode, formatVersion );
   }
 
   public static class InvalidTypeException extends Exception {
