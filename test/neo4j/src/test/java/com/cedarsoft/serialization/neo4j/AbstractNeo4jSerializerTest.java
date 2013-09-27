@@ -194,9 +194,7 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
       serializeTo.setProperty( "name", object.getName() );
 
       serializeWithRelationship( object.getAddress(), Address.class, serializeTo, Relations.ADDRESS, formatVersion );
-      for ( Email email : object.getMails() ) {
-        serializeWithRelationship( email, Email.class, serializeTo, Relations.EMAIL, formatVersion );
-      }
+      serializeWithRelationships( object.getMails(),Email.class, serializeTo, Relations.EMAIL, formatVersion );
     }
 
     @Nonnull
