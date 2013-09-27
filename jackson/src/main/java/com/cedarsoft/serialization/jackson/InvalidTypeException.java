@@ -41,10 +41,8 @@ import javax.annotation.Nonnull;
  */
 public class InvalidTypeException extends Exception {
   @Nullable
-
   private final String type;
   @Nonnull
-
   private final String expected;
 
   public InvalidTypeException( @Nullable String type, @Nonnull String expected ) {
@@ -53,14 +51,12 @@ public class InvalidTypeException extends Exception {
     this.expected = expected;
   }
 
-
   @Nullable
   public String getType() {
     return type;
   }
 
   @Nonnull
-
   public String getExpected() {
     return expected;
   }
