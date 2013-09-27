@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.neo4j;
 
+import com.cedarsoft.serialization.neo4j.utils.Graphviz;
 import com.cedarsoft.serialization.test.neo4j.AbstractNeo4JTest;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
@@ -191,6 +192,7 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
 
     @Override
     public void serialize( @Nonnull Node serializeTo, @Nonnull Person object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+      super.serialize( serializeTo, object, formatVersion );
       serializeTo.setProperty( "name", object.getName() );
 
       serializeWithRelationship( object.getAddress(), Address.class, serializeTo, Relations.ADDRESS, formatVersion );
@@ -222,6 +224,7 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
 
     @Override
     public void serialize( @Nonnull Node serializeTo, @Nonnull Email object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+      super.serialize( serializeTo, object, formatVersion );
       serializeTo.setProperty( "mail", object.getMail() );
     }
 
@@ -240,6 +243,7 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
 
     @Override
     public void serialize( @Nonnull Node serializeTo, @Nonnull Address object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+      super.serialize( serializeTo, object, formatVersion );
       serializeTo.setProperty( "street", object.getStreet() );
       serializeTo.setProperty( "town", object.getTown() );
     }

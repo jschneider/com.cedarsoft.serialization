@@ -34,9 +34,13 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
 
   @Override
   public void serialize( @Nonnull T object, @Nonnull Node out ) throws IOException {
-    out.setProperty( PROPERTY_TYPE, type );
-    out.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
     serialize( out, object, getFormatVersion() );
+  }
+
+  @Override
+  public void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    serializeTo.setProperty( PROPERTY_TYPE, type );
+    serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
   }
 
   @Nonnull
