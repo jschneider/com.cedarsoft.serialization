@@ -41,6 +41,8 @@ import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -68,7 +70,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param idResolver    the id resolver
    */
   @Deprecated
-  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver ) {
+  public RegistrySerializer( StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T, OutputStream, InputStream> serializer, @Nonnull IdResolver<T> idResolver ) {
     this( objectsAccess, serializer, idResolver, null );
   }
 
@@ -81,7 +83,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
    * @param comparator    the (optional) comparator
    */
   @Deprecated
-  public RegistrySerializer( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
+  public RegistrySerializer( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T, OutputStream, InputStream> serializer, @Nonnull IdResolver<T> idResolver, @Nullable Comparator<T> comparator ) {
     this( new SerializerBasedRegistrySerializingStrategy( objectsAccess, serializer ), idResolver, comparator );
   }
 
@@ -196,7 +198,7 @@ public class RegistrySerializer<T, R extends Registry<T>> {
 
   @Deprecated
   @Nonnull
-  public Serializer<T> getSerializer() {
+  public Serializer<T, OutputStream, InputStream> getSerializer() {
     if ( serializingStrategy instanceof SerializerBasedRegistrySerializingStrategy ) {
       return ( ( SerializerBasedRegistrySerializingStrategy ) serializingStrategy ).getSerializer();
     }

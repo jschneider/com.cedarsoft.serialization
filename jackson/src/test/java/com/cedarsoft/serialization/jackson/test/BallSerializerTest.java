@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -44,6 +45,9 @@ import org.junit.*;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
@@ -74,10 +78,10 @@ public class BallSerializerTest extends AbstractJsonSerializerTest2<Ball> {
                     "--------------------------------\n" +
                     "   1.0.0 -->     2.0.0     1.5.0\n" +
                     "   1.1.0 -->     2.0.1     1.5.1\n" +
-                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException>>() {
+                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream>>() {
       @Nonnull
       @Override
-      public String convert( @Nonnull SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Ball, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> object ) {
         return object.getId();
       }
     } ) );

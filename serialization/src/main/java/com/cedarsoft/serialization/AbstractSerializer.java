@@ -1,34 +1,3 @@
-/**
- * Copyright (C) cedarsoft GmbH.
- *
- * Licensed under the GNU General Public License version 3 (the "License")
- * with Classpath Exception; you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *         http://www.cedarsoft.org/gpl3ce
- *         (GPL 3 with Classpath Exception)
- *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation. cedarsoft GmbH designates this
- * particular file as subject to the "Classpath" exception as provided
- * by cedarsoft GmbH in the LICENSE file that accompanied this code.
- *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
- *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Please contact cedarsoft GmbH, 72810 Gomaringen, Germany,
- * or visit www.cedarsoft.com if you need additional information or
- * have any questions.
- */
-
 package com.cedarsoft.serialization;
 
 import com.cedarsoft.version.Version;
@@ -36,7 +5,6 @@ import com.cedarsoft.version.VersionMismatchException;
 import com.cedarsoft.version.VersionRange;
 
 import javax.annotation.Nonnull;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -46,13 +14,13 @@ import java.io.IOException;
  * @param <S> the object to serialize to
  * @param <D> the object to deserialize from
  * @param <E> the exception that might be thrown
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractSerializer<T, S, D, E extends Throwable> implements PluggableSerializer<T, S, D, E> {
+public abstract class AbstractSerializer<T, S, D, E extends Throwable, O, I> implements PluggableSerializer<T, S, D, E, O, I> {
   @Nonnull
-  private final VersionRange formatVersionRange;
-
+  protected final VersionRange formatVersionRange;
   @Nonnull
-  protected final DelegatesMappings<S, D, E> delegatesMappings;
+  protected final DelegatesMappings<S, D, E, O, I> delegatesMappings;
 
   /**
    * Creates a serializer.
@@ -61,7 +29,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    */
   protected AbstractSerializer( @Nonnull VersionRange formatVersionRange ) {
     this.formatVersionRange = formatVersionRange;
-    this.delegatesMappings = new DelegatesMappings<S, D, E>( formatVersionRange );
+    this.delegatesMappings = new DelegatesMappings<S, D, E, O, I>( formatVersionRange );
   }
 
   @Override
@@ -106,30 +74,13 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
     return formatVersionRange;
   }
 
-  /**
-   * Helper method that serializes to a byte array
-   *
-   * @param object the object
-   * @return the serialized object
-   *
-   * @throws IOException
-   */
   @Nonnull
-  public byte[] serializeToByteArray( @Nonnull T object ) throws IOException {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    serialize( object, out );
-    return out.toByteArray();
-  }
-
-  @Nonnull
-  public DelegatesMappings<S, D, E> getDelegatesMappings() {
+  public DelegatesMappings<S, D, E, O, I> getDelegatesMappings() {
     return delegatesMappings;
   }
 
-  // Delegate methods to the DelegatesMappings
-
   @Nonnull
-  public <T> DelegatesMappings<S, D, E>.FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E> pluggableSerializer ) {
+  public <T> DelegatesMappings<S, D, E, O, I>.FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E, O, I> pluggableSerializer ) {
     return delegatesMappings.add( pluggableSerializer );
   }
 
@@ -138,7 +89,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
   }
 
   @Nonnull
-  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @Nonnull Class<T> type ) {
+  public <T> PluggableSerializer<? super T, S, D, E, O, I> getSerializer( @Nonnull Class<T> type ) {
     return delegatesMappings.getSerializer( type );
   }
 
@@ -153,7 +104,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable> implement
    * @param delegate              the delegate
    * @param expectedFormatVersion the expected format version
    */
-  protected static void verifyDelegatingSerializerVersion( @Nonnull Serializer<?> delegate, @Nonnull Version expectedFormatVersion ) {
+  protected static void verifyDelegatingSerializerVersion( @Nonnull Serializer<?, ?, ?> delegate, @Nonnull Version expectedFormatVersion ) {
     Version actualVersion = delegate.getFormatVersion();
     if ( !actualVersion.equals( expectedFormatVersion ) ) {
       throw new IllegalArgumentException( "Invalid versions. Expected <" + expectedFormatVersion + "> but was <" + actualVersion + ">" );

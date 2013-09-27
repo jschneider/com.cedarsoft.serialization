@@ -51,7 +51,7 @@ public class VersionRangeSerializerVersionTest
 
   @Nonnull
   @Override
-  protected Serializer<VersionRange> getSerializer() throws Exception {
+  protected VersionRangeSerializer getSerializer() throws Exception {
     return new VersionRangeSerializer();
   }
 

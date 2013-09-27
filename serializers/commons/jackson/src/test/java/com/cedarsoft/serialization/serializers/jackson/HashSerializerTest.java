@@ -33,9 +33,9 @@ package com.cedarsoft.serialization.serializers.jackson;
 
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -51,7 +51,7 @@ public class HashSerializerTest
 
   @Nonnull
   @Override
-  protected Serializer<Hash> getSerializer() throws Exception {
+  protected StreamSerializer<Hash> getSerializer() throws Exception {
     return new HashSerializer();
   }
 

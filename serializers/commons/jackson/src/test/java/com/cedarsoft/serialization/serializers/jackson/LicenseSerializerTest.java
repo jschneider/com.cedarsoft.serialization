@@ -32,9 +32,9 @@
 package com.cedarsoft.serialization.serializers.jackson;
 
 import com.cedarsoft.license.License;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 public class LicenseSerializerTest extends AbstractJsonSerializerTest2<License> {
@@ -49,7 +49,7 @@ public class LicenseSerializerTest extends AbstractJsonSerializerTest2<License> 
     License.CC_BY_NC_SA, LicenseSerializerTest.class.getResource( "License_1.0.0_CC.json" ) );
 
   @Override
-  protected Serializer<License> getSerializer() throws Exception {
+  protected StreamSerializer<License> getSerializer() throws Exception {
     return new LicenseSerializer();
   }
 }

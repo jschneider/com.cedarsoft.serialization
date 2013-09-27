@@ -49,10 +49,9 @@ import java.util.SortedSet;
  * @param <D> the object to deserialize from ((e.g. a dom element or stream)
  * @param <E> the exception that might be thrown
  */
-public class DelegatesMappings<S, D, E extends Throwable> {
+public class DelegatesMappings<S, D, E extends Throwable, O, I> {
   @Nonnull
-  private final Map<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
-
+  private final Map<Class<?>, Serializer<?,?,?>> serializers = new HashMap<Class<?>, Serializer<?,?,?>>();
   @Nonnull
   private final VersionMappings<Class<?>> versionMappings;
 
@@ -61,18 +60,18 @@ public class DelegatesMappings<S, D, E extends Throwable> {
   }
 
   @Nonnull
-  public <T> FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E> serializer ) {
+  public <T> FluentFactory<T> add( @Nonnull PluggableSerializer<? super T, S, D, E, O, I> serializer ) {
     return new FluentFactory<T>( serializer );
   }
 
   public <T> void serialize( @Nonnull T object, @Nonnull Class<T> type, @Nonnull S outputElement, @Nonnull Version formatVersion ) throws E, IOException {
-    PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
+    PluggableSerializer<? super T, S, D, E,O, I> serializer = getSerializer( type );
     serializer.serialize( outputElement, object, versionMappings.resolveVersion( type, formatVersion ) );
   }
 
   @Nonnull
-  public <T> PluggableSerializer<? super T, S, D, E> getSerializer( @Nonnull Class<T> type ) {
-    PluggableSerializer<? super T, S, D, E> serializer = ( PluggableSerializer<? super T, S, D, E> ) serializers.get( type );
+  public <T> PluggableSerializer<? super T, S, D, E,O, I> getSerializer( @Nonnull Class<T> type ) {
+    PluggableSerializer<? super T, S, D, E,O, I> serializer = ( PluggableSerializer<? super T, S, D, E, O, I> ) serializers.get( type );
     if ( serializer == null ) {
       throw new IllegalArgumentException( "No serializer found for <" + type.getName() + ">" );
     }
@@ -81,7 +80,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   @Nonnull
   public <T> T deserialize( @Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull D deserializeFrom ) throws E, IOException {
-    PluggableSerializer<? super T, S, D, E> serializer = getSerializer( type );
+    PluggableSerializer<? super T, S, D, E, O, I> serializer = getSerializer( type );
     return type.cast( serializer.deserialize( deserializeFrom, versionMappings.resolveVersion( type, formatVersion ) ) );
   }
 
@@ -103,7 +102,7 @@ public class DelegatesMappings<S, D, E extends Throwable> {
       VersionMapping mapping = entry.getValue();
 
       //Check the write version
-      PluggableSerializer<?, S, D, E> serializer = getSerializer( entry.getKey() );
+      PluggableSerializer<?, S, D, E, O, I> serializer = getSerializer( entry.getKey() );
       if ( !serializer.getFormatVersion().equals( mapping.getDelegateWriteVersion() ) ) {
         throw new VersionMismatchException( serializer.getFormatVersion(), mapping.getDelegateWriteVersion(), "Invalid serialization/output version for <" + entry.getKey().getName() + ">. " );
       }
@@ -144,9 +143,9 @@ public class DelegatesMappings<S, D, E extends Throwable> {
 
   public class FluentFactory<T> {
     @Nonnull
-    private final PluggableSerializer<? super T, S, D, E> serializer;
+    private final PluggableSerializer<? super T, S, D, E, O, I> serializer;
 
-    public FluentFactory( @Nonnull PluggableSerializer<? super T, S, D, E> serializer ) {
+    public FluentFactory( @Nonnull PluggableSerializer<? super T, S, D, E, O, I> serializer ) {
       this.serializer = serializer;
     }
 

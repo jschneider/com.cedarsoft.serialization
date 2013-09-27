@@ -80,19 +80,18 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
   @Nonnull
 
   public String addTypeInformation( @Nonnull byte[] expectedJson ) throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T,?, ?> serializer = getSerializer();
     return addTypeInformation( serializer, expectedJson );
   }
 
   @Nonnull
-
-  protected static String getType( @Nonnull Serializer<?> serializer ) {
+  protected static String getType( @Nonnull Serializer<?, ?, ?> serializer ) {
     return Reflection.method( "getType" ).withReturnType( String.class ).in( serializer ).invoke();
   }
 
   @Nonnull
 
-  public static String addTypeInformation( @Nonnull Serializer<?> serializer, @Nonnull byte[] expectedJson ) throws Exception {
+  public static String addTypeInformation( @Nonnull Serializer<?, ?, ?> serializer, @Nonnull byte[] expectedJson ) throws Exception {
     return addTypeInformation( getType( serializer ), serializer.getFormatVersion(), expectedJson );
   }
 

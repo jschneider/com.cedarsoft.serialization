@@ -45,7 +45,7 @@ import javax.annotation.Nullable;
  * @param <E> the exception that might be thrown
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E> {
+public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractStreamSerializer<T, S, D, E> {
   @Nonnull
 
   protected final String nameSpaceBase;

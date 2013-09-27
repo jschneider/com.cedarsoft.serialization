@@ -31,9 +31,9 @@
 
 package com.cedarsoft.test.io;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
 import org.junit.experimental.theories.*;
 
@@ -47,7 +47,7 @@ public class MoneySerializerTest extends AbstractXmlSerializerTest2<Money> {
 
   @Nonnull
   @Override
-  protected Serializer<Money> getSerializer() {
+  protected StreamSerializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 

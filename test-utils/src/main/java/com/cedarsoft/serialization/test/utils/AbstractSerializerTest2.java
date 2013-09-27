@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import org.apache.commons.io.IOUtils;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
@@ -41,6 +42,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -55,7 +57,7 @@ import static org.junit.Assert.*;
 public abstract class AbstractSerializerTest2<T> {
   @Theory
   public void testSerializer( @Nonnull Entry<T> entry ) throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     //Serialize
     byte[] serialized = serialize( serializer, entry.getObject() );
@@ -67,7 +69,7 @@ public abstract class AbstractSerializerTest2<T> {
   }
 
   @Nonnull
-  protected byte[] serialize( @Nonnull Serializer<T> serializer, @Nonnull T objectToSerialize ) throws IOException {
+  protected byte[] serialize( @Nonnull Serializer<T, OutputStream, InputStream> serializer, @Nonnull T objectToSerialize ) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     serializer.serialize( objectToSerialize, out );
     return out.toByteArray();
@@ -81,7 +83,7 @@ public abstract class AbstractSerializerTest2<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract Serializer<T> getSerializer() throws Exception;
+  protected abstract StreamSerializer<T> getSerializer() throws Exception;
 
   /**
    * Verifies the deserialized object

@@ -39,6 +39,8 @@ import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
@@ -58,7 +60,7 @@ public abstract class AbstractSerializerTest<T> {
    */
   @Test
   public void testSerializer() throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     T objectToSerialize = createObjectToSerialize();
 
@@ -79,7 +81,7 @@ public abstract class AbstractSerializerTest<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract Serializer<T> getSerializer() throws Exception;
+  protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
 
   /**
    * Verifies the serialized object

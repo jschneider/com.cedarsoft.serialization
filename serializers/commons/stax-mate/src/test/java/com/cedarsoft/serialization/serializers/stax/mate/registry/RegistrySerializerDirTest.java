@@ -42,6 +42,8 @@ import org.junit.*;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +55,7 @@ import static org.junit.Assert.*;
  *
  */
 public class RegistrySerializerDirTest {
-  private RegistrySerializer<String, Registry<String>> serializer;
+  private RegistrySerializer<String, Registry<String>, OutputStream, InputStream> serializer;
   private DirBasedObjectsAccess access;
   private File baseDir;
 
@@ -62,7 +64,7 @@ public class RegistrySerializerDirTest {
     baseDir = TestUtils.createEmptyTmpDir();
 
     access = new DirBasedObjectsAccess( baseDir );
-    serializer = new RegistrySerializer<String, Registry<String>>( new DirBasedRegistrySerializingStrategy<String>( access ) {
+    serializer = new RegistrySerializer<String, Registry<String>, OutputStream, InputStream>( new DirBasedRegistrySerializingStrategy<String>( access ) {
       @Nonnull
       @Override
       protected String deserialize( @Nonnull String id, @Nonnull File dir ) throws IOException {

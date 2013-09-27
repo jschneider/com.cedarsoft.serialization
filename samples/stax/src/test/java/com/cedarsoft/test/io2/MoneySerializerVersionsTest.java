@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest;
 import com.cedarsoft.serialization.Serializer;
@@ -48,7 +49,7 @@ import static org.junit.Assert.*;
 public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
   @Nonnull
   @Override
-  protected Serializer<Money> getSerializer() {
+  protected StreamSerializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 

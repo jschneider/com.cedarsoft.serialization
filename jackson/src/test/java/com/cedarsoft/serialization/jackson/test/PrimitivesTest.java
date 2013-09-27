@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.jackson.StringSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -50,7 +50,7 @@ public class PrimitivesTest extends AbstractJsonSerializerTest2<Primitives> {
 
   @Nonnull
   @Override
-  protected Serializer<Primitives> getSerializer() throws Exception {
+  protected StreamSerializer<Primitives> getSerializer() throws Exception {
     return new PrimitivesSerializer( new StringSerializer() );
   }
 

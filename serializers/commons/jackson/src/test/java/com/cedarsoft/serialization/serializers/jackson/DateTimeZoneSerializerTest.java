@@ -30,7 +30,7 @@
  */
 package com.cedarsoft.serialization.serializers.jackson;
 
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -46,7 +46,7 @@ public class DateTimeZoneSerializerTest extends AbstractJsonSerializerTest2<Date
 
   @Nonnull
   @Override
-  protected Serializer<DateTimeZone> getSerializer() throws Exception {
+  protected StreamSerializer<DateTimeZone> getSerializer() throws Exception {
     return new DateTimeZoneSerializer();
   }
 

@@ -44,7 +44,7 @@ import java.awt.Color;
 public class ColorSerializerVersionTest extends AbstractXmlVersionTest2<Color> {
   @Nonnull
   @Override
-  protected Serializer<Color> getSerializer() throws Exception {
+  protected ColorSerializer getSerializer() throws Exception {
     return new ColorSerializer();
   }
 

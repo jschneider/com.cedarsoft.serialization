@@ -35,6 +35,7 @@ import com.cedarsoft.serialization.Serializer;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -45,9 +46,9 @@ import java.io.OutputStream;
  */
 public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegistrySerializingStrategy<T, StreamBasedObjectsAccess> {
   @Nonnull
-  private final Serializer<T> serializer;
+  private final Serializer<T, OutputStream, InputStream> serializer;
 
-  public SerializerBasedRegistrySerializingStrategy( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T> serializer ) {
+  public SerializerBasedRegistrySerializingStrategy( @Nonnull StreamBasedObjectsAccess objectsAccess, @Nonnull Serializer<T, OutputStream, InputStream> serializer ) {
     super( objectsAccess );
     this.serializer = serializer;
   }
@@ -84,7 +85,7 @@ public class SerializerBasedRegistrySerializingStrategy<T> extends AbstractRegis
   }
 
   @Nonnull
-  public Serializer<T> getSerializer() {
+  public Serializer<T, OutputStream, InputStream> getSerializer() {
     return serializer;
   }
 }

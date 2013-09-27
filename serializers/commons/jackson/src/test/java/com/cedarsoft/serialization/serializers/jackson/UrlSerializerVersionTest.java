@@ -47,7 +47,7 @@ public class UrlSerializerVersionTest extends AbstractJsonVersionTest2<URL> {
 
   @Nonnull
   @Override
-  protected Serializer<URL> getSerializer() throws Exception {
+  protected UrlSerializer getSerializer() throws Exception {
     return new UrlSerializer();
   }
 

@@ -45,8 +45,10 @@ import java.io.IOException;
  * @param <S> the object to serialize to (e.g. a dom element or stream)
  * @param <D> the object to deserialize from ((e.g. a dom element or stream)
  * @param <E> the exception that might be thrown
+ * @param <O> the type of the object that is serialized to
+ * @param <I> the type of the object that is serialized from
  */
-public interface PluggableSerializer<T, S, D, E extends Throwable> extends Serializer<T> {
+public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends Serializer<T,O,I> {
   /**
    * Serializes the object to the given element
    *

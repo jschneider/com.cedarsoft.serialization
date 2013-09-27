@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
 public class RoleSerializerTest extends AbstractXmlSerializerTest2<Role> {
   @Nonnull
   @Override
-  protected Serializer<Role> getSerializer() throws Exception {
+  protected StreamSerializer<Role> getSerializer() throws Exception {
     return new RoleSerializer();
   }
 

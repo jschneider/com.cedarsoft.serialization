@@ -33,10 +33,10 @@ package com.cedarsoft.serialization.serializers.jackson;
 
 import com.cedarsoft.file.Extension;
 import com.cedarsoft.file.FileType;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -52,7 +52,7 @@ public class FileTypeSerializerTest extends AbstractJsonSerializerTest2<FileType
 
   @Nonnull
   @Override
-  protected Serializer<FileType> getSerializer() throws Exception {
+  protected StreamSerializer<FileType> getSerializer() throws Exception {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 

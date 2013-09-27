@@ -39,6 +39,8 @@ import org.xml.sax.SAXException;
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -57,7 +59,7 @@ public abstract class AbstractVersionTest<T> {
    */
   @Test
   public void testVersions() throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     Map<? extends Version, ? extends byte[]> serializedMap = getSerialized();
 
@@ -77,7 +79,7 @@ public abstract class AbstractVersionTest<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract Serializer<T> getSerializer() throws Exception;
+  protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
 
   /**
    * Returns a map containing the version and the serialized object

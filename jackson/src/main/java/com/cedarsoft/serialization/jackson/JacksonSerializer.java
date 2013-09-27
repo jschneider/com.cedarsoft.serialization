@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.serialization.InvalidNamespaceException;
 import com.cedarsoft.serialization.PluggableSerializer;
@@ -42,11 +43,13 @@ import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @param <T> the type of object this serializer is able to (de)serialize
  */
-public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException> {
+public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream>, StreamSerializer<T> {
   /**
    * Whether it is an object type. If true, the object braces are generated where necessary.
    *
@@ -88,9 +91,8 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
   /**
    * Verifies the name space
    *
-   * @param namespace the name space
-   * @throws InvalidNamespaceException
-   * @throws VersionException
+   * @param type the type
+   * @throws InvalidTypeException
    */
   void verifyType( @Nullable String type ) throws InvalidTypeException;
 

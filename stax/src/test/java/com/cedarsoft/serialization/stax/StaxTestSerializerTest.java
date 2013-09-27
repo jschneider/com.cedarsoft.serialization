@@ -43,6 +43,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
@@ -58,7 +60,7 @@ public class StaxTestSerializerTest extends AbstractXmlSerializerTest<Integer> {
 
   @Nonnull
   @Override
-  protected Serializer<Integer> getSerializer() {
+  protected Serializer<Integer, OutputStream, InputStream> getSerializer() {
     return new StaxIntegerSerializer();
   }
 

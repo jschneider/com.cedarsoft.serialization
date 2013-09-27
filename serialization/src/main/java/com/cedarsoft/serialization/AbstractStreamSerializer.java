@@ -29,28 +29,49 @@
  * have any questions.
  */
 
-package com.cedarsoft.serialization.serializers.jackson;
+package com.cedarsoft.serialization;
 
-import com.cedarsoft.serialization.StreamSerializer;
-import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.test.utils.Entry;
-import org.junit.experimental.theories.*;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 
 import javax.annotation.Nonnull;
-import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
+ * Abstract base class for all kinds of serializers.
  *
+ * @param <T> the type of object this serializer is able to (de)serialize
+ * @param <S> the object to serialize to
+ * @param <D> the object to deserialize from
+ * @param <E> the exception that might be thrown
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class ColorSerializerTest extends AbstractJsonSerializerTest2<Color> {
-  @DataPoint
-  public static final Entry<? extends Color> ENTRY1 = AbstractJsonSerializerTest2.create(
-    new Color(100, 42, 130),
-    ColorSerializerTest.class.getResource("Color_1.0.0_1.json"));
+public abstract class AbstractStreamSerializer<T, S, D, E extends Throwable> extends AbstractSerializer<T, S, D, E, OutputStream, InputStream> implements StreamSerializer<T> {
 
+  /**
+   * Creates a serializer.
+   *
+   * @param formatVersionRange the version range. The max value is used as format version when written.
+   */
+  protected AbstractStreamSerializer( @Nonnull VersionRange formatVersionRange ) {
+    super( formatVersionRange );
+  }
+
+  /**
+   * Helper method that serializes to a byte array
+   *
+   * @param object the object
+   * @return the serialized object
+   *
+   * @throws IOException
+   */
   @Nonnull
-  @Override
-  protected StreamSerializer<Color> getSerializer() throws Exception {
-    return new ColorSerializer();
+  public byte[] serializeToByteArray( @Nonnull T object ) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    serialize( object, out );
+    return out.toByteArray();
   }
 }

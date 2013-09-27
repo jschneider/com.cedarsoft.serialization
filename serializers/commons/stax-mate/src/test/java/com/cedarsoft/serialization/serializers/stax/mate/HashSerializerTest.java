@@ -33,7 +33,7 @@ package com.cedarsoft.serialization.serializers.stax.mate;
 
 import com.cedarsoft.crypt.Algorithm;
 import com.cedarsoft.crypt.Hash;
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.AssertUtils;
@@ -50,7 +50,7 @@ import java.io.ByteArrayInputStream;
 public class HashSerializerTest extends AbstractXmlSerializerTest2<Hash> {
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<Hash> getSerializer() {
+  protected HashSerializer getSerializer() {
     return new HashSerializer();
   }
 

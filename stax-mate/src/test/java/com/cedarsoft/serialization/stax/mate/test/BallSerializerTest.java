@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.stax.mate.test;
 
 import com.cedarsoft.serialization.SerializingStrategy;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.ToString;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -44,6 +45,9 @@ import org.junit.experimental.theories.*;
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
@@ -73,10 +77,10 @@ public class BallSerializerTest extends AbstractXmlSerializerTest2<Ball> {
                     "--------------------------------\n" +
                     "   1.0.0 -->     2.0.0     1.5.0\n" +
                     "   1.1.0 -->     2.0.1     1.5.1\n" +
-                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException>>() {
+                    "--------------------------------\n", VersionMappingsVisualizer.toString( getSerializer().getSerializingStrategySupport().getVersionMappings(), new ToString<SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>>() {
       @Nonnull
       @Override
-      public String convert( @Nonnull SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException> object ) {
+      public String convert( @Nonnull SerializingStrategy<? extends Ball, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> object ) {
         return object.getId();
       }
     } ) );

@@ -45,7 +45,7 @@ public class VersionSerializerVersionTest extends AbstractJsonVersionTest2<Versi
   public static final VersionEntry ENTRY1 = VersionSerializerVersionTest.create( Version.valueOf( 1, 0, 0 ), "\"42.42.42-suffix\"" );
 
   @Override
-  protected Serializer<Version> getSerializer() throws Exception {
+  protected VersionSerializer getSerializer() throws Exception {
     return new VersionSerializer();
   }
 

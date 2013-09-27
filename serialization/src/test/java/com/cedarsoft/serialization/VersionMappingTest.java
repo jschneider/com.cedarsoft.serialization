@@ -300,7 +300,7 @@ public class VersionMappingTest {
   //  }
   //
 
-  public static class MySerializer extends AbstractSerializer<Object, Object, Object, IOException> {
+  public static class MySerializer extends AbstractStreamSerializer<Object, Object, Object, IOException> {
     public MySerializer( @Nonnull VersionRange formatVersionRange ) {
       super( formatVersionRange );
     }

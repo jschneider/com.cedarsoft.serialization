@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
 public class EmailSerializerTest extends AbstractJsonSerializerTest2<Email> {
   @Nonnull
   @Override
-  protected Serializer<Email> getSerializer() throws Exception {
+  protected StreamSerializer<Email> getSerializer() throws Exception {
     return new EmailSerializer();
   }
 

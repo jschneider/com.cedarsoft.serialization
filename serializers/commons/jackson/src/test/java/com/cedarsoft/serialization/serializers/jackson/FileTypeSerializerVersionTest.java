@@ -48,7 +48,7 @@ public class FileTypeSerializerVersionTest
     FileTypeSerializerVersionTest.class.getResource( "FileType_1.0.0_1.json" ) );
 
   @Override
-  protected Serializer<FileType> getSerializer()
+  protected FileTypeSerializer getSerializer()
     throws Exception {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }

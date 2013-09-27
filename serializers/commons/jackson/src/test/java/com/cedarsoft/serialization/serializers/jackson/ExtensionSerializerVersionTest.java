@@ -49,7 +49,7 @@ public class ExtensionSerializerVersionTest
 
   @Nonnull
   @Override
-  protected Serializer<Extension> getSerializer() throws Exception {
+  protected ExtensionSerializer getSerializer() throws Exception {
     return new ExtensionSerializer();
   }
 

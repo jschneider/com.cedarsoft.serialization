@@ -46,7 +46,7 @@ public class LicenseSerializerVersionTest extends AbstractJsonVersionTest2<Licen
   public static final VersionEntry ENTRY1 = LicenseSerializerVersionTest.create( Version.valueOf( 1, 0, 0 ), LicenseSerializerVersionTest.class.getResource( "License_1.0.0_1.json" ) );
 
   @Override
-  protected Serializer<License> getSerializer() throws Exception {
+  protected LicenseSerializer getSerializer() throws Exception {
     return new LicenseSerializer();
   }
 

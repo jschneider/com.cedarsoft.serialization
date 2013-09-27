@@ -42,6 +42,8 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 
 /**
@@ -54,7 +56,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
 
   private static final String ATTRIBUTE_TYPE = "type";
   @Nonnull
-  protected final SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException> serializingStrategySupport;
+  protected final SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> serializingStrategySupport;
 
   /**
    * Creates a new serializer
@@ -65,7 +67,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
    */
   protected AbstractDelegatingStaxMateSerializer( @Nonnull String defaultElementName, @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( defaultElementName, nameSpaceUriBase, formatVersionRange );
-    serializingStrategySupport = new SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException>( formatVersionRange );
+    serializingStrategySupport = new SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>( formatVersionRange );
   }
 
   @Override
@@ -73,7 +75,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
     assert isVersionWritable( formatVersion );
 
     try {
-      SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = serializingStrategySupport.findStrategy( object );
+      SerializingStrategy<T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> strategy = serializingStrategySupport.findStrategy( object );
       Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
       serializeTo.addAttribute( ATTRIBUTE_TYPE, strategy.getId() );
 
@@ -93,7 +95,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
       throw new XMLStreamException( "No type attribute found. Cannot find strategy." );
     }
 
-    SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy = serializingStrategySupport.findStrategy( type );
+    SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> strategy = serializingStrategySupport.findStrategy( type );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
     return strategy.deserialize( deserializeFrom, resolvedVersion );
   }
@@ -104,17 +106,17 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
    * @return the strategies
    */
   @Nonnull
-  public Collection<? extends SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException>> getStrategies() {
+  public Collection<? extends SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream>> getStrategies() {
     return serializingStrategySupport.getStrategies();
   }
 
   @Nonnull
-  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException> strategy ) {
+  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> strategy ) {
     return serializingStrategySupport.addStrategy( strategy );
   }
 
   @Nonnull
-  public SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException> getSerializingStrategySupport() {
+  public SerializingStrategySupport<T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> getSerializingStrategySupport() {
     return serializingStrategySupport;
   }
 }

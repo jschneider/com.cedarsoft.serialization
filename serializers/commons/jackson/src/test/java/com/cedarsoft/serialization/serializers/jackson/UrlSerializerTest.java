@@ -30,7 +30,7 @@
  */
 package com.cedarsoft.serialization.serializers.jackson;
 
-import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.DataPoint;
@@ -47,7 +47,7 @@ public class UrlSerializerTest extends AbstractJsonSerializerTest2<URL> {
 
   @Nonnull
   @Override
-  protected Serializer<URL> getSerializer() throws Exception {
+  protected StreamSerializer<URL> getSerializer() throws Exception {
     return new UrlSerializer();
   }
 

@@ -33,9 +33,9 @@ package com.cedarsoft.serialization.serializers.jackson;
 
 import com.cedarsoft.file.FileType;
 import com.cedarsoft.file.FileTypeRegistry;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public class FileTypeSerializerReferencedTest extends AbstractJsonSerializerTest
 
   @Nonnull
   @Override
-  protected Serializer<FileType> getSerializer() throws Exception {
+  protected StreamSerializer<FileType> getSerializer() throws Exception {
     return new FileTypeSerializer.Referenced( new FileTypeRegistry() );
   }
 
