@@ -73,7 +73,7 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    * @param <T>              the type
    * @throws IOException
    */
-  public <T> void serializeWithRelation( @Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
+  public <T> void serializeWithRelationship( @Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
     Node targetNode = node.getGraphDatabase().createNode();
     Relationship relationshipTo = node.createRelationshipTo( targetNode, relationshipType );
     serialize( object, type, targetNode, formatVersion );
