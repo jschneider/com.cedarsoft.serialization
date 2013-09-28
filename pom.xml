@@ -40,6 +40,7 @@
     <module>stax</module>
     <module>stax-mate</module>
     <module>jackson</module>
+    <module>neo4j</module>
 
     <module>serializers</module>
     <module>test-utils</module>
