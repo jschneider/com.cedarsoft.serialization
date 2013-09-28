@@ -1,7 +1,5 @@
 package com.cedarsoft.serialization.neo4j;
 
-import com.cedarsoft.serialization.neo4j.utils.Graphviz;
-import com.cedarsoft.serialization.test.neo4j.AbstractNeo4JTest;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
