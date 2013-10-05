@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.ui.DelegatesMappingVisualizer;
@@ -55,7 +56,7 @@ import static org.junit.Assert.*;
 public class CarSerializerTest extends AbstractXmlSerializerMultiTest<Car> {
   @Nonnull
   @Override
-  protected Serializer<Car> getSerializer() {
+  protected StreamSerializer<Car> getSerializer() {
     MoneySerializer moneySerializer = new MoneySerializer();
     //We can share the same serializer. But we don't have to.
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );

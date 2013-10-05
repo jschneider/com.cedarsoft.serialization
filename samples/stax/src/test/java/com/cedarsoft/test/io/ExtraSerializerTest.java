@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerMultiTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
@@ -46,7 +47,7 @@ import java.util.List;
 public class ExtraSerializerTest extends AbstractXmlSerializerMultiTest<Extra> {
   @Nonnull
   @Override
-  protected Serializer<Extra> getSerializer() {
+  protected StreamSerializer<Extra> getSerializer() {
     //This serializer uses a delegate
     return new ExtraSerializer( new MoneySerializer() );
   }

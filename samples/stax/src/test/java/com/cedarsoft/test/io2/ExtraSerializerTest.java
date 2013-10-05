@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Extra;
@@ -44,7 +45,7 @@ import javax.annotation.Nonnull;
 public class ExtraSerializerTest extends AbstractXmlSerializerTest<Extra> {
   @Nonnull
   @Override
-  protected Serializer<Extra> getSerializer() throws Exception {
+  protected StreamSerializer<Extra> getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
   }
 

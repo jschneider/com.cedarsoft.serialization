@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
 public class MoneySerializerVersionsTest extends AbstractXmlVersionTest<Money> {
   @Nonnull
   @Override
-  protected StreamSerializer<Money> getSerializer() {
+  protected MoneySerializer getSerializer() {
     return new MoneySerializer();
   }
 
