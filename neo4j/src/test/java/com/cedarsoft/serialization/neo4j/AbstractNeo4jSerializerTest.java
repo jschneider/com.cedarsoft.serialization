@@ -73,6 +73,7 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
     }
   }
 
+  @Ignore
   @Test
   public void testPerformanceSerialization() throws Exception {
     int transactionCount = 10000;
