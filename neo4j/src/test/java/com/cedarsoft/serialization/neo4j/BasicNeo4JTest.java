@@ -1,6 +1,5 @@
 package com.cedarsoft.serialization.neo4j;
 
-import com.cedarsoft.serialization.neo4j.test.Relations;
 import org.junit.*;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -63,7 +62,7 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
 
       index.add( node, "myKey", 1 );
 
-      Relationship relationship = node.createRelationshipTo( node, Relations.MARRIED );
+      Relationship relationship = node.createRelationshipTo( node, TestRelations.MARRIED );
       graphDb.index().forRelationships( "rels" ).add( relationship, "myKey", 7 );
 
       tx.success();
@@ -114,7 +113,7 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
       assertThat( node.getRelationships() ).hasSize( 0 );
       assertThat( node ).isNotNull();
 
-      Relationship relationship = node.createRelationshipTo( node, Relations.SON );
+      Relationship relationship = node.createRelationshipTo( node, TestRelations.SON );
       assertThat( relationship.getStartNode() ).isEqualTo( relationship.getEndNode() );
 
       assertThat( node.getRelationships() ).hasSize( 1 );
