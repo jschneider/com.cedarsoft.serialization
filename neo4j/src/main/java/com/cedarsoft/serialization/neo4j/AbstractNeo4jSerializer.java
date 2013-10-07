@@ -6,6 +6,8 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicLabel;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
@@ -22,7 +24,7 @@ import java.util.List;
 public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> implements Serializer<T, Node, Node> {
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
-  @Nonnull 
+  @Nonnull
   public static final String PROPERTY_TYPE = "type";
 
   @Nonnull
@@ -41,6 +43,7 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   @Override
   public void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
     serializeTo.setProperty( PROPERTY_TYPE, type );
+    serializeTo.addLabel(DynamicLabel.label(type));
     serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
   }
 
