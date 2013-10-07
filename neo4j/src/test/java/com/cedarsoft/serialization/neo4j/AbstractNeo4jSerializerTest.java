@@ -7,6 +7,7 @@ import com.ecyrd.speed4j.StopWatch;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.junit.*;
+import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -43,6 +45,33 @@ public class AbstractNeo4jSerializerTest extends AbstractNeo4JTest {
     }
   }
 
+  @Test
+  public void testWrongLabel() throws Exception {
+    Person person = new Person( "Martha Musterfrau", new Address( "Musterstraße 7", "Musterstadt" ), ImmutableList.of( new Email( "1" ), new Email( "2" ), new Email( "3" ) ) );
+
+    Node node;
+    try ( Transaction tx = graphDb.beginTx() ) {
+      node = serialize( person );
+
+      //remove label
+      node.removeLabel(personSerializer.getTypeLabel());
+      node.addLabel(DynamicLabel.label("lab1"));
+      node.addLabel(DynamicLabel.label("lab2"));
+      node.addLabel(DynamicLabel.label("lab3"));
+
+      tx.success();
+    }
+
+    //Now deserialize
+    try {
+      try ( Transaction tx = graphDb.beginTx() ) {
+        deserialize(node);
+      }
+      fail("Where is the Exception");
+    } catch (IOException e) {
+      assertThat(e.getCause()).isNotNull().hasMessage("Invalid type. Expected <com.cedarsoft.test.person> but found <[lab1, lab2, lab3]>");
+    }
+  }
 
   @Test
   public void testPerformanceSerialization() throws Exception {

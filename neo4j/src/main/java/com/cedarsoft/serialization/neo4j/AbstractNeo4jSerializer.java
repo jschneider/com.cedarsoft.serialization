@@ -5,12 +5,15 @@ import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
+import com.google.common.collect.Iterables;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.ResourceIterable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,8 +27,6 @@ import java.util.List;
 public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> implements Serializer<T, Node, Node> {
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
-  @Nonnull
-  public static final String PROPERTY_TYPE = "type";
 
   @Nonnull
   private final String type; //$NON-NLS-1$
@@ -42,31 +43,33 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
 
   @Override
   public void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
-    serializeTo.setProperty( PROPERTY_TYPE, type );
-    serializeTo.addLabel(DynamicLabel.label(type));
+    serializeTo.addLabel(getTypeLabel());
     serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
+  }
+
+  @Nonnull
+  public Label getTypeLabel() {
+    return DynamicLabel.label(type);
   }
 
   @Nonnull
   @Override
   public T deserialize( @Nonnull Node in ) throws IOException, VersionException {
-    String readType = ( String ) in.getProperty( PROPERTY_TYPE );
-
     try {
-      verifyType( readType );
-    } catch ( InvalidTypeException e ) {
-      throw new IOException( "Could not parse due to " + e.getMessage(), e );
+      verifyType(in);
+    } catch (InvalidTypeException e) {
+      throw new IOException("Could not parse due to " + e.getMessage(), e);
     }
 
-    Version version = Version.parse( ( String ) in.getProperty( PROPERTY_FORMAT_VERSION ) );
-    verifyVersionReadable( version );
+    Version version = Version.parse((String) in.getProperty(PROPERTY_FORMAT_VERSION));
+    verifyVersionReadable(version);
 
-    return deserialize( in, version );
+    return deserialize(in, version);
   }
 
-  protected void verifyType( @Nonnull String readType ) throws InvalidTypeException {
-    if ( !this.type.equals( readType ) ) {//$NON-NLS-1$
-      throw new InvalidTypeException( readType, this.type );
+  private void verifyType(@Nonnull Node in) throws InvalidTypeException {
+    if (!in.hasLabel(getTypeLabel())) {
+      throw new InvalidTypeException( getTypeLabel(), in.getLabels() );
     }
   }
 
@@ -111,25 +114,8 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   }
 
   public static class InvalidTypeException extends Exception {
-    @Nullable
-    private final String type;
-    @Nonnull
-    private final String expected;
-
-    public InvalidTypeException( @Nullable String type, @Nonnull String expected ) {
-      super( "Invalid type. Was <" + type + "> but expected <" + expected + ">" );
-      this.type = type;
-      this.expected = expected;
-    }
-
-    @Nullable
-    public String getType() {
-      return type;
-    }
-
-    @Nonnull
-    public String getExpected() {
-      return expected;
+    public InvalidTypeException( @Nullable Label expectedLabel, @Nonnull ResourceIterable<Label> expected ) {
+      super( "Invalid type. Expected <" + expectedLabel + "> but found <" + Iterables.toString(expected) + ">" );
     }
   }
 }
