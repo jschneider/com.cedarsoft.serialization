@@ -22,6 +22,7 @@ import java.util.List;
 public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> implements Serializer<T, Node, Node> {
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
+  @Nonnull 
   public static final String PROPERTY_TYPE = "type";
 
   @Nonnull
