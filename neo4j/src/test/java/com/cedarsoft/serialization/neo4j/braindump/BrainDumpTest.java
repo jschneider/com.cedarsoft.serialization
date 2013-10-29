@@ -90,8 +90,8 @@ public class BrainDumpTest extends AbstractNeo4JTest {
 
 
     try (Transaction tx = graphDb.beginTx()) {
-      assertThat(graphDb.findNodesByLabelAndProperty(Types.INFORMATION, PROPERTY_URI, "http://www.google.de")).hasSize(1);
-      assertThat(graphDb.findNodesByLabelAndProperty(Types.INFORMATION, PROPERTY_URI, "http://www.github.de")).hasSize(1);
+      assertThat(graphDb.findNodesByLabelAndProperty(Types.INFORMATION, PROPERTY_URI, "http://www.google.de")).describedAs( "google node" ).hasSize(1);
+      assertThat(graphDb.findNodesByLabelAndProperty(Types.INFORMATION, PROPERTY_URI, "http://www.github.com")).describedAs( "github node" ).hasSize(1);
       tx.success();
     }
 
