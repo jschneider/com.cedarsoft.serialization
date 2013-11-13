@@ -5,6 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -15,11 +16,16 @@ import org.junit.*;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.schema.IndexDefinition;
+import org.neo4j.graphdb.traversal.Evaluators;
+import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.kernel.Traversal;
+import org.neo4j.kernel.Uniqueness;
 
 import com.cedarsoft.serialization.neo4j.AbstractNeo4JTest;
 import com.google.common.base.Joiner;
@@ -104,36 +110,35 @@ public class BrainDumpTest extends AbstractNeo4JTest {
 
   private void printTopicAll(@Nonnull Node topic) {
     System.out.println("*All* stored under <" + topic.getProperty(PROPERTY_VALUE) + ">: ");
-    for (Node node : getAssignedNodesRecursive(topic)) {
+    for (Path path : getAssignedNodesRecursive(topic)) {
+      Node node = path.endNode();
       System.out.println("\t- " + getLabels(node) + ": " + toString(node));
     }
   }
 
-  private static List<Node> getAssignedNodes(@Nonnull Node topic) {
-    List<Node> assigned = new ArrayList<>();
-    for (Relationship relationship : topic.getRelationships(Direction.INCOMING, Relations.TO_TOPIC)) {
-      assigned.add(relationship.getStartNode());
-    }
-    return assigned;
+  @Nonnull
+  private static Iterable<Path> getAssignedNodes(@Nonnull Node topic) {
+    Traverser traverse = Traversal.description()
+      .relationships(Relations.TO_TOPIC, Direction.INCOMING)
+      .evaluator(Evaluators.toDepth(1)).traverse(topic);
+    return traverse;
   }
 
-  private static Collection<Node> getAssignedNodesRecursive(@Nonnull Node topic) {
-    Set<Node> assigned = new HashSet<>();
-
-    assigned.addAll(getAssignedNodes(topic));
-
-    for (Relationship relationship : topic.getRelationships(Direction.INCOMING, Relations.TO_PARENT)) {
-      Node child = relationship.getStartNode();
-      assigned.addAll(getAssignedNodesRecursive(child));
-    }
-
-    return assigned;
+  @Nonnull
+  private static Iterable<Path> getAssignedNodesRecursive(@Nonnull Node topic) {
+    return Traversal.description()
+      .relationships(Relations.TO_TOPIC, Direction.INCOMING)
+      .relationships(Relations.TO_PARENT, Direction.INCOMING)
+      .evaluator(Evaluators.all())
+      .uniqueness(Uniqueness.NODE_GLOBAL)
+      .traverse(topic);
   }
 
   private static void printTopic(@Nonnull Node topic) {
     //Now list all entries
     System.out.println("Stored under <" + topic.getProperty(PROPERTY_VALUE) + ">: ");
-    for (Node node : getAssignedNodes(topic)) {
+    for (Path path : getAssignedNodes(topic)) {
+      Node node = path.endNode();
       System.out.println("\t- " + getLabels(node) + ": " + toString(node));
     }
   }
