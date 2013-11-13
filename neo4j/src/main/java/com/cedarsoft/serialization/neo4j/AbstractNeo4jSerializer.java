@@ -79,12 +79,6 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     }
   }
 
-  public <T> void serializeWithRelationships( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
-    for ( T object : objects ) {
-      serializeWithRelationship( object, type, node, relationshipType, formatVersion );
-    }
-  }
-
   /**
    * Serializes the given object using a relation
    *
