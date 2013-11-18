@@ -4,6 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
@@ -23,6 +24,7 @@ import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.kernel.Uniqueness;
 
@@ -92,6 +94,7 @@ public class BrainDumpTest extends AbstractNeo4JTest {
       tx.success();
     }
 
+    System.out.println("--------");
 
     try (Transaction tx = graphDb.beginTx()) {
       //Find a topic
@@ -103,6 +106,31 @@ public class BrainDumpTest extends AbstractNeo4JTest {
       tx.success();
     }
 
+    System.out.println("--------");
+
+    //Now print the topics for one entry
+    try (Transaction tx = graphDb.beginTx()) {
+      Node note = findNote("VHosts-Problem bei Apache-Upgrade auf 2.4");
+      System.out.println("--------");
+      System.out.println("Topics for: " + toString(note));
+
+      for (Path path : getTopics(note)) {
+        System.out.println(" -- " + toString(path.endNode()));
+      }
+
+      System.out.println("------");
+      System.out.println("All topics for: " + toString(note));
+
+      for (Path path : getAllTopics(note)) {
+        if (path.length() == 1) {
+          System.out.println(" -- " + toString(path.endNode()));
+        }else {
+          System.out.println("   (" + toString(path.endNode()) + ")");
+        }
+      }
+
+      tx.success();
+    }
 
     //Graphviz.toPng(graphDb);@
   }
@@ -113,6 +141,24 @@ public class BrainDumpTest extends AbstractNeo4JTest {
       Node node = path.endNode();
       System.out.println("\t- " + getLabels(node) + ": " + toString(node));
     }
+  }
+
+  @Nonnull
+  private Iterable<Path> getTopics(@Nonnull Node node) {
+    return Traversal.description()
+      .relationships(Relations.TO_TOPIC, Direction.OUTGOING)
+      .evaluator(Evaluators.excludeStartPosition()).traverse(node);
+  }
+
+  @Nonnull
+  private Iterable<Path> getAllTopics(@Nonnull Node node) {
+    return Traversal.description()
+      .relationships(Relations.TO_TOPIC, Direction.OUTGOING)
+      .relationships(Relations.TO_PARENT, Direction.OUTGOING)
+      .evaluator(Evaluators.excludeStartPosition())
+      .uniqueness(Uniqueness.NODE_GLOBAL)
+      .breadthFirst()
+      .traverse(node);
   }
 
   @Nonnull
@@ -178,6 +224,13 @@ public class BrainDumpTest extends AbstractNeo4JTest {
     try (ResourceIterator<Node> iterator = graphDb.findNodesByLabelAndProperty(Types.TOPIC, PROPERTY_VALUE, value).iterator()) {
       assertThat(iterator.hasNext()).isTrue();
       return iterator.next();
+    }
+  }
+
+  @Nonnull
+  private Node findNote(@Nonnull String title) throws NoSuchElementException {
+    try (ResourceIterator<Node> iterator = graphDb.findNodesByLabelAndProperty(Types.NOTE, PROPERTY_TITLE, title).iterator()) {
+      return IteratorUtil.first(iterator);
     }
   }
 
