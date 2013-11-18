@@ -3,14 +3,11 @@ package com.cedarsoft.serialization.neo4j.braindump;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.junit.*;
 import org.neo4j.graphdb.Direction;
@@ -22,6 +19,8 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.schema.IndexDefinition;
+import org.neo4j.graphdb.traversal.Evaluation;
+import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
@@ -109,15 +108,15 @@ public class BrainDumpTest extends AbstractNeo4JTest {
   }
 
   private void printTopicAll(@Nonnull Node topic) {
-    System.out.println("*All* stored under <" + topic.getProperty(PROPERTY_VALUE) + ">: ");
-    for (Path path : getAssignedNodesRecursive(topic)) {
+    System.out.println("*All* entries stored under <" + topic.getProperty(PROPERTY_VALUE) + ">: ");
+    for (Path path : getAssignedNonTopicNodesRecursive(topic)) {
       Node node = path.endNode();
       System.out.println("\t- " + getLabels(node) + ": " + toString(node));
     }
   }
 
   @Nonnull
-  private static Iterable<Path> getAssignedNodes(@Nonnull Node topic) {
+  private static Iterable<Path> getSubTopics(@Nonnull Node topic) {
     Traverser traverse = Traversal.description()
       .relationships(Relations.TO_TOPIC, Direction.INCOMING)
       .evaluator(Evaluators.toDepth(1)).traverse(topic);
@@ -125,19 +124,50 @@ public class BrainDumpTest extends AbstractNeo4JTest {
   }
 
   @Nonnull
-  private static Iterable<Path> getAssignedNodesRecursive(@Nonnull Node topic) {
+  private static Iterable<Path> getSubEntries(@Nonnull Node topic) {
+    Traverser traverse = Traversal.description()
+      .relationships(Relations.TO_PARENT, Direction.INCOMING)
+      .evaluator(Evaluators.toDepth(1)).traverse(topic);
+    return traverse;
+  }
+
+  @Nonnull
+  private static Iterable<Path> getAssignedNonTopicNodesRecursive(@Nonnull Node topic) {
     return Traversal.description()
       .relationships(Relations.TO_TOPIC, Direction.INCOMING)
       .relationships(Relations.TO_PARENT, Direction.INCOMING)
-      .evaluator(Evaluators.all())
+      .evaluator(new Evaluator() {
+        @Override
+        public Evaluation evaluate(Path path) {
+          @Nullable Relationship relationship = path.lastRelationship();
+          if (relationship == null) {
+            return Evaluation.EXCLUDE_AND_CONTINUE;
+          }
+
+          if (relationship.isType(Relations.TO_TOPIC)) {
+            return Evaluation.INCLUDE_AND_CONTINUE;
+          }
+          if (relationship.isType(Relations.TO_PARENT)) {
+            return Evaluation.EXCLUDE_AND_CONTINUE;
+          }
+          return Evaluation.EXCLUDE_AND_PRUNE;
+        }
+      })
       .uniqueness(Uniqueness.NODE_GLOBAL)
       .traverse(topic);
   }
 
   private static void printTopic(@Nonnull Node topic) {
-    //Now list all entries
     System.out.println("Stored under <" + topic.getProperty(PROPERTY_VALUE) + ">: ");
-    for (Path path : getAssignedNodes(topic)) {
+    //first the topics
+    System.out.println("--> Topics:");
+    for (Path path : getSubTopics(topic)) {
+      Node node = path.endNode();
+      System.out.println("\t- " + getLabels(node) + ": " + toString(node));
+    }
+
+    System.out.println("--> Entries:");
+    for (Path path : getSubEntries(topic)) {
       Node node = path.endNode();
       System.out.println("\t- " + getLabels(node) + ": " + toString(node));
     }
@@ -175,6 +205,9 @@ public class BrainDumpTest extends AbstractNeo4JTest {
     }
     if (node.hasLabel(Types.INFORMATION)) {
       return String.valueOf(node.getProperty(PROPERTY_KEY) + ":\t" + node.getProperty(PROPERTY_VALUE));
+    }
+    if (node.hasLabel(Types.TOPIC)) {
+      return String.valueOf(node.getProperty(PROPERTY_VALUE));
     }
 
     return node.toString();
