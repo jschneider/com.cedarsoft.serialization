@@ -114,7 +114,7 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   }
 
   public static class InvalidTypeException extends Exception {
-    public InvalidTypeException( @Nullable Label expectedLabel, @Nonnull ResourceIterable<Label> expected ) {
+    public InvalidTypeException( @Nullable Label expectedLabel, @Nonnull Iterable<Label> expected ) {
       super( "Invalid type. Expected <" + expectedLabel + "> but found <" + Iterables.toString(expected) + ">" );
     }
   }
