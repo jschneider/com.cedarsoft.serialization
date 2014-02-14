@@ -100,8 +100,8 @@ public class GenerateSerializerAction extends AnAction {
     }
 
 
-    Editor editor = CodeInsightUtil.positionCursor( serializerProject, containingFile, serializer.getLBrace() );
-    System.out.println( "Finished: " + psiClass );
+    //Editor editor = CodeInsightUtil.positionCursor( serializerProject, containingFile, serializer.getLBrace() );
+    //System.out.println( "Finished: " + psiClass );
 
 
     //JavaPsiFacade psiFacade = JavaPsiFacade.getInstance( project );
