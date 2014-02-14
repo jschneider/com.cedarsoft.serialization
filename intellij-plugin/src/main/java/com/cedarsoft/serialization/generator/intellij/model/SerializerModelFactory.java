@@ -14,7 +14,6 @@ import com.intellij.psi.codeStyle.VariableKind;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -30,7 +29,6 @@ public class SerializerModelFactory {
   @Nonnull
   private final JavaCodeStyleManager codeStyleManager;
 
-  @Inject
   public SerializerModelFactory( @Nonnull SerializerResolver serializerResolver, @Nonnull JavaCodeStyleManager codeStyleManager ) {
     this.serializerResolver = serializerResolver;
     this.codeStyleManager = codeStyleManager;

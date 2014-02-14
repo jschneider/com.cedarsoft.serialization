@@ -69,12 +69,12 @@ public class FieldAccessProvider {
   }
 
   @Nonnull
-  private FieldSetter findSetter( @Nonnull PsiField field ) {
+  private static FieldSetter findSetter( @Nonnull PsiField field ) {
     @Nullable PsiMethod setter = PropertyUtil.findSetterForField( field );
     if ( setter != null ) {
       return new FieldSetter.SetterFieldSetter( setter.getName() );
     }
-    return new FieldSetter.SetterFieldSetter( PropertyUtil.suggestSetterName( getProject(), field ) );
+    return new FieldSetter.SetterFieldSetter( PropertyUtil.suggestSetterName( field ) );
   }
 
   @Nonnull

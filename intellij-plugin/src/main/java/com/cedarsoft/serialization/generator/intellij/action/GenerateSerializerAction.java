@@ -88,7 +88,19 @@ public class GenerateSerializerAction extends AnAction {
     new JacksonSerializerTestsGenerator( psiClass.getProject() ).generate( model );
 
 
-    Editor editor = CodeInsightUtil.positionCursor( serializer.getProject(), serializer.getContainingFile(), serializer.getLBrace() );
+    Project serializerProject = serializer.getProject();
+    @Nullable PsiFile containingFile = serializer.getContainingFile();
+
+    if ( containingFile == null ) {
+      throw new IllegalStateException( "--> null file for " + serializer );
+    }
+
+    if ( containingFile.getVirtualFile() == null ) {
+      throw new IllegalStateException( "--> null virtual file for " + serializer );
+    }
+
+
+    Editor editor = CodeInsightUtil.positionCursor( serializerProject, containingFile, serializer.getLBrace() );
     System.out.println( "Finished: " + psiClass );
 
 
