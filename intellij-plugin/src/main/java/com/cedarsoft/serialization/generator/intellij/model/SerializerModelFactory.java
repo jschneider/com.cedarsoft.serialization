@@ -38,40 +38,40 @@ public class SerializerModelFactory {
   public SerializerModel create( @Nonnull PsiClass classToSerialize, @Nonnull Iterable<? extends PsiField> selectedFields ) {
     FieldAccessProvider fieldAccessProvider = new FieldAccessProvider( classToSerialize );
 
-    Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields, fieldAccessProvider );
-    Collection<? extends DelegatingSerializerEntry> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
+    Collection<? extends FieldToSerialize> fieldToSerializeEntries = calculateFieldToSerializeEntries( selectedFields, fieldAccessProvider );
+    Collection<? extends DelegatingSerializer> delegatingSerializers = calculateSerializerDelegates( fieldToSerializeEntries );
 
     return new SerializerModel( classToSerialize, fieldToSerializeEntries, delegatingSerializers );
   }
 
   @Nonnull
-  private static Collection<? extends FieldToSerializeEntry> calculateFieldToSerializeEntries( @Nonnull Iterable<? extends PsiField> selectedFields, @Nonnull final FieldAccessProvider fieldAccessProvider ) {
-    List<FieldToSerializeEntry> entries = new ArrayList<FieldToSerializeEntry>();
+  private static Collection<? extends FieldToSerialize> calculateFieldToSerializeEntries( @Nonnull Iterable<? extends PsiField> selectedFields, @Nonnull final FieldAccessProvider fieldAccessProvider ) {
+    List<FieldToSerialize> entries = new ArrayList<FieldToSerialize>();
 
     for ( final PsiField selectedField : selectedFields ) {
-      @javax.annotation.Nullable FieldToSerializeEntry entry = selectedField.getType().accept( new PsiTypeVisitor<FieldToSerializeEntry>() {
+      @javax.annotation.Nullable FieldToSerialize entry = selectedField.getType().accept( new PsiTypeVisitor<FieldToSerialize>() {
         @Nullable
         @Override
-        public FieldToSerializeEntry visitClassType( PsiClassType classType ) {
-          return new FieldToSerializeEntry( classType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
+        public FieldToSerialize visitClassType( PsiClassType classType ) {
+          return new FieldToSerialize( classType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
         }
 
         @Nullable
         @Override
-        public FieldToSerializeEntry visitPrimitiveType( PsiPrimitiveType primitiveType ) {
-          return new FieldToSerializeEntry( primitiveType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
+        public FieldToSerialize visitPrimitiveType( PsiPrimitiveType primitiveType ) {
+          return new FieldToSerialize( primitiveType, selectedField, fieldAccessProvider.getFieldAccess( selectedField ) );
         }
 
         @Nullable
         @Override
-        public FieldToSerializeEntry visitWildcardType( PsiWildcardType wildcardType ) {
+        public FieldToSerialize visitWildcardType( PsiWildcardType wildcardType ) {
           System.out.println( "--> FIX ME: " + wildcardType );
           return super.visitWildcardType( wildcardType );
         }
 
         @Nullable
         @Override
-        public FieldToSerializeEntry visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
+        public FieldToSerialize visitCapturedWildcardType( PsiCapturedWildcardType capturedWildcardType ) {
           System.out.println( "--> FIX ME: " + capturedWildcardType );
           return super.visitCapturedWildcardType( capturedWildcardType );
         }
@@ -88,14 +88,14 @@ public class SerializerModelFactory {
   }
 
   @Nonnull
-  private Collection<? extends DelegatingSerializerEntry> calculateSerializerDelegates( @Nonnull Iterable<? extends FieldToSerializeEntry> fieldEntries ) {
-    Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
+  private Collection<? extends DelegatingSerializer> calculateSerializerDelegates( @Nonnull Iterable<? extends FieldToSerialize> fieldEntries ) {
+    Map<PsiType, DelegatingSerializer> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializer>();
 
-    for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
+    for ( FieldToSerialize fieldEntry : fieldEntries ) {
       PsiType delegatingSerializerType = serializerResolver.findSerializerFor( fieldEntry.getFieldType() );
       String paramName = codeStyleManager.suggestVariableName( VariableKind.PARAMETER, null, null, delegatingSerializerType ).names[0];
 
-      DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType(), delegatingSerializerType, paramName );
+      DelegatingSerializer entry = new DelegatingSerializer( fieldEntry.getFieldType(), delegatingSerializerType, paramName );
       delegatingSerializersMap.put( entry.getSerializedType(), entry );
     }
 

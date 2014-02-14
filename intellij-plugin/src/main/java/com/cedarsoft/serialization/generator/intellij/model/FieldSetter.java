@@ -3,14 +3,28 @@ package com.cedarsoft.serialization.generator.intellij.model;
 import javax.annotation.Nonnull;
 
 /**
+ * Describes a setter for a field
+ *
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public interface FieldSetter {
+  /**
+   * Whether it is constructed by access
+   *
+   * @return the constructor access
+   */
   boolean isConstructorAccess();
 
+  /**
+   * Whether it is accessed by setter
+   *
+   * @return the setter
+   */
   boolean isSetterAccess();
 
   /**
+   * Implementation that uses a constructor
+   *
    * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
    */
   class ConstructorFieldSetter implements FieldSetter {
@@ -36,6 +50,8 @@ public interface FieldSetter {
   }
 
   /**
+   * Implementation that uses a setter
+   *
    * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
    */
   class SetterFieldSetter implements FieldSetter {

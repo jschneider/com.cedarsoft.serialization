@@ -13,9 +13,11 @@ import com.intellij.psi.util.TypeConversionUtil;
 import javax.annotation.Nonnull;
 
 /**
+ * Describes a field that has been serialized
+ *
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class FieldToSerializeEntry {
+public class FieldToSerialize {
   @Nonnull
   private final PsiType fieldType;
   @Nonnull
@@ -31,33 +33,16 @@ public class FieldToSerializeEntry {
   @Nonnull
   private final String defaultValue;
 
-
-  public FieldToSerializeEntry( @Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
+  public FieldToSerialize( @Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
     this.fieldType = fieldType;
     this.field = field;
     this.fieldName = field.getName();
     this.fieldSetter = fieldSetter;
 
-    this.accessor = findGetter( field );
+    this.accessor = findGetterName( field );
     this.propertyConstant = "PROPERTY_" + JavaCodeStyleManager.getInstance( getProject() ).suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
 
     defaultValue = getDefaultValue( fieldType );
-  }
-
-  @Nonnull
-  private String getDefaultValue( @Nonnull PsiType fieldType ) {
-    if ( isPrimitive() ) {
-      if ( TypeConversionUtil.isBooleanType( fieldType ) ) {
-        return "false";
-      }
-      if ( PsiType.CHAR.equals( fieldType ) ) {
-        return "(char)-1";
-      }
-
-      return "-1";
-    } else {
-      return "null";
-    }
   }
 
   @Nonnull
@@ -90,10 +75,6 @@ public class FieldToSerializeEntry {
     return propertyConstant;
   }
 
-  public final boolean isPrimitive() {
-    return TypeConversionUtil.isPrimitiveAndNotNull( fieldType );
-  }
-
   @Nonnull
   public String getDefaultValue() {
     return defaultValue;
@@ -110,11 +91,53 @@ public class FieldToSerializeEntry {
 
   @Nonnull
   public String getFieldTypeBoxed() {
-    return DelegatingSerializerEntry.box( getFieldType() );
+    return DelegatingSerializer.box( getFieldType() );
   }
 
+  public boolean isPrimitive() {
+    return isPrimitive( getFieldType() );
+  }
+
+  /**
+   * Returns the default value for a given type
+   *
+   * @param fieldType the field type
+   * @return the default value
+   */
   @Nonnull
-  static String findGetter( @Nonnull PsiField field ) {
+  private static String getDefaultValue( @Nonnull PsiType fieldType ) {
+    if ( isPrimitive( fieldType ) ) {
+      if ( TypeConversionUtil.isBooleanType( fieldType ) ) {
+        return "false";
+      }
+      if ( PsiType.CHAR.equals( fieldType ) ) {
+        return "(char)-1";
+      }
+
+      return "-1";
+    } else {
+      return "null";
+    }
+  }
+
+  /**
+   * Whether the given field type is a primitive
+   *
+   * @param fieldType the field type
+   * @return true if the given type is a primitive, false otherwise
+   */
+  public static boolean isPrimitive( @Nonnull PsiType fieldType ) {
+    return TypeConversionUtil.isPrimitiveAndNotNull( fieldType );
+  }
+
+  /**
+   * Returns the getter for a given field
+   *
+   * @param field the field
+   * @return the getter name
+   */
+  @Nonnull
+  public static String findGetterName( @Nonnull PsiField field ) {
     PsiMethod getter = PropertyUtil.findGetterForField( field );
     if ( getter != null ) {
       return getter.getName() + "()";

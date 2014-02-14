@@ -11,15 +11,15 @@ import java.util.Collection;
  */
 public class SerializerModel {
   @Nonnull
-  private final ImmutableList<? extends FieldToSerializeEntry> fieldToSerializeEntries;
+  private final ImmutableList<? extends FieldToSerialize> fieldToSerializeEntries;
 
   @Nonnull
-  private final ImmutableList<? extends DelegatingSerializerEntry> delegatingSerializerEntries;
+  private final ImmutableList<? extends DelegatingSerializer> delegatingSerializerEntries;
 
   @Nonnull
   private final PsiClass classToSerialize;
 
-  public SerializerModel( @Nonnull PsiClass classToSerialize, @Nonnull Collection<? extends FieldToSerializeEntry> fieldToSerializeEntries, @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries ) {
+  public SerializerModel( @Nonnull PsiClass classToSerialize, @Nonnull Collection<? extends FieldToSerialize> fieldToSerializeEntries, @Nonnull Collection<? extends DelegatingSerializer> delegatingSerializerEntries ) {
     this.classToSerialize = classToSerialize;
     this.fieldToSerializeEntries = ImmutableList.copyOf( fieldToSerializeEntries );
     this.delegatingSerializerEntries = ImmutableList.copyOf( delegatingSerializerEntries );
@@ -46,13 +46,13 @@ public class SerializerModel {
   }
 
   @Nonnull
-  public ImmutableList<? extends FieldToSerializeEntry> getFieldToSerializeEntries() {
+  public ImmutableList<? extends FieldToSerialize> getFieldToSerializeEntries() {
     //noinspection ReturnOfCollectionOrArrayField
     return fieldToSerializeEntries;
   }
 
   @Nonnull
-  public ImmutableList<? extends DelegatingSerializerEntry> getDelegatingSerializerEntries() {
+  public ImmutableList<? extends DelegatingSerializer> getDelegatingSerializerEntries() {
     //noinspection ReturnOfCollectionOrArrayField
     return delegatingSerializerEntries;
   }

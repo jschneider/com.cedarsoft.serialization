@@ -1,6 +1,6 @@
-package com.cedarsoft.serialization.generator.intellij;
+package com.cedarsoft.serialization.generator.intellij.jackson;
 
-import com.cedarsoft.serialization.generator.intellij.model.FieldToSerializeEntry;
+import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.google.common.collect.ImmutableList;
 import com.intellij.codeInsight.NullableNotNullManager;
@@ -119,7 +119,7 @@ public class JacksonSerializerTestsGenerator {
 
     methodBuilder.append( "){" );
 
-    for ( FieldToSerializeEntry entry : serializerModel.getFieldToSerializeEntries() ) {
+    for ( FieldToSerialize entry : serializerModel.getFieldToSerializeEntries() ) {
       methodBuilder.append( "org.fest.assertions.Assertions.assertThat(deserialized." ).append( entry.getAccessor() ).append( ").isNotNull();" );
     }
 

@@ -1,8 +1,8 @@
-package com.cedarsoft.serialization.generator.intellij;
+package com.cedarsoft.serialization.generator.intellij.jackson;
 
-import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializerEntry;
+import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer;
 import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
-import com.cedarsoft.serialization.generator.intellij.model.FieldToSerializeEntry;
+import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -121,7 +121,7 @@ public class JacksonSerializerGenerator {
   }
 
   private void addPropertyConstants( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
-    for ( FieldToSerializeEntry entry : serializerModel.getFieldToSerializeEntries() ) {
+    for ( FieldToSerialize entry : serializerModel.getFieldToSerializeEntries() ) {
       serializerClass.add( elementFactory.createFieldFromText( "public static final String " + entry.getPropertyConstantName() + "=\"" + entry.getFieldName() + "\";", serializerClass ) );
     }
   }
@@ -134,17 +134,17 @@ public class JacksonSerializerGenerator {
    */
   @Nonnull
   private PsiMethod generateConstructor( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
-    @Nonnull Collection<? extends DelegatingSerializerEntry> delegatingSerializerEntries = serializerModel.getDelegatingSerializerEntries();
+    @Nonnull Collection<? extends DelegatingSerializer> delegatingSerializers = serializerModel.getDelegatingSerializerEntries();
 
     StringBuilder constructorBuilder = new StringBuilder();
     constructorBuilder.append( "@javax.inject.Inject public " ).append( serializerClass.getName() ).append( "(" );
 
     //Add serializers
-    for ( Iterator<? extends DelegatingSerializerEntry> iterator = delegatingSerializerEntries.iterator(); iterator.hasNext(); ) {
-      DelegatingSerializerEntry delegatingSerializerEntry = iterator.next();
+    for ( Iterator<? extends DelegatingSerializer> iterator = delegatingSerializers.iterator(); iterator.hasNext(); ) {
+      DelegatingSerializer delegatingSerializer = iterator.next();
 
-      PsiType delegatingSerializerType = delegatingSerializerEntry.getDelegatingSerializerType();
-      String paramName = delegatingSerializerEntry.getSerializerParamName();
+      PsiType delegatingSerializerType = delegatingSerializer.getDelegatingSerializerType();
+      String paramName = delegatingSerializer.getSerializerParamName();
 
       constructorBuilder
         .append( notNull() )
@@ -160,10 +160,10 @@ public class JacksonSerializerGenerator {
 
 
     //register the delegating serializers
-    for ( DelegatingSerializerEntry entry : delegatingSerializerEntries ) {
+    for ( DelegatingSerializer entry : delegatingSerializers ) {
       constructorBuilder.append( "getDelegatesMappings().add( " ).append( entry.getSerializerParamName() ).append( " ).responsibleFor( " ).append( entry.getSerializedTypeBoxed() ).append( ".class )" ).append( ".map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 );" );
     }
-    if ( !delegatingSerializerEntries.isEmpty() ) {
+    if ( !delegatingSerializers.isEmpty() ) {
       constructorBuilder.append( "assert getDelegatesMappings().verify();" );
     }
 
@@ -176,7 +176,7 @@ public class JacksonSerializerGenerator {
   @Nonnull
   private PsiElement generateSerializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
     @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
-    @Nonnull Collection<? extends FieldToSerializeEntry> fields = serializerModel.getFieldToSerializeEntries();
+    @Nonnull Collection<? extends FieldToSerialize> fields = serializerModel.getFieldToSerializeEntries();
 
     StringBuilder methodBuilder = new StringBuilder();
 
@@ -191,7 +191,7 @@ public class JacksonSerializerGenerator {
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
-    for ( FieldToSerializeEntry field : fields ) {
+    for ( FieldToSerialize field : fields ) {
       methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldTypeBoxed() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
     }
 
@@ -203,7 +203,7 @@ public class JacksonSerializerGenerator {
   @Nonnull
   private PsiElement generateDeserializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
     @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
-    @Nonnull Collection<? extends FieldToSerializeEntry> fields = serializerModel.getFieldToSerializeEntries();
+    @Nonnull Collection<? extends FieldToSerialize> fields = serializerModel.getFieldToSerializeEntries();
 
     StringBuilder methodBuilder = new StringBuilder();
 
@@ -218,7 +218,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( "\n\n" );
 
     //Declare the fields
-    for ( FieldToSerializeEntry field : fields ) {
+    for ( FieldToSerialize field : fields ) {
       methodBuilder.append( field.getFieldType().getCanonicalText() ).append( " " ).append( field.getFieldName() ).append( "=" ).append( field.getDefaultValue() ).append( ";" );
 
     }
@@ -232,7 +232,7 @@ public class JacksonSerializerGenerator {
                               "String currentName = parser.getCurrentName();\n\n" );
 
       //add the ifs for the field names
-      for ( FieldToSerializeEntry field : fields ) {
+      for ( FieldToSerialize field : fields ) {
         methodBuilder.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
           .append( "parser.nextToken();" )
 
@@ -253,7 +253,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( "\n\n" );
 
     //Verify deserialization
-    for ( FieldToSerializeEntry field : fields ) {
+    for ( FieldToSerialize field : fields ) {
       if ( !field.shallVerifyDeserialized() ) {
         continue;
       }
@@ -275,10 +275,10 @@ public class JacksonSerializerGenerator {
 
     methodBuilder.append( classToSerialize.getQualifiedName() ).append( " object = new " ).append( classToSerialize.getQualifiedName() ).append( "(" );
 
-    List<FieldToSerializeEntry> constructorArguments = findConstructorArgs( fields );
+    List<FieldToSerialize> constructorArguments = findConstructorArgs( fields );
 
-    for ( Iterator<FieldToSerializeEntry> iterator = constructorArguments.iterator(); iterator.hasNext(); ) {
-      FieldToSerializeEntry constructorArgument = iterator.next();
+    for ( Iterator<FieldToSerialize> iterator = constructorArguments.iterator(); iterator.hasNext(); ) {
+      FieldToSerialize constructorArgument = iterator.next();
       methodBuilder.append( constructorArgument.getFieldName() );
 
       if ( iterator.hasNext() ) {
@@ -289,7 +289,7 @@ public class JacksonSerializerGenerator {
     methodBuilder.append( ");" );
 
     //Adding the setters
-    for ( FieldToSerializeEntry field : fields ) {
+    for ( FieldToSerialize field : fields ) {
       FieldSetter fieldSetter = field.getFieldSetter();
       if ( !fieldSetter.isSetterAccess() ) {
         continue;
@@ -304,28 +304,28 @@ public class JacksonSerializerGenerator {
   }
 
   @Nonnull
-  private static List<FieldToSerializeEntry> findConstructorArgs( @Nonnull Collection<? extends FieldToSerializeEntry> fields ) {
-    Map<Integer, FieldToSerializeEntry> fieldsWithConstructor = new HashMap<Integer, FieldToSerializeEntry>();
+  private static List<FieldToSerialize> findConstructorArgs( @Nonnull Collection<? extends FieldToSerialize> fields ) {
+    Map<Integer, FieldToSerialize> fieldsWithConstructor = new HashMap<Integer, FieldToSerialize>();
 
-    for ( FieldToSerializeEntry entry : fields ) {
+    for ( FieldToSerialize entry : fields ) {
       FieldSetter fieldSetter = entry.getFieldSetter();
       if ( !fieldSetter.isConstructorAccess() ) {
         continue;
       }
 
       int index = ( ( FieldSetter.ConstructorFieldSetter ) fieldSetter ).getParameterIndex();
-      @Nullable FieldToSerializeEntry oldValue = fieldsWithConstructor.put( index, entry );
+      @Nullable FieldToSerialize oldValue = fieldsWithConstructor.put( index, entry );
       if ( oldValue != null ) {
         throw new IllegalStateException( "Duplicate entries for index <" + index + ">: " + oldValue.getFieldName() + " - " + entry.getFieldName() );
       }
     }
 
 
-    List<FieldToSerializeEntry> argsSorted = new ArrayList<FieldToSerializeEntry>();
+    List<FieldToSerialize> argsSorted = new ArrayList<FieldToSerialize>();
 
     int index = 0;
     while ( !fieldsWithConstructor.isEmpty() ) {
-      @Nullable FieldToSerializeEntry entry = fieldsWithConstructor.remove( index );
+      @Nullable FieldToSerialize entry = fieldsWithConstructor.remove( index );
       if ( entry == null ) {
         throw new IllegalStateException( "No entry found for index <" + index + ">" );
       }

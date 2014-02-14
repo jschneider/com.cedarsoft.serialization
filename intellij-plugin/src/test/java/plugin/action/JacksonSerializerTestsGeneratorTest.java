@@ -1,7 +1,7 @@
 package plugin.action;
 
-import com.cedarsoft.serialization.generator.intellij.JacksonSerializerResolver;
-import com.cedarsoft.serialization.generator.intellij.JacksonSerializerTestsGenerator;
+import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerResolver;
+import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
 import com.google.common.collect.ImmutableList;

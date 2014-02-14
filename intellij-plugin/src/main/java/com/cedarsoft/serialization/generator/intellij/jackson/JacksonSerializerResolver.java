@@ -1,5 +1,6 @@
-package com.cedarsoft.serialization.generator.intellij;
+package com.cedarsoft.serialization.generator.intellij.jackson;
 
+import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;

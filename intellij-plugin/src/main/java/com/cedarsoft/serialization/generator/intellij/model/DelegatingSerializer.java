@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class DelegatingSerializerEntry {
+public class DelegatingSerializer {
   @Nonnull
   private final PsiType serializedType;
   @Nonnull
@@ -16,7 +16,7 @@ public class DelegatingSerializerEntry {
   @Nonnull
   private final String serializerParamName;
 
-  public DelegatingSerializerEntry( @Nonnull PsiType serializedType, @Nonnull PsiType delegatingSerializerType, @Nonnull String serializerParamName ) {
+  public DelegatingSerializer( @Nonnull PsiType serializedType, @Nonnull PsiType delegatingSerializerType, @Nonnull String serializerParamName ) {
     this.serializedType = serializedType;
     this.delegatingSerializerType = delegatingSerializerType;
     this.serializerParamName = serializerParamName;
