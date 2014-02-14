@@ -1,8 +1,8 @@
 package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.cedarsoft.serialization.generator.intellij.JacksonSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.JacksonSerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.JacksonSerializerTestsGenerator;
-import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
 import com.intellij.codeInsight.CodeInsightUtil;
@@ -83,7 +83,7 @@ public class GenerateSerializerAction extends AnAction {
     Project project = getEventProject( e );
     assert project != null;
 
-    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new SerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
+    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
     SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
 
     PsiClass serializer = new JacksonSerializerGenerator( psiClass.getProject() ).generate( model );

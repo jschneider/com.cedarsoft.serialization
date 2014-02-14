@@ -92,7 +92,7 @@ public class SerializerModelFactory {
     Map<PsiType, DelegatingSerializerEntry> delegatingSerializersMap = new LinkedHashMap<PsiType, DelegatingSerializerEntry>();
 
     for ( FieldToSerializeEntry fieldEntry : fieldEntries ) {
-      PsiType delegatingSerializerType = serializerResolver.findJacksonSerializerFor( fieldEntry.getFieldType() );
+      PsiType delegatingSerializerType = serializerResolver.findSerializerFor( fieldEntry.getFieldType() );
       String paramName = codeStyleManager.suggestVariableName( VariableKind.PARAMETER, null, null, delegatingSerializerType ).names[0];
 
       DelegatingSerializerEntry entry = new DelegatingSerializerEntry( fieldEntry.getFieldType(), delegatingSerializerType, paramName );
