@@ -77,6 +77,8 @@ public class GenerateSerializerAction extends AnAction {
       return;
     }
 
+    //TODO add error handling, add progress dialog
+
 
     Project project = getEventProject( e );
     assert project != null;

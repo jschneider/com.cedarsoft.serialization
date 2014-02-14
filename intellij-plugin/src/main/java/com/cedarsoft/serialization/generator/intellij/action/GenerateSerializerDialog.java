@@ -28,7 +28,7 @@ public class GenerateSerializerDialog extends DialogWrapper {
   public GenerateSerializerDialog( @Nonnull PsiClass psiClass ) {
     super( psiClass.getProject() );
     this.psiClass = psiClass;
-    setTitle( "generate.serializer.dialog.title" );
+    setTitle( "Generate Serializer" );
 
     fieldCollectionListModel = new CollectionListModel<PsiField>( psiClass.getAllFields() );
 
@@ -47,11 +47,16 @@ public class GenerateSerializerDialog extends DialogWrapper {
 
     JPanel panel = decorator.createPanel();
 
-    return LabeledComponent.create( panel, "select.fields.to.serialize" );
+    return LabeledComponent.create( panel, "Select fields to serialize" );
   }
 
   @Nonnull
   public List<? extends PsiField> getSelectedFields() {
     return fieldCollectionListModel.getItems();
+  }
+
+  @Nonnull
+  public PsiClass getPsiClass() {
+    return psiClass;
   }
 }

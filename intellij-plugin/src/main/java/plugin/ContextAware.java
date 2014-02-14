@@ -1,5 +1,6 @@
 package plugin;
 
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.Application;
@@ -24,7 +25,7 @@ public class ContextAware {
 
   @Nonnull
   public Project getProject() {
-    Project project = PlatformDataKeys.PROJECT.getData( dataContext );
+    Project project = CommonDataKeys.PROJECT.getData( dataContext );
     if ( project == null ) {
       throw new IllegalStateException( "no project found" );
     }
