@@ -59,7 +59,7 @@ import java.util.List;
  * @param <T> the type
  * @param <S> the object to serialize to
  */
-public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> {
+public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> implements StaxBasedSerializer<T, S> {
   /**
    * Creates a new serializer
    *
