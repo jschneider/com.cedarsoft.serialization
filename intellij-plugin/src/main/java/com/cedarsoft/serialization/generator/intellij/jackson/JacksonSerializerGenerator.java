@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.generator.intellij.jackson;
 
+import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer;
 import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
@@ -38,7 +39,7 @@ import java.util.Map;
  *
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class JacksonSerializerGenerator {
+public class JacksonSerializerGenerator implements SerializerGenerator {
   @Nonnull
   private final Project project;
   @Nonnull
@@ -65,6 +66,7 @@ public class JacksonSerializerGenerator {
     notNullManager = NullableNotNullManager.getInstance( project );
   }
 
+  @Override
   @Nonnull
   public PsiClass generate( @Nonnull final SerializerModel serializerModel ) {
     final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();

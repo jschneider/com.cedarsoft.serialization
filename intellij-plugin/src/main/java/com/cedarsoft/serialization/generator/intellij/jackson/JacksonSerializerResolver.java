@@ -23,7 +23,8 @@ import javax.annotation.Nullable;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class JacksonSerializerResolver implements SerializerResolver {
-  public static final String JACKSON_SERIALIZER_IFACE_NAME = "com.cedarsoft.serialization.jackson.JacksonSerializer";
+  @Nonnull
+  public static final String SERIALIZER_IFACE_NAME = "com.cedarsoft.serialization.jackson.JacksonSerializer";
 
   @Nonnull
   private final JavaPsiFacade javaPsiFacade;
@@ -49,9 +50,9 @@ public class JacksonSerializerResolver implements SerializerResolver {
   @Nonnull
   public PsiType findSerializerFor( @Nonnull final PsiType typeToSerialize ) {
     //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
-    PsiClass serializerClass = javaPsiFacade.findClass( JACKSON_SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
+    PsiClass serializerClass = javaPsiFacade.findClass( SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
     if ( serializerClass != null ) {
-      final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( JACKSON_SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
+      final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
 
       final PsiType[] foundSerializerType = new PsiType[1];
       ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
@@ -95,7 +96,7 @@ public class JacksonSerializerResolver implements SerializerResolver {
             assert psiClass != null;
             String qualifiedName = psiClass.getQualifiedName();
 
-            if ( JACKSON_SERIALIZER_IFACE_NAME.equals( qualifiedName ) ) {
+            if ( SERIALIZER_IFACE_NAME.equals( qualifiedName ) ) {
               return ( PsiClassType ) superType;
             }
 

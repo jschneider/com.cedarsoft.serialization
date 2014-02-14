@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.generator.intellij.jackson;
 
+import com.cedarsoft.serialization.generator.intellij.SerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.google.common.collect.ImmutableList;
@@ -26,11 +27,11 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A simple class that generates a jackson serializer
+ * A simple class that generates a jackson serializer test
  *
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class JacksonSerializerTestsGenerator {
+public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator {
   @Nonnull
   private final Project project;
   @Nonnull
@@ -57,6 +58,7 @@ public class JacksonSerializerTestsGenerator {
     notNullManager = NullableNotNullManager.getInstance( project );
   }
 
+  @Override
   @Nonnull
   public List<? extends PsiClass> generate( @Nonnull final SerializerModel serializerModel ) {
     final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();
