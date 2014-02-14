@@ -68,12 +68,10 @@ public class PsiHelperImpl implements PsiHelper {
   }
 
   @Override
-  public void navigateToClass( PsiClass psiClass ) {
-    if ( psiClass != null ) {
-      Navigatable navigatable = getDescriptor( psiClass );
-      if ( navigatable != null ) {
-        navigatable.navigate( true );
-      }
+  public void navigateToClass( @Nonnull PsiClass psiClass ) {
+    Navigatable navigatable = getDescriptor( psiClass );
+    if ( navigatable != null ) {
+      navigatable.navigate( true );
     }
   }
 

@@ -14,6 +14,8 @@ import com.intellij.psi.PsiPackage;
 import com.intellij.psi.search.PsiShortNamesCache;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
@@ -29,7 +31,7 @@ public interface PsiHelper {
   @Nullable
   PsiDirectory getDirectoryFromModuleAndPackageName( Module module, String packageName );
 
-  void navigateToClass( PsiClass psiClass );
+  void navigateToClass( @Nonnull PsiClass psiClass );
 
   @Nullable
   String checkIfClassCanBeCreated( PsiDirectory targetDirectory, String className );
