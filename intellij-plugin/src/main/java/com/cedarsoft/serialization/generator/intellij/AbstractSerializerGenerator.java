@@ -1,4 +1,4 @@
-package com.cedarsoft.serialization.generator.intellij.jackson;
+package com.cedarsoft.serialization.generator.intellij;
 
 import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer;

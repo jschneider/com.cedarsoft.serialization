@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.generator.intellij.stax.mate;
 
+import com.cedarsoft.serialization.generator.intellij.SerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.google.common.collect.ImmutableList;
@@ -30,7 +31,7 @@ import java.util.Locale;
  *
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class StaxMateSerializerTestsGenerator {
+public class StaxMateSerializerTestsGenerator implements SerializerTestsGenerator {
   @Nonnull
   private final Project project;
   @Nonnull
@@ -193,8 +194,8 @@ public class StaxMateSerializerTestsGenerator {
   private PsiElement generateGetSerializerMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.Serializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
-    methodBuilder.append( "return com.google.inject.Guice.createInject().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
+    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.StreamSerializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
+    methodBuilder.append( "return com.google.inject.Guice.createInjector().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
     methodBuilder.append( "}" );
 
     return elementFactory.createMethodFromText( methodBuilder.toString(), testClass );

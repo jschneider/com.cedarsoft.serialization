@@ -7,8 +7,8 @@ public class SimpleSerializerVersionTest extends com.cedarsoft.serialization.tes
 
     @NotNull
     @Override
-    protected com.cedarsoft.serialization.Serializer<Simple> getSerializer() throws Exception {
-        return com.google.inject.Guice.createInject().getInstance(SimpleSerializer.class);
+    protected com.cedarsoft.serialization.StreamSerializer<Simple> getSerializer() throws Exception {
+        return com.google.inject.Guice.createInjector().getInstance(SimpleSerializer.class);
     }
 
     @Override

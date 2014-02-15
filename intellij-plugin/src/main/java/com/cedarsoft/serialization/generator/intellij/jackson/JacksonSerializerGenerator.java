@@ -1,16 +1,11 @@
 package com.cedarsoft.serialization.generator.intellij.jackson;
 
-import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
+import com.cedarsoft.serialization.generator.intellij.AbstractSerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * A simple class that generates a jackson serializer

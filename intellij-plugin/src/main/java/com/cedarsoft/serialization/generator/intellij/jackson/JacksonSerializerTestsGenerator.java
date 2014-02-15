@@ -196,7 +196,7 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
     StringBuilder methodBuilder = new StringBuilder();
 
     methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.Serializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
-    methodBuilder.append( "return com.google.inject.Guice.createInject().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
+    methodBuilder.append( "return com.google.inject.Guice.createInjector().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
     methodBuilder.append( "}" );
 
     return elementFactory.createMethodFromText( methodBuilder.toString(), testClass );

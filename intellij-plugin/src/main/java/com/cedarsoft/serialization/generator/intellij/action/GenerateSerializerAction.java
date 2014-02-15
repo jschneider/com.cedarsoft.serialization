@@ -8,6 +8,7 @@ import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerT
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerTestsGenerator;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.lang.Language;
 import com.intellij.lang.java.JavaLanguage;
@@ -157,7 +158,7 @@ public class GenerateSerializerAction extends AnAction {
       case JACKSON:
         return new JacksonSerializerTestsGenerator( psiClass.getProject() );
       case STAX_MATE:
-        return new JacksonSerializerTestsGenerator( psiClass.getProject() );
+        return new StaxMateSerializerTestsGenerator( psiClass.getProject() );
     }
 
     throw new IllegalArgumentException( "Unsupported dialect " + selectedDialect );

@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.generator.intellij.stax.mate;
 
-import com.cedarsoft.serialization.generator.intellij.jackson.AbstractSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.AbstractSerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.openapi.project.Project;
