@@ -103,7 +103,7 @@ cedarsoft Serialization
 
 ** Versioning
 
-  Serializating objects is easy. There are many frameworks out there that solve that problem well. But only very few support
+  Serializing objects is easy. There are many frameworks out there that solve that problem well. But only very few support
   versioning support.
 
   Unfortunately nobody misses versioning until it is too late. Did you every create files and had to struggle with format changes
