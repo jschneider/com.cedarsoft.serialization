@@ -41,6 +41,7 @@ import org.codehaus.staxmate.out.SMOutputDocument;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -77,6 +78,23 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
     } catch ( XMLStreamException e ) {
       throw new IOException( e );
     }
+  }
+
+  /**
+   * Serializes the given object into a sub element of serializeTo
+   *
+   * @param object        the object that is serialized
+   * @param type          the type
+   * @param subElementName  the name of the sub element
+   * @param serializeTo   the parent element
+   * @param formatVersion the format version
+   * @param <T>           the type
+   * @throws XMLStreamException
+   * @throws IOException
+   */
+  public <T> void serialize( @Nonnull T object, @Nonnull Class<T> type, @Nonnull String subElementName, @Nonnull SMOutputElement serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
+    SMOutputElement element = serializeTo.addElement( serializeTo.getNamespace(), subElementName );
+    serialize( object, type, element, formatVersion );
   }
 
   /**
