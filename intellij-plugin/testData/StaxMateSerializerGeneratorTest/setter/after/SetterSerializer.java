@@ -21,14 +21,11 @@ public class SetterSerializer extends com.cedarsoft.serialization.stax.mate.Abst
     @Override
     public
     @NotNull
-    Setter deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    Setter deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, javax.xml.stream.XMLStreamException {
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO);
         String foo = foo = deserialize(String.class, formatVersion, deserializeFrom);
-
-        parser.ensureObjectClosed();
-
         Setter object = new Setter();
         object.setFoo(foo);
         return object;

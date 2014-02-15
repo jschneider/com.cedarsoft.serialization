@@ -21,14 +21,11 @@ public class SimpleSerializer extends com.cedarsoft.serialization.stax.mate.Abst
     @Override
     public
     @NotNull
-    Simple deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    Simple deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, javax.xml.stream.XMLStreamException {
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO);
         String foo = foo = deserialize(String.class, formatVersion, deserializeFrom);
-
-        parser.ensureObjectClosed();
-
         Simple object = new Simple(foo);
         return object;
     }

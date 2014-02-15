@@ -233,19 +233,13 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
     methodBuilder.append( "@Override public " ).append( notNull() ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
       .append( notNull() ).append( deserializeFromType ).append( " deserializeFrom, " )
       .append( notNull() )
-      .append( "com.cedarsoft.version.Version formatVersion" )
-      .append( ") throws java.io.IOException, com.cedarsoft.version.VersionException {" );
+      .append( "com.cedarsoft.version.Version formatVersion" ).append( ") throws java.io.IOException, com.cedarsoft.version.VersionException, " ).append( serializeExceptionType ).append( " {" );
 
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
     methodBuilder.append( "\n\n" );
 
     //Appends the deserialize statements
     appendDeserializeFieldStatements( serializerModel, methodBuilder );
-
-    //clean up
-    methodBuilder.append( "\n\n" );
-    methodBuilder.append( "parser.ensureObjectClosed();" );
-    methodBuilder.append( "\n\n" );
 
     //Create the deserialized object using the constructor
     methodBuilder.append( classToSerialize.getQualifiedName() ).append( " object = new " ).append( classToSerialize.getQualifiedName() ).append( "(" );

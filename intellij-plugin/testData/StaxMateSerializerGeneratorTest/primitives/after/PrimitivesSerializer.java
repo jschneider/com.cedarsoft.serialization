@@ -45,7 +45,7 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.stax.mate.
     @Override
     public
     @NotNull
-    Primitives deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    Primitives deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, javax.xml.stream.XMLStreamException {
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO_1);
@@ -66,9 +66,6 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.stax.mate.
         boolean foo8 = foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_9);
         String foo9 = foo9 = deserialize(String.class, formatVersion, deserializeFrom);
-
-        parser.ensureObjectClosed();
-
         Primitives object = new Primitives(foo1, foo2, foo3, foo4, foo5, foo6, foo7, foo8, foo9);
         return object;
     }

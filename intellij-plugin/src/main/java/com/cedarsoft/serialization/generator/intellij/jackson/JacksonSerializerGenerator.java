@@ -75,5 +75,10 @@ public class JacksonSerializerGenerator extends AbstractSerializerGenerator {
         methodBody.append( "assert " ).append( field.getFieldName() ).append( " !=" ).append( field.getDefaultValue() ).append( ";" );
       }
     }
+
+    //clean up
+    methodBody.append( "\n\n" );
+    methodBody.append( "parser.ensureObjectClosed();" );
+    methodBody.append( "\n\n" );
   }
 }

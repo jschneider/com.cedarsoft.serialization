@@ -66,6 +66,8 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
     serializeTo.writeNumberField( PROPERTY_REGISTRATION_DATE, object.getRegistrationDate() );
     serializeTo.writeNumberField( PROPERTY_LAST_LOGIN, object.getLastLogin() );
     serializeTo.writeStringField( PROPERTY_PASSWORD_HASH, new String( Hex.encodeHex( object.getPasswordHash() ) ) );
+
+    serialize(  );
   }
 
   @Nonnull
