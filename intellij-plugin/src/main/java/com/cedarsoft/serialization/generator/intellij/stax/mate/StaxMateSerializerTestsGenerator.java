@@ -99,7 +99,7 @@ public class StaxMateSerializerTestsGenerator {
 
   private void fillVersionTest( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass versionTestClass ) {
     PsiClass classToSerialize = serializerModel.getClassToSerialize();
-    addExtends( versionTestClass, classToSerialize, "com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2" );
+    addExtends( versionTestClass, classToSerialize, "com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2" );
 
     versionTestClass.add( generateGetSerializerMethod( serializerModel, versionTestClass ) );
     versionTestClass.add( generateVersionEntry( serializerModel, versionTestClass, 1 ) );
@@ -131,7 +131,7 @@ public class StaxMateSerializerTestsGenerator {
   @Nonnull
   public PsiClass fillTest( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass ) {
     PsiClass classToSerialize = serializerModel.getClassToSerialize();
-    addExtends( testClass, classToSerialize, "com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2" );
+    addExtends( testClass, classToSerialize, "com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2" );
 
     testClass.add( generateGetSerializerMethod( serializerModel, testClass ) );
     testClass.add( generateEntry( serializerModel, testClass, 1 ) );
@@ -165,7 +165,7 @@ public class StaxMateSerializerTestsGenerator {
 
     methodBuilder.append( notNull() ).append( "@org.junit.experimental.theories.DataPoint public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY" ).append( entryIndex )
       .append( "=" )
-      .append( "com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2" ).append( ".create(com.cedarsoft.version.Version.valueOf( 1, 0, 0 )" )
+      .append( "com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest2" ).append( ".create(com.cedarsoft.version.Version.valueOf( 1, 0, 0 )" )
     ;
 
     methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getName(), entryIndex ) ).append( "\"));" );
@@ -175,7 +175,7 @@ public class StaxMateSerializerTestsGenerator {
 
   @Nonnull
   private static String generateTestResourceName( @Nonnull String qualifiedName, int entryIndex ) {
-    return qualifiedName + "_1.0.0_" + entryIndex + ".json";
+    return qualifiedName + "_1.0.0_" + entryIndex + ".xml";
   }
 
   private void addExtends( @Nonnull PsiClass serializerClass, @Nonnull PsiClass classToSerialize, final String baseClass ) {
