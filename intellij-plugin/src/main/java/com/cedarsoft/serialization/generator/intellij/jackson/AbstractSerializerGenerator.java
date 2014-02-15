@@ -58,9 +58,12 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
   protected final String serializeToType;
   @Nonnull
   protected final String deserializeFromType;
+  @Nonnull
+  protected final String serializeExceptionType;
 
-  protected AbstractSerializerGenerator( @Nonnull Project project, @Nonnull String abstractSerializerType, @Nonnull String serializeToType, @Nonnull String deserializeFromType ) {
+  protected AbstractSerializerGenerator( @Nonnull Project project, @Nonnull String abstractSerializerType, @Nonnull String serializeToType, @Nonnull String deserializeFromType, @Nonnull String serializeExceptionType ) {
     this.project = project;
+    this.serializeExceptionType = serializeExceptionType;
     javaCodeStyleManager = JavaCodeStyleManager.getInstance( project );
     codeStyleManager = CodeStyleManager.getInstance( project );
     shortNamesCache = PsiShortNamesCache.getInstance( project );
@@ -161,9 +164,7 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
       }
     }
 
-    constructorBuilder.append( "){" )
-      .append( "super(\"" ).append( createType( serializerModel.getClassToSerializeQualifiedName() ) ).append( "\", com.cedarsoft.version.VersionRange.from(1,0,0).to());" );
-
+    callSuperConstructor( serializerModel, constructorBuilder );
 
     //register the delegating serializers
     for ( DelegatingSerializer entry : delegatingSerializers ) {
@@ -179,13 +180,43 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
   }
 
   /**
+   * Adds the super() call
+   * @param serializerModel the model
+   * @param constructorBuilder the builder for the constructor
+   */
+  protected abstract void callSuperConstructor( @Nonnull SerializerModel serializerModel, @Nonnull StringBuilder constructorBuilder );
+
+  /**
    * Generates the serialize method
    * @param serializerModel the serializer model
    * @param serializerClass the serializer class
    * @return the generated method
    */
   @Nonnull
-  protected abstract PsiElement generateSerializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass );
+  protected PsiElement generateSerializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
+    @Nonnull Collection<? extends FieldToSerialize> fields = serializerModel.getFieldToSerializeEntries();
+
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public void serialize (" )
+      .append( notNull() ).append( serializeToType ).append( " serializeTo, " )
+      .append( notNull() )
+      .append( classToSerialize.getQualifiedName() ).append( " object," )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( ")throws java.io.IOException, com.cedarsoft.version.VersionException, " ).append( serializeExceptionType ).append( "{" );
+
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+
+    for ( FieldToSerialize field : fields ) {
+      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldTypeBoxed() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+    }
+
+    methodBuilder.append( "}" );
+
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
 
   /**
    * Generates the deserialize method
@@ -194,7 +225,62 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
    * @return the generated method
    */
   @Nonnull
-  protected abstract PsiElement generateDeserializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass );
+  protected PsiElement generateDeserializeMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass serializerClass ) {
+    @Nonnull PsiClass classToSerialize = serializerModel.getClassToSerialize();
+
+    StringBuilder methodBuilder = new StringBuilder();
+
+    methodBuilder.append( "@Override public " ).append( notNull() ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
+      .append( notNull() ).append( deserializeFromType ).append( " deserializeFrom, " )
+      .append( notNull() )
+      .append( "com.cedarsoft.version.Version formatVersion" )
+      .append( ") throws java.io.IOException, com.cedarsoft.version.VersionException {" );
+
+    methodBuilder.append( "verifyVersionWritable( formatVersion );" );
+    methodBuilder.append( "\n\n" );
+
+    //Appends the deserialize statements
+    appendDeserializeFieldStatements( serializerModel, methodBuilder );
+
+    //clean up
+    methodBuilder.append( "\n\n" );
+    methodBuilder.append( "parser.ensureObjectClosed();" );
+    methodBuilder.append( "\n\n" );
+
+    //Create the deserialized object using the constructor
+    methodBuilder.append( classToSerialize.getQualifiedName() ).append( " object = new " ).append( classToSerialize.getQualifiedName() ).append( "(" );
+    for ( Iterator<FieldToSerialize> iterator = findConstructorArgs( serializerModel.getFieldToSerializeEntries() ).iterator(); iterator.hasNext(); ) {
+      FieldToSerialize constructorArgument = iterator.next();
+      methodBuilder.append( constructorArgument.getFieldName() );
+
+      if ( iterator.hasNext() ) {
+        methodBuilder.append( "," );
+      }
+    }
+
+    methodBuilder.append( ");" );
+
+    //Setting the fields using setters
+    for ( FieldToSerialize field : serializerModel.getFieldToSerializeEntries() ) {
+      FieldSetter fieldSetter = field.getFieldSetter();
+      if ( !fieldSetter.isSetterAccess() ) {
+        continue;
+      }
+
+      methodBuilder.append( "object." ).append( ( ( FieldSetter.SetterFieldSetter ) fieldSetter ).getSetter() ).append( "(" ).append( field.getFieldName() ).append( ");" );
+    }
+
+    methodBuilder.append( " return object;" );
+    methodBuilder.append( "}" );
+    return elementFactory.createMethodFromText( methodBuilder.toString(), serializerClass );
+  }
+
+  /**
+   * Append the deserialize field statements
+   * @param serializerModel the serializer model
+   * @param methodBody the method body
+   */
+  protected abstract void appendDeserializeFieldStatements( @Nonnull SerializerModel serializerModel, @Nonnull StringBuilder methodBody );
 
   @Nonnull
   protected String notNull() {
