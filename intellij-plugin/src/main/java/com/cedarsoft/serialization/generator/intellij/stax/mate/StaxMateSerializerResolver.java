@@ -52,7 +52,7 @@ public class StaxMateSerializerResolver implements SerializerResolver {
     //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
     PsiClass serializerClass = javaPsiFacade.findClass( SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
     if ( serializerClass != null ) {
-      final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
+      final PsiType serializerWithTypeParam = elementFactory.createTypeFromText( SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
 
       final PsiType[] foundSerializerType = new PsiType[1];
       ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
@@ -65,7 +65,7 @@ public class StaxMateSerializerResolver implements SerializerResolver {
 
           //Is it a serializer?
           PsiClassType currentSerializerType = elementFactory.createType( psiClass );
-          if ( !jacksonSerializerWithTypeParam.isAssignableFrom( currentSerializerType ) ) {
+          if ( !serializerWithTypeParam.isAssignableFrom( currentSerializerType ) ) {
             return true;
           }
 

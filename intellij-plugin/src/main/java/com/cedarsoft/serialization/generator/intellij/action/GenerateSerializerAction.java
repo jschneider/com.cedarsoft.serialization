@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.SerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.SerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerResolver;
@@ -8,6 +9,7 @@ import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerT
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerTestsGenerator;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.lang.Language;
@@ -87,7 +89,9 @@ public class GenerateSerializerAction extends AnAction {
     Project project = getEventProject( e );
     assert project != null;
 
-    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
+    SerializerResolver serializerResolver = createSerializerResolver( generateSerializerDialog.getSelectedDialect(), project );
+
+    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( serializerResolver, JavaCodeStyleManager.getInstance( project ) );
     SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
 
     SerializerGenerator serializerGenerator = createSerializerGenerator( generateSerializerDialog.getSelectedDialect(), psiClass );
@@ -152,28 +156,40 @@ public class GenerateSerializerAction extends AnAction {
     //}, null, null );
   }
 
+  @Nonnull
+  private static SerializerResolver createSerializerResolver( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull Project project ) {
+    switch ( dialect ) {
+      case JACKSON:
+        return new JacksonSerializerResolver( project );
+      case STAX_MATE:
+        return new StaxMateSerializerResolver( project );
+    }
+
+    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
+  }
+
   @Nonnull 
-  private static SerializerTestsGenerator createSerializerTestsGenerator( @Nonnull GenerateSerializerDialog.Dialect selectedDialect, @Nonnull PsiClass psiClass ) {
-    switch ( selectedDialect ) {
+  private static SerializerTestsGenerator createSerializerTestsGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass ) {
+    switch ( dialect ) {
       case JACKSON:
         return new JacksonSerializerTestsGenerator( psiClass.getProject() );
       case STAX_MATE:
         return new StaxMateSerializerTestsGenerator( psiClass.getProject() );
     }
 
-    throw new IllegalArgumentException( "Unsupported dialect " + selectedDialect );
+    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
   }
 
   @Nonnull 
-  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect selectedDialect, @Nonnull PsiClass psiClass ) {
-    switch ( selectedDialect ) {
+  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass ) {
+    switch ( dialect ) {
       case JACKSON:
       return new JacksonSerializerGenerator( psiClass.getProject() );
       case STAX_MATE:
         return new StaxMateSerializerGenerator( psiClass.getProject() );
     }
 
-    throw new IllegalArgumentException( "Unsupported dialect " + selectedDialect );
+    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
   }
 
   void generateSerializer( @Nonnull final PsiClass psiClass, @Nonnull List<? extends PsiField> selectedFields ) {
