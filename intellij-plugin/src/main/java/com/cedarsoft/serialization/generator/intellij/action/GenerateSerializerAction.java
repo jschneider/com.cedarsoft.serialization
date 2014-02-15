@@ -1,10 +1,13 @@
 package com.cedarsoft.serialization.generator.intellij.action;
 
+import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.SerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerGenerator;
 import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.jackson.JacksonSerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFactory;
+import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerGenerator;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.lang.Language;
 import com.intellij.lang.java.JavaLanguage;
@@ -86,8 +89,11 @@ public class GenerateSerializerAction extends AnAction {
     SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( project ), JavaCodeStyleManager.getInstance( project ) );
     SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
 
-    PsiClass serializer = new JacksonSerializerGenerator( psiClass.getProject() ).generate( model );
-    new JacksonSerializerTestsGenerator( psiClass.getProject() ).generate( model );
+    SerializerGenerator serializerGenerator = createSerializerGenerator( generateSerializerDialog.getSelectedDialect(), psiClass );
+    SerializerTestsGenerator testsGenerator = createSerializerTestsGenerator( generateSerializerDialog.getSelectedDialect(), psiClass );
+
+    PsiClass serializer = serializerGenerator.generate( model );
+    testsGenerator.generate( model );
 
 
     Project serializerProject = serializer.getProject();
@@ -143,6 +149,30 @@ public class GenerateSerializerAction extends AnAction {
     //    System.out.println( "finished..." );
     //  }
     //}, null, null );
+  }
+
+  @Nonnull 
+  private static SerializerTestsGenerator createSerializerTestsGenerator( @Nonnull GenerateSerializerDialog.Dialect selectedDialect, @Nonnull PsiClass psiClass ) {
+    switch ( selectedDialect ) {
+      case JACKSON:
+        return new JacksonSerializerTestsGenerator( psiClass.getProject() );
+      case STAX_MATE:
+        return new JacksonSerializerTestsGenerator( psiClass.getProject() );
+    }
+
+    throw new IllegalArgumentException( "Unsupported dialect " + selectedDialect );
+  }
+
+  @Nonnull 
+  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect selectedDialect, @Nonnull PsiClass psiClass ) {
+    switch ( selectedDialect ) {
+      case JACKSON:
+      return new JacksonSerializerGenerator( psiClass.getProject() );
+      case STAX_MATE:
+        return new StaxMateSerializerGenerator( psiClass.getProject() );
+    }
+
+    throw new IllegalArgumentException( "Unsupported dialect " + selectedDialect );
   }
 
   void generateSerializer( @Nonnull final PsiClass psiClass, @Nonnull List<? extends PsiField> selectedFields ) {
