@@ -25,7 +25,7 @@ public class SetterSerializer extends com.cedarsoft.serialization.stax.mate.Abst
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO);
-        String foo = foo = deserialize(String.class, formatVersion, deserializeFrom);
+        String foo = deserialize(String.class, formatVersion, deserializeFrom);
         Setter object = new Setter();
         object.setFoo(foo);
         return object;

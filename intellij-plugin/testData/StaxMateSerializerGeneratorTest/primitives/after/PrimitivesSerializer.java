@@ -49,23 +49,23 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.stax.mate.
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO_1);
-        int foo1 = foo1 = deserialize(Integer.class, formatVersion, deserializeFrom);
+        int foo1 = deserialize(Integer.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_2);
-        short foo2 = foo2 = deserialize(Short.class, formatVersion, deserializeFrom);
+        short foo2 = deserialize(Short.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_3);
-        byte foo3 = foo3 = deserialize(Byte.class, formatVersion, deserializeFrom);
+        byte foo3 = deserialize(Byte.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_4);
-        long foo4 = foo4 = deserialize(Long.class, formatVersion, deserializeFrom);
+        long foo4 = deserialize(Long.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_5);
-        double foo5 = foo5 = deserialize(Double.class, formatVersion, deserializeFrom);
+        double foo5 = deserialize(Double.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_6);
-        float foo6 = foo6 = deserialize(Float.class, formatVersion, deserializeFrom);
+        float foo6 = deserialize(Float.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_7);
-        char foo7 = foo7 = deserialize(Character.class, formatVersion, deserializeFrom);
+        char foo7 = deserialize(Character.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_8);
-        boolean foo8 = foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
+        boolean foo8 = deserialize(Boolean.class, formatVersion, deserializeFrom);
         nextTag(deserializeFrom, PROPERTY_FOO_9);
-        String foo9 = foo9 = deserialize(String.class, formatVersion, deserializeFrom);
+        String foo9 = deserialize(String.class, formatVersion, deserializeFrom);
         Primitives object = new Primitives(foo1, foo2, foo3, foo4, foo5, foo6, foo7, foo8, foo9);
         return object;
     }

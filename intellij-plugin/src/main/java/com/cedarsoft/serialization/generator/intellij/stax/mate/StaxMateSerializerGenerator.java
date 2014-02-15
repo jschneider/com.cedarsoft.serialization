@@ -36,7 +36,7 @@ public class StaxMateSerializerGenerator extends AbstractSerializerGenerator {
       methodBody.append( field.getFieldType().getCanonicalText() ).append( " " ).append( field.getFieldName() ).append( "=" );
 
       //Deserialize
-      methodBody.append( field.getFieldName() ).append( "=deserialize(" )
+      methodBody.append( "deserialize(" )
         .append( field.getFieldTypeBoxed() ).append( ".class" )
         .append( ", formatVersion, deserializeFrom" )
         .append( ");" );
