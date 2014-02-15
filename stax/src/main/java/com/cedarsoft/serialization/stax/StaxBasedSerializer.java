@@ -4,6 +4,8 @@ import com.cedarsoft.serialization.PluggableSerializer;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
@@ -17,5 +19,5 @@ import javax.xml.stream.XMLStreamReader;
  * @param <S> the object to serialize to
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public interface StaxBasedSerializer<T, S> extends PluggableSerializer<T, S, XMLStreamReader, XMLStreamException> {
+public interface StaxBasedSerializer<T, S> extends PluggableSerializer<T, S, XMLStreamReader, XMLStreamException, OutputStream, InputStream> {
 }
