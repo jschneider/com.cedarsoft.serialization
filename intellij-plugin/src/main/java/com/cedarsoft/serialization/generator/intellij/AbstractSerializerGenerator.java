@@ -230,7 +230,7 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
 
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( "@Override public " ).append( notNull() ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
+    methodBuilder.append( "@Override " ).append( notNull() ).append( "public " ).append( classToSerialize.getQualifiedName() ).append( " deserialize(" )
       .append( notNull() ).append( deserializeFromType ).append( " deserializeFrom, " )
       .append( notNull() )
       .append( "com.cedarsoft.version.Version formatVersion" ).append( ") throws java.io.IOException, com.cedarsoft.version.VersionException, " ).append( serializeExceptionType ).append( " {" );

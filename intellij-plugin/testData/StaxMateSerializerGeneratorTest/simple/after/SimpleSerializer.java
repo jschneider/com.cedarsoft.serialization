@@ -19,9 +19,8 @@ public class SimpleSerializer extends com.cedarsoft.serialization.stax.mate.Abst
     }
 
     @Override
-    public
     @NotNull
-    Simple deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, javax.xml.stream.XMLStreamException {
+    public Simple deserialize(@NotNull javax.xml.stream.XMLStreamReader deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, javax.xml.stream.XMLStreamException {
         verifyVersionWritable(formatVersion);
 
         nextTag(deserializeFrom, PROPERTY_FOO);

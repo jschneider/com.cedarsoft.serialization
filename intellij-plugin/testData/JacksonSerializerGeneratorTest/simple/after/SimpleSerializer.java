@@ -13,15 +13,14 @@ public class SimpleSerializer extends com.cedarsoft.serialization.jackson.Abstra
     }
 
     @Override
-    public void serialize(@NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @NotNull Simple object, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    public void serialize(@NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @NotNull Simple object, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, com.fasterxml.jackson.core.JsonProcessingException {
         verifyVersionWritable(formatVersion);
         serialize(object.getFoo(), String.class, PROPERTY_FOO, serializeTo, formatVersion);
     }
 
     @Override
-    public
     @NotNull
-    Simple deserialize(@NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    public Simple deserialize(@NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, com.fasterxml.jackson.core.JsonProcessingException {
         verifyVersionWritable(formatVersion);
 
         String foo = null;

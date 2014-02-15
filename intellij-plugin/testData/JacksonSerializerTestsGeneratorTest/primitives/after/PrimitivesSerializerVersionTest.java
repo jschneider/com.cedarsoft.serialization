@@ -2,13 +2,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class PrimitivesSerializerVersionTest extends com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2<Primitives> {
     @NotNull
-    @DataPoint
-    public static final VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(com.cedarsoft.version.Version.valueOf(1, 0, 0), PrimitivesSerializerVersionTest.class.getResource("Primitives_1.0.0_1.json"));
+    @org.junit.experimental.theories.DataPoint
+    public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(com.cedarsoft.version.Version.valueOf(1, 0, 0), PrimitivesSerializerVersionTest.class.getResource("Primitives_1.0.0_1.json"));
 
     @NotNull
     @Override
-    protected Serializer<Primitives> getSerializer() throws Exception {
-        return com.google.inject.Guice.createInject().getInstance(PrimitivesSerializer.class);
+    protected com.cedarsoft.serialization.Serializer<Primitives> getSerializer() throws Exception {
+        return com.google.inject.Guice.createInjector().getInstance(PrimitivesSerializer.class);
     }
 
     @Override

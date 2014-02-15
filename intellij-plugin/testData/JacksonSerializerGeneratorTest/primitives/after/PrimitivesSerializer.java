@@ -29,7 +29,7 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
     }
 
     @Override
-    public void serialize(@NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @NotNull Primitives object, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    public void serialize(@NotNull com.fasterxml.jackson.core.JsonGenerator serializeTo, @NotNull Primitives object, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, com.fasterxml.jackson.core.JsonProcessingException {
         verifyVersionWritable(formatVersion);
         serialize(object.getFoo1(), Integer.class, PROPERTY_FOO_1, serializeTo, formatVersion);
         serialize(object.getFoo2(), Short.class, PROPERTY_FOO_2, serializeTo, formatVersion);
@@ -43,9 +43,8 @@ public class PrimitivesSerializer extends com.cedarsoft.serialization.jackson.Ab
     }
 
     @Override
-    public
     @NotNull
-    Primitives deserialize(@NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException {
+    public Primitives deserialize(@NotNull com.fasterxml.jackson.core.JsonParser deserializeFrom, @NotNull com.cedarsoft.version.Version formatVersion) throws IOException, com.cedarsoft.version.VersionException, com.fasterxml.jackson.core.JsonProcessingException {
         verifyVersionWritable(formatVersion);
 
         int foo1 = -1;
