@@ -37,6 +37,7 @@ import com.cedarsoft.xml.XmlCommons;
 import org.apache.commons.io.Charsets;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.events.Namespace;
@@ -57,12 +58,17 @@ import java.text.Format;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
-  protected void verify( @Nonnull byte[] current, @Nonnull byte[] exectedXml ) throws Exception {
+  protected void verify( @Nonnull byte[] current, @Nonnull byte[] expectedXml ) throws Exception {
     if ( addNameSpace() ) {
-      String expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), exectedXml );
+      String expectedWithNamespace;
+      try {
+        expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), expectedXml );
+      } catch ( SAXException ignore ) {
+        expectedWithNamespace = new String( expectedXml );
+      }
       AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current, getEncoding() ) );
     } else {
-      AssertUtils.assertXMLEquals( new String( exectedXml ), new String( current, getEncoding() ) );
+      AssertUtils.assertXMLEquals( new String( expectedXml ), new String( current, getEncoding() ) );
     }
   }
 

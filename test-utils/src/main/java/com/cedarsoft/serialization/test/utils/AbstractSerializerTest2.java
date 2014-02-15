@@ -83,7 +83,7 @@ public abstract class AbstractSerializerTest2<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract StreamSerializer<T> getSerializer() throws Exception;
+  protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
 
   /**
    * Verifies the deserialized object
