@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.neo4j.sample;
 
 import com.cedarsoft.serialization.neo4j.AbstractNeo4JTest;
+import com.cedarsoft.serialization.neo4j.utils.Graphviz;
 import com.ecyrd.speed4j.StopWatch;
 import com.google.common.collect.ImmutableList;
 import org.junit.*;

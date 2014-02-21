@@ -27,6 +27,8 @@ public class AddressSerializer extends AbstractNeo4jSerializer<Address> {
   @Nonnull
   @Override
   public Address deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    verifyVersionReadable( formatVersion );
+
     String street = ( String ) deserializeFrom.getProperty( "street" );
     String town = ( String ) deserializeFrom.getProperty( "town" );
     return new Address( street, town );

@@ -26,6 +26,8 @@ public class EmailSerializer extends AbstractNeo4jSerializer<Email> {
   @Nonnull
   @Override
   public Email deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    verifyVersionReadable( formatVersion );
+
     String mail = ( String ) deserializeFrom.getProperty( "mail" );
     return new Email( mail );
   }

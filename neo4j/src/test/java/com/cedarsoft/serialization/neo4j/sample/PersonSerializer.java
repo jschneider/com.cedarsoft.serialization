@@ -39,6 +39,8 @@ public class PersonSerializer extends AbstractNeo4jSerializer<Person> {
   @Nonnull
   @Override
   public Person deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    verifyVersionReadable( formatVersion );
+
     String name = ( String ) deserializeFrom.getProperty( "name" );
 
     Address address = deserializeWithRelationship( Address.class, Relations.ADDRESS, deserializeFrom, formatVersion );
