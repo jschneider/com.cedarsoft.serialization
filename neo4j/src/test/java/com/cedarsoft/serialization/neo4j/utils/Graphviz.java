@@ -33,11 +33,6 @@ public class Graphviz {
       @Override
       public <R, E extends Throwable> R accept( Visitor<R, E> visitor ) throws E {
         for ( Node node : GlobalGraphOperations.at( graphDb ).getAllNodes() ) {
-          //Skip the reference node
-          if ( node.getId() == 0 ) {
-            continue;
-          }
-
           visitor.visitNode( node );
           for ( Relationship edge : node.getRelationships( Direction.OUTGOING ) ) {
             visitor.visitRelationship( edge );
