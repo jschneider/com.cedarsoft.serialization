@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> implements Serializer<T, Node, Node> {
+public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> {
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
 
