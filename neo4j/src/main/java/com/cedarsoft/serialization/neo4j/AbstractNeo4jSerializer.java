@@ -43,6 +43,8 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
 
   @Override
   public void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    verifyVersionWritable( formatVersion );
+
     serializeTo.addLabel(getTypeLabel());
     serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
   }
