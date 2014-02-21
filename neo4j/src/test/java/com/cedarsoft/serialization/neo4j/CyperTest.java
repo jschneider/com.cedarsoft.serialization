@@ -1,14 +1,11 @@
 package com.cedarsoft.serialization.neo4j;
 
+import com.cedarsoft.serialization.neo4j.sample.PersonSerializer;
 import org.junit.*;
 import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.IteratorUtil;
-
-import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -31,10 +28,10 @@ public class CyperTest extends AbstractNeo4JTest {
       Node node3 = graphDb.createNode();
       Node node4 = graphDb.createNode();
 
-      node1.createRelationshipTo( node2, AbstractNeo4jSerializerTest.PersonSerializer.Relations.ADDRESS );
-      node1.createRelationshipTo( node3, AbstractNeo4jSerializerTest.PersonSerializer.Relations.ADDRESS );
-      node2.createRelationshipTo( node3, AbstractNeo4jSerializerTest.PersonSerializer.Relations.ADDRESS );
-      node3.createRelationshipTo( node4, AbstractNeo4jSerializerTest.PersonSerializer.Relations.ADDRESS );
+      node1.createRelationshipTo( node2, PersonSerializer.Relations.ADDRESS );
+      node1.createRelationshipTo( node3, PersonSerializer.Relations.ADDRESS );
+      node2.createRelationshipTo( node3, PersonSerializer.Relations.ADDRESS );
+      node3.createRelationshipTo( node4, PersonSerializer.Relations.ADDRESS );
 
       tx.success();
     }

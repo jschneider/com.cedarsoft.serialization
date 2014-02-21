@@ -1,0 +1,34 @@
+package com.cedarsoft.serialization.neo4j.sample;
+
+import com.cedarsoft.serialization.neo4j.AbstractNeo4jSerializer;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionException;
+import com.cedarsoft.version.VersionRange;
+import org.neo4j.graphdb.Node;
+
+import javax.annotation.Nonnull;
+import java.io.IOException;
+
+/**
+* @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+*/
+public class AddressSerializer extends AbstractNeo4jSerializer<Address> {
+  public AddressSerializer() {
+    super( "com.cedarsoft.test.address", VersionRange.single( 1, 0, 0 ) );
+  }
+
+  @Override
+  public void serialize( @Nonnull Node serializeTo, @Nonnull Address object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    super.serialize( serializeTo, object, formatVersion );
+    serializeTo.setProperty( "street", object.getStreet() );
+    serializeTo.setProperty( "town", object.getTown() );
+  }
+
+  @Nonnull
+  @Override
+  public Address deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
+    String street = ( String ) deserializeFrom.getProperty( "street" );
+    String town = ( String ) deserializeFrom.getProperty( "town" );
+    return new Address( street, town );
+  }
+}
