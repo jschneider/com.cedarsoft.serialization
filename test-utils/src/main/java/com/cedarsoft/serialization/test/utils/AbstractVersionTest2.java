@@ -40,6 +40,8 @@ import org.xml.sax.SAXException;
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Abstract test class for testing the support for multiple format versions
@@ -58,7 +60,7 @@ public abstract class AbstractVersionTest2<T> {
    */
   @Theory
   public void testVersion( @Nonnull VersionEntry entry ) throws Exception {
-    Serializer<T> serializer = getSerializer();
+    Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     Version version = entry.getVersion();
     byte[] serialized = entry.getSerialized( serializer );
@@ -73,7 +75,7 @@ public abstract class AbstractVersionTest2<T> {
    * @return the serializer
    */
   @Nonnull
-  protected abstract Serializer<T> getSerializer() throws Exception;
+  protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
 
   /**
    * Verifies the deserialized object.

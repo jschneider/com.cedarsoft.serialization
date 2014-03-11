@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.stax.mate;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.*;
@@ -46,7 +47,7 @@ import static org.junit.Assert.*;
 public class DimensionSerializerTest extends AbstractXmlSerializerTest2<Dimension> {
   @Nonnull
   @Override
-  protected DimensionSerializer getSerializer() {
+  protected StreamSerializer<Dimension> getSerializer() {
     return new DimensionSerializer();
   }
 

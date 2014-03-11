@@ -31,10 +31,10 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.stax.mate.StaxMateSupport;
 import com.cedarsoft.serialization.test.utils.AbstractSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.utils.JsonUtils;
 import org.apache.commons.io.Charsets;
 import org.junit.*;
@@ -50,7 +50,7 @@ import java.util.List;
 public class RoomSerializerJsonTest extends AbstractSerializerTest2<Room> {
   @Nonnull
   @Override
-  protected Serializer<Room> getSerializer() throws Exception {
+  protected StreamSerializer<Room> getSerializer() throws Exception {
     return new Room.Serializer( new Window.Serializer(), new Door.Serializer() );
   }
 

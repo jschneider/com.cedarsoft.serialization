@@ -45,6 +45,8 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 
 /**
@@ -53,18 +55,18 @@ import java.util.Collection;
  */
 public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJacksonSerializer<T> {
   @Nonnull
-  protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> serializingStrategySupport;
+  protected final SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> serializingStrategySupport;
 
   protected AbstractDelegatingJacksonSerializer( @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceUriBase, formatVersionRange );
-    this.serializingStrategySupport = new SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException>( formatVersionRange );
+    this.serializingStrategySupport = new SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream>( formatVersionRange );
   }
 
   @Override
   public void serialize( @Nonnull JsonGenerator serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
     assert isVersionWritable( formatVersion );
 
-    SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( object );
+    SerializingStrategy<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> strategy = serializingStrategySupport.findStrategy( object );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
     serializeTo.writeStringField( PROPERTY_SUB_TYPE, strategy.getId() );
 
@@ -91,23 +93,23 @@ public abstract class AbstractDelegatingJacksonSerializer<T> extends AbstractJac
       throw new JsonParseException( "Attribute" + PROPERTY_SUB_TYPE + " not found. Cannot find strategy.", deserializeFrom.getCurrentLocation() );
     }
 
-    SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy = serializingStrategySupport.findStrategy( type );
+    SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> strategy = serializingStrategySupport.findStrategy( type );
     Version resolvedVersion = serializingStrategySupport.resolveVersion( strategy, formatVersion );
     return strategy.deserialize( deserializeFrom, resolvedVersion );
   }
 
   @Nonnull
-  public Collection<? extends SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException>> getStrategies() {
+  public Collection<? extends SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream>> getStrategies() {
     return serializingStrategySupport.getStrategies();
   }
 
   @Nonnull
-  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException> strategy ) {
+  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> strategy ) {
     return serializingStrategySupport.addStrategy( strategy );
   }
 
   @Nonnull
-  public SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException> getSerializingStrategySupport() {
+  public SerializingStrategySupport<T, JsonGenerator, JsonParser, JsonProcessingException, OutputStream, InputStream> getSerializingStrategySupport() {
     return serializingStrategySupport;
   }
 }

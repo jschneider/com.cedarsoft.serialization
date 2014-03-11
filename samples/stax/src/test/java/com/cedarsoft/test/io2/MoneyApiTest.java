@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -61,7 +62,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest<MoneyApiTest.MyObjec
 
   @Nonnull
   @Override
-  protected Serializer<MyObject> getSerializer() throws Exception {
+  protected StreamSerializer<MyObject> getSerializer() throws Exception {
     return new MyObjectSerializer( new com.cedarsoft.test.io2.MoneySerializer() );
   }
 

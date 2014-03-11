@@ -47,7 +47,7 @@ public class ApplicationSerializerVersionTest extends AbstractJsonVersionTest2<A
 
   @Nonnull
   @Override
-  protected Serializer<Application> getSerializer() throws Exception {
+  protected ApplicationSerializer getSerializer() throws Exception {
     return new ApplicationSerializer( new VersionSerializer() );
   }
 

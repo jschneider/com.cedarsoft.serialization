@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
 public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
   @Nonnull
   @Override
-  protected Serializer<Extra> getSerializer() throws Exception {
+  protected ExtraSerializer getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
   }
 
@@ -80,7 +80,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest2<Extra> {
 
   @Test
   public void testAsciiArt() throws Exception {
-    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
+    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
     assertEquals( visualizer.visualize(),
                   "         -->     Money\n" +
                     "----------------------\n" +

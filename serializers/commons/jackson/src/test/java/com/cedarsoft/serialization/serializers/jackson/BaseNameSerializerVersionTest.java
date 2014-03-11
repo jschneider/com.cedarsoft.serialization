@@ -48,7 +48,7 @@ public class BaseNameSerializerVersionTest extends AbstractJsonVersionTest2<Base
     "\"daName\"" );
 
   @Override
-  protected Serializer<BaseName> getSerializer() throws Exception {
+  protected BaseNameSerializer getSerializer() throws Exception {
     return new BaseNameSerializer();
   }
 

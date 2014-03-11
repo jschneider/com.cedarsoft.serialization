@@ -30,8 +30,8 @@
  */
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
-import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.experimental.theories.*;
 
@@ -43,7 +43,7 @@ import javax.annotation.Nonnull;
 public class FooTest extends AbstractJsonSerializerTest2<Foo> {
   @Nonnull
   @Override
-  protected Foo.Serializer getSerializer() throws Exception {
+  protected StreamSerializer<Foo> getSerializer() throws Exception {
     return new Foo.Serializer();
   }
 

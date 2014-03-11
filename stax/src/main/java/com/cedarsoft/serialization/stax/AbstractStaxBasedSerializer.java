@@ -59,7 +59,7 @@ import java.util.List;
  * @param <T> the type
  * @param <S> the object to serialize to
  */
-public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> {
+public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSerializer<T, S, XMLStreamReader, XMLStreamException> implements StaxBasedSerializer<T, S> {
   /**
    * Creates a new serializer
    *
@@ -320,7 +320,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   }
 
   /**
-   * Deserializes a collection
+   * Convenience method
    *
    * @param deserializeFrom where it is deserialized from
    * @param type            the type
@@ -331,8 +331,24 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @throws IOException
    */
   @Nonnull
-  protected <T> List<? extends T> deserializeCollection( @Nonnull XMLStreamReader deserializeFrom, @Nonnull final Class<T> type, @Nonnull final Version formatVersion ) throws XMLStreamException, IOException {
-    final List<T> deserializedObjects = new ArrayList<T>();
+  protected <L> List<? extends L> deserializeCollection( @Nonnull XMLStreamReader deserializeFrom, @Nonnull final Class<L> type, @Nonnull final Version formatVersion ) throws XMLStreamException, IOException {
+    return deserializeCollection( type, formatVersion, deserializeFrom );
+  }
+
+  /**
+   * Deserializes a collection
+   *
+   * @param type the type
+   * @param formatVersion the format version
+   * @param deserializeFrom deserialize from
+   * @param <L> the type
+   * @return the deserialized collection
+   * @throws XMLStreamException
+   * @throws IOException
+   */
+  @Nonnull
+  protected <L> List<? extends L> deserializeCollection( @Nonnull final Class<L> type, @Nonnull final Version formatVersion, @Nonnull XMLStreamReader deserializeFrom ) throws XMLStreamException, IOException {
+    final List<L> deserializedObjects = new ArrayList<L>();
 
     visitChildren( deserializeFrom, new CB() {
       @Override

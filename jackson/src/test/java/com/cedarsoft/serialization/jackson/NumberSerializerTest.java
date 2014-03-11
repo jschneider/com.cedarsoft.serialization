@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.JsonUtils;

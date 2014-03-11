@@ -31,12 +31,12 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import com.cedarsoft.test.Money;
 import org.codehaus.staxmate.out.SMOutputElement;
@@ -61,7 +61,7 @@ public class MoneyApiTest extends AbstractXmlSerializerTest2<MoneyApiTest.MyObje
 
   @Nonnull
   @Override
-  protected Serializer<MyObject> getSerializer() throws Exception {
+  protected StreamSerializer<MyObject> getSerializer() throws Exception {
     return new MyObjectSerializer( new com.cedarsoft.test.io2.MoneySerializer() );
   }
 

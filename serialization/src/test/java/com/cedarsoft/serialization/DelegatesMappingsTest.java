@@ -41,6 +41,8 @@ import org.junit.rules.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,12 +55,12 @@ import static org.junit.Assert.*;
 public class DelegatesMappingsTest {
   private final VersionRange mine = VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 );
   private VersionMappingTest.MySerializer serializer;
-  private DelegatesMappings<Object, Object, IOException> delegatesMappings;
+  private DelegatesMappings<Object, Object, IOException, OutputStream, InputStream> delegatesMappings;
 
   @Before
   public void setup() {
     serializer = new VersionMappingTest.MySerializer( VersionRange.from( 7, 0, 0 ).to( 7, 5, 9 ) );
-    delegatesMappings = new DelegatesMappings<Object, Object, IOException>( mine );
+    delegatesMappings = new DelegatesMappings<Object, Object, IOException, OutputStream, InputStream>( mine );
   }
 
   @Test
@@ -100,7 +102,7 @@ public class DelegatesMappingsTest {
   @Test
   public void testVerify3() {
     {
-      DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+      DelegatesMappings<Object, Object, IOException, OutputStream, InputStream> mappings = new DelegatesMappings<Object, Object, IOException, OutputStream, InputStream>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
       mappings.add( serializer ).responsibleFor( Object.class )
         .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 0 );
 
@@ -113,7 +115,7 @@ public class DelegatesMappingsTest {
     }
 
     {
-      DelegatesMappings<Object, Object, IOException> mappings = new DelegatesMappings<Object, Object, IOException>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
+      DelegatesMappings<Object, Object, IOException, OutputStream, InputStream> mappings = new DelegatesMappings<Object, Object, IOException, OutputStream, InputStream>( VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
       mappings.add( serializer ).responsibleFor( Object.class )
         .map( 1, 0, 0 ).toDelegateVersion( 7, 5, 9 )
       ;

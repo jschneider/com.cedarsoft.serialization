@@ -31,26 +31,16 @@
 
 package com.cedarsoft.serialization.stax.mate.test;
 
-import com.cedarsoft.serialization.Serializer;
-import com.cedarsoft.serialization.SerializingStrategy;
-import com.cedarsoft.serialization.ToString;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.ui.VersionMappingsVisualizer;
-import com.cedarsoft.version.Version;
 import com.google.common.collect.ImmutableList;
-import org.codehaus.staxmate.out.SMOutputElement;
 import org.fest.assertions.Assertions;
-import org.junit.*;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  *
@@ -58,7 +48,7 @@ import static org.junit.Assert.*;
 public class BallsSerializerTest extends AbstractXmlSerializerTest2<List<? extends Ball>> {
   @Nonnull
   @Override
-  protected Serializer<List<? extends Ball>> getSerializer() throws Exception {
+  protected StreamSerializer<List<? extends Ball>> getSerializer() throws Exception {
     return new BallsSerializer( new BallSerializer() );
   }
 

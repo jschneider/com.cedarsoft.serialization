@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.serializers.jackson;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public class ColorSerializerTest extends AbstractJsonSerializerTest2<Color> {
 
   @Nonnull
   @Override
-  protected Serializer<Color> getSerializer() throws Exception {
+  protected StreamSerializer<Color> getSerializer() throws Exception {
     return new ColorSerializer();
   }
 }

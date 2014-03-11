@@ -31,6 +31,18 @@
 
 News
 
+* 2013-07-18: Release 5.0.0
+
+ * Major changes: Generator as IntelliJ Idea plugin
+
+ * Upgraded Jackson to 2.0 (package changes)
+
+ * JSON: No longer dependent on order
+
+ * JSON: Improved verification
+
+ * JSON: Added serializers for primitives
+
 * 2013-06-29: Preparing 5.0.0
 
  * Major changes: Generator as IntelliJ Idea plugin

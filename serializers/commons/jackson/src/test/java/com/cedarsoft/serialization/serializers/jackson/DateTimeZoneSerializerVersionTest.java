@@ -48,7 +48,7 @@ public class DateTimeZoneSerializerVersionTest extends AbstractJsonVersionTest2<
 
   @Nonnull
   @Override
-  protected Serializer<DateTimeZone> getSerializer() throws Exception {
+  protected DateTimeZoneSerializer getSerializer() throws Exception {
     return new DateTimeZoneSerializer();
   }
 

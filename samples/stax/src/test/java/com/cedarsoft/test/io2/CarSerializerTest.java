@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Car;
@@ -51,7 +52,7 @@ import static org.junit.Assert.*;
 public class CarSerializerTest extends AbstractXmlSerializerTest<Car> {
   @Nonnull
   @Override
-  protected Serializer<Car> getSerializer() throws Exception {
+  protected StreamSerializer<Car> getSerializer() throws Exception {
     MoneySerializer moneySerializer = new MoneySerializer();
     return new CarSerializer( moneySerializer, new ExtraSerializer( moneySerializer ), new ModelSerializer() );
   }

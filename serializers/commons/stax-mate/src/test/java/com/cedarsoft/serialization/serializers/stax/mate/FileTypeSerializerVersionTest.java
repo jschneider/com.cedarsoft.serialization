@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
 public class FileTypeSerializerVersionTest extends AbstractXmlVersionTest2<FileType> {
   @Nonnull
   @Override
-  protected Serializer<FileType> getSerializer() throws Exception {
+  protected FileTypeSerializer getSerializer() throws Exception {
     return new FileTypeSerializer( new ExtensionSerializer() );
   }
 

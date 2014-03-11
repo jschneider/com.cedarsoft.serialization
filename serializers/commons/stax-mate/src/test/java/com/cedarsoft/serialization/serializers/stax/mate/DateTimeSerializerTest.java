@@ -31,7 +31,7 @@
 
 package com.cedarsoft.serialization.serializers.stax.mate;
 
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.test.utils.AssertUtils;
@@ -63,7 +63,7 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
 
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<DateTime> getSerializer() {
+  protected DateTimeSerializer getSerializer() {
     return new DateTimeSerializer();
   }
 

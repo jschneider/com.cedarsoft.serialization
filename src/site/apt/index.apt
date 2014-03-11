@@ -35,9 +35,11 @@ cedarsoft Serialization
   Its goal is to provide some simple classes (very small framework) that enables rapid development
   of versioned serialization.
 
-* 2012-08-15: Released 4.1.2
 
-  Version 4.1.2 has been released. Further informations can be found on the {{{./news.html}news page}}.
+* 2013-07-18: Release 5.0.0
+
+  Version 5.0.0 has been released. Further informations can be found on the {{{./news.html}news page}}.
+  Most changes are related to the JSON (Jackson based) serializers
 
 * Introduction
 
@@ -101,7 +103,7 @@ cedarsoft Serialization
 
 ** Versioning
 
-  Serializating objects is easy. There are many frameworks out there that solve that problem well. But only very few support
+  Serializing objects is easy. There are many frameworks out there that solve that problem well. But only very few support
   versioning support.
 
   Unfortunately nobody misses versioning until it is too late. Did you every create files and had to struggle with format changes

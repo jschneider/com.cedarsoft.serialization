@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlVersionTest;
@@ -52,7 +53,7 @@ import static org.junit.Assert.*;
 public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
   @Nonnull
   @Override
-  protected Serializer<Extra> getSerializer() throws Exception {
+  protected StreamSerializer<Extra> getSerializer() throws Exception {
     return new ExtraSerializer( new MoneySerializer() );
   }
 
@@ -82,7 +83,7 @@ public class ExtraSerializerVersionTest extends AbstractXmlVersionTest<Extra> {
 
   @Test
   public void testAsciiArt() throws Exception {
-    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
+    DelegatesMappingVisualizer visualizer = new DelegatesMappingVisualizer( ( ( AbstractSerializer<?, ?, ?, ?, ?, ?> ) getSerializer() ).getDelegatesMappings() );
     assertEquals( visualizer.visualize(),
                   "         -->     Money\n" +
                     "----------------------\n" +

@@ -32,6 +32,15 @@
 package com.cedarsoft.serialization.jackson.test;
 
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
+import com.cedarsoft.serialization.jackson.BooleanSerializer;
+import com.cedarsoft.serialization.jackson.ByteSerializer;
+import com.cedarsoft.serialization.jackson.CharacterSerializer;
+import com.cedarsoft.serialization.jackson.DoubleSerializer;
+import com.cedarsoft.serialization.jackson.FloatSerializer;
+import com.cedarsoft.serialization.jackson.IntegerSerializer;
+import com.cedarsoft.serialization.jackson.LongSerializer;
+import com.cedarsoft.serialization.jackson.ShortSerializer;
 import com.cedarsoft.serialization.jackson.StringSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
@@ -50,8 +59,8 @@ public class PrimitivesTest extends AbstractJsonSerializerTest2<Primitives> {
 
   @Nonnull
   @Override
-  protected Serializer<Primitives> getSerializer() throws Exception {
-    return new PrimitivesSerializer( new StringSerializer() );
+  protected StreamSerializer<Primitives> getSerializer() throws Exception {
+    return new PrimitivesSerializer( new IntegerSerializer(), new ShortSerializer(), new ByteSerializer(), new LongSerializer(), new DoubleSerializer(), new FloatSerializer(), new CharacterSerializer(), new BooleanSerializer(), new StringSerializer() );
   }
 
   @DataPoint

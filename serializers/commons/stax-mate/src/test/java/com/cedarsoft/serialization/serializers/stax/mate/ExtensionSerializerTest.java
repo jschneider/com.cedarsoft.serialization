@@ -32,7 +32,7 @@
 package com.cedarsoft.serialization.serializers.stax.mate;
 
 import com.cedarsoft.file.Extension;
-import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import org.junit.*;
@@ -50,7 +50,7 @@ import static org.junit.Assert.*;
 public class ExtensionSerializerTest extends AbstractXmlSerializerTest2<Extension> {
   @Nonnull
   @Override
-  protected AbstractStaxMateSerializer<Extension> getSerializer() {
+  protected StreamSerializer<Extension> getSerializer() {
     return new ExtensionSerializer();
   }
 

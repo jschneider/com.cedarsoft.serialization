@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.stax;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 
 import javax.annotation.Nonnull;
@@ -12,7 +13,7 @@ import javax.xml.stream.XMLStreamWriter;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.google.common.io.NullOutputStream;
+import com.google.common.io.ByteStreams;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -25,7 +26,7 @@ public class PerformanceRunner {
     AbstractStaxSerializer<Integer> serializer = new IntegerAbstractStaxSerializer();
 
 
-    NullOutputStream out = new NullOutputStream();
+    OutputStream out = ByteStreams.nullOutputStream();
 
     {
       long start = System.currentTimeMillis();

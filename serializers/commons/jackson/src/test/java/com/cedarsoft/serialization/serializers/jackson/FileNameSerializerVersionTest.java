@@ -45,7 +45,7 @@ public class FileNameSerializerVersionTest extends AbstractJsonVersionTest2<File
   public static final VersionEntry ENTRY1 = FileNameSerializerVersionTest.create( Version.valueOf( 1, 0, 0 ), FileNameSerializerVersionTest.class.getResource( "FileName_1.0.0_1.json" ) );
 
   @Override
-  protected Serializer<FileName> getSerializer() throws Exception {
+  protected FileNameSerializer getSerializer() throws Exception {
     return new FileNameSerializer( new BaseNameSerializer(), new ExtensionSerializer() );
   }
 

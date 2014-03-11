@@ -51,12 +51,12 @@ import java.util.List;
  * @param <S> as defined in {@link SerializingStrategy}
  * @param <E> as defined in {@link SerializingStrategy}
  */
-public class SerializingStrategySupport<T, S, D, E extends Throwable> {
+public class SerializingStrategySupport<T, S, D, E extends Throwable, O, I> {
   @Nonnull
-  private final List<SerializingStrategy<? extends T, S, D, E>> strategies = new ArrayList<SerializingStrategy<? extends T, S, D, E>>();
+  private final List<SerializingStrategy<? extends T, S, D, E, O, I>> strategies = new ArrayList<SerializingStrategy<? extends T, S, D, E, O, I>>();
 
   @Nonnull
-  private final VersionMappings<SerializingStrategy<? extends T, S, D, E>> versionMappings;
+  private final VersionMappings<SerializingStrategy<? extends T, S, D, E, O, I>> versionMappings;
 
   /**
    * Creates a new serializing strategy
@@ -64,7 +64,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    * @param versionRange the format version range
    */
   public SerializingStrategySupport( @Nonnull VersionRange versionRange ) {
-    versionMappings = new VersionMappings<SerializingStrategy<? extends T, S, D, E>>( versionRange );
+    versionMappings = new VersionMappings<SerializingStrategy<? extends T, S, D, E, O, I>>( versionRange );
   }
 
   /**
@@ -77,8 +77,8 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    * @throws NotFoundException if not strategy could be found
    */
   @Nonnull
-  public SerializingStrategy<? extends T, S, D, E> findStrategy( @Nonnull String id ) throws NotFoundException {
-    for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
+  public SerializingStrategy<? extends T, S, D, E, O, I> findStrategy( @Nonnull String id ) throws NotFoundException {
+    for ( SerializingStrategy<? extends T, S, D, E, O, I> strategy : strategies ) {
       if ( strategy.getId().equals( id ) ) {
         return strategy;
       }
@@ -96,10 +96,10 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    * @throws NotFoundException
    */
   @Nonnull
-  public <R extends T> SerializingStrategy<R, S, D, E> findStrategy( @Nonnull R object ) throws NotFoundException {
-    for ( SerializingStrategy<? extends T, S, D, E> strategy : strategies ) {
+  public <R extends T> SerializingStrategy<R, S, D, E, O, I> findStrategy( @Nonnull R object ) throws NotFoundException {
+    for ( SerializingStrategy<? extends T, S, D, E, O, I> strategy : strategies ) {
       if ( strategy.supports( object ) ) {
-        return ( SerializingStrategy<R, S, D, E> ) strategy;
+        return ( SerializingStrategy<R, S, D, E, O, I> ) strategy;
       }
     }
 
@@ -112,23 +112,23 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable> {
    * @return the strategies
    */
   @Nonnull
-  public Collection<? extends SerializingStrategy<? extends T, S, D, E>> getStrategies() {
+  public Collection<? extends SerializingStrategy<? extends T, S, D, E, O, I>> getStrategies() {
     return Collections.unmodifiableList( strategies );
   }
 
   @Nonnull
-  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, S, D, E> strategy ) {
+  public VersionMapping addStrategy( @Nonnull SerializingStrategy<? extends T, S, D, E, O, I> strategy ) {
     strategies.add( strategy );
     return versionMappings.add( strategy, strategy.getFormatVersionRange() );
   }
 
   @Nonnull
-  public Version resolveVersion( @Nonnull SerializingStrategy<? extends T, S, D, E> key, @Nonnull Version version ) {
+  public Version resolveVersion( @Nonnull SerializingStrategy<? extends T, S, D, E, O, I> key, @Nonnull Version version ) {
     return versionMappings.resolveVersion( key, version );
   }
 
   @Nonnull
-  public VersionMappings<SerializingStrategy<? extends T, S, D, E>> getVersionMappings() {
+  public VersionMappings<SerializingStrategy<? extends T, S, D, E, O, I>> getVersionMappings() {
     return versionMappings;
   }
 

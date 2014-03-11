@@ -31,6 +31,7 @@
 
 package com.cedarsoft.test.io2;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest;
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.test.Money;
@@ -44,7 +45,7 @@ public class MoneySerializerTest extends AbstractXmlSerializerTest<Money> {
   //We don't need a multi test for such an easy class...
   @Nonnull
   @Override
-  protected Serializer<Money> getSerializer() {
+  protected StreamSerializer<Money> getSerializer() {
     return new MoneySerializer();
   }
 

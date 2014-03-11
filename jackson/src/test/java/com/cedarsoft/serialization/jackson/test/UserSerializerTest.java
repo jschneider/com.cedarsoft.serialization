@@ -31,11 +31,10 @@
 
 package com.cedarsoft.serialization.jackson.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractJsonSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.apache.commons.codec.binary.Hex;
-import org.junit.*;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -47,7 +46,7 @@ import java.util.Arrays;
 public class UserSerializerTest extends AbstractJsonSerializerTest2<User> {
   @Nonnull
   @Override
-  protected Serializer<User> getSerializer() throws Exception {
+  protected StreamSerializer<User> getSerializer() throws Exception {
     return new UserSerializer( new EmailSerializer(), new RoleSerializer(), new UserDetailsSerializer() );
   }
 

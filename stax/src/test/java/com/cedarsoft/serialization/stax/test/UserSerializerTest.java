@@ -31,9 +31,9 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
-import com.cedarsoft.serialization.Serializer;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;
@@ -47,7 +47,7 @@ import static org.junit.Assert.*;
 public class UserSerializerTest extends AbstractXmlSerializerTest2<User> {
   @Nonnull
   @Override
-  protected Serializer<User> getSerializer() throws Exception {
+  protected StreamSerializer<User> getSerializer() throws Exception {
     return new UserSerializer( new RoleSerializer(), new EmailSerializer() );
   }
 
