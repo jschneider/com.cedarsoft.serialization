@@ -10,9 +10,13 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
-* @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
-*/
+ * The type Email serializer.
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ */
 public class EmailSerializer extends AbstractNeo4jSerializer<Email> {
+  /**
+   * Instantiates a new Email serializer.
+   */
   public EmailSerializer() {
     super( "com.cedarsoft.test.email", VersionRange.single( 1, 0, 0 ) );
   }

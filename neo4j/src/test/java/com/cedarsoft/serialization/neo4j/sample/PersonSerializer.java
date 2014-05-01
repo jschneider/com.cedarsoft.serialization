@@ -12,9 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
-* @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
-*/
+ * The type Person serializer.
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ */
 public class PersonSerializer extends AbstractNeo4jSerializer<Person> {
+  /**
+   * Instantiates a new Person serializer.
+   */
   public PersonSerializer() {
     super( "com.cedarsoft.test.person", VersionRange.single( 1, 0, 0 ) );
 
@@ -49,8 +53,17 @@ public class PersonSerializer extends AbstractNeo4jSerializer<Person> {
     return new Person( name, address, emails );
   }
 
+  /**
+   * The enum Relations.
+   */
   public enum Relations implements RelationshipType {
+    /**
+     * The ADDRESS.
+     */
     ADDRESS,
+    /**
+     * The EMAIL.
+     */
     EMAIL
   }
 }

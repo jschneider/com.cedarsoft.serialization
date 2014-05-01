@@ -13,6 +13,9 @@ import java.io.IOException;
 * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
 */
 public class AddressSerializer extends AbstractNeo4jSerializer<Address> {
+  /**
+   * Instantiates a new Address serializer.
+   */
   public AddressSerializer() {
     super( "com.cedarsoft.test.address", VersionRange.single( 1, 0, 0 ) );
   }

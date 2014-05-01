@@ -5,16 +5,27 @@ import com.google.common.base.Objects;
 import javax.annotation.Nonnull;
 
 /**
-* @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
-*/
+ * The type Email.
+ * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
+ */
 public class Email {
   @Nonnull
   private final String mail;
 
+  /**
+   * Instantiates a new Email.
+   *
+   * @param mail the mail
+   */
   public Email( @Nonnull String mail ) {
     this.mail = mail;
   }
 
+  /**
+   * Gets mail.
+   *
+   * @return the mail
+   */
   @Nonnull
   public String getMail() {
     return mail;
