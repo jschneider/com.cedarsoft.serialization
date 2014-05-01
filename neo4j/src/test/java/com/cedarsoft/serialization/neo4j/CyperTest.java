@@ -40,7 +40,7 @@ public class CyperTest extends AbstractNeo4JTest {
     assertThat( engine.execute( query ).dumpToString().trim() ).isEqualTo( "+-----------------------------+\n" +
                                                             "| n                  | n.name |\n" +
                                                             "+-----------------------------+\n" +
-                                                            "| Node[1]{name:\"MM\"} | \"MM\"   |\n" +
+                                                            "| Node[0]{name:\"MM\"} | \"MM\"   |\n" +
                                                             "+-----------------------------+\n" +
                                                             "1 row" );
 
