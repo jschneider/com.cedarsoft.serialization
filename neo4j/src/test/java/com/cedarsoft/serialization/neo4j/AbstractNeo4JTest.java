@@ -5,24 +5,20 @@ import org.junit.rules.*;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class AbstractNeo4JTest {
-  protected GraphDatabaseService graphDb;
-
   @Rule
-  public TemporaryFolder tmp = new TemporaryFolder();
+  public Neo4jRule neo4jRule = new Neo4jRule(  );
+
+  protected GraphDatabaseService graphDb;
 
   @Before
   public void prepareTestDatabase() throws IOException {
-    graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase( tmp.newFolder().getAbsolutePath() );
-  }
-
-  @After
-  public void destroyTestDatabase() {
-    graphDb.shutdown();
+    graphDb = neo4jRule.getGraphDb();
   }
 }
