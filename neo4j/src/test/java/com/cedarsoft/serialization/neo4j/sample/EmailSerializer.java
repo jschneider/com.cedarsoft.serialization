@@ -22,8 +22,7 @@ public class EmailSerializer extends AbstractNeo4jSerializer<Email> {
   }
 
   @Override
-  public void serialize( @Nonnull Node serializeTo, @Nonnull Email object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
-    super.serialize( serializeTo, object, formatVersion );
+  protected void serializeInternal( @Nonnull Node serializeTo, @Nonnull Email object, @Nonnull Version formatVersion ) {
     serializeTo.setProperty( "mail", object.getMail() );
   }
 

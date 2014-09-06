@@ -42,12 +42,24 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   }
 
   @Override
-  public void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws VersionException, IOException {
+  public final void serialize( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws VersionException, IOException {
     verifyVersionWritable( formatVersion );
 
     serializeTo.addLabel(getTypeLabel());
     serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
+
+    serializeInternal( serializeTo, object, formatVersion );
   }
+
+  /**
+   * This method must be implemented by sub classes. Serialize the custom fields when necessary.<br/>
+   * This method is called from {@link #serialize(Node, Object, Version)}. The type label and format version have already been added to the node
+   * @param serializeTo the node to serialize to
+   * @param object the object
+   * @param formatVersion the format version
+   * @throws IOException
+   */
+  protected abstract void serializeInternal( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException;
 
   @Nonnull
   public Label getTypeLabel() {

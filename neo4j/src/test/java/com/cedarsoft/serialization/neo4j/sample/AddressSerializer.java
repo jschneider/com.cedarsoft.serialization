@@ -21,8 +21,7 @@ public class AddressSerializer extends AbstractNeo4jSerializer<Address> {
   }
 
   @Override
-  public void serialize( @Nonnull Node serializeTo, @Nonnull Address object, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
-    super.serialize( serializeTo, object, formatVersion );
+  protected void serializeInternal( @Nonnull Node serializeTo, @Nonnull Address object, @Nonnull Version formatVersion ) {
     serializeTo.setProperty( "street", object.getStreet() );
     serializeTo.setProperty( "town", object.getTown() );
   }
