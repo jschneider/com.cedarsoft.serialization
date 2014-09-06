@@ -30,6 +30,7 @@ public class Neo4jRule implements TestRule {
           base.evaluate();
         } catch ( Exception e ) {
           dump();
+          throw e;
         } finally {
           after();
         }
@@ -50,10 +51,6 @@ public class Neo4jRule implements TestRule {
   }
 
   private void after() {
-    for ( ShutdownHook shutdownHook : shutdownHooks ) {
-      shutdownHook.willShutDown( graphDb );
-    }
-
     graphDb.shutdown();
   }
 
@@ -63,16 +60,5 @@ public class Neo4jRule implements TestRule {
       throw new IllegalStateException( "graph db is null" );
     }
     return graphDb;
-  }
-
-  @Nonnull
-  private final List<ShutdownHook> shutdownHooks = new ArrayList<>();
-
-  public void addShutdownHook( @Nonnull ShutdownHook hook ) {
-    this.shutdownHooks.add( hook );
-  }
-
-  public interface ShutdownHook{
-    void willShutDown( @Nonnull GraphDatabaseService graphDb );
   }
 }
