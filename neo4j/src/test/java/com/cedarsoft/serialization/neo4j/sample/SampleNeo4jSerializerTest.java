@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.neo4j.sample;
 
 import com.cedarsoft.serialization.neo4j.AbstractNeo4JTest;
-import com.cedarsoft.serialization.neo4j.utils.Graphviz;
 import com.ecyrd.speed4j.StopWatch;
 import com.google.common.collect.ImmutableList;
 import org.junit.*;
@@ -23,12 +22,7 @@ public class SampleNeo4jSerializerTest extends AbstractNeo4JTest {
   public void testIt() throws Exception {
     Person person = new Person( "Martha Musterfrau", new Address( "Musterstraße 7", "Musterstadt" ), ImmutableList.of( new Email( "1" ), new Email( "2" ), new Email( "3" ) ) );
 
-    Node node;
-    try ( Transaction tx = graphDb.beginTx() ) {
-      //First Serialize
-      node = serialize( person );
-      tx.success();
-    }
+    Node node = serialize( person );
 
     //Now deserialize
     try ( Transaction tx = graphDb.beginTx() ) {
@@ -77,8 +71,18 @@ public class SampleNeo4jSerializerTest extends AbstractNeo4JTest {
 
     StopWatch stopWatch = new StopWatch( getClass().getName() );
 
-    try ( Transaction tx = graphDb.beginTx() ) {
+    //without outer transaction
+    for ( int i = 0; i < transactionCount; i++ ) {
+      //First Serialize
+      Node node = serialize( person );
+      assertThat( node ).isNotNull();
+    }
 
+    stopWatch.stop( "created " + transactionCount + " persons without outer transaction" );
+    System.out.println( stopWatch.toString( transactionCount ) );
+
+
+    try ( Transaction tx = graphDb.beginTx() ) {
       for ( int i = 0; i < transactionCount; i++ ) {
         //First Serialize
         Node node = serialize( person );
@@ -87,8 +91,10 @@ public class SampleNeo4jSerializerTest extends AbstractNeo4JTest {
       tx.success();
     }
 
-    stopWatch.stop( "created " + transactionCount + " nodes" );
+    stopWatch.stop( "created " + transactionCount + " persons" );
     System.out.println( stopWatch.toString( transactionCount ) );
+
+    stopWatch.start();
   }
 
   @Nonnull
