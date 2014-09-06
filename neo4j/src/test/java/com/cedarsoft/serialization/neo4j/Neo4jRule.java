@@ -28,7 +28,7 @@ public class Neo4jRule implements TestRule {
         before();
         try {
           base.evaluate();
-        } catch ( Exception e ) {
+        } catch ( Throwable e ) {
           dump();
           throw e;
         } finally {
@@ -38,9 +38,13 @@ public class Neo4jRule implements TestRule {
     }, description );
   }
 
-  public void dump() throws IOException, InterruptedException {
+  public void dump() {
     if ( "true".equalsIgnoreCase( System.getProperty( "neo4j.dumpOnError" ) ) ) {
-      Graphviz.toPng( getGraphDb() );
+      try {
+        Graphviz.toPng( getGraphDb() );
+      } catch ( Exception e ) {
+        e.printStackTrace();
+      }
     }
   }
 

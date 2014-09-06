@@ -158,7 +158,7 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
     }
 
     assertThat( node ).isNotNull();
-    assertThat( node.getId() ).isEqualTo( 1 );
+    assertThat( node.getId() ).isEqualTo( 0 );
 
     assert node != null;
 
@@ -166,7 +166,7 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
     // reference node.
 
     try ( Transaction tx = graphDb.beginTx() ) {
-      assertThat( node.getId() ).isGreaterThan( 0 );
+      assertThat( node.getId() ).isEqualTo( 0 );
 
       // Retrieve a node by using the id of the created node. The id's and
       // property should match.
