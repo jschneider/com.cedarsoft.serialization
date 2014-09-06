@@ -120,15 +120,6 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
   }
 
   @Test
-  public void testReferenceNode() throws Exception {
-    try ( Transaction tx = graphDb.beginTx() ) {
-      Node referenceNode = graphDb.getNodeById( 0 );
-      assertThat( referenceNode.getRelationships() ).hasSize( 0 );
-      assertThat( referenceNode ).isNotNull();
-    }
-  }
-
-  @Test
   public void testById() throws Exception {
     Node node;
     try ( Transaction tx = graphDb.beginTx() ) {
