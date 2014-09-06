@@ -25,7 +25,7 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
     ObjectName objectName = JmxUtils.getObjectName( ( GraphDatabaseAPI ) graphDb, "Kernel" );
     String version = JmxUtils.getAttribute( objectName, "KernelVersion" );
 
-    assertThat( version ).isEqualTo( "Neo4j - Graph Database Kernel 2.0.0-M05" );
+    assertThat( version ).contains( "Neo4j").contains(  "Graph Database").contains( "version: 2.0.3" );
   }
 
   @Test
