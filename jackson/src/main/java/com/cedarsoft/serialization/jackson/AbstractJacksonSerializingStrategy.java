@@ -41,7 +41,6 @@ import javax.annotation.Nonnull;
  */
 public abstract class AbstractJacksonSerializingStrategy<T> extends AbstractJacksonSerializer<T> implements JacksonSerializingStrategy<T> {
   @Nonnull
-
   private final String id;
   @Nonnull
   private final Class<? extends T> supportedType;
