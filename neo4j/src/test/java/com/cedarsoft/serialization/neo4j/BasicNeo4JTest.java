@@ -138,10 +138,12 @@ public class BasicNeo4JTest extends AbstractNeo4JTest {
       node = graphDb.createNode();
       node.setProperty( "name", "Nancy" );
       tx.success();
+
+      assertThat( node.getId() ).isEqualTo( 0 );
     }
 
     try ( Transaction tx = graphDb.beginTx() ) {
-      assertThat( graphDb.getNodeById( 1 ) ).isEqualTo( node );
+      assertThat( graphDb.getNodeById( 0 ) ).isEqualTo( node );
     }
   }
 
