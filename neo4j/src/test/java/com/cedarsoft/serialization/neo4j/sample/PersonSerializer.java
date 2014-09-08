@@ -33,7 +33,6 @@ public class PersonSerializer extends AbstractNeo4jSerializer<Person> {
 
   @Override
   protected void serializeInternal( @Nonnull Node serializeTo, @Nonnull Person object, @Nonnull Version formatVersion ) throws IOException {
-    super.serialize( serializeTo, object, formatVersion );
     serializeTo.setProperty( "name", object.getName() );
 
     serializeWithRelationship( object.getAddress(), Address.class, serializeTo, Relations.ADDRESS, formatVersion );
