@@ -4,7 +4,10 @@ import com.cedarsoft.serialization.neo4j.utils.Graphviz;
 import org.junit.rules.*;
 import org.junit.runner.*;
 import org.junit.runners.model.*;
+import org.neo4j.cypher.javacompat.ExecutionEngine;
+import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import javax.annotation.Nonnull;
@@ -24,11 +27,11 @@ public class Neo4jRule implements TestRule {
     return tmp.apply( new Statement() {
       @Override
       public void evaluate() throws Throwable {
-        createDb();
+        GraphDatabaseService db = createDb();
         try {
           base.evaluate();
         } catch ( Throwable e ) {
-          dump();
+          dump(db);
           throw e;
         } finally {
           after();
@@ -37,13 +40,21 @@ public class Neo4jRule implements TestRule {
     }, description );
   }
 
-  public void dump() {
+  public void dump( @Nonnull GraphDatabaseService db ) throws IOException {
     if ( "true".equalsIgnoreCase( System.getProperty( "neo4j.dumpOnError" ) ) ) {
       try {
-        Graphviz.toPng( getGraphDb() );
+        System.err.println( dumpToText(db) );
+        Graphviz.toPng( db );
       } catch ( Exception e ) {
         e.printStackTrace();
       }
+    }
+  }
+
+  private String dumpToText( @Nonnull GraphDatabaseService db ) throws IOException {
+    try ( Transaction tx = db.beginTx() ) {
+      ExecutionResult result = new ExecutionEngine( db ).execute( "MATCH (n)\n" + "RETURN n;" );
+      return result.dumpToString();
     }
   }
 
