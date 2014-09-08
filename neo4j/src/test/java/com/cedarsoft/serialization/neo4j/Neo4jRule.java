@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.neo4j;
 
 import com.cedarsoft.serialization.neo4j.utils.Graphviz;
-import org.junit.*;
 import org.junit.rules.*;
 import org.junit.runner.*;
 import org.junit.runners.model.*;
@@ -25,7 +24,7 @@ public class Neo4jRule implements TestRule {
     return tmp.apply( new Statement() {
       @Override
       public void evaluate() throws Throwable {
-        before();
+        createDb();
         try {
           base.evaluate();
         } catch ( Throwable e ) {
@@ -48,21 +47,25 @@ public class Neo4jRule implements TestRule {
     }
   }
 
-  private GraphDatabaseService graphDb;
+  @Nonnull
+  private final List<GraphDatabaseService> dbs = new ArrayList<>();
 
-  private void before() throws IOException {
-    graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase( tmp.newFolder().getAbsolutePath() );
+  @Nonnull
+  public GraphDatabaseService createDb() throws IOException {
+    GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase( tmp.newFolder().getAbsolutePath() );
+    dbs.add( db );
+    return db;
   }
 
   private void after() {
-    graphDb.shutdown();
+    for ( GraphDatabaseService db : dbs ) {
+      db.shutdown();
+    }
   }
 
   @Nonnull
-  public GraphDatabaseService getGraphDb() {
-    if ( graphDb == null ) {
-      throw new IllegalStateException( "graph db is null" );
-    }
-    return graphDb;
+  @Deprecated
+  public GraphDatabaseService getGraphDb() throws IOException {
+    return createDb();
   }
 }
