@@ -22,9 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Abstract base class for neo4j serializers
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, Node, Node, IOException, Node, Node> {
+  /**
+   * This property contains the format version for a node
+   */
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
   /**
@@ -66,6 +70,10 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    */
   protected abstract void serializeInternal( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException;
 
+  /**
+   * Returns the type label
+   * @return the type label
+   */
   @Nonnull
   public Label getTypeLabel() {
     return DynamicLabel.label(type);

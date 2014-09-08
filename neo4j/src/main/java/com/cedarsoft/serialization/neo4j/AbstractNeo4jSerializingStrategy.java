@@ -5,6 +5,7 @@ import com.cedarsoft.version.VersionRange;
 import javax.annotation.Nonnull;
 
 /**
+ * Serializing strategy for neo4j
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public abstract class AbstractNeo4jSerializingStrategy<T> extends AbstractNeo4jSerializer<T> implements Neo4jSerializingStrategy<T> {

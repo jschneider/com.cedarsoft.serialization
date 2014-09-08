@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 /**
+ * Abstract base class for all neo4j serializers
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class AbstractDelegatingNeo4jSerializer<T> extends AbstractNeo4jSerializer<T> {
