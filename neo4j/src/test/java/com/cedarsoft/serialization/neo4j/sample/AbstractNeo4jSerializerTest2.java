@@ -33,6 +33,7 @@ package com.cedarsoft.serialization.neo4j.sample;
 
 import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.serialization.neo4j.AbstractNeo4jSerializer;
+import com.cedarsoft.serialization.neo4j.Neo4jRule;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.cedarsoft.serialization.test.utils.ReflectionEquals;
 import com.google.common.base.Charsets;
@@ -49,7 +50,6 @@ import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.test.TestGraphDatabaseFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -75,6 +75,9 @@ import static org.junit.Assert.*;
  */
 @RunWith( Theories.class )
 public abstract class AbstractNeo4jSerializerTest2<T> {
+  @Rule
+  public Neo4jRule neo4jRule = new Neo4jRule();
+
   @Nonnull
   public static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull byte[] expected ) {
     return new Entry<T>( object, expected );
@@ -104,19 +107,6 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
   protected void verify( @Nonnull String currentCypher, @Nonnull String expectedCypher ) throws Exception {
     assertThat( currentCypher ).isEqualTo( expectedCypher );
-
-//    GraphDatabaseService current = new TestGraphDatabaseFactory().newImpermanentDatabase();
-//
-//    try ( Transaction tx = current.beginTx() ) {
-//      new ExecutionEngine( current ).execute( currentCypher );
-//      tx.success();
-//    }
-//
-//    GraphDatabaseService expected = new TestGraphDatabaseFactory().newImpermanentDatabase();
-//    try ( Transaction tx = expected.beginTx() ) {
-//      new ExecutionEngine( expected ).execute( expectedCypher );
-//      tx.success();
-//    }
   }
 
   @Nonnull
@@ -148,7 +138,7 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
   @Nonnull
   private T deserialize( @Nonnull AbstractNeo4jSerializer<T> serializer, @Nonnull String serialized ) throws IOException {
-    GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase();
+    GraphDatabaseService db = neo4jRule.createDb();
 
     //Fill the db initially
     try ( Transaction tx = db.beginTx() ) {
@@ -163,7 +153,7 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
   @Nonnull
   protected String serialize( @Nonnull Serializer<T, Node, Node> serializer, @Nonnull T objectToSerialize ) throws IOException {
-    GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase();
+    GraphDatabaseService db = neo4jRule.createDb();
 
     try ( Transaction tx = db.beginTx() ) {
       Node rootNode = db.createNode();
@@ -171,7 +161,6 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
       tx.success();
     }
-
 
     //Creates the cyper representation for this database
     StringWriter out = new StringWriter();
@@ -181,12 +170,6 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
       tx.success();
     }
     return out.toString();
-
-    //Creates a dump that can not be imported again
-    //try ( Transaction tx = db.beginTx() ) {
-    //  ExecutionResult result = new ExecutionEngine( db ).execute( "MATCH (n)\n" + "RETURN n;" );
-    //  return result.dumpToString();
-    //}
   }
 
   /**
