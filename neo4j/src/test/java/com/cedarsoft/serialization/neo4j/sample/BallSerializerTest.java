@@ -34,7 +34,6 @@ public class BallSerializerTest extends AbstractNeo4jSerializerTest2<Ball> {
     new Ball.BasketBall( "asdf" ), BallSerializerTest.class.getResource( "ball2_2.cypher" ) );
 
 
-  @Ignore
   @Test
   public void testAsccii() throws Exception {
     assertEquals( 2, getSerializer().getSerializingStrategySupport().getVersionMappings().getMappings().size() );
@@ -51,7 +50,6 @@ public class BallSerializerTest extends AbstractNeo4jSerializerTest2<Ball> {
     } ) );
   }
 
-  @Ignore
   @Test
   public void testVersion() throws Exception {
     BallSerializer serializer = getSerializer();
