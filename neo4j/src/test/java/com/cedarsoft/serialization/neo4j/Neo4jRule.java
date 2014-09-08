@@ -40,7 +40,7 @@ public class Neo4jRule implements TestRule {
     }, description );
   }
 
-  public void dump( @Nonnull GraphDatabaseService db ) throws IOException {
+  public static void dump( @Nonnull GraphDatabaseService db ) {
     if ( "true".equalsIgnoreCase( System.getProperty( "neo4j.dumpOnError" ) ) ) {
       try {
         System.err.println( dumpToText(db) );
@@ -51,7 +51,8 @@ public class Neo4jRule implements TestRule {
     }
   }
 
-  private String dumpToText( @Nonnull GraphDatabaseService db ) throws IOException {
+  @Nonnull
+  public static String dumpToText( @Nonnull GraphDatabaseService db ) {
     try ( Transaction tx = db.beginTx() ) {
       ExecutionResult result = new ExecutionEngine( db ).execute( "MATCH (n)\n" + "RETURN n;" );
       return result.dumpToString();
