@@ -35,6 +35,10 @@
     <url>https://github.com/jschneider/com.cedarsoft.serialization/issues</url>
   </issueManagement>
 
+  <properties>
+    <neo4j.version>2.0.3</neo4j.version>
+  </properties>
+
   <modules>
     <module>serialization</module>
     <module>stax</module>
@@ -162,6 +166,27 @@
         <groupId>com.cedarsoft.commons</groupId>
         <artifactId>crypt</artifactId>
         <version>${commons.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>org.neo4j</groupId>
+        <artifactId>neo4j</artifactId>
+        <version>${neo4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.neo4j</groupId>
+        <artifactId>neo4j-kernel</artifactId>
+        <version>${neo4j.version}</version>
+        <type>test-jar</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.neo4j</groupId>
+        <artifactId>neo4j-graphviz</artifactId>
+        <version>${neo4j.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>
