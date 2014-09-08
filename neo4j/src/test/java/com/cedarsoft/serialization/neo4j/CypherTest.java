@@ -12,7 +12,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class CyperTest extends AbstractNeo4JTest {
+public class CypherTest extends AbstractNeo4JTest {
 
 
   @Test
