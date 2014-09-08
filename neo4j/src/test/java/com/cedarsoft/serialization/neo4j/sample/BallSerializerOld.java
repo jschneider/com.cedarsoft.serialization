@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class BallSerializerOld extends AbstractDelegatingNeo4jSerializer<Ball> {
   public BallSerializerOld() {
-    super( "ball", VersionRange.single( 1, 0, 0 ) );
+    super( "http://test/ball", VersionRange.single( 1, 0, 0 ) );
 
     addStrategy( new TennisBallSerializer() )
       .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
