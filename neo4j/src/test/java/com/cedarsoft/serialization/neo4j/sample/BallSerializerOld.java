@@ -13,18 +13,16 @@ import java.io.IOException;
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
-public class BallSerializer extends AbstractDelegatingNeo4jSerializer<Ball> {
-  public BallSerializer() {
-    super( "ball", VersionRange.from( 1, 0, 0 ).to( 1, 1, 0 ) );
+public class BallSerializerOld extends AbstractDelegatingNeo4jSerializer<Ball> {
+  public BallSerializerOld() {
+    super( "ball", VersionRange.single( 1, 0, 0 ) );
 
     addStrategy( new TennisBallSerializer() )
-      .map( 1, 0, 0 ).toDelegateVersion( 1, 5, 0 )
-      .map( 1, 1, 0 ).toDelegateVersion( 1, 5, 1 )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
     ;
 
     addStrategy( new BasketBallSerializer() )
-      .map( 1, 0, 0 ).toDelegateVersion( 2, 0, 0 )
-      .map( 1, 1, 0 ).toDelegateVersion( 2, 0, 1 )
+      .map( 1, 0, 0 ).toDelegateVersion( 1, 0, 0 )
     ;
 
     getSerializingStrategySupport().verify();
@@ -35,14 +33,14 @@ public class BallSerializer extends AbstractDelegatingNeo4jSerializer<Ball> {
    */
   public static class TennisBallSerializer extends AbstractNeo4jSerializingStrategy<Ball.TennisBall> {
     public TennisBallSerializer() {
-      super( "tennisBall", "http://test/tennisball", Ball.TennisBall.class, VersionRange.from( 1, 5, 0 ).to( 1, 5, 1 ) );
+      super( "tennisBall", "http://test/tennisball", Ball.TennisBall.class, VersionRange.single( 1, 0, 0 ) );
     }
 
 
     @Override
     protected void serializeInternal( @Nonnull Node serializeTo, @Nonnull Ball.TennisBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
-      serializeTo.setProperty( "newId", object.getId() );
+      serializeTo.setProperty( "id", object.getId() );
     }
 
     @Nonnull
@@ -50,15 +48,7 @@ public class BallSerializer extends AbstractDelegatingNeo4jSerializer<Ball> {
     public Ball.TennisBall deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       verifyVersionReadable( formatVersion );
 
-      int id;
-      if ( formatVersion.equals( Version.valueOf( 1, 5, 0 ) ) ) {
-        //legacy support
-        id = ((Long) deserializeFrom.getProperty( "id" )).intValue();
-      }else{
-        //This is the new version
-        id = ((Long) deserializeFrom.getProperty( "newId" )).intValue();
-      }
-
+      int id = ((Long) deserializeFrom.getProperty( "id" )).intValue();
       return new Ball.TennisBall( id );
     }
   }
@@ -68,13 +58,13 @@ public class BallSerializer extends AbstractDelegatingNeo4jSerializer<Ball> {
    */
   public static class BasketBallSerializer extends AbstractNeo4jSerializingStrategy<Ball.BasketBall> {
     public BasketBallSerializer() {
-      super( "basketBall", "http://test/basketball", Ball.BasketBall.class, VersionRange.from( 2, 0, 0 ).to( 2, 0, 1 ) );
+      super( "basketBall", "http://test/basketball", Ball.BasketBall.class, VersionRange.single( 1, 0, 0 ) );
     }
 
     @Override
     protected void serializeInternal( @Nonnull Node serializeTo, @Nonnull Ball.BasketBall object, @Nonnull Version formatVersion ) throws IOException {
       verifyVersionReadable( formatVersion );
-      serializeTo.setProperty( "myNewId", object.getTheId() );
+      serializeTo.setProperty( "id", object.getTheId() );
     }
 
     @Nonnull
@@ -82,15 +72,7 @@ public class BallSerializer extends AbstractDelegatingNeo4jSerializer<Ball> {
     public Ball.BasketBall deserialize( @Nonnull Node deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, IOException {
       verifyVersionReadable( formatVersion );
 
-      String id;
-      if ( formatVersion.equals( Version.valueOf( 2, 0, 0 ) ) ) {
-        //Old version
-        id = ( String ) deserializeFrom.getProperty( "id" );
-      }else{
-        id = ( String ) deserializeFrom.getProperty( "myNewId" );
-      }
-
-
+      String id = ( String ) deserializeFrom.getProperty( "id" );
       return new Ball.BasketBall(  id );
     }
   }

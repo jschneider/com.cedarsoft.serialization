@@ -1,7 +1,6 @@
 package com.cedarsoft.serialization.neo4j;
 
 import com.cedarsoft.serialization.AbstractSerializer;
-import com.cedarsoft.serialization.Serializer;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -13,7 +12,6 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.graphdb.ResourceIterable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,11 +29,6 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    */
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
-  /**
-   * Used for delegating serializers
-   */
-  @Nonnull
-  public static final String PROPERTY_SUB_TYPE = "subtype";
 
   @Nonnull
   private final String type; //$NON-NLS-1$
@@ -55,9 +48,17 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     verifyVersionWritable( formatVersion );
 
     serializeTo.addLabel(getTypeLabel());
-    serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
+    addVersion( serializeTo );
 
     serializeInternal( serializeTo, object, formatVersion );
+  }
+
+  /**
+   * Adds the type and version
+   * @param serializeTo the node the type and version is added to
+   */
+  protected void addVersion( @Nonnull Node serializeTo ) {
+    serializeTo.setProperty( PROPERTY_FORMAT_VERSION, getFormatVersion().toString() );
   }
 
   /**
@@ -88,10 +89,15 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
       throw new IOException("Could not parse due to " + e.getMessage(), e);
     }
 
-    Version version = Version.parse((String) in.getProperty(PROPERTY_FORMAT_VERSION));
+    Version version = readVersion( in );
     verifyVersionReadable(version);
 
     return deserialize(in, version);
+  }
+
+  @Nonnull
+  protected Version readVersion( @Nonnull Node in ) {
+    return Version.parse( ( String ) in.getProperty( PROPERTY_FORMAT_VERSION ) );
   }
 
   private void verifyType(@Nonnull Node in) throws InvalidTypeException {

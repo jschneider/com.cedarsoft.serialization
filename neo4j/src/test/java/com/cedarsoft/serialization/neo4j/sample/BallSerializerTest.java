@@ -26,12 +26,12 @@ public class BallSerializerTest extends AbstractNeo4jSerializerTest2<Ball> {
 
   @DataPoint
   public static final Entry<?> ENTRY1 = create(
-    new Ball.TennisBall( 7 ), BallSerializerTest.class.getResource( "ball1.cypher" )
+    new Ball.TennisBall( 7 ), BallSerializerTest.class.getResource( "ball1_2.cypher" )
   );
 
   @DataPoint
   public static final Entry<?> ENTRY2 = create(
-    new Ball.BasketBall( "asdf" ), BallSerializerTest.class.getResource( "ball2.cypher" ) );
+    new Ball.BasketBall( "asdf" ), BallSerializerTest.class.getResource( "ball2_2.cypher" ) );
 
 
   @Ignore

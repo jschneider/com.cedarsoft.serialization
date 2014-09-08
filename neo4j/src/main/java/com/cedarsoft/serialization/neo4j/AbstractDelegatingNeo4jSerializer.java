@@ -11,8 +11,6 @@ import org.neo4j.graphdb.NotFoundException;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Collection;
 
 /**
@@ -21,11 +19,32 @@ import java.util.Collection;
  */
 public class AbstractDelegatingNeo4jSerializer<T> extends AbstractNeo4jSerializer<T> {
   @Nonnull
+  public static final String PROPERTY_DELEGATING_FORMAT_VERSION = "delegatingFormatVersion";
+  /**
+   * Used for delegating serializers
+   */
+  @Nonnull
+  public static final String PROPERTY_SUB_TYPE = "subtype";
+
+  @Nonnull
   protected final SerializingStrategySupport<T, Node, Node, IOException, Node, Node> serializingStrategySupport;
 
   protected AbstractDelegatingNeo4jSerializer( @Nonnull String nameSpaceUriBase, @Nonnull VersionRange formatVersionRange ) {
     super( nameSpaceUriBase, formatVersionRange );
     this.serializingStrategySupport = new SerializingStrategySupport<T, Node, Node, IOException, Node, Node>( formatVersionRange );
+  }
+
+  /** @noinspection RefusedBequest*/
+  @Override
+  protected void addVersion( @Nonnull Node serializeTo ) {
+    serializeTo.setProperty( PROPERTY_DELEGATING_FORMAT_VERSION, getFormatVersion().toString() );
+  }
+
+  /** @noinspection RefusedBequest*/
+  @Nonnull
+  @Override
+  protected Version readVersion( @Nonnull Node in ) {
+    return Version.parse( ( String ) in.getProperty( PROPERTY_DELEGATING_FORMAT_VERSION ) );
   }
 
   @Override
