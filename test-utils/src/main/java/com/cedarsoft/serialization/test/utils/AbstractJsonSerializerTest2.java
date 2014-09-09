@@ -54,7 +54,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Abstract base class for XML based serializers.
+ * Abstract base class for JSON based serializers.
  * <p/>
  * <p/>
  * Attention: it is necessary to define at least one DataPoint:
