@@ -11,10 +11,6 @@
   <artifactId>neo4j</artifactId>
   <name>Neo4J Tests</name>
 
-  <properties>
-    <java.version>1.7</java.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.cedarsoft</groupId>
