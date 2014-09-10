@@ -8,7 +8,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cedarsoft.serialization.test</groupId>
+  <groupId>com.cedarsoft.serialization</groupId>
   <artifactId>neo4j</artifactId>
   <name>Neo4J Tests</name>
 
