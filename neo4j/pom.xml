@@ -16,6 +16,7 @@
 
   <modules>
     <module>neo4j</module>
+    <module>neo4j-test-utils</module>
   </modules>
 
 
