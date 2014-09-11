@@ -36,10 +36,10 @@ cedarsoft Serialization
   of versioned serialization.
 
 
-* 2013-07-18: Release 5.0.0
+* 2014-09-11: Release 6.1.0
 
-  Version 5.0.0 has been released. Further informations can be found on the {{{./news.html}news page}}.
-  Most changes are related to the JSON (Jackson based) serializers
+  Version 6.1.0 has been released. Further informations can be found on the {{{./news.html}news page}}.
+  Neo4J support has been added
 
 * Introduction
 
