@@ -47,8 +47,6 @@
     <module>test</module>
 
     <module>samples</module>
-
-    <module>generator</module>
   </modules>
 
   <dependencyManagement>
