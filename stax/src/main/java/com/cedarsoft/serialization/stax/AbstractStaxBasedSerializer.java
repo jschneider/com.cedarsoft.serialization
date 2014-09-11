@@ -51,7 +51,7 @@ import java.util.List;
 
 /**
  * Abstract base class for stax based serializers.
- * <p/>
+ * <p>
  * ATTENTION:
  * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br/>
  * This is especially true for {@link com.cedarsoft.serialization.PluggableSerializer}s.

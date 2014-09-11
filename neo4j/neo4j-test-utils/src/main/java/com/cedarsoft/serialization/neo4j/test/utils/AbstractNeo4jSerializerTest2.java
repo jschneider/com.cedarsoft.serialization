@@ -64,10 +64,10 @@ import static org.junit.Assert.*;
 
 /**
  * Abstract base class for neo4j based serializers.
- * <p/>
- * <p/>
+ * <p>
+ * <p>
  * Attention: it is necessary to define at least one DataPoint:
- * <p/>
+ * <p>
  * <pre>&#064;DataPoint<br/>public static final Entry&lt;?&gt; ENTRY1 = create(<br/> new DomainObject(),<br/> &quot;{}&quot; );</pre>
  *
  * @param <T> the type of the serialized object

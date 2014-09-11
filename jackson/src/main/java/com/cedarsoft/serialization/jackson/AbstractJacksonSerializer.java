@@ -94,7 +94,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
 
   /**
    * Serializes the object to the given serializeTo.
-   * <p/>
+   * <p>
    * The serializer is responsible for writing start/close object/array brackets if necessary.
    * This method also writes the @type property.
    *

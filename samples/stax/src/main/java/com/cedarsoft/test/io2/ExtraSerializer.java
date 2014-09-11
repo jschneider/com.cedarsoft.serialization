@@ -45,11 +45,11 @@ import java.io.IOException;
 
 /**
  * This is an extended version of {@link com.cedarsoft.test.io.ExtraSerializer}.
- * <p/>
+ * <p>
  * It represents the next step of the evolution of CarSerializer.
  * This is an example for a refactoring that might happen, after the serializer has been
  * released (and shipped to thousands of customers creating millions of files).
- * <p/>
+ * <p>
  * Therefore this serializer is able to still read the old format.
  * Writing is only supported for the latest file.
  */

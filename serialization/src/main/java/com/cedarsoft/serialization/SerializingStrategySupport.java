@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  * Support class for serializing strategies.
- * <p/>
+ * <p>
  * It is necessary to register the strategies using {@link #addStrategy(SerializingStrategy)} and add the
  * necessary version mappings.
  *

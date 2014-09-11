@@ -40,9 +40,9 @@ import java.io.IOException;
 
 /**
  * Interface for all types of serializers.<br/>
- * <p/>
+ * <p>
  * Each serializer is able to serialize an object to a given output stream.
- * <p/>
+ * <p>
  * A format version is supported for each serializer.
  *
  * @param <T> the type of the objects this serializer is able to (de)serialize

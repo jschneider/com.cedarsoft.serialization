@@ -47,7 +47,7 @@ import java.util.List;
 
 /**
  * Contains the mapping for versions.
- * <p/>
+ * <p>
  * This class offers a mapping for every version from the source version range
  * to a version of the delegate version range.
  */

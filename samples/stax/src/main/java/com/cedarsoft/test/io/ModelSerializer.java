@@ -44,7 +44,7 @@ import java.io.IOException;
 
 /**
  * This is a very simple serializer that serializes a {@link Model}.
- * <p/>
+ * <p>
  * Results in:<br/>
  * <code>
  * &lt;model&gt;Toyota&lt;/model&gt;</code><br/>
