@@ -46,7 +46,7 @@ import java.io.OutputStream;
 /**
  * Abstract test class for testing the support for multiple format versions
  * Attention: it is necessary to define at least one DataPoint:
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;?&gt; entry1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> serializedAsByteArray; );</pre>
+ * <pre>&#064;DataPoint<br>public static final Entry&lt;?&gt; entry1 = create(<br> Version.valueOf( 1, 0, 0 ),<br> serializedAsByteArray; );</pre>
  *
  * @param <T> the type that is deserialized
  */
@@ -55,8 +55,7 @@ public abstract class AbstractVersionTest2<T> {
   /**
    * This method checks old serialized objects
    *
-   * @throws IOException
-   * @throws SAXException
+   * @throws Exception if there is any error
    */
   @Theory
   public void testVersion( @Nonnull VersionEntry entry ) throws Exception {
@@ -73,6 +72,7 @@ public abstract class AbstractVersionTest2<T> {
    * Returns the serializer
    *
    * @return the serializer
+   * @throws Exception if there is any error
    */
   @Nonnull
   protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;

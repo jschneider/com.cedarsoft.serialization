@@ -54,8 +54,7 @@ public abstract class AbstractVersionTest<T> {
   /**
    * This method checks old serialized objects
    *
-   * @throws IOException
-   * @throws SAXException
+   * @throws Exception if there is any error
    */
   @Test
   public void testVersions() throws Exception {

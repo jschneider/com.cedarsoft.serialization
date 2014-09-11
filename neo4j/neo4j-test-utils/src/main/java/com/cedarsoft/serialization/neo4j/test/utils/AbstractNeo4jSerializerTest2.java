@@ -68,7 +68,7 @@ import static org.junit.Assert.*;
  * <p>
  * Attention: it is necessary to define at least one DataPoint:
  * <p>
- * <pre>&#064;DataPoint<br/>public static final Entry&lt;?&gt; ENTRY1 = create(<br/> new DomainObject(),<br/> &quot;{}&quot; );</pre>
+ * <pre>&#064;DataPoint<br>public static final Entry&lt;?&gt; ENTRY1 = create(<br> new DomainObject(),<br> &quot;{}&quot; );</pre>
  *
  * @param <T> the type of the serialized object
  */

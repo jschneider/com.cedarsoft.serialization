@@ -55,7 +55,10 @@ public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends
    * @param serializeTo   the serializeTo
    * @param object        the object
    * @param formatVersion the format version
-   * @throws E
+   *
+   * @throws E if serialization failed
+   * @throws IOException if there is an io problem
+   * @throws VersionException if the version does not match
    */
   void serialize( @Nonnull S serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
 
@@ -66,9 +69,9 @@ public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends
    * @param formatVersion   the format version
    * @return the deserialized object
    *
-   * @throws VersionException
-   * @throws IOException
-   * @throws E
+   * @throws VersionException if the version does not match
+   * @throws E if deserialization failed
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   T deserialize( @Nonnull D deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, E;

@@ -62,12 +62,12 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   }
 
   /**
-   * This method must be implemented by sub classes. Serialize the custom fields when necessary.<br/>
+   * This method must be implemented by sub classes. Serialize the custom fields when necessary.<br>
    * This method is called from {@link #serialize(Node, Object, Version)}. The type label and format version have already been added to the node
    * @param serializeTo the node to serialize to
    * @param object the object
    * @param formatVersion the format version
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   protected abstract void serializeInternal( @Nonnull Node serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException;
 
@@ -121,7 +121,7 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    * @param relationshipType the type of the relationship
    * @param formatVersion    the format version
    * @param <T>              the type
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   public <T> void serializeWithRelationship( @Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
     Node targetNode = node.getGraphDatabase().createNode();

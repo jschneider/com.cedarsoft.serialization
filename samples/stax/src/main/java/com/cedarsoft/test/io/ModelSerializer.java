@@ -45,10 +45,10 @@ import java.io.IOException;
 /**
  * This is a very simple serializer that serializes a {@link Model}.
  * <p>
- * Results in:<br/>
+ * Results in:<br>
  * <code>
- * &lt;model&gt;Toyota&lt;/model&gt;</code><br/>
- * for<br/>
+ * &lt;model&gt;Toyota&lt;/model&gt;</code><br>
+ * for<br>
  * <code>new Model("Toyota")</code>
  */
 public class ModelSerializer extends AbstractStaxSerializer<Model> {

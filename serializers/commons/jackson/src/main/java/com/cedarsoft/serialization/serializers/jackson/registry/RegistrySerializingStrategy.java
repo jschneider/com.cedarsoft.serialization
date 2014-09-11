@@ -48,7 +48,7 @@ public interface RegistrySerializingStrategy<T> {
    * @param id the id
    * @return the deserialized object
    *
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   T deserialize( @Nonnull String id ) throws IOException;
@@ -58,7 +58,7 @@ public interface RegistrySerializingStrategy<T> {
    *
    * @param object the object to serialize
    * @param id     the id
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   void serialize( @Nonnull T object, @Nonnull String id ) throws IOException;
 
@@ -71,7 +71,7 @@ public interface RegistrySerializingStrategy<T> {
    *
    * @return the deserialized objects
    *
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   Collection<? extends T> deserialize() throws IOException;

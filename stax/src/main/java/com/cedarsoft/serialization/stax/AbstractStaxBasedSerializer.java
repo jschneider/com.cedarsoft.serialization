@@ -53,7 +53,7 @@ import java.util.List;
  * Abstract base class for stax based serializers.
  * <p>
  * ATTENTION:
- * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br/>
+ * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br>
  * This is especially true for {@link com.cedarsoft.serialization.PluggableSerializer}s.
  *
  * @param <T> the type
@@ -309,8 +309,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    *
    * @param streamReader the stream reader
    * @param callback     the callback
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   protected void visitChildren( @Nonnull XMLStreamReader streamReader, @Nonnull CB callback ) throws XMLStreamException, IOException {
     while ( streamReader.nextTag() != XMLStreamConstants.END_ELEMENT ) {
@@ -327,8 +327,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param formatVersion   the format version
    * @return the deserialized objects
    *
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   protected <L> List<? extends L> deserializeCollection( @Nonnull XMLStreamReader deserializeFrom, @Nonnull final Class<L> type, @Nonnull final Version formatVersion ) throws XMLStreamException, IOException {
@@ -343,8 +343,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param deserializeFrom deserialize from
    * @param <L> the type
    * @return the deserialized collection
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   protected <L> List<? extends L> deserializeCollection( @Nonnull final Class<L> type, @Nonnull final Version formatVersion, @Nonnull XMLStreamReader deserializeFrom ) throws XMLStreamException, IOException {
@@ -366,8 +366,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
    * @param deserializeFrom    the object to deserialize from
    * @param formatVersion      the format version
    * @param collectionsMapping the collections mapping that holds references to the collections that are filled
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   protected void deserializeCollections( @Nonnull final XMLStreamReader deserializeFrom, @Nonnull final Version formatVersion, final CollectionsMapping collectionsMapping ) throws XMLStreamException, IOException {
     visitChildren( deserializeFrom, new CB() {
@@ -405,8 +405,8 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
      *
      * @param deserializeFrom the reader
      * @param tagName         the tag name
-     * @throws XMLStreamException
-     * @throws IOException
+     * @throws XMLStreamException if there is an xml problem
+     * @throws IOException if there is an io problem
      */
     void tagEntered( @Nonnull XMLStreamReader deserializeFrom, @Nonnull String tagName ) throws XMLStreamException, IOException;
   }

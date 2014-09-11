@@ -55,8 +55,7 @@ public abstract class AbstractSerializerTest<T> {
   /**
    * Default test method that checks the serialization and deserialization using the latest format
    *
-   * @throws IOException
-   * @throws SAXException
+   * @throws Exception if there is any error
    */
   @Test
   public void testSerializer() throws Exception {
@@ -87,8 +86,7 @@ public abstract class AbstractSerializerTest<T> {
    * Verifies the serialized object
    *
    * @param serialized the serialized object
-   * @throws SAXException
-   * @throws IOException
+   * @throws Exception if there is any error
    */
   protected abstract void verifySerialized( @Nonnull byte[] serialized ) throws Exception;
 

@@ -89,8 +89,8 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @param serializeTo   the parent element
    * @param formatVersion the format version
    * @param <T>           the type
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   public <T> void serialize( @Nonnull T object, @Nonnull Class<T> type, @Nonnull String subElementName, @Nonnull SMOutputElement serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     SMOutputElement element = serializeTo.addElement( serializeTo.getNamespace(), subElementName );
@@ -105,7 +105,8 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @param elementName   the element name
    * @param serializeTo   the object the elements are serialized to
    * @param formatVersion the format version
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull String elementName, @Nonnull SMOutputElement serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, SMOutputElement, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );
@@ -136,7 +137,8 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
    * @param elementName           the element name
    * @param serializeTo           the object the elements are serialized to
    * @param formatVersion         the format version
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   protected <T> void serializeCollectionToElement( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull String collectionElementName, @Nonnull String elementName, @Nonnull SMOutputElement serializeTo, Version formatVersion ) throws XMLStreamException, IOException {
     SMOutputElement collectionElement = serializeTo.addElement( serializeTo.getNamespace(), collectionElementName );
