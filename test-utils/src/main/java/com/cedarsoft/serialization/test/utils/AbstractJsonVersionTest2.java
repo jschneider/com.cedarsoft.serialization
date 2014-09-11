@@ -44,7 +44,7 @@ import java.net.URL;
 
 /**
  * It is necessary to define at least one DataPoint
- * <pre>&#064;DataPoint<br/>public static final VersionEntry ENTRY1 = create(<br/> Version.valueOf( 1, 0, 0 ),<br/> &quot;&lt;json/&gt;&quot; );</pre>
+ * <pre>&#064;DataPoint<br>public static final VersionEntry ENTRY1 = create(<br> Version.valueOf( 1, 0, 0 ),<br> &quot;&lt;json/&gt;&quot; );</pre>
  *
  * @param <T> the type
  */

@@ -61,7 +61,7 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @param dir the directory
    * @return the deserialized object
    *
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   protected abstract T deserialize( @Nonnull String id, @Nonnull File dir ) throws IOException;
@@ -91,7 +91,7 @@ public abstract class DirBasedRegistrySerializingStrategy<T> extends AbstractReg
    * @param object the object to serialize
    * @param id     the id
    * @param dir    the directory
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   protected abstract void serialize( @Nonnull T object, @Nonnull String id, @Nonnull File dir ) throws IOException;
 

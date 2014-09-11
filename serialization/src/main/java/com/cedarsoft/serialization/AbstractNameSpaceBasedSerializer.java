@@ -94,7 +94,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @param namespaceURI the namespace uri (the version has to be the last part split by "/"
    * @return the parsed version
    *
-   * @throws IllegalArgumentException
+   * @throws VersionException if the namespace uri does not contain any version information
    */
   @Nonnull
   public static Version parseVersionFromNamespace( @Nullable String namespaceURI ) throws IllegalArgumentException, VersionException {
@@ -129,9 +129,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @param namespaceURI the namespace uri
    * @return the parsed and verified version
-   *
-   * @throws InvalidNamespaceException
-   * @throws VersionException
+   * @throws InvalidNamespaceException if the namespace is invalid
    */
   @Nonnull
   public Version parseAndVerifyNameSpace( @Nullable String namespaceURI ) throws InvalidNamespaceException, VersionException {

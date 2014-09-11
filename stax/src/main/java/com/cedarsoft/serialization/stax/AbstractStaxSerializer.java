@@ -119,8 +119,8 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
    * @param elementName   the element name
    * @param serializeTo   the object the elements are serialized to
    * @param formatVersion the format version
-   * @throws XMLStreamException
-   * @throws IOException
+   * @throws XMLStreamException if there is an xml problem
+   * @throws IOException if there is an io problem
    */
   protected <T> void serializeCollection( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull String elementName, @Nonnull XMLStreamWriter serializeTo, @Nonnull Version formatVersion ) throws XMLStreamException, IOException {
     AbstractXmlSerializer<? super T, XMLStreamWriter, XMLStreamReader, XMLStreamException> serializer = getSerializer( type );

@@ -10,9 +10,9 @@ import java.io.OutputStream;
 
 /**
  * Interface for stax based serializers.
- * <p/>
+ * <p>
  * ATTENTION:
- * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br/>
+ * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br>
  * This is especially true for {@link PluggableSerializer}s.
  *
  * @param <T> the type

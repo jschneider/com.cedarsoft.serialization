@@ -124,8 +124,6 @@ public class RegistrySerializer<T, R extends Registry<T>, O, I> {
    * Serializes an object
    *
    * @param object the object
-   * @throws IOException
-   * @throws StillContainedException
    */
   public void serialize( @Nonnull T object ) throws StillContainedException, IOException {
     serializingStrategy.serialize( object, getId( object ) );
@@ -145,7 +143,7 @@ public class RegistrySerializer<T, R extends Registry<T>, O, I> {
    * @param factory the factory used to create the registry
    * @return the connected registry
    *
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   public R createConnectedRegistry( @Nonnull RegistryFactory<T, ? extends R> factory ) throws IOException {

@@ -65,8 +65,7 @@ public abstract class AbstractStreamSerializer<T, S, D, E extends Throwable> ext
    *
    * @param object the object
    * @return the serialized object
-   *
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   @Nonnull
   public byte[] serializeToByteArray( @Nonnull T object ) throws IOException {

@@ -75,7 +75,7 @@ public class JacksonParserWrapper {
    * Verifies the next field has the given name and prepares for read (by calling parser.nextToken).
    *
    * @param fieldName the field name
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   public void nextFieldValue( @Nonnull String fieldName ) throws IOException {
     nextField( fieldName );
@@ -87,7 +87,7 @@ public class JacksonParserWrapper {
    * When the content of the field shall be accessed, it is necessary to call parser.nextToken() afterwards.
    *
    * @param fieldName the field name
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   public void nextField( @Nonnull String fieldName ) throws IOException {
     nextToken( JsonToken.FIELD_NAME );
