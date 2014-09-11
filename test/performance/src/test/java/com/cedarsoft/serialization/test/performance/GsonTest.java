@@ -60,10 +60,10 @@ public class GsonTest {
 
   @Test
   public void testFileType() throws Exception {
-    com.cedarsoft.serialization.test.performance.jaxb.FileType type = new FileType( "jpg", new Extension( ".", "jpg", true ), false );
+    FileType type = new FileType( "jpg", new Extension( ".", "jpg", true ), false );
     assertEquals( FILE_TYPE, new Gson().toJson( type ) );
 
-    com.cedarsoft.serialization.test.performance.jaxb.FileType deserialized = new Gson().fromJson( FILE_TYPE, FileType.class );
+    FileType deserialized = new Gson().fromJson( FILE_TYPE, FileType.class );
     assertEquals( "jpg", deserialized.getId() );
     assertEquals( "jpg", deserialized.getExtension().getExtension() );
     assertEquals( ".", deserialized.getExtension().getDelimiter() );
