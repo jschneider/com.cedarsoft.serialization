@@ -51,27 +51,27 @@ import java.io.IOException;
 public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends Serializer<T,O,I> {
   /**
    * Serializes the object to the given element
+   * throws com.cedarsoft.version.VersionException if the version does not match
    *
    * @param serializeTo   the serializeTo
    * @param object        the object
    * @param formatVersion the format version
    *
    * @throws E if serialization failed
-   * @throws IOException if there is an io problem
-   * @throws VersionException if the version does not match
+   * @throws java.io.IOException if there is an io problem
    */
   void serialize( @Nonnull S serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
 
   /**
    * Deserializes the object from the given document
+   * throws com.cedarsoft.version.VersionException if the version does not match
    *
    * @param deserializeFrom the deserializeFrom
    * @param formatVersion   the format version
    * @return the deserialized object
    *
-   * @throws VersionException if the version does not match
    * @throws E if deserialization failed
-   * @throws IOException if there is an io problem
+   * @throws java.io.IOException if there is an io problem
    */
   @Nonnull
   T deserialize( @Nonnull D deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, E;

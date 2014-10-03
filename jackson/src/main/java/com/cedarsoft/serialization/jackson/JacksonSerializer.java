@@ -64,8 +64,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    *
    * @param object    the object
    * @param generator the generator
-   * @throws IOException if there is an io problem
-   * @throws JsonProcessingException if there is a json problem
+   * @throws java.io.IOException if there is an io problem
    */
   void serialize( @Nonnull T object, @Nonnull JsonGenerator generator ) throws IOException, JsonProcessingException;
 
@@ -76,9 +75,8 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @param parser the parser
    * @return the deserialized object
    *
-   * @throws IOException if there is an io problem
-   * @throws JsonProcessingException if there is a json problem
-   * @throws InvalidTypeException if there is an invalid type
+   * @throws java.io.IOException if there is an io problem
+   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if there is an invalid type
    */
   @Nonnull
   T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException;
@@ -95,7 +93,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * Verifies the name space
    *
    * @param type the type
-   * @throws InvalidTypeException if there is an invalid type
+   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if there is an invalid type
    */
   void verifyType( @Nullable String type ) throws InvalidTypeException;
 

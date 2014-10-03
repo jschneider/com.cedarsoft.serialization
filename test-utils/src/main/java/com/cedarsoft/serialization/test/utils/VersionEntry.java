@@ -37,7 +37,7 @@ import com.cedarsoft.serialization.Serializer;
 import javax.annotation.Nonnull;
 
 /**
- * An entry used for {@link AbstractVersionTest2}. It provides a version information and a serialized object.
+ * An entry used for AbstractVersionTest2. It provides a version information and a serialized object.
  */
 public interface VersionEntry {
   /**

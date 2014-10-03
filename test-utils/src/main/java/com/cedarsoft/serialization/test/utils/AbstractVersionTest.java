@@ -47,7 +47,7 @@ import java.util.Map;
  * Abstract test class for testing the support for multiple format versions
  *
  * @param <T> the type that is deserialized
- * @deprecated use {@link AbstractVersionTest2} instead
+ * @deprecated use AbstractVersionTest2 instead
  */
 @Deprecated
 public abstract class AbstractVersionTest<T> {

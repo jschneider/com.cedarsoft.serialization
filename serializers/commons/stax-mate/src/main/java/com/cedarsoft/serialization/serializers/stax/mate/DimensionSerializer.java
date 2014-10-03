@@ -47,7 +47,6 @@ import java.io.IOException;
  */
 public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
   @Nonnull
-
   public static final String SEPARATOR = "x";
 
   public DimensionSerializer() {

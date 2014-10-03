@@ -61,12 +61,11 @@ public interface Serializer<T, O, I> {
 
   /**
    * Deserializes the object from the input stream
-   *
+   * throws com.cedarsoft.version.VersionException if any version related problem occurred
    * @param in the input object
    * @return the deserialized object
    *
-   * @throws VersionException if any version related problem occurred
-   * @throws IOException if there is an io problem
+   * @throws java.io.IOException if there is an io problem2
    */
   @Nonnull
   T deserialize( @Nonnull I in ) throws IOException, VersionException;

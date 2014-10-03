@@ -43,7 +43,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
 /**
- * This is a very simple serializer that serializes a {@link Model}.
+ * This is a very simple serializer that serializes a Model.
  * <p>
  * Results in:<br>
  * <code>

@@ -14,7 +14,7 @@ public interface Filter {
   /**
    * <p>
    * Returns whether the current token of the given parser shall be filtered out.<br>
-   * {@code parser.getCurrentToken()} always returns {@link JsonToken#FIELD_NAME}.
+   * {@code parser.getCurrentToken()} always returns JsonToken#FIELD_NAME.
    * </p>
    *
    * <p>
@@ -24,7 +24,6 @@ public interface Filter {
    * @param parser the parser
    * @return true if the current token (and its children) should be filtered out, false otherwise
    * @throws IOException if there is an io problem
-   * @throws JsonParseException if there is a json problem
    */
   boolean shallFilterOut( @Nonnull JsonParser parser ) throws IOException, JsonParseException;
 
