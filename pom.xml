@@ -245,7 +245,7 @@
   <properties>
     <currentStableVersion>6.1.0</currentStableVersion>
     <currentDevelopmentVersion>6.1.1-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>6.0.1</commons.version>
+    <commons.version>6.0.2</commons.version>
     <java.version>1.7</java.version>
     <neo4j.version>2.0.3</neo4j.version>
   </properties>
