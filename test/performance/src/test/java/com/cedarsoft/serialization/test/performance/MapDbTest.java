@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.test.performance;
 
 import org.fest.assertions.MapAssert;
 import org.junit.*;
+import org.junit.rules.*;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -15,6 +16,9 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class MapDbTest {
+  @Rule
+  public TemporaryFolder tmp = new TemporaryFolder();
+
   @Test
   public void testIt() throws Exception {
     BTreeMap<String, Integer> treeMap = DBMaker.newTempTreeMap();
@@ -26,7 +30,9 @@ public class MapDbTest {
 
   @Test
   public void testMoreComplex() throws Exception {
-    DB db = DBMaker.newFileDB( new File( "testdb" ) )
+    File file = tmp.newFile();
+
+    DB db = DBMaker.newFileDB( file )
       .closeOnJvmShutdown()
       .encryptionEnable( "password" )
       .make();
