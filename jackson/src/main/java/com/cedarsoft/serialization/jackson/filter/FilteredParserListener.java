@@ -13,7 +13,7 @@ public interface FilteredParserListener {
   /**
    * Is called when a field is going to be skipped
    *
-   * @param parser    the parser (currently at JsonToken#FIELD_NAME
+   * @param parser    the parser (currently at JsonToken#FIELD_NAME)
    * @param fieldName the field name
    * @throws IOException if there is an io problem
    */
