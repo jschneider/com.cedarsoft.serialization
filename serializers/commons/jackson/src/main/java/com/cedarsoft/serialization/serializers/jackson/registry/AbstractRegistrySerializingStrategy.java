@@ -82,7 +82,7 @@ public abstract class AbstractRegistrySerializingStrategy<T, O extends AbstractR
      *
      * @return the ids
      *
-     * @throws IOException
+     * @throws IOException if there is an io problem
      */
     @Nonnull
     Set<? extends String> getIds() throws IOException;

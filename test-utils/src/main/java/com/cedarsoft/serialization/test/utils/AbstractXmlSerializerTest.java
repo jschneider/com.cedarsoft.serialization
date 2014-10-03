@@ -42,7 +42,7 @@ import java.nio.charset.Charset;
  * Abstract base class for XML based serializers.
  *
  * @param <T> the type of the serialized object
- * @deprecated use {@link AbstractXmlSerializerTest2} instead
+ * @deprecated use AbstractXmlSerializerTest2 instead
  */
 @Deprecated
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {

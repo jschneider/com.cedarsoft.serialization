@@ -47,7 +47,6 @@ import javax.annotation.Nullable;
  */
 public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractStreamSerializer<T, S, D, E> {
   @Nonnull
-
   protected final String nameSpaceBase;
 
   protected AbstractNameSpaceBasedSerializer( @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
@@ -89,12 +88,11 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
   }
 
   /**
-   * Parses the version from a namespace uri
-   *
+   * Parses the version from a namespace uri.
+   * throws com.cedarsoft.version.VersionException if the namespace uri does not contain any version information   *
    * @param namespaceURI the namespace uri (the version has to be the last part split by "/"
    * @return the parsed version
    *
-   * @throws IllegalArgumentException
    */
   @Nonnull
   public static Version parseVersionFromNamespace( @Nullable String namespaceURI ) throws IllegalArgumentException, VersionException {
@@ -109,10 +107,10 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
 
   /**
    * Verifies the namespace uri
+   * throws com.cedarsoft.version.VersionException          the if the version does not fit the expected range
    *
    * @param namespace the namespace uri
-   * @throws InvalidNamespaceException if the namespace is invalid
-   * @throws VersionException          the if the version does not fit the expected range
+   * @throws com.cedarsoft.serialization.InvalidNamespaceException if the namespace is invalid
    */
   public void verifyNamespace( @Nullable String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().isEmpty() ) {
@@ -129,9 +127,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @param namespaceURI the namespace uri
    * @return the parsed and verified version
-   *
-   * @throws InvalidNamespaceException
-   * @throws VersionException
+   * @throws com.cedarsoft.serialization.InvalidNamespaceException if the namespace is invalid
    */
   @Nonnull
   public Version parseAndVerifyNameSpace( @Nullable String namespaceURI ) throws InvalidNamespaceException, VersionException {

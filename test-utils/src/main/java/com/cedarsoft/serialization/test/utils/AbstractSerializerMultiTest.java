@@ -50,7 +50,7 @@ import static org.junit.Assert.*;
  * Abstract class for serializer tests
  *
  * @param <T> the type of the serialized object
- * @deprecated use {@link AbstractSerializerTest2} instead
+ * @deprecated use AbstractSerializerTest2 instead
  */
 @Deprecated
 public abstract class AbstractSerializerMultiTest<T> {
@@ -102,6 +102,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * Returns the serializer
    *
    * @return the serializer
+   * @throws Exception if there is any error
    */
   @Nonnull
   protected abstract Serializer<T, OutputStream, InputStream> getSerializer() throws Exception;
@@ -110,8 +111,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * Verifies the serialized object
    *
    * @param serialized the serialized objects (within the same order)
-   * @throws SAXException
-   * @throws IOException
+   * @throws Exception if there is any error
    */
   protected abstract void verifySerialized( @Nonnull List<? extends byte[]> serialized ) throws Exception;
 
@@ -119,6 +119,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * Creates the object to serialize
    *
    * @return the object to serialize
+   * @throws Exception if there is any error
    */
   @Nonnull
   protected abstract Iterable<? extends T> createObjectsToSerialize() throws Exception;
@@ -128,6 +129,7 @@ public abstract class AbstractSerializerMultiTest<T> {
    * The default implementation simply calls equals
    *
    * @param deserialized the deserialized object
+   *                     @throws Exception if there is any error
    */
   protected void verifyDeserialized( @Nonnull List<? extends T> deserialized ) throws Exception {
     int index = 0;

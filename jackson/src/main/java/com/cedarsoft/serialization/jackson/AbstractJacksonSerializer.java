@@ -94,13 +94,13 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
 
   /**
    * Serializes the object to the given serializeTo.
-   * <p/>
+   * <p>
    * The serializer is responsible for writing start/close object/array brackets if necessary.
    * This method also writes the @type property.
    *
    * @param object    the object that is serialized
    * @param generator the serialize to object
-   * @throws IOException
+   * @throws java.io.IOException if there is an io problem
    */
   @Override
   public void serialize( @Nonnull T object, @Nonnull JsonGenerator generator ) throws IOException {
@@ -163,7 +163,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param jsonFactory the json factory
    * @param in the input stream
    * @return the created json parser
-   * @throws IOException
+   * @throws java.io.IOException if there is an io problem
    */
   @Nonnull
   protected JsonParser createJsonParser( @Nonnull JsonFactory jsonFactory, @Nonnull InputStream in ) throws IOException {
@@ -175,9 +175,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param parser the parser
    * @param formatVersionOverride the format version override (usually "null")
    * @return the deserialized object
-   * @throws IOException
-   * @throws JsonProcessingException
-   * @throws InvalidTypeException
+   * @throws java.io.IOException if there is an io problem
+   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   @Nonnull
   protected T deserializeInternal( @Nonnull JsonParser parser, @Nullable Version formatVersionOverride ) throws IOException, JsonProcessingException, InvalidTypeException {
@@ -205,8 +204,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param wrapper the wrapper
    * @param formatVersionOverride the format version
    * @return the format version
-   * @throws IOException
-   * @throws InvalidTypeException
+   * @throws java.io.IOException if there is an io problem
+   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   @Nonnull
   protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
@@ -238,6 +237,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * Callback method that is called before the type and version are parsed
    *
    * @param wrapper the wrapper
+   * @throws java.io.IOException if there is an io exception
+   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, InvalidTypeException {
   }

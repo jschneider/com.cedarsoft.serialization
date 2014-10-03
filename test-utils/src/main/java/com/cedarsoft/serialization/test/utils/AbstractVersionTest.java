@@ -47,15 +47,14 @@ import java.util.Map;
  * Abstract test class for testing the support for multiple format versions
  *
  * @param <T> the type that is deserialized
- * @deprecated use {@link AbstractVersionTest2} instead
+ * @deprecated use AbstractVersionTest2 instead
  */
 @Deprecated
 public abstract class AbstractVersionTest<T> {
   /**
    * This method checks old serialized objects
    *
-   * @throws IOException
-   * @throws SAXException
+   * @throws Exception if there is any error
    */
   @Test
   public void testVersions() throws Exception {

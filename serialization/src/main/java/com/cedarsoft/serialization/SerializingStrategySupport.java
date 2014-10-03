@@ -42,14 +42,14 @@ import java.util.List;
 
 /**
  * Support class for serializing strategies.
- * <p/>
+ * <p>
  * It is necessary to register the strategies using {@link #addStrategy(SerializingStrategy)} and add the
  * necessary version mappings.
  *
  * @param <T> the type
- * @param <D> as defined in {@link SerializingStrategy}
- * @param <S> as defined in {@link SerializingStrategy}
- * @param <E> as defined in {@link SerializingStrategy}
+ * @param <D> as defined in SerializingStrategy
+ * @param <S> as defined in SerializingStrategy
+ * @param <E> as defined in SerializingStrategy
  */
 public class SerializingStrategySupport<T, S, D, E extends Throwable, O, I> {
   @Nonnull
@@ -92,8 +92,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable, O, I> {
    *
    * @param object the object
    * @return the strategy that
-   *
-   * @throws NotFoundException
+   * @throws NotFoundException if the strategy could not be found for the given object
    */
   @Nonnull
   public <R extends T> SerializingStrategy<R, S, D, E, O, I> findStrategy( @Nonnull R object ) throws NotFoundException {

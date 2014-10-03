@@ -37,6 +37,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
+import javolution.osgi.internal.XMLInputFactoryProvider;
+import javolution.xml.internal.stream.XMLInputFactoryImpl;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory;
 import org.codehaus.jettison.mapped.Configuration;
@@ -627,7 +629,7 @@ public class XmlParserPerformance {
                     @Override
                     public void run() {
                       try {
-                        javolution.xml.stream.XMLInputFactory inputFactory = javolution.xml.stream.XMLInputFactory.newInstance();
+                        javolution.xml.stream.XMLInputFactory inputFactory = new XMLInputFactoryImpl();
                         benchParse( inputFactory );
                       } catch ( Exception e ) {
                         throw new RuntimeException( e );

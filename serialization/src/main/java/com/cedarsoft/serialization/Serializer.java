@@ -39,10 +39,10 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
- * Interface for all types of serializers.<br/>
- * <p/>
+ * Interface for all types of serializers.<br>
+ * <p>
  * Each serializer is able to serialize an object to a given output stream.
- * <p/>
+ * <p>
  * A format version is supported for each serializer.
  *
  * @param <T> the type of the objects this serializer is able to (de)serialize
@@ -55,18 +55,17 @@ public interface Serializer<T, O, I> {
    *
    * @param object the object to serialize
    * @param out    the out stream
-   * @throws IOException
+   * @throws IOException if there is an io problem
    */
   void serialize( @Nonnull T object, @Nonnull O out ) throws IOException;
 
   /**
    * Deserializes the object from the input stream
-   *
+   * throws com.cedarsoft.version.VersionException if any version related problem occurred
    * @param in the input object
    * @return the deserialized object
    *
-   * @throws VersionException if any version related problem occurred
-   * @throws IOException
+   * @throws java.io.IOException if there is an io problem2
    */
   @Nonnull
   T deserialize( @Nonnull I in ) throws IOException, VersionException;

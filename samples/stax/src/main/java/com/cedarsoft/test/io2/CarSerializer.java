@@ -49,12 +49,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is an extended version of {@link com.cedarsoft.test.io.CarSerializer}.
- * <p/>
+ * This is an extended version of com.cedarsoft.test.io.CarSerializer.
+ * <p>
  * It represents the next step of the evolution of CarSerializer.
  * This is an example for a refactoring that might happen, after the serializer has been
  * released (and shipped to thousands of customers creating millions of files).
- * <p/>
+ * <p>
  * Therefore this serializer is able to still read the old format.
  * Writing is only supported for the latest file.
  */

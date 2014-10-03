@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Represents a strategy to serialize an object.
- * <p/>
+ * <p>
  * Those strategies might be used to serialize different objects of the same type.
  *
  * @param <T> the type of object this serializer is able to (de)serialize

@@ -70,6 +70,9 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
 
 
   /**
+   * @param generator the generator
+   * @throws IOException if there is an io problem
+   *
    * @noinspection RefusedBequest
    */
   @Override
@@ -77,7 +80,12 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
     //Do *not* write type and version!
   }
 
-  /** @noinspection RefusedBequest*/
+  /**
+   * @param wrapper the parser
+   * @param formatVersionOverride  the format version override
+   * @throws IOException if there is an io problem
+   * @noinspection RefusedBequest
+   */
   @Nonnull
   @Override
   protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {

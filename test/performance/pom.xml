@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft.serialization</groupId>
     <artifactId>test</artifactId>
-    <version>6.1.0</version>
+    <version>6.1.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -36,10 +36,19 @@
       <artifactId>woodstox-core-asl</artifactId>
       <optional>true</optional>
     </dependency>
+
+    <!--Old javolution format (until 6.0.0)-->
+    <!--<dependency>-->
+      <!--<groupId>org.javolution</groupId>-->
+      <!--<artifactId>javolution</artifactId>-->
+      <!--<version>5.3.1</version>-->
+    <!--</dependency>-->
+
+    <!--New javolution format (since 6.0.0)-->
     <dependency>
       <groupId>org.javolution</groupId>
-      <artifactId>javolution</artifactId>
-      <version>5.3.1</version>
+      <artifactId>javolution-core-java</artifactId>
+      <version>6.0.0</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
@@ -50,24 +59,24 @@
     <dependency>
       <groupId>org.jibx</groupId>
       <artifactId>jibx-run</artifactId>
-      <version>1.2.3</version>
+      <version>1.2.5</version>
     </dependency>
     <dependency>
       <groupId>org.jibx</groupId>
       <artifactId>jibx-extras</artifactId>
-      <version>1.2.3</version>
+      <version>1.2.5</version>
     </dependency>
 
     <dependency>
       <groupId>org.simpleframework</groupId>
       <artifactId>simple-xml</artifactId>
-      <version>2.6.2</version>
+      <version>2.7.1</version>
     </dependency>
 
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
-      <version>1.4.2</version>
+      <version>1.4.7</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jettison</groupId>
@@ -88,13 +97,13 @@
     <dependency>
       <groupId>org.mapdb</groupId>
       <artifactId>mapdb</artifactId>
-      <version>0.9.9</version>
+      <version>1.0.6</version>
     </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.1</version>
+      <version>2.3</version>
     </dependency>
 
     <dependency>

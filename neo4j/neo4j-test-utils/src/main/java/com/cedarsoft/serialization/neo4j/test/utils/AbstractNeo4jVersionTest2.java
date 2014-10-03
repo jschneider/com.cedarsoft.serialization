@@ -30,8 +30,8 @@ public abstract class AbstractNeo4jVersionTest2<T> {
   /**
    * This method checks old serialized objects
    *
-   * @throws IOException
-   * @throws SAXException
+   * @throws IOException if there is an io problem
+   * @throws SAXException if there is an xml parsing problem
    */
   @Theory
   public void testVersion( @Nonnull VersionEntry entry ) throws Exception {

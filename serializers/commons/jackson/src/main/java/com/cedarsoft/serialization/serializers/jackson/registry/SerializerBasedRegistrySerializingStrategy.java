@@ -40,7 +40,7 @@ import java.io.OutputStream;
 
 /**
  * A serializing strategy based on a serializer.
- * This is the default strategy and used for most {@link RegistrySerializer}s.
+ * This is the default strategy and used for most RegistrySerializers.
  *
  * @param <T> the type
  */
