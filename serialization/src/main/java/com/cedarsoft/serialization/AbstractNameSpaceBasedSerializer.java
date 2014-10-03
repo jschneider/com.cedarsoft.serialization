@@ -93,7 +93,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * @param namespaceURI the namespace uri (the version has to be the last part split by "/"
    * @return the parsed version
    *
-   * @throws com.cedarsoft.version.VersionException if the namespace uri does not contain any version information
+   * throws com.cedarsoft.version.VersionException if the namespace uri does not contain any version information
    */
   @Nonnull
   public static Version parseVersionFromNamespace( @Nullable String namespaceURI ) throws IllegalArgumentException, VersionException {
@@ -111,7 +111,7 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @param namespace the namespace uri
    * @throws com.cedarsoft.serialization.InvalidNamespaceException if the namespace is invalid
-   * @throws com.cedarsoft.version.VersionException          the if the version does not fit the expected range
+   * throws com.cedarsoft.version.VersionException          the if the version does not fit the expected range
    */
   public void verifyNamespace( @Nullable String namespace ) throws InvalidNamespaceException, VersionException {
     if ( namespace == null || namespace.trim().isEmpty() ) {
