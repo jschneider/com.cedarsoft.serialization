@@ -31,6 +31,14 @@
 
 News
 
+* 2014-10-03: Release 6.1.1
+
+ * Removed old Maven based generator (use IntelliJ Idea based plugin instead)
+
+ * updated dependencies
+
+ * Prepared for Java 8
+
 * 2014-09-11: Release 6.1.0
 
  * Major changes: Added support for Neo4J!
