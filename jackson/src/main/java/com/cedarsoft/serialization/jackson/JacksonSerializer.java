@@ -65,7 +65,6 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @param object    the object
    * @param generator the generator
    * @throws java.io.IOException if there is an io problem
-   * @throws com.fasterxml.jackson.core.JsonProcessingException if there is a json problem
    */
   void serialize( @Nonnull T object, @Nonnull JsonGenerator generator ) throws IOException, JsonProcessingException;
 
@@ -77,7 +76,6 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @return the deserialized object
    *
    * @throws java.io.IOException if there is an io problem
-   * @throws com.fasterxml.jackson.core.JsonProcessingException if there is a json problem
    * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if there is an invalid type
    */
   @Nonnull

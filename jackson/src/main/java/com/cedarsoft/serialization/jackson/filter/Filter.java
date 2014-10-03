@@ -24,7 +24,6 @@ public interface Filter {
    * @param parser the parser
    * @return true if the current token (and its children) should be filtered out, false otherwise
    * @throws IOException if there is an io problem
-   * @throws com.fasterxml.jackson.core.JsonParseException if there is a json problem
    */
   boolean shallFilterOut( @Nonnull JsonParser parser ) throws IOException, JsonParseException;
 

@@ -176,7 +176,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param formatVersionOverride the format version override (usually "null")
    * @return the deserialized object
    * @throws java.io.IOException if there is an io problem
-   * @throws com.fasterxml.jackson.core.JsonProcessingException if there is a json error
    * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   @Nonnull
@@ -239,7 +238,6 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    *
    * @param wrapper the wrapper
    * @throws java.io.IOException if there is an io exception
-   * @throws com.fasterxml.jackson.core.JsonParseException if there is a json exception
    * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, InvalidTypeException {
