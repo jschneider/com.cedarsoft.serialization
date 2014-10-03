@@ -42,12 +42,12 @@ import java.io.OutputStream;
 public interface StreamBasedObjectsAccess extends AbstractRegistrySerializingStrategy.ObjectsAccess {
   /**
    * Returns the output for the given id
+   * throws com.cedarsoft.exceptions.StillContainedException if an object with the given id is still contained
    *
    * @param id the id
    * @return the output stream
    *
    * @throws java.io.FileNotFoundException
-   * throws com.cedarsoft.exceptions.StillContainedException if an object with the given id is still contained
    */
   @Nonnull
   OutputStream openOut( @Nonnull String id ) throws StillContainedException, FileNotFoundException;
