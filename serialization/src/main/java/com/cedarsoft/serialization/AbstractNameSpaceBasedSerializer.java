@@ -47,7 +47,6 @@ import javax.annotation.Nullable;
  */
 public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwable> extends AbstractStreamSerializer<T, S, D, E> {
   @Nonnull
-
   protected final String nameSpaceBase;
 
   protected AbstractNameSpaceBasedSerializer( @Nonnull String nameSpaceBase, @Nonnull VersionRange formatVersionRange ) {
