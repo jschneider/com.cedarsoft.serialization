@@ -39,7 +39,8 @@
     <dependency>
       <groupId>org.javolution</groupId>
       <artifactId>javolution</artifactId>
-      <version>6.0.0</version>
+      <!--6.0.0 seems to be missing in Maven Central. Only the pom is available (2014-10-03)-->
+      <version>5.3.1</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
