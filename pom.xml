@@ -84,21 +84,6 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.cedarsoft.serialization.generator</groupId>
-        <artifactId>common</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoft.serialization.generator</groupId>
-        <artifactId>stax-mate</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoft.serialization.generator</groupId>
-        <artifactId>jackson</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.cedarsoft.serialization</groupId>
         <artifactId>neo4j</artifactId>
         <version>${project.version}</version>

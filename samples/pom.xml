@@ -16,7 +16,6 @@
     <module>stax-mate</module>
     <module>stax</module>
     <module>demo1</module>
-    <module>plugin-playground</module>
     <module>evolution</module>
   </modules>
 
