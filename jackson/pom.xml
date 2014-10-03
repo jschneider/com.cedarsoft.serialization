@@ -43,35 +43,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>com.cedarsoft.maven</groupId>
-            <artifactId>assemblies</artifactId>
-            <version>1.0.0</version>
-          </dependency>
-        </dependencies>
-
-        <configuration>
-          <descriptor>src/assembly/all.xml</descriptor>
-        </configuration>
-
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
 </project>
