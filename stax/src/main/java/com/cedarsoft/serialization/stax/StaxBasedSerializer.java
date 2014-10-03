@@ -13,7 +13,7 @@ import java.io.OutputStream;
  * <p>
  * ATTENTION:
  * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br>
- * This is especially true for {@link PluggableSerializer}s.
+ * This is especially true for PluggableSerializers.
  *
  * @param <T> the type
  * @param <S> the object to serialize to

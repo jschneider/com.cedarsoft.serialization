@@ -14,7 +14,7 @@ public interface Filter {
   /**
    * <p>
    * Returns whether the current token of the given parser shall be filtered out.<br>
-   * {@code parser.getCurrentToken()} always returns {@link JsonToken#FIELD_NAME}.
+   * {@code parser.getCurrentToken()} always returns JsonToken#FIELD_NAME.
    * </p>
    *
    * <p>

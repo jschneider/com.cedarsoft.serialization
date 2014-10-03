@@ -47,7 +47,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Holds several {@link VersionMapping}s.
+ * Holds several VersionMappings.
  *
  * @param <T> the type of the key
  */

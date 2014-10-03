@@ -47,9 +47,9 @@ import java.util.List;
  * necessary version mappings.
  *
  * @param <T> the type
- * @param <D> as defined in {@link SerializingStrategy}
- * @param <S> as defined in {@link SerializingStrategy}
- * @param <E> as defined in {@link SerializingStrategy}
+ * @param <D> as defined in SerializingStrategy
+ * @param <S> as defined in SerializingStrategy
+ * @param <E> as defined in SerializingStrategy
  */
 public class SerializingStrategySupport<T, S, D, E extends Throwable, O, I> {
   @Nonnull

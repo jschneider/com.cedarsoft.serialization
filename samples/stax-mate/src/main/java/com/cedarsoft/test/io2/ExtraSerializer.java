@@ -43,7 +43,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
 /**
- * This is an extended version of {@link com.cedarsoft.test.io.ExtraSerializer}.
+ * This is an extended version of com.cedarsoft.test.io.ExtraSerializer.
  * <p>
  * It represents the next step of the evolution of CarSerializer.
  * This is an example for a refactoring that might happen, after the serializer has been

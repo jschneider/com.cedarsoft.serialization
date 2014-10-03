@@ -44,7 +44,7 @@ import java.util.List;
  * Abstract base class for XML based serializers.
  *
  * @param <T> the type of the serialized object
- * @deprecated use {@link AbstractXmlSerializerTest2} instead
+ * @deprecated use AbstractXmlSerializerTest2 instead
  */
 @Deprecated
 public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializerMultiTest<T> {

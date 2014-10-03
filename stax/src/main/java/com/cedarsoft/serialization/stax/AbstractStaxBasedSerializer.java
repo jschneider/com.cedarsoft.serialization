@@ -54,7 +54,7 @@ import java.util.List;
  * <p>
  * ATTENTION:
  * Serializers based on stax must consume all events for their tag (including END_ELEMENT).<br>
- * This is especially true for {@link com.cedarsoft.serialization.PluggableSerializer}s.
+ * This is especially true for com.cedarsoft.serialization.PluggableSerializers.
  *
  * @param <T> the type
  * @param <S> the object to serialize to
