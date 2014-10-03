@@ -396,7 +396,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
   }
 
   /**
-   * Callback interface used when visiting the children ({@link com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer#visitChildren(XMLStreamReader, com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer.CB)})
+   * Callback interface used when visiting the children (com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer#visitChildren(XMLStreamReader, com.cedarsoft.serialization.stax.AbstractStaxBasedSerializer.CB))
    */
   public interface CB {
     /**
