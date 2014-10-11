@@ -361,6 +361,24 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     serializeTo.writeStringField( propertyName, enumValue.name() );
   }
 
+  /**
+   * Deserializes the enumeration
+   *
+   * @param enumClass    the enum class
+   * @param propertyName the property name
+   * @param parser       the parser
+   * @param <T>          the type
+   * @return the deserialized enum
+   *
+   * @throws IOException
+   */
+  @Nonnull
+  public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull String propertyName, @Nonnull JsonParser parser ) throws IOException {
+    JacksonParserWrapper wrapper = new JacksonParserWrapper( parser );
+    wrapper.nextFieldValue( propertyName );
+    return Enum.valueOf( enumClass, parser.getText() );
+  }
+
   @Deprecated
   @Nonnull
   public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull String propertyName, @Nonnull JacksonParserWrapper parser ) throws IOException {
