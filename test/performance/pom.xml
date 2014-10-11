@@ -124,6 +124,12 @@
     </dependency>
 
     <dependency>
+      <groupId>de.undercouch</groupId>
+      <artifactId>bson4jackson</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.cedarsoft.commons</groupId>
       <artifactId>test-utils</artifactId>
       <scope>test</scope>
