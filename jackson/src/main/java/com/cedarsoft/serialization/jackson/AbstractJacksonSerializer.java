@@ -361,6 +361,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     serializeTo.writeStringField( propertyName, enumValue.name() );
   }
 
+  @Deprecated
   @Nonnull
   public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull String propertyName, @Nonnull JacksonParserWrapper parser ) throws IOException {
     parser.nextFieldValue( propertyName );
