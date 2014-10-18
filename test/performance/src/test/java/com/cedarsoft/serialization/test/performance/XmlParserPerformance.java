@@ -37,8 +37,11 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
+import de.undercouch.bson4jackson.BsonFactory;
+import de.undercouch.bson4jackson.BsonGenerator;
 import javolution.osgi.internal.XMLInputFactoryProvider;
 import javolution.xml.internal.stream.XMLInputFactoryImpl;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory;
 import org.codehaus.jettison.mapped.Configuration;
@@ -84,8 +87,8 @@ import static org.junit.Assert.*;
  */
 public class XmlParserPerformance {
   public static final int SMALL = 5000;
-  public static final int MEDIUM = SMALL * 10;
-  public static final int BIG = MEDIUM * 10;
+  public static final int MEDIUM = 50000;
+  public static final int BIG = 500000;
 
   @Nonnull
 
@@ -104,7 +107,9 @@ public class XmlParserPerformance {
   @Nonnull
   public static final String CONTENT_SAMPLE_JACKSON = "{\"id\":\"Canon Raw\",\"dependent\":false,\"extension\":{\"extension\":\"cr2\",\"default\":true,\"delimiter\":\".\"}}";
   @Nonnull
+  public static final String CONTENT_SAMPLE_BSON = "00000000026964000a00000043616e6f6e205261770008646570656e64656e74000003657874656e73696f6e000000000002657874656e73696f6e0004000000637232000864656661756c7400010264656c696d6974657200020000002e000000";
 
+  @Nonnull
   public static final String CONTENT_SAMPLE_XSTREAM = "<fileType dependent=\"false\">\n" +
     "  <id>Canon Raw</id>\n" +
     "  <extension default=\"true\" delimiter=\".\">\n" +
@@ -183,16 +188,19 @@ public class XmlParserPerformance {
     //Needs the plugin to be enabled (in pom.xml)
     //    System.out.println( "Jibx" );
     //    new XmlParserPerformance().benchJibx();
-    System.out.println();
-    System.out.println( "Neo4J (1 t" +
-                          "ransaction)" );
-    new XmlParserPerformance().benchNeo4j1Transaction();
-    System.out.println( "Neo4J (Multiple transactions)" );
-    new XmlParserPerformance().benchNeo4jMultiTransaction();
+
+    //System.out.println();
+    //System.out.println( "Neo4J (1 t" +
+    //                      "ransaction)" );
+    //new XmlParserPerformance().benchNeo4j1Transaction();
+    //System.out.println( "Neo4J (Multiple transactions)" );
+    //new XmlParserPerformance().benchNeo4jMultiTransaction();
     System.out.println( "Jackson (Mapper)" );
     new XmlParserPerformance().benchJacksonMapper();
     System.out.println( "Jackson (Stream)" );
     new XmlParserPerformance().benchJackson();
+    System.out.println( "BSON4Jackson (Stream)" );
+    new XmlParserPerformance().benchBson4Jackson();
     System.out.println( "GSon" );
     new XmlParserPerformance().benchGson();
     System.out.println( "Json (Mapped)" );
@@ -533,6 +541,21 @@ public class XmlParserPerformance {
                   }, 4 );
   }
 
+  public void benchBson4Jackson() {
+    runBenchmark( new Runnable() {
+                    @Override
+                    public void run() {
+                      try {
+                        BsonFactory jsonFactory = new BsonFactory();
+                        jsonFactory.enable( BsonGenerator.Feature.ENABLE_STREAMING );
+                        benchParse( jsonFactory, Hex.decodeHex( CONTENT_SAMPLE_BSON.toCharArray() ) );
+                      } catch ( Exception e ) {
+                        throw new RuntimeException( e );
+                      }
+                    }
+                  }, 4 );
+  }
+
   public void benchJacksonMapper() {
     runBenchmark( new Runnable() {
                     @Override
@@ -765,14 +788,14 @@ public class XmlParserPerformance {
   private void benchParseMapper( @Nonnull JsonFactory factory, @Nonnull String contentSample ) throws XMLStreamException, IOException {
     ObjectMapper mapper = new ObjectMapper();
     for ( int i = 0; i < BIG; i++ ) {
-      JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
+      JsonParser parser = factory.createParser( new StringReader( contentSample ) );
       assertNotNull( mapper.readValue( parser, com.cedarsoft.serialization.test.performance.jaxb.FileType.class ) );
     }
   }
 
   private void benchParse( @Nonnull JsonFactory factory, @Nonnull String contentSample ) throws XMLStreamException, IOException {
     for ( int i = 0; i < BIG; i++ ) {
-      JsonParser parser = factory.createJsonParser( new StringReader( contentSample ) );
+      JsonParser parser = factory.createParser( new StringReader( contentSample ) );
 
       assertEquals( JsonToken.START_OBJECT, parser.nextToken() );
 
@@ -823,6 +846,57 @@ public class XmlParserPerformance {
     }
   }
 
+  private void benchParse( @Nonnull JsonFactory factory, @Nonnull byte[] contentSample ) throws XMLStreamException, IOException {
+    for ( int i = 0; i < BIG; i++ ) {
+      JsonParser parser = factory.createParser( contentSample );
+
+      assertEquals( JsonToken.START_OBJECT, parser.nextToken() );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "id", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String id = parser.getText();
+      assertEquals( "Canon Raw", id );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "dependent", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_FALSE, parser.nextToken() );
+      boolean dependent = parser.getBooleanValue();
+      assertFalse( dependent );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "extension", parser.getCurrentName() );
+      assertEquals( JsonToken.START_OBJECT, parser.nextToken() );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "extension", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String extension = parser.getText();
+      assertEquals( "cr2", extension );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "default", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_TRUE, parser.nextToken() );
+      boolean isDefault = parser.getBooleanValue();
+      assertTrue( isDefault );
+
+      assertEquals( JsonToken.FIELD_NAME, parser.nextToken() );
+      assertEquals( "delimiter", parser.getCurrentName() );
+      assertEquals( JsonToken.VALUE_STRING, parser.nextToken() );
+      String delimiter = parser.getText();
+      assertEquals( ".", delimiter );
+
+      assertEquals( JsonToken.END_OBJECT, parser.nextToken() );
+      assertEquals( JsonToken.END_OBJECT, parser.nextToken() );
+      assertNull( parser.nextToken() );
+
+      parser.close();
+
+      FileType type = new FileType( id, new Extension( delimiter, extension, isDefault ), dependent );
+      assertNotNull( type );
+    }
+  }
+
 
   private void runBenchmark( @Nonnull Runnable runnable, final int count ) {
     //Warmup
@@ -843,7 +917,7 @@ public class XmlParserPerformance {
 
     System.out.println( "-----------------------" );
     for ( Long time : times ) {
-      System.out.println( "--> " + time );
+      System.out.println( "--> " + time + " ms" );
     }
     System.out.println( "-----------------------" );
   }
