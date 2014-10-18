@@ -87,8 +87,8 @@ import static org.junit.Assert.*;
  */
 public class XmlParserPerformance {
   public static final int SMALL = 5000;
-  public static final int MEDIUM = SMALL * 10;
-  public static final int BIG = MEDIUM * 10;
+  public static final int MEDIUM = 50000;
+  public static final int BIG = 500000;
 
   @Nonnull
 
