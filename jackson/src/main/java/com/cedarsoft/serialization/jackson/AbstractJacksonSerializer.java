@@ -379,6 +379,11 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     return Enum.valueOf( enumClass, parser.getText() );
   }
 
+  @Nonnull
+  public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull JsonParser parser ) throws IOException {
+    return Enum.valueOf( enumClass, parser.getText() );
+  }
+
   @Deprecated
   @Nonnull
   public <T extends Enum<T>> T deserializeEnum( @Nonnull Class<T> enumClass, @Nonnull String propertyName, @Nonnull JacksonParserWrapper parser ) throws IOException {
