@@ -93,10 +93,12 @@ public class GenerateSerializerAction extends AnAction {
     GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
     List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
     String targetPackageName = generateSerializerDialog.getTargetPackageName();
+
+    //Calculate the target directories
     PsiDirectory serializerTargetDir = psiClass.getContainingFile().getContainingDirectory();
     PsiDirectory testsTargetDir = psiClass.getContainingFile().getContainingDirectory();
     PsiDirectory testResourcesTargetDir = psiClass.getContainingFile().getContainingDirectory();
-    //DirectoryChooserUtil.chooseDirectory()
+
 
     SerializerResolver serializerResolver = createSerializerResolver( dialect, project );
 

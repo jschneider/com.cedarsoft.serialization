@@ -4,23 +4,23 @@ import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
-import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassOwner;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiJavaFile;
+import com.intellij.refactoring.move.moveClassesOrPackages.DestinationFolderComboBox;
 import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.EnumComboBoxModel;
 import com.intellij.ui.ReferenceEditorComboWithBrowseButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
+import net.miginfocom.swing.MigLayout;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import java.util.List;
 
 /**
@@ -36,6 +36,30 @@ public class GenerateSerializerDialog extends DialogWrapper {
   private final PsiClass psiClass;
   private final ReferenceEditorComboWithBrowseButton referenceEditor;
 
+  @Nonnull
+  private final DestinationFolderComboBox serializerDestinationBox = new DestinationFolderComboBox() {
+    @Override
+    public String getTargetPackage() {
+      return referenceEditor.getText();
+    }
+  };
+
+  @Nonnull
+  private final DestinationFolderComboBox testsDestinationBox = new DestinationFolderComboBox() {
+    @Override
+    public String getTargetPackage() {
+      return referenceEditor.getText();
+    }
+  };
+
+  @Nonnull
+  private final DestinationFolderComboBox testResourcesDestinationBox = new DestinationFolderComboBox() {
+    @Override
+    public String getTargetPackage() {
+      return referenceEditor.getText();
+    }
+  };
+
   public GenerateSerializerDialog( @Nonnull PsiClass psiClass ) {
     super( psiClass.getProject() );
     this.psiClass = psiClass;
@@ -44,18 +68,23 @@ public class GenerateSerializerDialog extends DialogWrapper {
     fieldCollectionListModel = new CollectionListModel<PsiField>( psiClass.getAllFields() );
     referenceEditor = new PackageNameReferenceEditorCombo( guessPackage(), psiClass.getProject(), "generate.serializer.recent.packages", "Select Serializer target package" );
 
+    serializerDestinationBox.setData( psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent() );
+    testsDestinationBox.setData( psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent() ); //TODO test
+    testResourcesDestinationBox.setData( psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent() ); //TODO resources
+
     init();
   }
 
   @Nullable
   @Override
   protected JComponent createCenterPanel() {
-    JPanel holder = new JPanel( new BorderLayout() );
+    JPanel holder = new JPanel( new MigLayout("wrap 2, fill", "[][fill,grow]", "[][fill,grow][][][][]") );
 
     //ask for the dialect
     {
       ComboBox dialectList = new ComboBox( dialectEnumComboBoxModel );
-      holder.add( dialectList, BorderLayout.NORTH );
+      holder.add( new JLabel( "Dialect:" ) );
+      holder.add( dialectList );
     }
 
     {
@@ -67,10 +96,17 @@ public class GenerateSerializerDialog extends DialogWrapper {
       decorator.disableAddAction();
 
       JPanel panel = decorator.createPanel();
-      holder.add( LabeledComponent.create( panel, "Select fields to serialize" ), BorderLayout.CENTER );
+      holder.add( LabeledComponent.create( panel, "Select fields to serialize" ), "span 2, grow" );
     }
 
-    holder.add( referenceEditor, BorderLayout.SOUTH );
+    holder.add( new JLabel( "Target package:" ) );
+    holder.add( referenceEditor );
+    holder.add( new JLabel( "Serializer:" ) );
+    holder.add( serializerDestinationBox );
+    holder.add( new JLabel( "Tests:" ) );
+    holder.add( testsDestinationBox );
+    holder.add( new JLabel( "Test-Resources:" ) );
+    holder.add( testResourcesDestinationBox );
 
     return holder;
   }
