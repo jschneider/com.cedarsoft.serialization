@@ -34,6 +34,7 @@ public class GenerateSerializerDialog extends DialogWrapper {
 
   @Nonnull
   private final PsiClass psiClass;
+  private final ReferenceEditorComboWithBrowseButton referenceEditor;
 
   public GenerateSerializerDialog( @Nonnull PsiClass psiClass ) {
     super( psiClass.getProject() );
@@ -41,6 +42,7 @@ public class GenerateSerializerDialog extends DialogWrapper {
     setTitle( "Generate Serializer" );
 
     fieldCollectionListModel = new CollectionListModel<PsiField>( psiClass.getAllFields() );
+    referenceEditor = new PackageNameReferenceEditorCombo( guessPackage(), psiClass.getProject(), "generate.serializer.recent.packages", "Select Serializer target package" );
 
     init();
   }
@@ -68,7 +70,6 @@ public class GenerateSerializerDialog extends DialogWrapper {
       holder.add( LabeledComponent.create( panel, "Select fields to serialize" ), BorderLayout.CENTER );
     }
 
-    ReferenceEditorComboWithBrowseButton referenceEditor = new PackageNameReferenceEditorCombo( guessPackage(), psiClass.getProject(), "generate.serializer.recent.packages", "Select Serializer target package" );
     holder.add( referenceEditor, BorderLayout.SOUTH );
 
     return holder;
