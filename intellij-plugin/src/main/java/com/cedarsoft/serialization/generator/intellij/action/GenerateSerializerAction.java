@@ -12,6 +12,7 @@ import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializ
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerTestsGenerator;
 import com.intellij.codeInsight.CodeInsightUtil;
+import com.intellij.ide.util.DirectoryChooserUtil;
 import com.intellij.lang.Language;
 import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -89,16 +90,24 @@ public class GenerateSerializerAction extends AnAction {
     Project project = getEventProject( e );
     assert project != null;
 
-    SerializerResolver serializerResolver = createSerializerResolver( generateSerializerDialog.getSelectedDialect(), project );
+    GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
+    List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
+    String targetPackageName = generateSerializerDialog.getTargetPackageName();
+    PsiDirectory serializerTargetDir = psiClass.getContainingFile().getContainingDirectory();
+    PsiDirectory testsTargetDir = psiClass.getContainingFile().getContainingDirectory();
+    PsiDirectory testResourcesTargetDir = psiClass.getContainingFile().getContainingDirectory();
+    //DirectoryChooserUtil.chooseDirectory()
+
+    SerializerResolver serializerResolver = createSerializerResolver( dialect, project );
 
     SerializerModelFactory serializerModelFactory = new SerializerModelFactory( serializerResolver, JavaCodeStyleManager.getInstance( project ) );
-    SerializerModel model = serializerModelFactory.create( psiClass, generateSerializerDialog.getSelectedFields() );
+    SerializerModel model = serializerModelFactory.create( psiClass, selectedFields );
 
-    SerializerGenerator serializerGenerator = createSerializerGenerator( generateSerializerDialog.getSelectedDialect(), psiClass );
-    SerializerTestsGenerator testsGenerator = createSerializerTestsGenerator( generateSerializerDialog.getSelectedDialect(), psiClass );
+    SerializerGenerator serializerGenerator = createSerializerGenerator( dialect, psiClass );
+    PsiClass serializer = serializerGenerator.generate( model, serializerTargetDir );
 
-    PsiClass serializer = serializerGenerator.generate( model );
-    testsGenerator.generate( model );
+    SerializerTestsGenerator testsGenerator = createSerializerTestsGenerator( dialect, psiClass );
+    testsGenerator.generate( model, testsTargetDir, testResourcesTargetDir );
 
 
     Project serializerProject = serializer.getProject();
@@ -181,7 +190,7 @@ public class GenerateSerializerAction extends AnAction {
   }
 
   @Nonnull 
-  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass ) {
+  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass) {
     switch ( dialect ) {
       case JACKSON:
       return new JacksonSerializerGenerator( psiClass.getProject() );

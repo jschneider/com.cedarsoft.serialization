@@ -4,6 +4,7 @@ import com.cedarsoft.serialization.generator.intellij.AbstractSerializerGenerato
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiDirectory;
 
 import javax.annotation.Nonnull;
 

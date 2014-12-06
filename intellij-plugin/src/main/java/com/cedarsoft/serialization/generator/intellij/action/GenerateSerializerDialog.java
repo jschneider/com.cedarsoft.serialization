@@ -82,6 +82,10 @@ public class GenerateSerializerDialog extends DialogWrapper {
     //JavaPsiFacade.getInstance( psiJavaFile.getProject() ).findPackage( psiJavaFile.getPackageName() );
   }
 
+  public String getTargetPackageName() {
+    return referenceEditor.getText();
+  }
+
   @Nonnull
   public List<? extends PsiField> getSelectedFields() {
     return fieldCollectionListModel.getItems();

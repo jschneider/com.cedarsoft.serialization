@@ -60,7 +60,7 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
 
   @Override
   @Nonnull
-  public List<? extends PsiClass> generate( @Nonnull final SerializerModel serializerModel ) {
+  public List<? extends PsiClass> generate( @Nonnull final SerializerModel serializerModel, @Nonnull PsiDirectory testsTargetDir, @Nonnull PsiDirectory testResourcesTargetDir ) {
     final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();
 
     //The directory the serializer is generated in

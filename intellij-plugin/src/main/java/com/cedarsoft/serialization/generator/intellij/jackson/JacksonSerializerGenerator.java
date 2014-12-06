@@ -35,8 +35,8 @@ public class JacksonSerializerGenerator extends AbstractSerializerGenerator {
     {
       //While for fields
       methodBody.append( "com.cedarsoft.serialization.jackson.JacksonParserWrapper parser = new com.cedarsoft.serialization.jackson.JacksonParserWrapper( deserializeFrom );" +
-                              "while ( parser.nextToken() == com.fasterxml.jackson.core.JsonToken.FIELD_NAME ) {" +
-                              "String currentName = parser.getCurrentName();\n\n" );
+                           "while ( parser.nextToken() == com.fasterxml.jackson.core.JsonToken.FIELD_NAME ) {" +
+                           "String currentName = parser.getCurrentName();\n\n" );
 
       //add the ifs for the field names
       for ( FieldToSerialize field : serializerModel.getFieldToSerializeEntries() ) {

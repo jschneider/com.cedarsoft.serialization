@@ -59,25 +59,24 @@ public class StaxMateSerializerTestsGenerator implements SerializerTestsGenerato
   }
 
   @Nonnull
-  public List<? extends PsiClass> generate( @Nonnull final SerializerModel serializerModel ) {
+  public List<? extends PsiClass> generate( @Nonnull final SerializerModel serializerModel, @Nonnull final PsiDirectory testsTargetDir, @Nonnull final PsiDirectory testResourcesTargetDir ) {
     final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();
 
     //The directory the serializer is generated in
-    final PsiDirectory directory = selectTargetDir( serializerModel.getClassToSerialize() );
     final PsiClass[] testClasses = new PsiClass[2];
 
     new WriteCommandAction.Simple( serializerModel.getClassToSerialize().getProject(), psiFile ) {
       @Override
       protected void run() throws Throwable {
-        testClasses[0] = JavaDirectoryService.getInstance().createClass( directory, serializerModel.generateSerializerTestClassName() );
-        testClasses[1] = JavaDirectoryService.getInstance().createClass( directory, serializerModel.generateSerializerVersionTestClassName() );
+        testClasses[0] = JavaDirectoryService.getInstance().createClass( testsTargetDir, serializerModel.generateSerializerTestClassName() );
+        testClasses[1] = JavaDirectoryService.getInstance().createClass( testsTargetDir, serializerModel.generateSerializerVersionTestClassName() );
 
         fillTest( serializerModel, testClasses[0] );
         fillVersionTest( serializerModel, testClasses[1] );
 
 
         //Now create the resource file
-        directory.createFile( generateTestResourceName( serializerModel.getClassToSerialize().getName(), 1 ) );
+        testResourcesTargetDir.createFile( generateTestResourceName( serializerModel.getClassToSerialize().getName(), 1 ) );
 
         //Now beautify the code
         codeStyleManager.reformat( testClasses[0] );
@@ -90,12 +89,6 @@ public class StaxMateSerializerTestsGenerator implements SerializerTestsGenerato
     }.execute();
 
     return ImmutableList.copyOf( testClasses );
-  }
-
-  @Nonnull
-  protected PsiDirectory selectTargetDir( @Nonnull PsiClass psiClass ) {
-    //TODO implement me!
-    return psiClass.getContainingFile().getParent();
   }
 
   private void fillVersionTest( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass versionTestClass ) {

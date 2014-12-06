@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.generator.intellij;
 
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
 
 import javax.annotation.Nonnull;
 
@@ -18,5 +19,5 @@ public interface SerializerGenerator {
    * @return the generated serializer
    */
   @Nonnull
-  PsiClass generate( @Nonnull SerializerModel serializerModel );
+  PsiClass generate( @Nonnull SerializerModel serializerModel, @Nonnull PsiDirectory targetDir );
 }

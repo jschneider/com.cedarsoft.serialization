@@ -79,17 +79,14 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
 
   @Override
   @Nonnull
-  public PsiClass generate( @Nonnull final SerializerModel serializerModel ) {
+  public PsiClass generate( @Nonnull final SerializerModel serializerModel, @Nonnull final PsiDirectory targetDir ) {
     final PsiFile psiFile = serializerModel.getClassToSerialize().getContainingFile();
-
-    //The directory the serializer is generated in
-    final PsiDirectory directory = selectTargetDir( serializerModel.getClassToSerialize() );
 
     final PsiClass[] serializerClass = new PsiClass[1];
     new WriteCommandAction.Simple( serializerModel.getClassToSerialize().getProject(), psiFile ) {
       @Override
       protected void run() throws Throwable {
-        serializerClass[0] = JavaDirectoryService.getInstance().createClass( directory, serializerModel.generateSerializerClassName() );
+        serializerClass[0] = JavaDirectoryService.getInstance().createClass( targetDir, serializerModel.generateSerializerClassName() );
         fillSerializerClass( serializerModel, serializerClass[0] );
 
         //Now beautify the code
@@ -100,14 +97,6 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
     }.execute();
 
     return serializerClass[0];
-  }
-
-  @Nonnull
-  protected PsiDirectory selectTargetDir( @Nonnull PsiClass psiClass ) {
-    PsiDirectory psiDirectory = psiClass.getContainingFile().getContainingDirectory();
-
-    //TODO implement me!
-    return psiClass.getContainingFile().getParent();
   }
 
   @Nonnull
