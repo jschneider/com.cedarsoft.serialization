@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.generator.intellij;
 
 import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
+import com.cedarsoft.serialization.generator.intellij.action.GenerateSerializerDialog;
 import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer;
 import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
@@ -8,6 +9,7 @@ import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -102,6 +104,8 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
 
   @Nonnull
   protected PsiDirectory selectTargetDir( @Nonnull PsiClass psiClass ) {
+    PsiDirectory psiDirectory = psiClass.getContainingFile().getContainingDirectory();
+
     //TODO implement me!
     return psiClass.getContainingFile().getParent();
   }

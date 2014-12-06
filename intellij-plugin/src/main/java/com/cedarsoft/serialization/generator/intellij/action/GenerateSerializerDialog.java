@@ -4,10 +4,15 @@ import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassOwner;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.EnumComboBoxModel;
+import com.intellij.ui.ReferenceEditorComboWithBrowseButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
 
@@ -63,8 +68,17 @@ public class GenerateSerializerDialog extends DialogWrapper {
       holder.add( LabeledComponent.create( panel, "Select fields to serialize" ), BorderLayout.CENTER );
     }
 
+    ReferenceEditorComboWithBrowseButton referenceEditor = new PackageNameReferenceEditorCombo( guessPackage(), psiClass.getProject(), "generate.serializer.recent.packages", "Select Serializer target package" );
+    holder.add( referenceEditor, BorderLayout.SOUTH );
 
     return holder;
+  }
+
+  @Nonnull
+  private String guessPackage() {
+    PsiJavaFile psiJavaFile = ( PsiJavaFile ) psiClass.getContainingFile();
+    return psiJavaFile.getPackageName() + ".io";
+    //JavaPsiFacade.getInstance( psiJavaFile.getProject() ).findPackage( psiJavaFile.getPackageName() );
   }
 
   @Nonnull
