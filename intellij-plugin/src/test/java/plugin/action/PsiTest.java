@@ -67,8 +67,6 @@ public class PsiTest extends PluginBaseTest {
     }.execute();
 
     myFixture.checkResultByFile( getTestName( false ) + "After.java" );
-    myFixture.checkResult( "aaa" );
-    //myFixture.
   }
 
   //public void testAddComment() throws Throwable {
