@@ -7,7 +7,7 @@ public class SetterSerializerVersionTest extends com.cedarsoft.serialization.tes
 
     @NotNull
     @Override
-    protected com.cedarsoft.serialization.Serializer<Setter> getSerializer() throws Exception {
+    protected com.cedarsoft.serialization.StreamSerializer<Setter> getSerializer() throws Exception {
         return com.google.inject.Guice.createInjector().getInstance(SetterSerializer.class);
     }
 

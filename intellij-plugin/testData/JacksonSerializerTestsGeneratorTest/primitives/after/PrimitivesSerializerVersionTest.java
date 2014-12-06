@@ -7,7 +7,7 @@ public class PrimitivesSerializerVersionTest extends com.cedarsoft.serialization
 
     @NotNull
     @Override
-    protected com.cedarsoft.serialization.Serializer<Primitives> getSerializer() throws Exception {
+    protected com.cedarsoft.serialization.StreamSerializer<Primitives> getSerializer() throws Exception {
         return com.google.inject.Guice.createInjector().getInstance(PrimitivesSerializer.class);
     }
 

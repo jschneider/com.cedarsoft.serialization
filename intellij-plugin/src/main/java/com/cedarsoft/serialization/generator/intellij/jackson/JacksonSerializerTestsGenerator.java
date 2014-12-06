@@ -195,7 +195,7 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
   private PsiElement generateGetSerializerMethod( @Nonnull SerializerModel serializerModel, @Nonnull PsiClass testClass ) {
     StringBuilder methodBuilder = new StringBuilder();
 
-    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.Serializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
+    methodBuilder.append( notNull() ).append( "@Override\n" ).append( "  protected com.cedarsoft.serialization.StreamSerializer<" ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "> getSerializer() throws Exception {" );
     methodBuilder.append( "return com.google.inject.Guice.createInjector().getInstance(" ).append( serializerModel.generateSerializerClassName() ).append( ".class);" );
     methodBuilder.append( "}" );
 
