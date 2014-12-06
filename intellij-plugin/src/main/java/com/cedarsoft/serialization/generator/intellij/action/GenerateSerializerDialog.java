@@ -1,12 +1,17 @@
 package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
+import com.intellij.ide.util.DirectoryChooser;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.refactoring.MoveDestination;
+import com.intellij.refactoring.PackageWrapper;
 import com.intellij.refactoring.move.moveClassesOrPackages.DestinationFolderComboBox;
 import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo;
 import com.intellij.ui.CollectionListModel;
@@ -120,6 +125,21 @@ public class GenerateSerializerDialog extends DialogWrapper {
 
   public String getTargetPackageName() {
     return referenceEditor.getText();
+  }
+
+  @Nonnull
+  public PsiDirectory getSerializerDestination() {
+    return (( DirectoryChooser.ItemWrapper ) serializerDestinationBox.getComboBox().getSelectedItem()).getDirectory();
+  }
+
+  @Nonnull
+  public PsiDirectory getTestsDestination() {
+    return (( DirectoryChooser.ItemWrapper ) testsDestinationBox.getComboBox().getSelectedItem()).getDirectory();
+  }
+
+  @Nonnull
+  public PsiDirectory getTestResourcesDestination() {
+    return (( DirectoryChooser.ItemWrapper ) testResourcesDestinationBox.getComboBox().getSelectedItem()).getDirectory();
   }
 
   @Nonnull

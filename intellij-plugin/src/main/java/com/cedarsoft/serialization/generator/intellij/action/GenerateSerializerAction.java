@@ -12,7 +12,6 @@ import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializ
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerResolver;
 import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializerTestsGenerator;
 import com.intellij.codeInsight.CodeInsightUtil;
-import com.intellij.ide.util.DirectoryChooserUtil;
 import com.intellij.lang.Language;
 import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -94,10 +93,11 @@ public class GenerateSerializerAction extends AnAction {
     List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
     String targetPackageName = generateSerializerDialog.getTargetPackageName();
 
+
     //Calculate the target directories
-    PsiDirectory serializerTargetDir = psiClass.getContainingFile().getContainingDirectory();
-    PsiDirectory testsTargetDir = psiClass.getContainingFile().getContainingDirectory();
-    PsiDirectory testResourcesTargetDir = psiClass.getContainingFile().getContainingDirectory();
+    PsiDirectory serializerTargetDir = generateSerializerDialog.getSerializerDestination();
+    PsiDirectory testsTargetDir = generateSerializerDialog.getTestsDestination();
+    PsiDirectory testResourcesTargetDir = generateSerializerDialog.getTestResourcesDestination();
 
 
     SerializerResolver serializerResolver = createSerializerResolver( dialect, project );
