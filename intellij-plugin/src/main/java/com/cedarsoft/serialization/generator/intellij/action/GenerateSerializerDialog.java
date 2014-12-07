@@ -2,6 +2,7 @@ package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.ide.util.DirectoryChooser;
+import com.intellij.openapi.roots.JavaProjectRootsUtil;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
@@ -58,7 +59,7 @@ public class GenerateSerializerDialog extends DialogWrapper {
   };
 
   @Nonnull
-  private final DestinationFolderComboBox testResourcesDestinationBox = new DestinationFolderComboBox() {
+  private final ResourceFolderComboBox testResourcesDestinationBox = new ResourceFolderComboBox() {
     @Override
     public String getTargetPackage() {
       return referenceEditor.getText();
