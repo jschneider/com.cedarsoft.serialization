@@ -117,11 +117,6 @@ public class GenerateSerializerAction extends AnAction {
       throw new IllegalStateException( "--> null file for " + serializer );
     }
 
-    if ( containingFile.getVirtualFile() == null ) {
-      throw new IllegalStateException( "--> null virtual file for " + serializer );
-    }
-
-
     //Editor editor = CodeInsightUtil.positionCursor( serializerProject, containingFile, serializer.getLBrace() );
     //System.out.println( "Finished: " + psiClass );
 
