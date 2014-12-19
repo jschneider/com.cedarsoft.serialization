@@ -91,8 +91,6 @@ public class GenerateSerializerAction extends AnAction {
 
     GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
     List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
-    String targetPackageName = generateSerializerDialog.getTargetPackageName();
-
 
     //Calculate the target directories
     PsiDirectory serializerTargetDir = generateSerializerDialog.getSerializerDestination();
