@@ -88,7 +88,7 @@ public class GenerateSerializerAction extends AnAction {
     final Project project = getEventProject(e);
     assert project != null;
 
-    new WriteCommandAction.Simple<Object>(project) {
+    new WriteCommandAction.Simple<Object>(project, "Generate Serializer") {
       @Override
       protected void run() throws Throwable {
         GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
