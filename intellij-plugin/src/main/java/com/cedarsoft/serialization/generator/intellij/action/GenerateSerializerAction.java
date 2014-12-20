@@ -47,6 +47,7 @@ import com.intellij.refactoring.util.RefactoringUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,66 +57,69 @@ import java.util.Set;
  */
 public class GenerateSerializerAction extends AnAction {
   @Override
-  public void update( AnActionEvent e ) {
-    super.update( e );
-    e.getPresentation().setEnabled( getCurrentClass( e ) != null );
+  public void update(AnActionEvent e) {
+    super.update(e);
+    e.getPresentation().setEnabled(getCurrentClass(e) != null);
     //if ( ActionPlaces.isPopupPlace( e.getPlace() ) ) {
     //  e.getPresentation().setVisible( enabled );
     //}
   }
 
-  public static boolean isAcceptableFile( @Nonnull PsiFile file ) {
+  public static boolean isAcceptableFile(@Nonnull PsiFile file) {
     Language language = file.getLanguage();
-    return JavaLanguage.INSTANCE.getID().equals( language.getID() );
+    return JavaLanguage.INSTANCE.getID().equals(language.getID());
   }
 
   @Override
-  public void actionPerformed( AnActionEvent e ) {
-    @Nullable PsiClass psiClass = getCurrentClass( e );
-    if ( psiClass == null ) {
-      throw new IllegalStateException( "No class found" );
+  public void actionPerformed(final AnActionEvent e) {
+    @Nullable final PsiClass psiClass = getCurrentClass(e);
+    if (psiClass == null) {
+      throw new IllegalStateException("No class found");
     }
 
-    GenerateSerializerDialog generateSerializerDialog = new GenerateSerializerDialog( psiClass );
+    final GenerateSerializerDialog generateSerializerDialog = new GenerateSerializerDialog(psiClass);
     generateSerializerDialog.show();
 
-    if ( !generateSerializerDialog.isOK() ) {
+    if (!generateSerializerDialog.isOK()) {
       return;
     }
 
     //TODO add error handling, add progress dialog
-
-
-    Project project = getEventProject( e );
+    final Project project = getEventProject(e);
     assert project != null;
 
-    GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
-    List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
+    new WriteCommandAction.Simple<Object>(project) {
+      @Override
+      protected void run() throws Throwable {
+        GenerateSerializerDialog.Dialect dialect = generateSerializerDialog.getSelectedDialect();
+        List<? extends PsiField> selectedFields = generateSerializerDialog.getSelectedFields();
 
-    //Calculate the target directories
-    PsiDirectory serializerTargetDir = generateSerializerDialog.getSerializerDestination();
-    PsiDirectory testsTargetDir = generateSerializerDialog.getTestsDestination();
-    PsiDirectory testResourcesTargetDir = generateSerializerDialog.getTestResourcesDestination();
-
-
-    SerializerResolver serializerResolver = createSerializerResolver( dialect, project );
-
-    SerializerModelFactory serializerModelFactory = new SerializerModelFactory( serializerResolver, JavaCodeStyleManager.getInstance( project ) );
-    SerializerModel model = serializerModelFactory.create( psiClass, selectedFields );
-
-    SerializerGenerator serializerGenerator = createSerializerGenerator( dialect, psiClass );
-    PsiClass serializer = serializerGenerator.generate( model, serializerTargetDir );
-
-    SerializerTestsGenerator testsGenerator = createSerializerTestsGenerator( dialect, psiClass );
-    testsGenerator.generate( model, testsTargetDir, testResourcesTargetDir );
+        //Calculate the target directories
+        PsiDirectory serializerTargetDir = generateSerializerDialog.getSerializerDestination();
+        PsiDirectory testsTargetDir = generateSerializerDialog.getTestsDestination();
+        PsiDirectory testResourcesTargetDir = generateSerializerDialog.getTestResourcesDestination();
 
 
-    Project serializerProject = serializer.getProject();
-    @Nullable PsiFile containingFile = serializer.getContainingFile();
+        SerializerResolver serializerResolver = createSerializerResolver(dialect, project);
 
-    if ( containingFile == null ) {
-      throw new IllegalStateException( "--> null file for " + serializer );
-    }
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(serializerResolver, JavaCodeStyleManager.getInstance(project));
+        SerializerModel model = serializerModelFactory.create(psiClass, selectedFields);
+
+        SerializerGenerator serializerGenerator = createSerializerGenerator(dialect, psiClass);
+        PsiClass serializer = serializerGenerator.generate(model, serializerTargetDir);
+
+        SerializerTestsGenerator testsGenerator = createSerializerTestsGenerator(dialect, psiClass);
+        testsGenerator.generate(model, testsTargetDir, testResourcesTargetDir);
+      }
+    }.execute();
+
+    //
+    //    Project serializerProject = serializer.getProject();
+    //    @Nullable PsiFile containingFile = serializer.getContainingFile();
+    //
+    //    if (containingFile == null) {
+    //      throw new IllegalStateException("--> null file for " + serializer);
+    //    }
 
     //Editor editor = CodeInsightUtil.positionCursor( serializerProject, containingFile, serializer.getLBrace() );
     //System.out.println( "Finished: " + psiClass );
@@ -161,54 +165,54 @@ public class GenerateSerializerAction extends AnAction {
   }
 
   @Nonnull
-  private static SerializerResolver createSerializerResolver( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull Project project ) {
-    switch ( dialect ) {
+  private static SerializerResolver createSerializerResolver(@Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull Project project) {
+    switch (dialect) {
       case JACKSON:
-        return new JacksonSerializerResolver( project );
+        return new JacksonSerializerResolver(project);
       case STAX_MATE:
-        return new StaxMateSerializerResolver( project );
+        return new StaxMateSerializerResolver(project);
     }
 
-    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
+    throw new IllegalArgumentException("Unsupported dialect " + dialect);
   }
 
-  @Nonnull 
-  private static SerializerTestsGenerator createSerializerTestsGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass ) {
-    switch ( dialect ) {
+  @Nonnull
+  private static SerializerTestsGenerator createSerializerTestsGenerator(@Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass) {
+    switch (dialect) {
       case JACKSON:
-        return new JacksonSerializerTestsGenerator( psiClass.getProject() );
+        return new JacksonSerializerTestsGenerator(psiClass.getProject());
       case STAX_MATE:
-        return new StaxMateSerializerTestsGenerator( psiClass.getProject() );
+        return new StaxMateSerializerTestsGenerator(psiClass.getProject());
     }
 
-    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
+    throw new IllegalArgumentException("Unsupported dialect " + dialect);
   }
 
-  @Nonnull 
-  private static SerializerGenerator createSerializerGenerator( @Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass) {
-    switch ( dialect ) {
+  @Nonnull
+  private static SerializerGenerator createSerializerGenerator(@Nonnull GenerateSerializerDialog.Dialect dialect, @Nonnull PsiClass psiClass) {
+    switch (dialect) {
       case JACKSON:
-      return new JacksonSerializerGenerator( psiClass.getProject() );
+        return new JacksonSerializerGenerator(psiClass.getProject());
       case STAX_MATE:
-        return new StaxMateSerializerGenerator( psiClass.getProject() );
+        return new StaxMateSerializerGenerator(psiClass.getProject());
     }
 
-    throw new IllegalArgumentException( "Unsupported dialect " + dialect );
+    throw new IllegalArgumentException("Unsupported dialect " + dialect);
   }
 
-  void generateSerializer( @Nonnull final PsiClass psiClass, @Nonnull List<? extends PsiField> selectedFields ) {
-    System.out.println( "Generating Serializer for: " );
-    for ( PsiField selectedField : selectedFields ) {
-      System.out.println( "\t" + selectedField.getName() + " - " + selectedField.getType().getPresentableText() );
+  void generateSerializer(@Nonnull final PsiClass psiClass, @Nonnull List<? extends PsiField> selectedFields) {
+    System.out.println("Generating Serializer for: ");
+    for (PsiField selectedField : selectedFields) {
+      System.out.println("\t" + selectedField.getName() + " - " + selectedField.getType().getPresentableText());
     }
 
     PsiFile psiFile = psiClass.getContainingFile();
 
-    new WriteCommandAction.Simple( psiClass.getProject(), psiFile ) {
+    new WriteCommandAction.Simple(psiClass.getProject(), psiFile) {
       @Override
       protected void run() throws Throwable {
-        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory( getProject() );
-        JavaCodeStyleManager codeStyleManager = JavaCodeStyleManager.getInstance( getProject() );
+        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(getProject());
+        JavaCodeStyleManager codeStyleManager = JavaCodeStyleManager.getInstance(getProject());
 
         //StringBuilder builder = new StringBuilder();
         //builder.append( "public void deserializeStuff(){" )
@@ -221,119 +225,119 @@ public class GenerateSerializerAction extends AnAction {
 
 
         PsiReferenceList implementsList = psiClass.getImplementsList();
-        if ( implementsList == null ) {
-          throw new IllegalStateException( "no implements list found" );
+        if (implementsList == null) {
+          throw new IllegalStateException("no implements list found");
         }
 
         //PsiElement implementsReference = implementsList.add( elementFactory.createReferenceFromText( "Comparable<" + psiClass.getQualifiedName() + ">", psiClass ) );
         //codeStyleManager.shortenClassReferences( implementsReference );
 
 
-        if ( isUnderTestSources( psiClass ) ) {
-          throw new IllegalStateException( "Is a test source!" );
+        if (isUnderTestSources(psiClass)) {
+          throw new IllegalStateException("Is a test source!");
         }
 
 
-        Module srcModule = ModuleUtilCore.findModuleForPsiElement( psiClass );
-        if ( srcModule == null ) {
-          throw new IllegalStateException( "No src module found" );
+        Module srcModule = ModuleUtilCore.findModuleForPsiElement(psiClass);
+        if (srcModule == null) {
+          throw new IllegalStateException("No src module found");
         }
 
         PsiDirectory srcDir = psiClass.getContainingFile().getContainingDirectory();
-        PsiPackage srcPackage = JavaDirectoryService.getInstance().getPackage( srcDir );
+        PsiPackage srcPackage = JavaDirectoryService.getInstance().getPackage(srcDir);
 
 
         //PsiClass serializerClass = elementFactory.createClass( psiClass.getQualifiedName() + "Serializer" );
 
 
         final Set<VirtualFile> testFolders = new HashSet<VirtualFile>();
-        fillTestRoots( srcModule, testFolders );
+        fillTestRoots(srcModule, testFolders);
 
-        if ( testFolders.isEmpty() ) {
-          throw new IllegalStateException( "No test folders found" );
+        if (testFolders.isEmpty()) {
+          throw new IllegalStateException("No test folders found");
         }
 
         VirtualFile testFolder = testFolders.iterator().next();
 
 
         final String packageName = "com.cedarsoft.test.hardcoded.test";
-        PsiManager psiManager = PsiManager.getInstance( getProject() );
-        final PackageWrapper targetPackage = new PackageWrapper( psiManager, packageName );
+        PsiManager psiManager = PsiManager.getInstance(getProject());
+        final PackageWrapper targetPackage = new PackageWrapper(psiManager, packageName);
 
-        PsiDirectory targetPackageDir = RefactoringUtil.createPackageDirectoryInSourceRoot( targetPackage, testFolder );
+        PsiDirectory targetPackageDir = RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, testFolder);
 
-        PsiClass test = createTest( getProject(), targetPackageDir, psiClass );
-        Editor editor = CodeInsightUtil.positionCursor( getProject(), test.getContainingFile(), test.getLBrace() );
+        PsiClass test = createTest(getProject(), targetPackageDir, psiClass);
+        Editor editor = CodeInsightUtil.positionCursor(getProject(), test.getContainingFile(), test.getLBrace());
       }
     }.execute();
   }
 
-  private PsiClass createTest( @Nonnull Project project, @Nonnull PsiDirectory targetDir, @Nonnull PsiClass psiClass ) {
-    IdeDocumentHistory.getInstance( project ).includeCurrentPlaceAsChangePlace();
-    return JavaDirectoryService.getInstance().createClass( targetDir, psiClass.getName() + "SerializerTest" );
+  private PsiClass createTest(@Nonnull Project project, @Nonnull PsiDirectory targetDir, @Nonnull PsiClass psiClass) {
+    IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace();
+    return JavaDirectoryService.getInstance().createClass(targetDir, psiClass.getName() + "SerializerTest");
   }
 
-  protected static void fillTestRoots( @Nonnull Module srcModule, @Nonnull Set<VirtualFile> testFolders ) {
-    checkForTestRoots( srcModule, testFolders, new HashSet<Module>() );
+  protected static void fillTestRoots(@Nonnull Module srcModule, @Nonnull Set<VirtualFile> testFolders) {
+    checkForTestRoots(srcModule, testFolders, new HashSet<Module>());
   }
 
-  private static void checkForTestRoots( @Nonnull final Module srcModule, @Nonnull final Set<VirtualFile> testFolders, @Nonnull final Set<Module> processed ) {
+  private static void checkForTestRoots(@Nonnull final Module srcModule, @Nonnull final Set<VirtualFile> testFolders, @Nonnull final Set<Module> processed) {
     final boolean isFirst = processed.isEmpty();
-    if ( !processed.add( srcModule ) ) {
+    if (!processed.add(srcModule)) {
       return;
     }
 
-    final ContentEntry[] entries = ModuleRootManager.getInstance( srcModule ).getContentEntries();
-    for ( ContentEntry entry : entries ) {
-      for ( SourceFolder sourceFolder : entry.getSourceFolders() ) {
-        if ( sourceFolder.isTestSource() ) {
+    final ContentEntry[] entries = ModuleRootManager.getInstance(srcModule).getContentEntries();
+    for (ContentEntry entry : entries) {
+      for (SourceFolder sourceFolder : entry.getSourceFolders()) {
+        if (sourceFolder.isTestSource()) {
           final VirtualFile sourceFolderFile = sourceFolder.getFile();
-          if ( sourceFolderFile != null ) {
-            testFolders.add( sourceFolderFile );
+          if (sourceFolderFile != null) {
+            testFolders.add(sourceFolderFile);
           }
         }
       }
     }
-    if ( isFirst && !testFolders.isEmpty() ) {
+    if (isFirst && !testFolders.isEmpty()) {
       return;
     }
 
     final HashSet<Module> modules = new HashSet<Module>();
-    ModuleUtilCore.collectModulesDependsOn( srcModule, modules );
-    for ( Module module : modules ) {
+    ModuleUtilCore.collectModulesDependsOn(srcModule, modules);
+    for (Module module : modules) {
 
-      checkForTestRoots( module, testFolders, processed );
+      checkForTestRoots(module, testFolders, processed);
     }
   }
 
-  private static boolean isUnderTestSources( @Nonnull PsiClass psiClass ) {
-    ProjectRootManager projectRootManager = ProjectRootManager.getInstance( psiClass.getProject() );
+  private static boolean isUnderTestSources(@Nonnull PsiClass psiClass) {
+    ProjectRootManager projectRootManager = ProjectRootManager.getInstance(psiClass.getProject());
     VirtualFile file = psiClass.getContainingFile().getVirtualFile();
-    if ( file == null ) {
+    if (file == null) {
       return false;
     }
-    return projectRootManager.getFileIndex().isInTestSourceContent( file );
+    return projectRootManager.getFileIndex().isInTestSourceContent(file);
   }
 
   @Nullable
-  private static PsiClass getCurrentClass( @Nonnull AnActionEvent e ) {
-    @Nullable Project project = PlatformDataKeys.PROJECT.getData( e.getDataContext() );
-    if ( project == null ) {
+  private static PsiClass getCurrentClass(@Nonnull AnActionEvent e) {
+    @Nullable Project project = PlatformDataKeys.PROJECT.getData(e.getDataContext());
+    if (project == null) {
       return null;
     }
 
-    @Nullable PsiFile psiFile = LangDataKeys.PSI_FILE.getData( e.getDataContext() );
-    if ( psiFile == null ) {
+    @Nullable PsiFile psiFile = LangDataKeys.PSI_FILE.getData(e.getDataContext());
+    if (psiFile == null) {
       return null;
     }
 
-    @Nullable Editor editor = PlatformDataKeys.EDITOR.getData( e.getDataContext() );
-    if ( editor == null ) {
+    @Nullable Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
+    if (editor == null) {
       return null;
     }
 
 
-    PsiElement element = psiFile.findElementAt( editor.getCaretModel().getOffset() );
-    return PsiTreeUtil.getParentOfType( element, PsiClass.class );
+    PsiElement element = psiFile.findElementAt(editor.getCaretModel().getOffset());
+    return PsiTreeUtil.getParentOfType(element, PsiClass.class);
   }
 }
