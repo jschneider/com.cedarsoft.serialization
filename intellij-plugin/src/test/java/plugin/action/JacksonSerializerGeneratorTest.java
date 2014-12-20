@@ -16,6 +16,7 @@ import com.intellij.refactoring.MultiFileTestCase;
 import org.junit.*;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,6 +50,29 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
       @Override
       public void performAction( VirtualFile rootDir, VirtualFile rootAfter ) throws Exception {
         PsiClass simple = myJavaFacade.findClass( getTestName( false ), GlobalSearchScope.allScope( getProject() ) );
+        assertThat( simple ).isNotNull();
+        assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
+
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
+
+        PsiDirectory dir = simple.getContainingFile().getContainingDirectory();
+
+        JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
+        PsiClass serializer = generator.generate( model, dir );
+        assertThat( serializer.getName() ).isEqualTo( "SimpleSerializer" );
+      }
+    } );
+  }
+
+  @Test
+  public void testWithPackage() throws Throwable {
+    doTest( new PerformAction() {
+      @Override
+      public void performAction( VirtualFile rootDir, VirtualFile rootAfter ) throws Exception {
+        String testName = getTestName(false);
+        assertThat(testName).isEqualTo("WithPackage");
+        PsiClass simple = myJavaFacade.findClass(testName, GlobalSearchScope.allScope( getProject() ) );
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
@@ -104,5 +128,9 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
         assertThat( serializer.getName() ).isEqualTo( "PrimitivesSerializer" );
       }
     } );
+  }
+
+  public void enforeceImport() {
+    org.fest.util.Arrays.array("a");
   }
 }
