@@ -56,16 +56,16 @@ import static org.junit.Assert.*;
 @RunWith( Theories.class )
 public abstract class AbstractSerializerTest2<T> {
   @Theory
-  public void testSerializer( @Nonnull Entry<T> entry ) throws Exception {
+  public void testSerializer( @Nonnull Entry<?> entry ) throws Exception {
     Serializer<T, OutputStream, InputStream> serializer = getSerializer();
 
     //Serialize
-    byte[] serialized = serialize( serializer, entry.getObject() );
+    byte[] serialized = serialize( serializer, ( T ) entry.getObject() );
 
     //Verify
-    verifySerialized( entry, serialized );
+    verifySerialized( ( Entry<T> ) entry, serialized );
 
-    verifyDeserialized( serializer.deserialize( new ByteArrayInputStream( serialized ) ), entry.getObject() );
+    verifyDeserialized( serializer.deserialize( new ByteArrayInputStream( serialized ) ), ( T ) entry.getObject() );
   }
 
   @Nonnull
