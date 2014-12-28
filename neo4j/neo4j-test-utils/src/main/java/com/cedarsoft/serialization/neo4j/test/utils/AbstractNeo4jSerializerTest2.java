@@ -123,16 +123,16 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
   }
 
   @Theory
-  public void testSerializer( @Nonnull Entry<T> entry ) throws Exception {
+  public void testSerializer( @Nonnull Entry<?> entry ) throws Exception {
     AbstractNeo4jSerializer<T> serializer = getSerializer();
 
     //Serialize
-    String serialized = serialize( serializer, entry.getObject() );
+    String serialized = serialize( serializer, ( T ) entry.getObject() );
 
     //Verify
-    verifySerialized( entry, serialized );
+    verifySerialized( ( Entry<T> ) entry, serialized );
 
-    verifyDeserialized( deserialize( serializer, serialized ), entry.getObject() );
+    verifyDeserialized( deserialize( serializer, serialized ), ( T ) entry.getObject() );
   }
 
   @Nonnull
