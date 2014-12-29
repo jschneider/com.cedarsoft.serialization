@@ -121,7 +121,7 @@ public class StaxMateSerializerTestsGenerator implements SerializerTestsGenerato
     methodBuilder.append( "){" );
 
     for ( FieldToSerialize entry : serializerModel.getFieldToSerializeEntries() ) {
-      methodBuilder.append( "org.fest.assertions.Assertions.assertThat(deserialized." ).append( entry.getAccessor() ).append( ").isNotNull();" );
+      methodBuilder.append( "org.assertj.core.api.Assertions.assertThat(deserialized." ).append( entry.getAccessor() ).append( ").isNotNull();" );
     }
 
     methodBuilder.append( "}" );

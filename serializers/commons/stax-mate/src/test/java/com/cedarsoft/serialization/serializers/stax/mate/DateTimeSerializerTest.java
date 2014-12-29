@@ -126,7 +126,6 @@ public class DateTimeSerializerTest extends AbstractXmlSerializerTest2<DateTime>
     verifyZone( "Europe/Berlin" );
     verifyZone( "Europe/Amsterdam" );
     verifyZone( "Atlantic/Faroe" );
-    verifyZone( "Africa/Lome" );
     verifyZone( "UTC" );
     verifyZone( "WET" );
   }

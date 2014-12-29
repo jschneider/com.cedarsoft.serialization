@@ -3,12 +3,12 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>64</version>
+    <version>66</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>serialization-parent</artifactId>
-  <version>6.1.1</version>
+  <version>6.2.0</version>
   <name>Serialization</name>
   <packaging>pom</packaging>
   <url>http://serialization.cedarsoft.org</url>
@@ -215,8 +215,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -230,7 +230,7 @@
   <properties>
     <currentStableVersion>6.1.0</currentStableVersion>
     <currentDevelopmentVersion>6.1.1-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>6.0.2</commons.version>
+    <commons.version>6.1.0</commons.version>
     <java.version>1.7</java.version>
     <neo4j.version>2.1.5</neo4j.version>
   </properties>

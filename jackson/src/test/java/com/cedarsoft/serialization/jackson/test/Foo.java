@@ -103,7 +103,7 @@ public class Foo {
 
       parser.nextFieldValue( "description" );
       String description = parser.getText();
-      Direction direction = deserializeEnum( Direction.class, "direction", parser );
+      Direction direction = deserializeEnum( Direction.class, "direction", deserializeFrom );
       parser.closeObject();
 
       return new Foo( description, direction );
