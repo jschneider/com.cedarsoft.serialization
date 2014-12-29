@@ -39,7 +39,7 @@ import org.junit.experimental.theories.DataPoint;
 import javax.annotation.Nonnull;
 import java.net.URL;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UrlSerializerVersionTest extends AbstractJsonVersionTest2<URL> {
   @DataPoint

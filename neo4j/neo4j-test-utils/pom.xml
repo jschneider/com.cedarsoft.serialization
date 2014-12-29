@@ -77,10 +77,9 @@
       <artifactId>easymock</artifactId>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
       <scope>compile</scope>
     </dependency>
 

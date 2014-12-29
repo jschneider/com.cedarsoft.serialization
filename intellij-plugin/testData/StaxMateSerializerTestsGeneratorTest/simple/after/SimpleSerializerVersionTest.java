@@ -13,6 +13,6 @@ public class SimpleSerializerVersionTest extends com.cedarsoft.serialization.tes
 
     @Override
     protected void verifyDeserialized(@NotNull Simple deserialized, @NotNull com.cedarsoft.version.Version version) {
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo()).isNotNull();
     }
 }

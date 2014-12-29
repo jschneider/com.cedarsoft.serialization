@@ -9,9 +9,10 @@ import org.neo4j.graphdb.Transaction;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -29,7 +30,7 @@ public class SampleNeo4jSerializerTest extends AbstractNeo4JTest {
       assertThat( deserialized.getName() ).isEqualTo( person.getName() );
       assertThat( deserialized.getAddress().getStreet() ).isEqualTo( person.getAddress().getStreet() );
       assertThat( deserialized.getMails() ).hasSize( 3 );
-      assertThat( deserialized.getMails() ).containsExactly( new Email( "1" ), new Email( "2" ), new Email( "3" ) );
+      assertThat( (List )deserialized.getMails() ).containsExactly( new Email( "1" ), new Email( "2" ), new Email( "3" ) );
       tx.success();
     }
   }

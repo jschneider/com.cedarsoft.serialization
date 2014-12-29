@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.undercouch.bson4jackson.BsonFactory;
 import de.undercouch.bson4jackson.BsonGenerator;
 import org.apache.commons.codec.binary.Hex;
-import org.fest.assertions.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;

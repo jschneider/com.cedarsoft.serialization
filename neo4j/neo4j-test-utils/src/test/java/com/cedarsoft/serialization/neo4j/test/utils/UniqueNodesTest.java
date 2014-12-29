@@ -8,7 +8,7 @@ import org.neo4j.graphdb.index.UniqueFactory;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)

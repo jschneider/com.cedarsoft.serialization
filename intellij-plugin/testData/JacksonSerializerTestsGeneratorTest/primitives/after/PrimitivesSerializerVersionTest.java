@@ -13,14 +13,14 @@ public class PrimitivesSerializerVersionTest extends com.cedarsoft.serialization
 
     @Override
     protected void verifyDeserialized(@NotNull Primitives deserialized, @NotNull com.cedarsoft.version.Version version) {
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo1()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo2()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo3()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo4()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo5()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo6()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo7()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.isFoo8()).isNotNull();
-        org.fest.assertions.Assertions.assertThat(deserialized.getFoo9()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo1()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo2()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo3()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo4()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo5()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo6()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo7()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.isFoo8()).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(deserialized.getFoo9()).isNotNull();
     }
 }
