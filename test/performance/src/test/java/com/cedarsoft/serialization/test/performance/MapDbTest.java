@@ -25,7 +25,7 @@ public class MapDbTest {
     treeMap.put( "daKey", 7 );
 
     assertThat( treeMap ).hasSize( 1 );
-    assertThat( treeMap ).includes( MapAssert.entry( "daKey", 7 ) );
+    assertThat( treeMap ).containsEntry( "daKey", 7 );
   }
 
   @Test
