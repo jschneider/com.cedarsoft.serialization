@@ -58,7 +58,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 

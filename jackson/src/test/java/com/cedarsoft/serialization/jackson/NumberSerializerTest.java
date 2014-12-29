@@ -48,7 +48,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.fest.assertions.Fail.fail;
+import static org.assertj.core.api.Fail.fail;
 
 /**
  *

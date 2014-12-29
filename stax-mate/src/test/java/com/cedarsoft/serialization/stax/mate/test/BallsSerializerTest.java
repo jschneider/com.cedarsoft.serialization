@@ -35,7 +35,7 @@ import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.serialization.test.utils.AbstractXmlSerializerTest2;
 import com.cedarsoft.serialization.test.utils.Entry;
 import com.google.common.collect.ImmutableList;
-import org.fest.assertions.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.experimental.theories.*;
 
 import javax.annotation.Nonnull;

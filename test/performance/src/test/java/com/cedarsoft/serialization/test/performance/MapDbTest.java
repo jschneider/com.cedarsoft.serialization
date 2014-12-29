@@ -1,6 +1,6 @@
 package com.cedarsoft.serialization.test.performance;
 
-import org.fest.assertions.MapAssert;
+import org.assertj.core.api.MapAssert;
 import org.junit.*;
 import org.junit.rules.*;
 import org.mapdb.BTreeMap;
@@ -10,7 +10,7 @@ import org.mapdb.DBMaker;
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
