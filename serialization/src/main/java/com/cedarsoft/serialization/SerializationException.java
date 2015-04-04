@@ -38,7 +38,10 @@ public class SerializationException extends RuntimeException {
   }
 
   public enum Details {
-    INVALID_VERSION( "Invalid version. Expected {0} but was {1}." );
+    INVALID_VERSION( "Invalid version. Expected {0} but was {1}." ),
+    INVALID_NAME_SPACE("Invalid name space. Expected {0} but was {1}")
+
+    ;
 
     @Nonnull
     private final String message;

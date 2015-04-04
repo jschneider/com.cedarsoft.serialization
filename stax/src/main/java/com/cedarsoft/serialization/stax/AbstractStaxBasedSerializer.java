@@ -35,7 +35,6 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
-import com.cedarsoft.serialization.InvalidNamespaceException;
 
 import javax.annotation.Nullable;
 
@@ -94,8 +93,6 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       return deserialized;
     } catch ( XMLStreamException e ) {
-      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
-    } catch ( InvalidNamespaceException e ) {
       throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
     }
   }
