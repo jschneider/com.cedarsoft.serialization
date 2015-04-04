@@ -32,20 +32,17 @@
 package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.serialization.AbstractXmlSerializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.test.utils.AssertUtils;
 import com.cedarsoft.xml.XmlCommons;
 import org.apache.commons.io.Charsets;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import javax.annotation.Nonnull;
-import javax.xml.stream.events.Namespace;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.text.Format;
 
 /**
  * Abstract base class for XML based serializers.
@@ -58,6 +55,10 @@ import java.text.Format;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTest2<T> {
+  @Nonnull
+  @Override
+  protected abstract StreamSerializer<T> getSerializer() throws Exception;
+
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] expectedXml ) throws Exception {
     if ( addNameSpace() ) {
       String expectedWithNamespace;
