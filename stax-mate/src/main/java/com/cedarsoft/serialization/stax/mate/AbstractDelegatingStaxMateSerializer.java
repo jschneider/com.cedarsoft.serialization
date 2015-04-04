@@ -31,11 +31,12 @@
 
 package com.cedarsoft.serialization.stax.mate;
 
-import com.cedarsoft.version.Version;
-import com.cedarsoft.version.VersionRange;
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.serialization.SerializingStrategy;
 import com.cedarsoft.serialization.SerializingStrategySupport;
 import com.cedarsoft.serialization.VersionMapping;
+import com.cedarsoft.version.Version;
+import com.cedarsoft.version.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
@@ -81,7 +82,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
 
       strategy.serialize( serializeTo, object, resolvedVersion );
     } catch ( XMLStreamException e ) {
-      throw new IOException( e );
+      throw new SerializationException( e, e.getLocation(), SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 
@@ -92,7 +93,7 @@ public abstract class AbstractDelegatingStaxMateSerializer<T> extends AbstractSt
     String type = deserializeFrom.getAttributeValue( null, ATTRIBUTE_TYPE );
 
     if ( type == null ) {
-      throw new XMLStreamException( "No type attribute found. Cannot find strategy." );
+      throw new SerializationException( SerializationException.Details.NO_TYPE_ATTRIBUTE );
     }
 
     SerializingStrategy<? extends T, SMOutputElement, XMLStreamReader, XMLStreamException, OutputStream, InputStream> strategy = serializingStrategySupport.findStrategy( type );

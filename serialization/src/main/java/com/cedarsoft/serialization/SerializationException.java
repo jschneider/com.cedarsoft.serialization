@@ -69,6 +69,7 @@ public class SerializationException extends RuntimeException {
     INVALID_NAME_SPACE( "Invalid name space. Expected <{0}> but was <{1}>." ),
     INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
     INVALID_TYPE("Invalid type. Expected <{0}> but was <{1}>."),
+    NO_TYPE_ATTRIBUTE("No type attribute found."),
     INVALID_STATE( "{0}" ),
     INVALID_NODE(  "Invalid node. Expected property <{0}> but only contained <{1}>."  ),
     NOT_SUPPORTED_FOR_NON_OBJECT_TYPE( "Not supported for non object type {0}." ),
