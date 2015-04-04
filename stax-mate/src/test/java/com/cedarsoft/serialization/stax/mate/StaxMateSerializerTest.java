@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.mate;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionMismatchException;
@@ -130,8 +131,8 @@ public class StaxMateSerializerTest extends AbstractXmlSerializerTest<String> {
 
   @Test
   public void testWrongNamespaceVersion() throws IOException {
-    expectedException.expect( IOException.class );
-    expectedException.expectMessage( "Invalid namespace. Was <http://www.lang.invalid.java/String/1.5.3> but expected <http://www.lang.java/String/1.5.3>" );
+    expectedException.expect( SerializationException.class );
+    expectedException.expectMessage( "[INVALID_NAME_SPACE] Invalid name space. Expected <http://www.lang.java/String/1.5.3> but was <http://www.lang.invalid.java/String/1.5.3>." );
 
     getSerializer().deserialize( new ByteArrayInputStream( "<aString xmlns=\"http://www.lang.invalid.java/String/1.5.3\">asdf</aString>".getBytes() ) );
   }
