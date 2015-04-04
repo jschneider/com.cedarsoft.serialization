@@ -43,6 +43,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRange> {
@@ -55,6 +56,7 @@ public class VersionRangeSerializer extends AbstractJacksonSerializer<VersionRan
 
   public static final String PROPERTY_INCLUDEUPPER = "includeUpper";
 
+  @Inject
   public VersionRangeSerializer() {
     super( "version-range", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

@@ -37,6 +37,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.awt.Dimension;
@@ -49,6 +50,7 @@ public class DimensionSerializer extends AbstractStaxMateSerializer<Dimension> {
   @Nonnull
   public static final String SEPARATOR = "x";
 
+  @Inject
   public DimensionSerializer() {
     super( "dimension", "http://java.sun.com/awt/dimension", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }

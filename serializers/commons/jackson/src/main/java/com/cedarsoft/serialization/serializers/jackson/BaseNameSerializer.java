@@ -41,9 +41,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class BaseNameSerializer extends AbstractJacksonSerializer<BaseName> {
+  @Inject
   public BaseNameSerializer() {
     super( "base-name", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

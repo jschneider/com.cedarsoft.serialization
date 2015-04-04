@@ -7,6 +7,7 @@ import com.cedarsoft.version.VersionRange;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class BooleanSerializer extends AbstractStaxMateSerializer<Boolean> {
+  @Inject
   public BooleanSerializer() {
     super( "boolean", "http://cedarsoft.com/primitives", VersionRange.single( 1, 0, 0 ) );
   }

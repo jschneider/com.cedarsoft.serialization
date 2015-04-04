@@ -41,6 +41,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -49,6 +50,7 @@ import java.io.IOException;
  *
  */
 public class DateTimeSerializer extends AbstractStaxMateSerializer<DateTime> {
+  @Inject
   public DateTimeSerializer() {
     super( "dateTime", "http://www.joda.org/time/dateTime", new VersionRange( new Version( 0, 9, 0 ), new Version( 1, 0, 0 ) ) );
   }

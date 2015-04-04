@@ -39,6 +39,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -48,6 +49,7 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
+  @Inject
   public IgnoringSerializer() {
     super( "ignoring", VersionRange.single( 0, 0, 0 ) );
   }

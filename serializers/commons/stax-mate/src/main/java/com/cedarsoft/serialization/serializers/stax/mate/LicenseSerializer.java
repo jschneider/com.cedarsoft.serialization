@@ -38,6 +38,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializingStrategy
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class LicenseSerializer extends AbstractStaxMateSerializingStrategy<Licen
 
   private static final String ELEMENT_NAME = "name";
 
+  @Inject
   public LicenseSerializer() {
     super( "license", "http://www.cedarsoft.com/serialization/license", License.class, new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }

@@ -8,12 +8,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class DoubleSerializer extends AbstractJacksonSerializer<Double> {
+  @Inject
   public DoubleSerializer() {
     super( "double", VersionRange.single( 1, 0, 0 ) );
   }
