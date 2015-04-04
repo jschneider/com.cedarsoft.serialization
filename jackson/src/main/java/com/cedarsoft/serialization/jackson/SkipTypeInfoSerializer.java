@@ -30,6 +30,7 @@
  */
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -53,7 +54,7 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
   public SkipTypeInfoSerializer( @Nonnull AbstractJacksonSerializer<T> delegate ) {
     super( delegate.getType(), delegate.getFormatVersionRange() );
     if ( !delegate.isObjectType() ) {
-      throw new IllegalStateException( "Not supported for object type serializer: " + delegate.getClass().getName() );
+      throw new SerializationException( SerializationException.Details.NOT_SUPPORTED_FOR_NON_OBJECT_TYPE, delegate.getClass().getName() );
     }
 
     this.delegate = delegate;
@@ -90,7 +91,7 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
    */
   @Nonnull
   @Override
-  protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
+  protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, SerializationException {
     //We do *not* read the type information and version here!
     wrapper.nextToken( JsonToken.START_OBJECT );
     return getFormatVersion();

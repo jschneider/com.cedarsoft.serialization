@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.jackson.filter;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -19,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class FilteringJsonParser extends JsonParserDelegate {
   @Nonnull
   private final Filter filter;
-  @Nullable
+  @Nonnull
   private final List<FilteredParserListener> filteredParserListeners = new CopyOnWriteArrayList<FilteredParserListener>();
 
   public FilteringJsonParser( @Nonnull JsonParser parser, @Nonnull Filter filter ) {
@@ -61,7 +62,7 @@ public class FilteringJsonParser extends JsonParserDelegate {
       notifySkippingValue(fieldName);
       super.nextToken();
     } else {
-      throw new IllegalStateException( "??? " + getCurrentToken() );
+      throw new SerializationException( delegate.getCurrentLocation(), SerializationException.Details.INVALID_STATE, delegate.getClass().getName() );
     }
   }
 

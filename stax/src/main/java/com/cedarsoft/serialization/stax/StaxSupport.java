@@ -32,10 +32,13 @@
 package com.cedarsoft.serialization.stax;
 
 
+import com.cedarsoft.serialization.SerializationException;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -120,7 +123,7 @@ public class StaxSupport {
       XML_INPUT_FACTORY.set( ( XMLInputFactory ) Class.forName( "org.codehaus.jettison.badgerfish.BadgerFishXMLInputFactory" ).newInstance() );
       XML_OUTPUT_FACTORY.set( ( XMLOutputFactory ) Class.forName( "org.codehaus.jettison.badgerfish.BadgerFishXMLOutputFactory" ).newInstance() );
     } catch ( Exception e ) {
-      throw new RuntimeException( e );
+      throw new SerializationException( e, SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 

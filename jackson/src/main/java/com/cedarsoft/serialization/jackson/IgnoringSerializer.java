@@ -30,6 +30,7 @@
  */
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -101,6 +102,6 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
         return JsonToken.END_ARRAY;
     }
 
-    throw new IllegalArgumentException( "No end token found for <" + inToken + ">" );
+    throw new SerializationException( SerializationException.Details.INVALID_STATE, "No end token found for <" + inToken + ">" );
   }
 }

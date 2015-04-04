@@ -31,11 +31,11 @@
 
 package com.cedarsoft.serialization.stax;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
-import com.cedarsoft.serialization.InvalidNamespaceException;
 
 import javax.annotation.Nullable;
 
@@ -79,24 +79,22 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       int result = reader.nextTag();
       if ( result != XMLStreamConstants.START_ELEMENT ) {
-        throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + "> @ " + reader.getLocation() );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.INVALID_START_ELEMENT, result );
       }
 
       //Now build the deserialization context
       T deserialized = deserialize( reader, parseAndVerifyNameSpace( reader.getNamespaceURI() ) );
 
       if ( !reader.isEndElement() ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
       if ( reader.next() != XMLStreamConstants.END_DOCUMENT ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
 
       return deserialized;
     } catch ( XMLStreamException e ) {
-      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
-    } catch ( InvalidNamespaceException e ) {
-      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
+      throw new SerializationException( e.getLocation(), SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 

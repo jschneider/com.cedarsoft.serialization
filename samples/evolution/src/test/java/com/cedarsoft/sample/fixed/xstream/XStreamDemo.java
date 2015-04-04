@@ -105,7 +105,7 @@ public class XStreamDemo {
                       "path                : /car/basePrice/amount\n" +
                       "line number         : 8\n" +
                       "class[1]            : com.cedarsoft.sample.fixed.Car\n" +
-                      "version             : null\n" +
+                      "version             : 1.4.7\n" +
                       "-------------------------------", e.getMessage().trim() );
     }
   }

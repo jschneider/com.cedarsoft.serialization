@@ -110,15 +110,15 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    * throws com.cedarsoft.version.VersionException          the if the version does not fit the expected range
    *
    * @param namespace the namespace uri
-   * @throws com.cedarsoft.serialization.InvalidNamespaceException if the namespace is invalid
+   * @throws SerializationException if the namespace is invalid
    */
-  public void verifyNamespace( @Nullable String namespace ) throws InvalidNamespaceException, VersionException {
+  public void verifyNamespace( @Nullable String namespace ) throws SerializationException, VersionException {
     if ( namespace == null || namespace.trim().isEmpty() ) {
       throw new VersionException( "No version information available" );
     }
     String expectedBase = getNameSpaceBase();
     if ( !namespace.startsWith( expectedBase ) ) {
-      throw new InvalidNamespaceException( namespace, expectedBase + "/" + getFormatVersion() );
+      throw new SerializationException( SerializationException.Details.INVALID_NAME_SPACE, expectedBase + "/" + getFormatVersion(), namespace );
     }
   }
 
@@ -127,10 +127,10 @@ public abstract class AbstractNameSpaceBasedSerializer<T, S, D, E extends Throwa
    *
    * @param namespaceURI the namespace uri
    * @return the parsed and verified version
-   * @throws com.cedarsoft.serialization.InvalidNamespaceException if the namespace is invalid
+   * @throws SerializationException if the namespace is invalid
    */
   @Nonnull
-  public Version parseAndVerifyNameSpace( @Nullable String namespaceURI ) throws InvalidNamespaceException, VersionException {
+  public Version parseAndVerifyNameSpace( @Nullable String namespaceURI ) throws SerializationException, VersionException {
     //Verify the name space
     verifyNamespace( namespaceURI );
 
