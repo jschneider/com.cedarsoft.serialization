@@ -98,7 +98,7 @@ public class VersionMappings<T> {
   public VersionMapping getMapping( @Nonnull T key ) {
     VersionMapping mapping = mappings.get( key );
     if ( mapping == null ) {
-      throw new IllegalArgumentException( "No mapping found for <" + key + ">" );
+      throw new SerializationException( SerializationException.Details.NO_MAPPING_FOUND, key );
     }
     return mapping;
   }

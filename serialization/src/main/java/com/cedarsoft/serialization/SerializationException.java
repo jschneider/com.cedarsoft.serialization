@@ -77,7 +77,7 @@ public class SerializationException extends RuntimeException {
     XML_EXCEPTION( "XML problem occurred {0}." ),
     NO_SERIALIZER_FOUND( "No serializer found for <{0}>." ),
     NO_STRATEGIES_AVAILABLE( "No strategies available. Verification not possible." ),
-    ;
+    NO_MAPPING_FOUND( "No mapping found for <{0}>" );
 
     @Nonnull
     private final String message;
