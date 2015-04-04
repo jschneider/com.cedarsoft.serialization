@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -72,7 +73,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
 
   @Nullable
   @Override
-  public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+  public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, SerializationException {
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
     parserWrapper.nextToken();
     parserWrapper.verifyCurrentToken( JsonToken.VALUE_NULL );
