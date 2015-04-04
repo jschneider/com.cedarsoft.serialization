@@ -60,7 +60,7 @@ public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends
    * @throws E if serialization failed
    * @throws java.io.IOException if there is an io problem
    */
-  void serialize( @Nonnull S serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
+  void serialize( @Nonnull S serializeTo, @Nonnull T object, @Nonnull Version formatVersion ) throws IOException, VersionException, SerializationException, E;
 
   /**
    * Deserializes the object from the given document
@@ -74,5 +74,5 @@ public interface PluggableSerializer<T, S, D, E extends Throwable, O, I> extends
    * @throws java.io.IOException if there is an io problem
    */
   @Nonnull
-  T deserialize( @Nonnull D deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, E;
+  T deserialize( @Nonnull D deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, SerializationException, E;
 }

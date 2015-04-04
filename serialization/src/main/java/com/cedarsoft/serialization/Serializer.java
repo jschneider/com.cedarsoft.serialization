@@ -57,7 +57,7 @@ public interface Serializer<T, O, I> {
    * @param out    the out stream
    * @throws IOException if there is an io problem
    */
-  void serialize( @Nonnull T object, @Nonnull O out ) throws IOException;
+  void serialize( @Nonnull T object, @Nonnull O out ) throws IOException, SerializationException;
 
   /**
    * Deserializes the object from the input stream
@@ -68,7 +68,7 @@ public interface Serializer<T, O, I> {
    * @throws java.io.IOException if there is an io problem2
    */
   @Nonnull
-  T deserialize( @Nonnull I in ) throws IOException, VersionException;
+  T deserialize( @Nonnull I in ) throws IOException, VersionException, SerializationException;
 
   /**
    * Returns the format version that is written.
