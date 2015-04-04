@@ -42,6 +42,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ import java.util.List;
  * Serializes a collection of primitive types (java.lang.Number or java.lang.String) into a json array
  */
 public class ListSerializer extends AbstractJacksonSerializer<List<? extends Object>> {
+  @Inject
   public ListSerializer() {
     super( "list", VersionRange.single( 1, 0, 0 ) );
   }

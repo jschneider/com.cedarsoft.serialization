@@ -38,6 +38,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import java.io.IOException;
  *
  */
 public class BaseNameSerializer extends AbstractStaxMateSerializer<BaseName> {
+  @Inject
   public BaseNameSerializer() {
     super( "baseName", "http://www.cedarsoft.com/file/baseName", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }

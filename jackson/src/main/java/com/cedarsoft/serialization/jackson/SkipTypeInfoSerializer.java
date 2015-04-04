@@ -39,6 +39,7 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -48,6 +49,7 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
   @Nonnull
   private final AbstractJacksonSerializer<T> delegate;
 
+  @Inject
   public SkipTypeInfoSerializer( @Nonnull AbstractJacksonSerializer<T> delegate ) {
     super( delegate.getType(), delegate.getFormatVersionRange() );
     if ( !delegate.isObjectType() ) {

@@ -40,12 +40,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class EmailSerializer extends AbstractJacksonSerializer<Email> {
+  @Inject
   public EmailSerializer() {
     super( "email", VersionRange.from( 1, 0, 0 ).to() );
   }

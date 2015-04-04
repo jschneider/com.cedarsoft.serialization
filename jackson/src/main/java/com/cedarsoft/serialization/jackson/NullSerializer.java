@@ -42,6 +42,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -53,6 +54,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   @Nonnull
   public static final NullSerializer INSTANCE = new NullSerializer();
 
+  @Inject
   public NullSerializer() {
     super( "void", VersionRange.single( 1, 0, 0 ) );
   }

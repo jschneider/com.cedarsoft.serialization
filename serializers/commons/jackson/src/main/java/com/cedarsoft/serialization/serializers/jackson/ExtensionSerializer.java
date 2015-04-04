@@ -44,6 +44,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
@@ -52,6 +53,7 @@ public class ExtensionSerializer extends AbstractJacksonSerializer<Extension> {
 
   public static final String PROPERTY_EXTENSION = "extension";
 
+  @Inject
   public ExtensionSerializer() {
     super( "extension", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
