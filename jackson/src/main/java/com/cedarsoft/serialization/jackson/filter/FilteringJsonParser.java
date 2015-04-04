@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.jackson.filter;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -61,7 +62,7 @@ public class FilteringJsonParser extends JsonParserDelegate {
       notifySkippingValue(fieldName);
       super.nextToken();
     } else {
-      throw new IllegalStateException( "??? " + getCurrentToken() );
+      throw new SerializationException( SerializationException.Details.INVALID_STATE, delegate.getCurrentLocation(), delegate.getClass().getName() );
     }
   }
 
