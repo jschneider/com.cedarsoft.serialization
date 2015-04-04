@@ -65,7 +65,7 @@ public class DaAbstractXmlSerializerTest {
     serializer.verifyNamespace( "nsBaseADDITIONAL" );
 
     expectedException.expect( SerializationException.class );
-    expectedException.expectMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/1.0.0>" );
+    expectedException.expectMessage( "[INVALID_NAME_SPACE] Invalid name space. Expected <nsBase/1.0.0> but was <WrongnsBaseWRONG>." );
     serializer.verifyNamespace( "WrongnsBaseWRONG" );
   }
 
@@ -77,7 +77,7 @@ public class DaAbstractXmlSerializerTest {
       serializer.verifyNamespace( "WrongnsBaseWRONG" );
       fail( "Where is the Exception" );
     } catch ( SerializationException e ) {
-      assertThat( e ).hasMessage( "Invalid namespace. Was <WrongnsBaseWRONG> but expected <nsBase/1.0.0>" );
+      assertThat( e ).hasMessage( "[INVALID_NAME_SPACE] Invalid name space. Expected <nsBase/1.0.0> but was <WrongnsBaseWRONG>." );
     }
   }
 

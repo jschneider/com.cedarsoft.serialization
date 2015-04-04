@@ -14,7 +14,7 @@ public class SerializationException extends RuntimeException {
   private final Object[] arguments;
 
   public SerializationException( @Nonnull Details details, @Nonnull Object... arguments ) {
-    super( details.name() + ": " + details.getMessage( arguments ) );
+    super( "["+details.name() + "] " + details.getMessage( arguments ) );
     this.details = details;
     this.arguments = arguments.clone();
   }
@@ -39,7 +39,7 @@ public class SerializationException extends RuntimeException {
 
   public enum Details {
     INVALID_VERSION( "Invalid version. Expected {0} but was {1}." ),
-    INVALID_NAME_SPACE("Invalid name space. Expected {0} but was {1}")
+    INVALID_NAME_SPACE("Invalid name space. Expected <{0}> but was <{1}>.")
 
     ;
 
