@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.mate;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
@@ -76,7 +77,7 @@ public abstract class AbstractStaxMateSerializer<T> extends AbstractStaxBasedSer
       serialize( root, object, getFormatVersion() );
       doc.closeRoot();
     } catch ( XMLStreamException e ) {
-      throw new IOException( e );
+      throw new SerializationException( e, e.getLocation(), SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 

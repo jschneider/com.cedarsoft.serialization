@@ -138,7 +138,7 @@ public class SerializingStrategySupport<T, S, D, E extends Throwable, O, I> {
    */
   public boolean verify() {
     if ( strategies.isEmpty() ) {
-      throw new IllegalStateException( "No strategies available" );
+      throw new SerializationException( SerializationException.Details.NO_STRATEGIES_AVAILABLE );
     }
 
     versionMappings.verify();

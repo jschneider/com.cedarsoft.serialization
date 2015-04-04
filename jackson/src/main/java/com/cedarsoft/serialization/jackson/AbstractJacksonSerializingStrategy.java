@@ -66,4 +66,9 @@ public abstract class AbstractJacksonSerializingStrategy<T> extends AbstractJack
   public Class<? extends T> getSupportedType() {
     return supportedType;
   }
+
+  @Override
+  public final boolean isObjectType() {
+    return super.isObjectType();
+  }
 }

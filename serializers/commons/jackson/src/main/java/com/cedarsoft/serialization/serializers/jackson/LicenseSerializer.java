@@ -47,6 +47,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 
@@ -60,6 +61,7 @@ public class LicenseSerializer extends AbstractJacksonSerializer<License> {
 
   public static final String SUB_TYPE_CC = "cc";
 
+  @Inject
   public LicenseSerializer() {
     super( "license", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

@@ -38,6 +38,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.awt.Color;
@@ -54,6 +55,7 @@ public class ColorSerializer extends AbstractStaxMateSerializer<Color> {
 
   public static final String ELEMENT_BLUE = "blue";
 
+  @Inject
   public ColorSerializer() {
     super( "color", "http://awt.java/color", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -42,6 +43,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import javax.annotation.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -53,6 +55,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
   @Nonnull
   public static final NullSerializer INSTANCE = new NullSerializer();
 
+  @Inject
   public NullSerializer() {
     super( "void", VersionRange.single( 1, 0, 0 ) );
   }
@@ -70,7 +73,7 @@ public class NullSerializer extends AbstractJacksonSerializer<Void> {
 
   @Nullable
   @Override
-  public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+  public Void deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, SerializationException {
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
     parserWrapper.nextToken();
     parserWrapper.verifyCurrentToken( JsonToken.VALUE_NULL );

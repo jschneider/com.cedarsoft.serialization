@@ -44,12 +44,14 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  *
  */
 public class DateTimeSerializer extends AbstractJacksonSerializer<DateTime> {
+  @Inject
   public DateTimeSerializer() {
     super( "dateTime", new VersionRange( new Version( 0, 9, 0 ), new Version( 1, 0, 0 ) ) );
   }

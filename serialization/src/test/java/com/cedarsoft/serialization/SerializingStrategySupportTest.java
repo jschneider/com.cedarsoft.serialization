@@ -80,8 +80,8 @@ public class SerializingStrategySupportTest {
 
   @Test
   public void testVerify() throws Exception {
-    expectedException.expect( IllegalStateException.class );
-    expectedException.expectMessage( "No strategies available" );
+    expectedException.expect( SerializationException.class );
+    expectedException.expectMessage( "No strategies available. Verification not possible." );
     assertFalse( support.verify() );
   }
 

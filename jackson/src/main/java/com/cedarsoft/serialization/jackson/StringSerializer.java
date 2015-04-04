@@ -39,12 +39,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  *
  */
 public class StringSerializer extends AbstractJacksonSerializer<String> {
+  @Inject
   public StringSerializer() {
     super( "string", VersionRange.single( 1, 0, 0 ) );
   }

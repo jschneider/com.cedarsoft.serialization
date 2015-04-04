@@ -120,6 +120,7 @@ public class FileTypeSerializer extends AbstractJacksonSerializer<FileType> {
     @Nonnull
     private final FileTypeRegistry fileTypeRegistry;
 
+    @Inject
     public Referenced( @Nonnull FileTypeRegistry fileTypeRegistry ) {
       super( "file-type", VersionRange.single( 1, 0, 0 ) );
       this.fileTypeRegistry = fileTypeRegistry;

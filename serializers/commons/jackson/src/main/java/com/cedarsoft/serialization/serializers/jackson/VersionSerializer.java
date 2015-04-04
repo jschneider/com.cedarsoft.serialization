@@ -40,9 +40,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class VersionSerializer extends AbstractJacksonSerializer<Version> {
+  @Inject
   public VersionSerializer() {
     super( "version", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

@@ -45,6 +45,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class HashSerializer extends AbstractJacksonSerializer<Hash> {
@@ -54,6 +55,7 @@ public class HashSerializer extends AbstractJacksonSerializer<Hash> {
 
   public static final String PROPERTY_VALUE = "hex";
 
+  @Inject
   public HashSerializer() {
     super( "hash", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

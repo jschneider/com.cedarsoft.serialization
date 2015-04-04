@@ -1,6 +1,7 @@
 package com.cedarsoft.serialization.neo4j;
 
 import com.cedarsoft.serialization.AbstractSerializer;
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -83,11 +84,7 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   @Nonnull
   @Override
   public T deserialize( @Nonnull Node in ) throws IOException, VersionException {
-    try {
-      verifyType(in);
-    } catch (InvalidTypeException e) {
-      throw new IOException("Could not parse due to " + e.getMessage(), e);
-    }
+    verifyType(in);
 
     Version version = readVersion( in );
     verifyVersionReadable(version);
@@ -100,9 +97,9 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     return Version.parse( ( String ) in.getProperty( PROPERTY_FORMAT_VERSION ) );
   }
 
-  private void verifyType(@Nonnull Node in) throws InvalidTypeException {
+  private void verifyType(@Nonnull Node in) throws SerializationException {
     if (!in.hasLabel(getTypeLabel())) {
-      throw new InvalidTypeException( getTypeLabel(), in.getLabels() );
+      throw new SerializationException( SerializationException.Details.INVALID_TYPE, getTypeLabel(), in.getLabels() );
     }
   }
 
@@ -144,11 +141,5 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
     }
 
     return deserializedList;
-  }
-
-  public static class InvalidTypeException extends Exception {
-    public InvalidTypeException( @Nullable Label expectedLabel, @Nonnull Iterable<Label> expected ) {
-      super( "Invalid type. Expected <" + expectedLabel + "> but found <" + Iterables.toString(expected) + ">" );
-    }
   }
 }

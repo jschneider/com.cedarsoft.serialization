@@ -70,10 +70,10 @@ public class DelegatesMappings<S, D, E extends Throwable, O, I> {
   }
 
   @Nonnull
-  public <T> PluggableSerializer<? super T, S, D, E,O, I> getSerializer( @Nonnull Class<T> type ) {
+  public <T> PluggableSerializer<? super T, S, D, E,O, I> getSerializer( @Nonnull Class<T> type ) throws SerializationException{
     PluggableSerializer<? super T, S, D, E,O, I> serializer = ( PluggableSerializer<? super T, S, D, E, O, I> ) serializers.get( type );
     if ( serializer == null ) {
-      throw new IllegalArgumentException( "No serializer found for <" + type.getName() + ">" );
+      throw new SerializationException( SerializationException.Details.NO_SERIALIZER_FOUND, type.getName());
     }
     return serializer;
   }

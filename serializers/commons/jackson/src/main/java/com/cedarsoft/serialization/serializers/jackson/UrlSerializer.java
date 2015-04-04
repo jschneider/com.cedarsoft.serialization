@@ -43,8 +43,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 public class UrlSerializer extends AbstractJacksonSerializer<URL> {
+  @Inject
   public UrlSerializer() {
     super( "url", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }

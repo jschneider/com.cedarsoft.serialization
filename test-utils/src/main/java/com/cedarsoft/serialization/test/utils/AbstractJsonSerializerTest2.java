@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.test.utils;
 
 import com.cedarsoft.serialization.Serializer;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.cedarsoft.test.utils.JsonUtils;
 import com.cedarsoft.version.Version;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -63,6 +64,10 @@ import java.util.Map;
  * @param <T> the type of the serialized object
  */
 public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerTest2<T> {
+  @Nonnull
+  @Override
+  protected abstract StreamSerializer<T> getSerializer() throws Exception;
+
   protected void verify( @Nonnull byte[] current, @Nonnull byte[] expectedJson ) throws Exception {
     String expectedAsString = new String( expectedJson, Charsets.UTF_8 );
     if ( addTypeInformation() ) {

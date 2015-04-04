@@ -107,7 +107,7 @@ public abstract class AbstractSerializer<T, S, D, E extends Throwable, O, I> imp
   protected static void verifyDelegatingSerializerVersion( @Nonnull Serializer<?, ?, ?> delegate, @Nonnull Version expectedFormatVersion ) {
     Version actualVersion = delegate.getFormatVersion();
     if ( !actualVersion.equals( expectedFormatVersion ) ) {
-      throw new IllegalArgumentException( "Invalid versions. Expected <" + expectedFormatVersion + "> but was <" + actualVersion + ">" );
+      throw new SerializationException( SerializationException.Details.INVALID_VERSION, expectedFormatVersion, actualVersion );
     }
   }
 }

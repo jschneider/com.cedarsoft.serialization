@@ -32,6 +32,7 @@
 package com.cedarsoft.serialization.jackson;
 
 import com.cedarsoft.serialization.AbstractStreamSerializer;
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -77,9 +78,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
   }
 
   @Override
-  public void verifyType( @Nullable String type ) throws InvalidTypeException {
+  public void verifyType( @Nullable String type ) throws SerializationException {
     if ( !this.type.equals( type ) ) {//$NON-NLS-1$
-      throw new InvalidTypeException( type, this.type );
+      throw new SerializationException( SerializationException.Details.INVALID_TYPE, this.type, type );
     }
   }
 
@@ -134,28 +135,24 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
 
   @Override
   @Nonnull
-  public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException {
+  public T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, SerializationException {
     return deserializeInternal( parser, null );
   }
 
   @Nonnull
   public T deserialize( @Nonnull InputStream in, @Nullable Version version ) throws IOException, VersionException {
-    try {
-      JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
-      JsonParser parser = createJsonParser( jsonFactory, in );
+    JsonFactory jsonFactory = JacksonSupport.getJsonFactory();
+    JsonParser parser = createJsonParser( jsonFactory, in );
 
-      T deserialized = deserializeInternal( parser, version );
+    T deserialized = deserializeInternal( parser, version );
 
-      JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
-      if ( parserWrapper.nextToken() != null ) {
-        throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
-      }
-
-      parserWrapper.close();
-      return deserialized;
-    } catch ( InvalidTypeException e ) {
-      throw new IOException( "Could not parse due to " + e.getMessage(), e );
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
+    if ( parserWrapper.nextToken() != null ) {
+      throw new JsonParseException( "No consumed everything " + parserWrapper.getCurrentToken(), parserWrapper.getCurrentLocation() );
     }
+
+    parserWrapper.close();
+    return deserialized;
   }
 
   /**
@@ -176,10 +173,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param formatVersionOverride the format version override (usually "null")
    * @return the deserialized object
    * @throws java.io.IOException if there is an io problem
-   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   @Nonnull
-  protected T deserializeInternal( @Nonnull JsonParser parser, @Nullable Version formatVersionOverride ) throws IOException, JsonProcessingException, InvalidTypeException {
+  protected T deserializeInternal( @Nonnull JsonParser parser, @Nullable Version formatVersionOverride ) throws IOException, JsonProcessingException, SerializationException {
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( parser );
 
     Version version = prepareDeserialization( parserWrapper, formatVersionOverride );
@@ -205,10 +201,9 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * @param formatVersionOverride the format version
    * @return the format version
    * @throws java.io.IOException if there is an io problem
-   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
   @Nonnull
-  protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, InvalidTypeException {
+  protected Version prepareDeserialization( @Nonnull JacksonParserWrapper wrapper, @Nullable Version formatVersionOverride ) throws IOException, SerializationException {
     if ( isObjectType() ) {
       wrapper.nextToken( JsonToken.START_OBJECT );
 
@@ -238,9 +233,8 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    *
    * @param wrapper the wrapper
    * @throws java.io.IOException if there is an io exception
-   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if the type is invalid
    */
-  protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, InvalidTypeException {
+  protected void beforeTypeAndVersion( @Nonnull JacksonParserWrapper wrapper ) throws IOException, JsonProcessingException, SerializationException {
   }
 
   protected <T> void serializeArray( @Nonnull Iterable<? extends T> elements, @Nonnull Class<T> type, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws IOException {

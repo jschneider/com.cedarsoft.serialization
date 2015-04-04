@@ -192,7 +192,7 @@ public class DelegatesMappingsTest {
     delegatesMappings.add( serializer ).responsibleFor( String.class )
       .map( 1, 0, 0 ).toDelegateVersion( 7, 0, 2 );
 
-    expectedException.expect( IllegalStateException.class );
+    expectedException.expect( IllegalArgumentException.class );
     expectedException.expectMessage( "An entry for the key <class java.lang.String> has still been added" );
 
     delegatesMappings.add( serializer ).responsibleFor( String.class );

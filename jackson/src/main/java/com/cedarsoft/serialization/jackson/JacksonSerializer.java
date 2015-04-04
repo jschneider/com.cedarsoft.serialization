@@ -31,17 +31,15 @@
 
 package com.cedarsoft.serialization.jackson;
 
-import com.cedarsoft.serialization.StreamSerializer;
-import com.cedarsoft.version.VersionException;
-import com.cedarsoft.serialization.InvalidNamespaceException;
 import com.cedarsoft.serialization.PluggableSerializer;
+import com.cedarsoft.serialization.SerializationException;
+import com.cedarsoft.serialization.StreamSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import javax.annotation.Nullable;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -76,10 +74,9 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * @return the deserialized object
    *
    * @throws java.io.IOException if there is an io problem
-   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if there is an invalid type
    */
   @Nonnull
-  T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, InvalidTypeException;
+  T deserialize( @Nonnull JsonParser parser ) throws IOException, JsonProcessingException, SerializationException;
 
   /**
    * Returns the type
@@ -93,8 +90,7 @@ public interface JacksonSerializer<T> extends PluggableSerializer<T, JsonGenerat
    * Verifies the name space
    *
    * @param type the type
-   * @throws com.cedarsoft.serialization.jackson.InvalidTypeException if there is an invalid type
    */
-  void verifyType( @Nullable String type ) throws InvalidTypeException;
+  void verifyType( @Nullable String type ) throws SerializationException;
 
 }

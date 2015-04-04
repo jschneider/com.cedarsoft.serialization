@@ -157,7 +157,7 @@ public class VersionMappingsTest {
   public void testDuplicate1() {
     mapping.addMapping( String.class, VersionRange.from( 7, 0, 0 ).to() );
 
-    expectedException.expect( IllegalStateException.class );
+    expectedException.expect( IllegalArgumentException.class );
     mapping.addMapping( String.class, VersionRange.from( 7, 0, 0 ).to() );
   }
 

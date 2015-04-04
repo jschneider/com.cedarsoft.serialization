@@ -30,6 +30,7 @@
  */
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -39,6 +40,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -48,6 +50,7 @@ import java.io.IOException;
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
+  @Inject
   public IgnoringSerializer() {
     super( "ignoring", VersionRange.single( 0, 0, 0 ) );
   }
@@ -99,6 +102,6 @@ public class IgnoringSerializer extends AbstractJacksonSerializer<Void> {
         return JsonToken.END_ARRAY;
     }
 
-    throw new IllegalArgumentException( "No end token found for <" + inToken + ">" );
+    throw new SerializationException( SerializationException.Details.INVALID_STATE, "No end token found for <" + inToken + ">" );
   }
 }

@@ -8,12 +8,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class CharacterSerializer extends AbstractJacksonSerializer<Character> {
+  @Inject
   public CharacterSerializer() {
     super( "char", VersionRange.single( 1, 0, 0 ) );
   }
@@ -26,11 +28,11 @@ public class CharacterSerializer extends AbstractJacksonSerializer<Character> {
   @Nonnull
   @Override
   public Character deserialize( @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException, VersionException, JsonProcessingException {
-    String trim = deserializeFrom.getText().trim();
-    if ( trim.length() != 1 ) {
-      throw new IllegalStateException( "Cannot convert <" + trim + "> to char" );
+    String trimmed = deserializeFrom.getText().trim();
+    if ( trimmed.length() != 1 ) {
+      throw new IllegalStateException( "Cannot convert <" + trimmed + "> to char" );
     }
-    return trim.charAt( 0 );
+    return trimmed.charAt( 0 );
   }
 
   @Override

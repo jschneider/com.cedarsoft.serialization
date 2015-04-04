@@ -171,7 +171,7 @@ public class VersionMapping {
   @Nonnull
   public Version getDelegateWriteVersion() {
     if ( entries.isEmpty() ) {
-      throw new IllegalStateException( "Contains no entries" );
+      throw new SerializationException( SerializationException.Details.INVALID_STATE, "Contains no entries for delegate write version." );
     }
 
     return entries.get( entries.size() - 1 ).getDelegateVersion();
@@ -244,7 +244,7 @@ public class VersionMapping {
     public FluentFactory to( int major, int minor, int build ) {
       //check if we have still set a to version. Then it is probably a user fault
       if ( toCalled ) {
-        throw new IllegalStateException( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
+        throw new SerializationException( SerializationException.Details.INVALID_STATE, "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
       }
       return new FluentFactory( VersionRange.from( range.getMin() ).to( major, minor, build ), true );
     }

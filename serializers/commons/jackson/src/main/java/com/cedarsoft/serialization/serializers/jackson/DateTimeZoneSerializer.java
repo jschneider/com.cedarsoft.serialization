@@ -40,12 +40,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.joda.time.DateTimeZone;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class DateTimeZoneSerializer extends AbstractJacksonSerializer<DateTimeZone> {
 
   public static final String ID = "id";
 
+  @Inject
   public DateTimeZoneSerializer() {
     super( "dateTimeZone", VersionRange.from( 1, 0, 0 ).to( 1, 0, 0 ) );
   }
