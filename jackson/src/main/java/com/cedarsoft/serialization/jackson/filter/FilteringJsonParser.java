@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class FilteringJsonParser extends JsonParserDelegate {
   @Nonnull
   private final Filter filter;
-  @Nullable
+  @Nonnull
   private final List<FilteredParserListener> filteredParserListeners = new CopyOnWriteArrayList<FilteredParserListener>();
 
   public FilteringJsonParser( @Nonnull JsonParser parser, @Nonnull Filter filter ) {
