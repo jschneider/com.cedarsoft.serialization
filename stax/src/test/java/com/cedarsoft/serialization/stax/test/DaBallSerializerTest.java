@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax.test;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.VersionMismatchException;
 import com.google.common.collect.Lists;
 import org.junit.*;
@@ -89,8 +90,8 @@ public class DaBallSerializerTest {
 
   @Test
   public void testInvalidNamespace() throws IOException {
-    expectedException.expect( IOException.class );
-    expectedException.expectMessage( "Could not parse stream due to Invalid namespace. Was <http://test/wrong/1.1.0> but expected <http://test/ball/1.1.0>" );
+    expectedException.expect( SerializationException.class );
+    expectedException.expectMessage( "[INVALID_NAME_SPACE] Invalid name space. Expected <http://test/ball/1.1.0> but was <http://test/wrong/1.1.0>." );
     new DaBallSerializer().deserialize( new ByteArrayInputStream( "<ball xmlns=\"http://test/wrong/1.1.0\" id=\"77\"/>".getBytes() ) );
   }
 }
