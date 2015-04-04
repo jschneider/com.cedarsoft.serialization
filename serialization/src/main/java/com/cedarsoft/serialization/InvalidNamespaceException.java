@@ -37,6 +37,7 @@ import javax.annotation.Nonnull;
 /**
  * Exception that is thrown on an invalid name space
  */
+@Deprecated
 public class InvalidNamespaceException extends Exception {
   @Nonnull
 
