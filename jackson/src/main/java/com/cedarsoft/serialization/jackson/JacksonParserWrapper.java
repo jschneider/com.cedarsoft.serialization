@@ -30,6 +30,7 @@
  */
 package com.cedarsoft.serialization.jackson;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.FormatSchema;
 import com.fasterxml.jackson.core.JsonLocation;
@@ -378,7 +379,7 @@ public class JacksonParserWrapper {
    */
   public void verifyDeserialized( @Nullable Object deserializedValue, @Nonnull String propertyName ) {
     if ( deserializedValue == null ) {
-      throw new IllegalStateException( "The field <" + propertyName + "> has not been deserialized" );
+      throw new SerializationException( SerializationException.Details.PROPERTY_NOT_DESERIALIZED, propertyName );
     }
   }
 }
