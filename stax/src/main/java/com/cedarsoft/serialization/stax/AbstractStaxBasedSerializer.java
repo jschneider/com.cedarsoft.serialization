@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
@@ -78,17 +79,17 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       int result = reader.nextTag();
       if ( result != XMLStreamConstants.START_ELEMENT ) {
-        throw new XMLStreamException( "Expected START_ELEMENT but was <" + result + "> @ " + reader.getLocation() );
+        throw new SerializationException( SerializationException.Details.INVALID_START_ELEMENT, reader.getLocation(), result );
       }
 
       //Now build the deserialization context
       T deserialized = deserialize( reader, parseAndVerifyNameSpace( reader.getNamespaceURI() ) );
 
       if ( !reader.isEndElement() ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
+        throw new SerializationException( SerializationException.Details.NOT_CONSUMED_EVERYTHING, reader.getLocation(), getClass().getName() );
       }
       if ( reader.next() != XMLStreamConstants.END_DOCUMENT ) {
-        throw new XMLStreamException( "Not consumed everything in <" + getClass().getName() + ">  @ " + reader.getLocation() );
+        throw new SerializationException( SerializationException.Details.NOT_CONSUMED_EVERYTHING, reader.getLocation(), getClass().getName() );
       }
 
       return deserialized;

@@ -1,6 +1,8 @@
 package com.cedarsoft.serialization;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.xml.stream.Location;
 import java.text.MessageFormat;
 
 /**
@@ -10,13 +12,25 @@ import java.text.MessageFormat;
 public class SerializationException extends RuntimeException {
   @Nonnull
   private final Details details;
+  @Nullable
+  private final Location location;
   @Nonnull
   private final Object[] arguments;
 
   public SerializationException( @Nonnull Details details, @Nonnull Object... arguments ) {
-    super( "["+details.name() + "] " + details.getMessage( arguments ) );
+    this( details, null, arguments );
+  }
+
+  public SerializationException( @Nonnull Details details, @Nullable Location location, @Nonnull Object... arguments ) {
+    super( createMessage( details, location, arguments ) );
     this.details = details;
+    this.location = location;
     this.arguments = arguments.clone();
+  }
+
+  @Nullable
+  public Location getLocation() {
+    return location;
   }
 
   @Nonnull
@@ -37,11 +51,21 @@ public class SerializationException extends RuntimeException {
     return details.getMessage( arguments );
   }
 
+  @Nonnull
+  private static String createMessage( @Nonnull Details details, @Nullable Location location, @Nonnull Object[] arguments ) {
+    String messageWithoutLocation = "[" + details.name() + "] " + details.getMessage( arguments );
+    if ( location == null ) {
+      return messageWithoutLocation;
+    }
+
+    return messageWithoutLocation + " @" + location;
+  }
+
   public enum Details {
     INVALID_VERSION( "Invalid version. Expected {0} but was {1}." ),
-    INVALID_NAME_SPACE("Invalid name space. Expected <{0}> but was <{1}>.")
-
-    ;
+    INVALID_NAME_SPACE( "Invalid name space. Expected <{0}> but was <{1}>." ),
+    INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
+    NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." );
 
     @Nonnull
     private final String message;
