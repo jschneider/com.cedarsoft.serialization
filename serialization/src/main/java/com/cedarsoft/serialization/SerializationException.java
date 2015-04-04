@@ -70,6 +70,7 @@ public class SerializationException extends RuntimeException {
     INVALID_NAME_SPACE( "Invalid name space. Expected <{0}> but was <{1}>." ),
     INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
     INVALID_TYPE("Invalid type. Expected <{0}> but was <{1}>."),
+    INVALID_STATE( "{0}" ),
     NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." ),
     XML_EXCEPTION( "XML problem occurred {0}." ),
     ;
