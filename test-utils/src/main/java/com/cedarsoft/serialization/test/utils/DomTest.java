@@ -30,6 +30,7 @@
  */
 package com.cedarsoft.serialization.test.utils;
 
+import com.cedarsoft.test.utils.AssertUtils;
 import com.cedarsoft.xml.XmlCommons;
 import com.sun.org.apache.xerces.internal.dom.DeferredNode;
 import org.junit.*;
@@ -72,11 +73,11 @@ public class DomTest {
     StringWriter out = new StringWriter();
     XmlCommons.out( doc, out );
 
-    assertThat( out.toString() ).isEqualTo( "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-                                                "<a daAttr=\"daval\" xmlns=\"MyNS\">\n" +
-                                                "  <DaNewChild xmlns=\"manuallyChangedChildNS\"/>\n" +
-                                                "  <child2WithoutNS/>\n" +
-                                                "</a>\n" );
+    AssertUtils.assertXMLEquals( "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                                                    "<a daAttr=\"daval\" xmlns=\"MyNS\">\n" +
+                                                    "  <DaNewChild xmlns=\"manuallyChangedChildNS\"/>\n" +
+                                                    "  <child2WithoutNS/>\n" +
+                                                    "</a>\n", out.toString() );
   }
 
 }

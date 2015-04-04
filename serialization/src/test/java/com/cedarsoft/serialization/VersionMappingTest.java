@@ -197,7 +197,7 @@ public class VersionMappingTest {
   public void testFluentTypicalFaults() {
     VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
-    expectedException.expect( IllegalStateException.class );
+    expectedException.expect( SerializationException.class );
     expectedException.expectMessage( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
 
     mapping.map( VersionRange.from( 0, 5, 0 ).to() ).to( 7, 1, 1 ).to( 2, 0, 0 );
@@ -207,7 +207,7 @@ public class VersionMappingTest {
   public void testFluentTypicalFaults2() {
     VersionMapping mapping = new VersionMapping( VersionRange.from( 0, 5, 0 ).to( 2, 2, 7 ), VersionRange.from( 1, 0, 0 ).to( 2, 0, 0 ) );
 
-    expectedException.expect( IllegalStateException.class );
+    expectedException.expect( SerializationException.class );
     expectedException.expectMessage( "Duplicate call to <to>. Did you mean <toDelegateVersion> instead?" );
 
     mapping.map( VersionRange.from( 0, 5, 0 ).to() ).to( 2, 1, 1 );

@@ -67,7 +67,7 @@ public class DaBallSerializerTest {
   public void testMissing() throws IOException {
     DaBallSerializer serializer = new DaBallSerializer();
 
-    expectedException.expect( IllegalArgumentException.class );
+    expectedException.expect( SerializationException.class );
     serializer.serialize( new DaBall( 77, Lists.newArrayList( new DaBall.Element( "a" ), new DaBall.Element( "b" ) ) ), new ByteArrayOutputStream() );
   }
 

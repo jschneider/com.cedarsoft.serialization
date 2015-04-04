@@ -1,5 +1,6 @@
 package com.cedarsoft.serialization.neo4j.test.utils;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.ecyrd.speed4j.StopWatch;
 import com.google.common.collect.ImmutableList;
 import org.junit.*;
@@ -58,8 +59,8 @@ public class SampleNeo4jSerializerTest extends AbstractNeo4JTest {
         deserialize(node);
       }
       fail("Where is the Exception");
-    } catch (IOException e) {
-      assertThat(e.getCause()).isNotNull().hasMessage("Invalid type. Expected <com.cedarsoft.test.person> but found <[lab1, lab2, lab3]>");
+    } catch (SerializationException e) {
+      assertThat( e ).isNotNull().hasMessage("[INVALID_TYPE] Invalid type. Expected <com.cedarsoft.test.person> but was <[lab1, lab2, lab3]>.");
     }
   }
 
