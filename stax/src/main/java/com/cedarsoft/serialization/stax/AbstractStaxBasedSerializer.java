@@ -94,7 +94,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       return deserialized;
     } catch ( XMLStreamException e ) {
-      throw new IOException( "Could not parse stream due to " + e.getMessage(), e );
+      throw new SerializationException( SerializationException.Details.XML_EXCEPTION, e.getLocation(), e.getMessage() );
     }
   }
 

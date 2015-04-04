@@ -22,7 +22,11 @@ public class SerializationException extends RuntimeException {
   }
 
   public SerializationException( @Nonnull Details details, @Nullable Location location, @Nonnull Object... arguments ) {
-    super( createMessage( details, location, arguments ) );
+    this( null, details, location, arguments );
+  }
+
+  public SerializationException( @Nullable Exception cause, @Nonnull Details details, @Nullable Location location, @Nonnull Object... arguments ) {
+    super( createMessage( details, location, arguments ), cause );
     this.details = details;
     this.location = location;
     this.arguments = arguments.clone();
@@ -65,7 +69,8 @@ public class SerializationException extends RuntimeException {
     INVALID_VERSION( "Invalid version. Expected {0} but was {1}." ),
     INVALID_NAME_SPACE( "Invalid name space. Expected <{0}> but was <{1}>." ),
     INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
-    NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." );
+    NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." ),
+    XML_EXCEPTION( "XML problem occurred {0}." );
 
     @Nonnull
     private final String message;
