@@ -1,26 +1,55 @@
 package com.cedarsoft.serialization;
 
+import javax.annotation.Nonnull;
+import java.text.MessageFormat;
+
 /**
  * Is thrown if any kind of exception happens that is related to internal issues.
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
  */
 public class SerializationException extends RuntimeException {
-  public SerializationException() {
+  @Nonnull
+  private final Details details;
+  @Nonnull
+  private final Object[] arguments;
+
+  public SerializationException( @Nonnull Details details, @Nonnull Object... arguments ) {
+    super( details.name() + ": " + details.getMessage( arguments ) );
+    this.details = details;
+    this.arguments = arguments.clone();
   }
 
-  public SerializationException( String message ) {
-    super( message );
+  @Nonnull
+  public Details getDetails() {
+    return details;
   }
 
-  public SerializationException( String message, Throwable cause ) {
-    super( message, cause );
+  @Nonnull
+  public Object[] getArguments() {
+    return arguments.clone();
   }
 
-  public SerializationException( Throwable cause ) {
-    super( cause );
+  /**
+   * @noinspection RefusedBequest
+   */
+  @Override
+  public String getLocalizedMessage() {
+    return details.getMessage( arguments );
   }
 
-  public SerializationException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
-    super( message, cause, enableSuppression, writableStackTrace );
+  public enum Details {
+    INVALID_VERSION( "Invalid version. Expected {0} but was {1}." );
+
+    @Nonnull
+    private final String message;
+
+    Details( @Nonnull String message ) {
+      this.message = message;
+    }
+
+    @Nonnull
+    public String getMessage( @Nonnull Object[] arguments ) {
+      return MessageFormat.format( message, arguments );
+    }
   }
 }
