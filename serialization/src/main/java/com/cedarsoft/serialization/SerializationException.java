@@ -13,7 +13,7 @@ public class SerializationException extends RuntimeException {
   @Nonnull
   private final Details details;
   @Nullable
-  private final Location location;
+  private final Object location;
   @Nonnull
   private final Object[] arguments;
 
@@ -21,11 +21,11 @@ public class SerializationException extends RuntimeException {
     this( details, null, arguments );
   }
 
-  public SerializationException( @Nonnull Details details, @Nullable Location location, @Nonnull Object... arguments ) {
+  public SerializationException( @Nonnull Details details, @Nullable Object location, @Nonnull Object... arguments ) {
     this( null, details, location, arguments );
   }
 
-  public SerializationException( @Nullable Exception cause, @Nonnull Details details, @Nullable Location location, @Nonnull Object... arguments ) {
+  public SerializationException( @Nullable Exception cause, @Nonnull Details details, @Nullable Object location, @Nonnull Object... arguments ) {
     super( createMessage( details, location, arguments ), cause );
     this.details = details;
     this.location = location;
@@ -33,7 +33,7 @@ public class SerializationException extends RuntimeException {
   }
 
   @Nullable
-  public Location getLocation() {
+  public Object getLocation() {
     return location;
   }
 
@@ -56,7 +56,7 @@ public class SerializationException extends RuntimeException {
   }
 
   @Nonnull
-  private static String createMessage( @Nonnull Details details, @Nullable Location location, @Nonnull Object[] arguments ) {
+  private static String createMessage( @Nonnull Details details, @Nullable Object location, @Nonnull Object[] arguments ) {
     String messageWithoutLocation = "[" + details.name() + "] " + details.getMessage( arguments );
     if ( location == null ) {
       return messageWithoutLocation;
@@ -71,6 +71,7 @@ public class SerializationException extends RuntimeException {
     INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
     INVALID_TYPE("Invalid type. Expected <{0}> but was <{1}>."),
     INVALID_STATE( "{0}" ),
+    INVALID_NODE(  "Invalid node. Expected property <{0}> but only contained <{1}>."  ),
     NOT_SUPPORTED_FOR_NON_OBJECT_TYPE( "Not supported for non object type {0}." ),
     PROPERTY_NOT_DESERIALIZED( "The field <{0}> has not been deserialized." ),
     NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." ),
