@@ -75,7 +75,7 @@ public class SerializationException extends RuntimeException {
     PROPERTY_NOT_DESERIALIZED( "The field <{0}> has not been deserialized." ),
     NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." ),
     XML_EXCEPTION( "XML problem occurred {0}." ),
-    ;
+    NO_SERIALIZER_FOUND( "No serializer found for <{0}>." );
 
     @Nonnull
     private final String message;
