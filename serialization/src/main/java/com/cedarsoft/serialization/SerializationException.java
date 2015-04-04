@@ -71,6 +71,7 @@ public class SerializationException extends RuntimeException {
     INVALID_START_ELEMENT( "Expected START_ELEMENT but was <{0}>." ),
     INVALID_TYPE("Invalid type. Expected <{0}> but was <{1}>."),
     INVALID_STATE( "{0}" ),
+    NOT_SUPPORTED_FOR_NON_OBJECT_TYPE( "Not supported for non object type {0}." ),
     PROPERTY_NOT_DESERIALIZED( "The field <{0}> has not been deserialized." ),
     NOT_CONSUMED_EVERYTHING( "Not consumed everything in <{0}>." ),
     XML_EXCEPTION( "XML problem occurred {0}." ),

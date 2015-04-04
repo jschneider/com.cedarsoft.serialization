@@ -54,7 +54,7 @@ public class SkipTypeInfoSerializer<T> extends AbstractJacksonSerializer<T> {
   public SkipTypeInfoSerializer( @Nonnull AbstractJacksonSerializer<T> delegate ) {
     super( delegate.getType(), delegate.getFormatVersionRange() );
     if ( !delegate.isObjectType() ) {
-      throw new IllegalStateException( "Not supported for object type serializer: " + delegate.getClass().getName() );
+      throw new SerializationException( SerializationException.Details.NOT_SUPPORTED_FOR_NON_OBJECT_TYPE, delegate.getClass().getName() );
     }
 
     this.delegate = delegate;
