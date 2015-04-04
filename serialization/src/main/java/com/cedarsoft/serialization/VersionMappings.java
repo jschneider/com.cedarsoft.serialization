@@ -106,7 +106,7 @@ public class VersionMappings<T> {
   @Nonnull
   protected VersionMapping addMapping( @Nonnull T key, @Nonnull VersionRange targetVersionRange ) {
     if ( mappings.containsKey( key ) ) {
-      throw new IllegalStateException( "An entry for the key <" + key + "> has still been added" );
+      throw new IllegalArgumentException( "An entry for the key <" + key + "> has still been added" );
     }
 
     VersionMapping mapping = new VersionMapping( versionRange, targetVersionRange );
