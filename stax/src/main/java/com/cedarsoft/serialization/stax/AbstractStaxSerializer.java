@@ -31,6 +31,7 @@
 
 package com.cedarsoft.serialization.stax;
 
+import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
@@ -80,7 +81,7 @@ public abstract class AbstractStaxSerializer<T> extends AbstractStaxBasedSeriali
 
       writer.close();
     } catch ( XMLStreamException e ) {
-      throw new IOException( e );
+      throw new SerializationException( e, e.getLocation(), SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 
