@@ -79,22 +79,22 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
       int result = reader.nextTag();
       if ( result != XMLStreamConstants.START_ELEMENT ) {
-        throw new SerializationException( SerializationException.Details.INVALID_START_ELEMENT, reader.getLocation(), result );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.INVALID_START_ELEMENT, result );
       }
 
       //Now build the deserialization context
       T deserialized = deserialize( reader, parseAndVerifyNameSpace( reader.getNamespaceURI() ) );
 
       if ( !reader.isEndElement() ) {
-        throw new SerializationException( SerializationException.Details.NOT_CONSUMED_EVERYTHING, reader.getLocation(), getClass().getName() );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
       if ( reader.next() != XMLStreamConstants.END_DOCUMENT ) {
-        throw new SerializationException( SerializationException.Details.NOT_CONSUMED_EVERYTHING, reader.getLocation(), getClass().getName() );
+        throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
 
       return deserialized;
     } catch ( XMLStreamException e ) {
-      throw new SerializationException( SerializationException.Details.XML_EXCEPTION, e.getLocation(), e.getMessage() );
+      throw new SerializationException( e.getLocation(), SerializationException.Details.XML_EXCEPTION, e.getMessage() );
     }
   }
 

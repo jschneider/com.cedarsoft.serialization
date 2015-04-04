@@ -2,7 +2,6 @@ package com.cedarsoft.serialization;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.stream.Location;
 import java.text.MessageFormat;
 
 /**
@@ -18,14 +17,14 @@ public class SerializationException extends RuntimeException {
   private final Object[] arguments;
 
   public SerializationException( @Nonnull Details details, @Nonnull Object... arguments ) {
-    this( details, null, arguments );
+    this( null, details, arguments );
   }
 
-  public SerializationException( @Nonnull Details details, @Nullable Object location, @Nonnull Object... arguments ) {
-    this( null, details, location, arguments );
+  public SerializationException( @Nullable Object location, @Nonnull Details details, @Nonnull Object... arguments ) {
+    this( null, location, details, arguments );
   }
 
-  public SerializationException( @Nullable Exception cause, @Nonnull Details details, @Nullable Object location, @Nonnull Object... arguments ) {
+  public SerializationException( @Nullable Exception cause, @Nullable Object location, @Nonnull Details details, @Nonnull Object... arguments ) {
     super( createMessage( details, location, arguments ), cause );
     this.details = details;
     this.location = location;

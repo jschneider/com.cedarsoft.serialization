@@ -62,7 +62,7 @@ public class FilteringJsonParser extends JsonParserDelegate {
       notifySkippingValue(fieldName);
       super.nextToken();
     } else {
-      throw new SerializationException( SerializationException.Details.INVALID_STATE, delegate.getCurrentLocation(), delegate.getClass().getName() );
+      throw new SerializationException( delegate.getCurrentLocation(), SerializationException.Details.INVALID_STATE, delegate.getClass().getName() );
     }
   }
 

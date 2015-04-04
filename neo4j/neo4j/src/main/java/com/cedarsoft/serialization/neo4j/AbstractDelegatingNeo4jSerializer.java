@@ -72,7 +72,7 @@ public class AbstractDelegatingNeo4jSerializer<T> extends AbstractNeo4jSerialize
       return strategy.deserialize( deserializeFrom, resolvedVersion );
 
     } catch ( NotFoundException e ) {
-      throw new SerializationException( e, SerializationException.Details.INVALID_NODE, PROPERTY_SUB_TYPE, deserializeFrom.getId(), deserializeFrom.getPropertyKeys() );
+      throw new SerializationException( e, PROPERTY_SUB_TYPE, SerializationException.Details.INVALID_NODE, deserializeFrom.getId(), deserializeFrom.getPropertyKeys() );
     }
   }
 
