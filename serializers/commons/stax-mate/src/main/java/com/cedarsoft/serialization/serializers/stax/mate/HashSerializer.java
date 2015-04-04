@@ -39,6 +39,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class HashSerializer extends AbstractStaxMateSerializer<Hash> {
 
   private static final String ATTRIBUTE_ALGORITHM = "algorithm";
 
+  @Inject
   public HashSerializer() {
     super( "hash", "http://www.cedarsoft.com/crypt/hash", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }

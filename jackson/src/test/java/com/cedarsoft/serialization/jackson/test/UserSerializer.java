@@ -42,6 +42,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class UserSerializer extends AbstractJacksonSerializer<User> {
   public static final String PROPERTY_USER_DETAILS = "userDetails";
   public static final String PROPERTY_SINGLE_EMAIL = "singleEmail";
 
+  @Inject
   public UserSerializer( @Nonnull EmailSerializer emailSerializer, @Nonnull RoleSerializer roleSerializer, @Nonnull UserDetailsSerializer userDetailsSerializer ) {
     super( "user", VersionRange.from( 1, 0, 0 ).to() );
 

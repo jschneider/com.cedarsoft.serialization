@@ -44,6 +44,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -57,6 +58,7 @@ public class UserDetailsSerializer extends AbstractJacksonSerializer<UserDetails
 
   public static final String PROPERTY_PASSWORD_HASH = "passwordHash";
 
+  @Inject
   public UserDetailsSerializer() {
     super( "user-details", VersionRange.from( 1, 0, 0 ).to() );
   }

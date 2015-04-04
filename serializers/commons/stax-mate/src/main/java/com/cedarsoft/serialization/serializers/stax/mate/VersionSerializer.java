@@ -37,6 +37,7 @@ import com.cedarsoft.serialization.stax.mate.AbstractStaxMateSerializer;
 import org.codehaus.staxmate.out.SMOutputElement;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -45,6 +46,7 @@ import java.io.IOException;
  *
  */
 public class VersionSerializer extends AbstractStaxMateSerializer<Version> {
+  @Inject
   public VersionSerializer() {
     super( "version", "http://www.cedarsoft.com/version", new VersionRange( new Version( 1, 0, 0 ), new Version( 1, 0, 0 ) ) );
   }
