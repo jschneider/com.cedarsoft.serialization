@@ -43,6 +43,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Abstract base class for XML based serializers.
@@ -107,6 +108,6 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
 
   @Nonnull
   protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
-    return new Entry<T>( object, expected.getBytes() );
+    return new Entry<T>( object, expected.getBytes(StandardCharsets.UTF_8) );
   }
 }

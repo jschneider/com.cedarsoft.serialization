@@ -57,6 +57,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -119,7 +120,7 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
   @Nonnull
   protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
-    return new Entry<T>( object, expected.getBytes() );
+    return new Entry<T>( object, expected.getBytes(StandardCharsets.UTF_8) );
   }
 
   @Theory

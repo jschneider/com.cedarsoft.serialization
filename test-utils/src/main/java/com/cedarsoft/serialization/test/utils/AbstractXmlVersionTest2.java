@@ -40,6 +40,7 @@ import org.xml.sax.SAXException;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * It is necessary to define at least one DataPoint
@@ -69,12 +70,12 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
 
   @Nonnull
   protected static byte[] processXml( @Nonnull String xml, @Nonnull String nameSpace ) throws IOException, SAXException {
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes(StandardCharsets.UTF_8) ).getBytes(StandardCharsets.UTF_8);
   }
 
   @Nonnull
   protected static byte[] processXml( @Nonnull byte[] xml, @Nonnull String nameSpace ) throws IOException, SAXException {
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes();
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml ).getBytes(StandardCharsets.UTF_8);
   }
 
   @Nonnull
@@ -104,7 +105,7 @@ public abstract class AbstractXmlVersionTest2<T> extends AbstractVersionTest2<T>
     }
 
     public XmlVersionEntry( @Nonnull Version version, @Nonnull String xml ) {
-      this( version, xml.getBytes() );
+      this( version, xml.getBytes(StandardCharsets.UTF_8) );
     }
 
     @Nonnull

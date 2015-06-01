@@ -50,6 +50,7 @@ import org.fest.reflect.core.Reflection;
 
 import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -131,6 +132,6 @@ public abstract class AbstractJsonSerializerTest2<T> extends AbstractSerializerT
 
   @Nonnull
   protected static <T> Entry<? extends T> create( @Nonnull T object, @Nonnull String expected ) {
-    return new Entry<T>( object, expected.getBytes() );
+    return new Entry<T>( object, expected.getBytes(StandardCharsets.UTF_8) );
   }
 }
