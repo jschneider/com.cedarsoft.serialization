@@ -41,6 +41,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,7 +55,7 @@ public class DomTest {
     factory.setNamespaceAware( true );
     DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 
-    Document doc = documentBuilder.parse( new ByteArrayInputStream( "<a/>".getBytes() ) );
+    Document doc = documentBuilder.parse( new ByteArrayInputStream( "<a/>".getBytes(StandardCharsets.UTF_8) ) );
 
     Element element = doc.getDocumentElement();
     assertThat( element ).isNotNull();

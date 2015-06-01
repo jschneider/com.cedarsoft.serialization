@@ -37,6 +37,7 @@ import org.apache.commons.io.Charsets;
 
 import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Abstract base class for XML based serializers.
@@ -48,7 +49,7 @@ import java.nio.charset.Charset;
 public abstract class AbstractXmlSerializerTest<T> extends AbstractSerializerTest<T> {
   @Override
   protected void verifySerialized( @Nonnull byte[] serialized ) throws Exception {
-    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), getExpectedSerialized().getBytes() );
+    String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), getExpectedSerialized().getBytes(StandardCharsets.UTF_8) );
     AssertUtils.assertXMLEquals(new String(serialized, getEncoding() ), expectedWithNamespace);
   }
 

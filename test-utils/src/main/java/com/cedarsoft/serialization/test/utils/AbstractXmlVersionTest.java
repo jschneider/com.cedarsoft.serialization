@@ -35,6 +35,8 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.serialization.AbstractXmlSerializer;
 
 import javax.annotation.Nonnull;
+
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +69,7 @@ public abstract class AbstractXmlVersionTest<T> extends AbstractVersionTest<T> {
   @Nonnull
   protected byte[] processXml( @Nonnull final String xml, @Nonnull Version version ) throws Exception {
     String nameSpace = ( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer() ).createNameSpace( version );
-    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes();
+    return AbstractXmlSerializerTest2.addNameSpace( nameSpace, xml.getBytes() ).getBytes(StandardCharsets.UTF_8);
   }
 
   /**
