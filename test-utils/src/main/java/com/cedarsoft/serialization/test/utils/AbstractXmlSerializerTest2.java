@@ -66,11 +66,11 @@ public abstract class AbstractXmlSerializerTest2<T> extends AbstractSerializerTe
       try {
         expectedWithNamespace = addNameSpace( ( AbstractXmlSerializer<?, ?, ?, ?> ) getSerializer(), expectedXml );
       } catch ( SAXException ignore ) {
-        expectedWithNamespace = new String( expectedXml );
+        expectedWithNamespace = new String( expectedXml, StandardCharsets.UTF_8 );
       }
       AssertUtils.assertXMLEquals( expectedWithNamespace, new String( current, getEncoding() ) );
     } else {
-      AssertUtils.assertXMLEquals( new String( expectedXml ), new String( current, getEncoding() ) );
+      AssertUtils.assertXMLEquals( new String( expectedXml, StandardCharsets.UTF_8 ), new String( current, getEncoding() ) );
     }
   }
 
