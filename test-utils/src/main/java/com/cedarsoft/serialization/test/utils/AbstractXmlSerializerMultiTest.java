@@ -38,6 +38,7 @@ import org.apache.commons.io.Charsets;
 
 import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public abstract class AbstractXmlSerializerMultiTest<T> extends AbstractSerializ
 
     int index = 0;
     for ( byte[] current : serialized ) {
-      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), expected.get( index ).getBytes() );
+      String expectedWithNamespace = AbstractXmlSerializerTest2.addNameSpace( (AbstractXmlSerializer<?, ?, ?, ?>) getSerializer(), expected.get( index ).getBytes(StandardCharsets.UTF_8) );
       try {
         AssertUtils.assertXMLEquals( new String( current, getCharset() ), expectedWithNamespace );
       } catch ( AssertionError e ) {

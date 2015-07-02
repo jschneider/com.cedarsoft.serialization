@@ -35,6 +35,8 @@ import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
 import com.cedarsoft.serialization.Serializer;
+
+import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTimeZone;
 
@@ -42,6 +44,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -49,7 +52,7 @@ import java.io.OutputStream;
 public class ZoneInfoSerializer implements Serializer<DateTimeZone,OutputStream,InputStream> {
   @Override
   public void serialize( @Nonnull DateTimeZone object, @Nonnull OutputStream out ) throws IOException {
-    out.write( object.getID().getBytes() );
+    out.write( object.getID().getBytes(StandardCharsets.UTF_8) );
   }
 
   @Nonnull

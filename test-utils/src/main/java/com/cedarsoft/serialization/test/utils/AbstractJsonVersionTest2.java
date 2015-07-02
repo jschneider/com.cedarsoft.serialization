@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * It is necessary to define at least one DataPoint
@@ -72,7 +73,7 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
     private final byte[] json;
 
     public JsonVersionEntry( @Nonnull Version version, @Nonnull String json ) {
-      this( version, json.getBytes() );
+      this( version, json.getBytes(StandardCharsets.UTF_8) );
     }
 
     public JsonVersionEntry( @Nonnull Version version, @Nonnull byte[] json ) {
@@ -91,7 +92,7 @@ public abstract class AbstractJsonVersionTest2<T> extends AbstractVersionTest2<T
     public byte[] getSerialized( @Nonnull Serializer<?, ?, ?> serializer ) throws Exception {
       boolean isObjectType = Reflection.method( "isObjectType" ).withReturnType( Boolean.TYPE ).in( serializer ).invoke();
       if ( isObjectType ) {
-        return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes();
+        return AbstractJsonSerializerTest2.addTypeInformation( AbstractJsonSerializerTest2.getType( serializer ), version, json ).getBytes(StandardCharsets.UTF_8);
       } else {
         return json;
       }

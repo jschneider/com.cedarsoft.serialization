@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -53,7 +54,7 @@ public class Graphviz {
     int result = process.waitFor();
     if ( result != 0 ) {
       byte[] errorOut = ByteStreams.toByteArray( process.getErrorStream() );
-      throw new IllegalStateException( "Did not work: " + new String( errorOut ) );
+      throw new IllegalStateException( "Did not work: " + new String( errorOut, StandardCharsets.UTF_8 ) );
     }
 
     Desktop.getDesktop().open( targetFile );

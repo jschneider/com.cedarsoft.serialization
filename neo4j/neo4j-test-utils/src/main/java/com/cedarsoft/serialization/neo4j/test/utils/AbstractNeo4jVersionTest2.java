@@ -18,6 +18,7 @@ import org.xml.sax.SAXException;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -97,7 +98,7 @@ public abstract class AbstractNeo4jVersionTest2<T> {
     private final byte[] cypher;
 
     public Neo4jVersionEntry( @Nonnull Version version, @Nonnull String cypher ) {
-      this( version, cypher.getBytes() );
+      this( version, cypher.getBytes(StandardCharsets.UTF_8) );
     }
 
     public Neo4jVersionEntry( @Nonnull Version version, @Nonnull byte[] cypher ) {
