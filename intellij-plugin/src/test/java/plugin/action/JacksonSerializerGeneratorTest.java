@@ -129,8 +129,4 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
       }
     } );
   }
-
-  public void enforeceImport() {
-    org.fest.util.Arrays.array("a");
-  }
 }
