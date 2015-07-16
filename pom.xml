@@ -230,7 +230,7 @@
   <properties>
     <currentStableVersion>7.0.0</currentStableVersion>
     <currentDevelopmentVersion>7.1.0-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>6.1.1</commons.version>
+    <commons.version>7.1.0</commons.version>
     <java.version>1.7</java.version>
     <neo4j.version>2.1.5</neo4j.version>
   </properties>
