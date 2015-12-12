@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--comm-->
+<balls xmlns="http://test/balls/1.1.0">
+  <!--comments-->
+  <ball type="tennisBall" id="7" />
+  <!--more comments-->
+  <ball type="basketBall" theId="asdf" />
+  <!--A comment-->
+</balls>
+  <!--Another comment-->
