@@ -88,7 +88,7 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
       if ( !reader.isEndElement() ) {
         throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
-      if ( reader.next() != XMLStreamConstants.END_DOCUMENT ) {
+      if (nextEndDocument(reader)) {
         throw new SerializationException( reader.getLocation(), SerializationException.Details.NOT_CONSUMED_EVERYTHING, getClass().getName() );
       }
 
@@ -233,6 +233,16 @@ public abstract class AbstractStaxBasedSerializer<T, S> extends AbstractXmlSeria
 
     skipCurrentTag( reader );
     closeTag( reader );
+  }
+
+  protected boolean nextEndDocument(@Nonnull XMLStreamReader reader) throws XMLStreamException {
+    int next = reader.next();
+    //Skip comments
+    while (next == XMLStreamConstants.COMMENT) {
+      next = reader.next();
+    }
+
+    return next != XMLStreamConstants.END_DOCUMENT;
   }
 
   /**
