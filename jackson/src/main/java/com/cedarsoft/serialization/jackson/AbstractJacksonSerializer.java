@@ -265,11 +265,20 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
   }
 
   @Nonnull
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws IOException {
+    return deserializeArray(type, deserializeFrom, formatVersion);
+  }
+
+  @Nonnull
   protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
     return deserializeArray( type, null, deserializeFrom, formatVersion );
   }
 
   @Nonnull
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nullable String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws IOException {
+    return deserializeArray(type, propertyName, deserializeFrom, formatVersion);
+  }
+
   protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
     JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
     if ( propertyName == null ) {
