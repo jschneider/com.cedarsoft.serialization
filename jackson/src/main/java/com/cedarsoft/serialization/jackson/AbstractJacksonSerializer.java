@@ -265,33 +265,60 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
   }
 
   @Nonnull
-  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
-    return deserializeArray( type, null, deserializeFrom, formatVersion );
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws IOException {
+    return deserializeArray(type, deserializeFrom, formatVersion);
+  }
+
+  @Deprecated
+  @Nonnull
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
+    return deserializeArray(type, null, deserializeFrom, formatVersion );
   }
 
   @Nonnull
-  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
-    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
-    if ( propertyName == null ) {
-      parserWrapper.verifyCurrentToken( JsonToken.START_ARRAY );
-    } else {
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nullable String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws IOException {
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper(deserializeFrom);
+    if (propertyName == null) {
+      parserWrapper.verifyCurrentToken(JsonToken.START_ARRAY);
+    }
+    else {
       parserWrapper.nextToken();
-      parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+      parserWrapper.verifyCurrentToken(JsonToken.FIELD_NAME);
       String currentName = parserWrapper.getCurrentName();
 
-      if ( !propertyName.equals( currentName ) ) {
-        throw new JsonParseException( "Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+      if (!propertyName.equals(currentName)) {
+        throw new JsonParseException("Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation());
       }
       parserWrapper.nextToken();
     }
 
     List<T> deserialized = new ArrayList<T>();
-    while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
-      deserialized.add( deserialize( type, formatVersion, deserializeFrom ) );
+    while (deserializeFrom.nextToken() != JsonToken.END_ARRAY) {
+      deserialized.add(deserialize(type, formatVersion, deserializeFrom));
     }
     return deserialized;
   }
 
+  @Deprecated
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion) throws IOException {
+    return deserializeArray(type, propertyName, formatVersion, deserializeFrom);
+  }
+
+  /**
+   * Serializes the object if it is *not* null.
+   * If the object is null nothing will be written.
+   */
+  public <T> void serializeIfNotNull(@Nullable T object, @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion) throws JsonProcessingException, IOException {
+    if (object == null) {
+      return;
+    }
+
+    serialize(object, type, propertyName, serializeTo, formatVersion);
+  }
+
+  /**
+   * Serializes the object. Writes "null" if the object is null
+   */
   public <T> void serialize( @Nullable T object, @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion ) throws JsonProcessingException, IOException {
     serializeTo.writeFieldName( propertyName );
 
@@ -338,6 +365,17 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     }
     parserWrapper.nextToken();
     return deserialize( type, formatVersion, deserializeFrom );
+  }
+
+  /**
+   * Supports null values
+   */
+  @Nullable
+  public <T> T deserializeNullable(@Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws JsonProcessingException, IOException {
+    if (deserializeFrom.getCurrentToken() == JsonToken.VALUE_NULL) {
+      return null;
+    }
+    return super.deserialize(type, formatVersion, deserializeFrom);
   }
 
   @Nonnull
