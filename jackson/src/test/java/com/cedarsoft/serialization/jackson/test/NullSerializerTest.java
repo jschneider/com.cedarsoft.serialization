@@ -38,7 +38,8 @@ public class NullSerializerTest {
 
     JsonUtils.assertJsonEquals("{\n" +
                                  "  \"@type\" : \"myobject\",\n" +
-                                 "  \"@version\" : \"1.0.0\"\n" +
+                                 "  \"@version\" : \"1.0.0\",\n" +
+                                 "  \"value\" : null\n" +
                                  "}", out.toString());
 
 
@@ -65,7 +66,7 @@ public class NullSerializerTest {
     @Override
     public void serialize(@Nonnull JsonGenerator serializeTo, @Nonnull MyObject object, @Nonnull Version formatVersion) throws IOException, VersionException, SerializationException, JsonProcessingException {
       serializeIfNotNull(object.getNumber(), Double.class, NUMBER, serializeTo, formatVersion);
-      serializeIfNotNull(object.getValue(), String.class, VALUE, serializeTo, formatVersion);
+      serialize(object.getValue(), String.class, VALUE, serializeTo, formatVersion);
     }
 
     @Nonnull
