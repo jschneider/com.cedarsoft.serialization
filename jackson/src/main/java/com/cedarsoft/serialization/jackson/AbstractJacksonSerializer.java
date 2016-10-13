@@ -355,6 +355,17 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     return deserialize( type, formatVersion, deserializeFrom );
   }
 
+  /**
+   * Supports null values
+   */
+  @Nullable
+  public <T> T deserializeNullable(@Nonnull Class<T> type, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws JsonProcessingException, IOException {
+    if (deserializeFrom.getCurrentToken() == JsonToken.VALUE_NULL) {
+      return null;
+    }
+    return super.deserialize(type, formatVersion, deserializeFrom);
+  }
+
   @Nonnull
   @Override
   public <T> JacksonSerializer<? super T> getSerializer( @Nonnull Class<T> type ) {
