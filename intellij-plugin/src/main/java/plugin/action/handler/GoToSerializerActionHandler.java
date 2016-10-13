@@ -38,7 +38,7 @@ public class GoToSerializerActionHandler extends EditorActionHandler {
   private final PopupListFactory popupListFactory;
 
   public GoToSerializerActionHandler() throws IOException {
-    this( new PsiHelperImpl(), new SerializerVerifierImpl(), new SerializerFinder(new ClassFinder( new File( "." ), "com" ) ), new PopupDisplayer() {
+    this( new PsiHelperImpl(), new SerializerVerifierImpl(), new SerializerFinder(new ClassFinder( new File( "." ), "com", true ) ), new PopupDisplayer() {
             @Override
             public void displayPopupChooser( Editor editor, JList list, Runnable runnable ) {
             }
