@@ -269,36 +269,39 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
     return deserializeArray(type, deserializeFrom, formatVersion);
   }
 
+  @Deprecated
   @Nonnull
-  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
-    return deserializeArray( type, null, deserializeFrom, formatVersion );
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
+    return deserializeArray(type, null, deserializeFrom, formatVersion );
   }
 
   @Nonnull
   protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nullable String propertyName, @Nonnull Version formatVersion, @Nonnull JsonParser deserializeFrom) throws IOException {
-    return deserializeArray(type, propertyName, deserializeFrom, formatVersion);
-  }
-
-  protected <T> List<? extends T> deserializeArray( @Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion ) throws IOException {
-    JacksonParserWrapper parserWrapper = new JacksonParserWrapper( deserializeFrom );
-    if ( propertyName == null ) {
-      parserWrapper.verifyCurrentToken( JsonToken.START_ARRAY );
-    } else {
+    JacksonParserWrapper parserWrapper = new JacksonParserWrapper(deserializeFrom);
+    if (propertyName == null) {
+      parserWrapper.verifyCurrentToken(JsonToken.START_ARRAY);
+    }
+    else {
       parserWrapper.nextToken();
-      parserWrapper.verifyCurrentToken( JsonToken.FIELD_NAME );
+      parserWrapper.verifyCurrentToken(JsonToken.FIELD_NAME);
       String currentName = parserWrapper.getCurrentName();
 
-      if ( !propertyName.equals( currentName ) ) {
-        throw new JsonParseException( "Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation() );
+      if (!propertyName.equals(currentName)) {
+        throw new JsonParseException("Invalid field. Expected <" + propertyName + "> but was <" + currentName + ">", parserWrapper.getCurrentLocation());
       }
       parserWrapper.nextToken();
     }
 
     List<T> deserialized = new ArrayList<T>();
-    while ( deserializeFrom.nextToken() != JsonToken.END_ARRAY ) {
-      deserialized.add( deserialize( type, formatVersion, deserializeFrom ) );
+    while (deserializeFrom.nextToken() != JsonToken.END_ARRAY) {
+      deserialized.add(deserialize(type, formatVersion, deserializeFrom));
     }
     return deserialized;
+  }
+
+  @Deprecated
+  protected <T> List<? extends T> deserializeArray(@Nonnull Class<T> type, @Nullable String propertyName, @Nonnull JsonParser deserializeFrom, @Nonnull Version formatVersion) throws IOException {
+    return deserializeArray(type, propertyName, formatVersion, deserializeFrom);
   }
 
   /**
