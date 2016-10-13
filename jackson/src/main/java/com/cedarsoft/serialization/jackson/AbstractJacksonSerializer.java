@@ -297,7 +297,7 @@ public abstract class AbstractJacksonSerializer<T> extends AbstractStreamSeriali
    * If the object is null nothing will be written.
    */
   public <T> void serializeIfNotNull(@Nullable T object, @Nonnull Class<T> type, @Nonnull String propertyName, @Nonnull JsonGenerator serializeTo, @Nonnull Version formatVersion) throws JsonProcessingException, IOException {
-    if (object != null) {
+    if (object == null) {
       return;
     }
 
