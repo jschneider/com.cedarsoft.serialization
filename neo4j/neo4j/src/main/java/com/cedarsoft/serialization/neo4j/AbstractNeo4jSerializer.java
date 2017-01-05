@@ -5,8 +5,6 @@ import com.cedarsoft.serialization.SerializationException;
 import com.cedarsoft.version.Version;
 import com.cedarsoft.version.VersionException;
 import com.cedarsoft.version.VersionRange;
-import com.google.common.collect.Iterables;
-
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Label;
@@ -18,7 +16,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract base class for neo4j serializers
@@ -30,6 +32,11 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    */
   @Nonnull
   public static final String PROPERTY_FORMAT_VERSION = "formatVersion";
+  /**
+   * Property used to identify the order
+   */
+  @Nonnull
+  private static final String PROPERTY_ORDER_INDEX = "orderIndex";
 
   @Nonnull
   private final String type; //$NON-NLS-1$
@@ -104,8 +111,10 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   }
 
   public <T> void serializeWithRelationships( @Nonnull Iterable<? extends T> objects, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
+    int index = 0;
     for ( T object : objects ) {
-      serializeWithRelationship( object, type, node, relationshipType, formatVersion );
+      serializeWithRelationship(object, type, node, relationshipType, formatVersion, index);
+      index++;
     }
   }
 
@@ -120,10 +129,23 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
    * @param <T>              the type
    * @throws IOException if there is an io problem
    */
-  public <T> void serializeWithRelationship( @Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion ) throws IOException {
+  public <T> void serializeWithRelationship(@Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion) throws IOException {
+    serializeWithRelationship(object, type, node, relationshipType, formatVersion, null);
+  }
+
+  /**
+   * Serializes with relationship. Adds an optional index
+   */
+  protected <T> void serializeWithRelationship(@Nonnull T object, @Nonnull Class<T> type, @Nonnull Node node, @Nonnull RelationshipType relationshipType, @Nonnull Version formatVersion, @Nullable Integer index) throws IOException {
     Node targetNode = node.getGraphDatabase().createNode();
-    node.createRelationshipTo( targetNode, relationshipType );
-    serialize( object, type, targetNode, formatVersion );
+    Relationship relationship = node.createRelationshipTo(targetNode, relationshipType);
+
+    //Add index to ensure order
+    if (index != null) {
+      relationship.setProperty(PROPERTY_ORDER_INDEX, index);
+    }
+
+    serialize(object, type, targetNode, formatVersion);
   }
 
   @Nonnull
@@ -136,8 +158,36 @@ public abstract class AbstractNeo4jSerializer<T> extends AbstractSerializer<T, N
   @Nonnull
   public <T> List<? extends T> deserializeWithRelationships( @Nonnull Class<T> type, @Nonnull RelationshipType relationshipType, @Nonnull Node node, @Nonnull Version formatVersion ) throws IOException {
     List<T> deserializedList = new ArrayList<>();
+    Map<T, Integer> indices = new HashMap<>();
+
     for ( Relationship relationship : node.getRelationships( relationshipType, Direction.OUTGOING ) ) {
-      deserializedList.add( deserialize( type, formatVersion, relationship.getEndNode() ) );
+      Node endNode = relationship.getEndNode();
+      T deserialized = deserialize(type, formatVersion, endNode);
+      deserializedList.add(deserialized);
+
+      @Nullable Integer index = (Integer) relationship.getProperty(PROPERTY_ORDER_INDEX);
+      if (index != null) {
+        indices.put(deserialized, index);
+      }
+    }
+
+    if (deserializedList.size() > 1 && !indices.isEmpty()) {
+      Collections.sort(deserializedList, new Comparator<T>() {
+        @Override
+        public int compare(T o1, T o2) {
+          @Nullable Integer index1 = indices.get(o1);
+          @Nullable Integer index2 = indices.get(o2);
+
+          if (index1 == null) {
+            throw new IllegalArgumentException("No index found for <" + o1 + ">");
+          }
+          if (index2 == null) {
+            throw new IllegalArgumentException("No index found for <" + o2 + ">");
+          }
+
+          return index1.compareTo(index2);
+        }
+      });
     }
 
     return deserializedList;
