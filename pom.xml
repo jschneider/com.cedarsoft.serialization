@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft</groupId>
     <artifactId>open</artifactId>
-    <version>75.3.2</version>
+    <version>75.3.3</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -176,23 +176,7 @@
       <dependency>
         <groupId>org.codehaus.jettison</groupId>
         <artifactId>jettison</artifactId>
-        <version>1.3.6</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.4.2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>2.4.2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.4.2</version>
+        <version>1.3.8</version>
       </dependency>
 
     </dependencies>
@@ -230,9 +214,9 @@
   <properties>
     <currentStableVersion>7.0.0</currentStableVersion>
     <currentDevelopmentVersion>7.1.0-SNAPSHOT</currentDevelopmentVersion>
-    <commons.version>7.1.0</commons.version>
-    <java.version>1.7</java.version>
-    <neo4j.version>2.1.5</neo4j.version>
+    <commons.version>7.2.0</commons.version>
+    <java.version>1.8</java.version>
+    <neo4j.version>3.1.0</neo4j.version>
   </properties>
 
   <repositories>

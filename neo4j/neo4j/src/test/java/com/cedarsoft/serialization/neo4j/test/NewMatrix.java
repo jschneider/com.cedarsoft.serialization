@@ -15,8 +15,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
-import org.neo4j.kernel.Traversal;
-import org.neo4j.kernel.Uniqueness;
+import org.neo4j.graphdb.traversal.Uniqueness;
 
 import java.io.File;
 
@@ -27,7 +26,8 @@ public class NewMatrix {
     CODED_BY
   }
 
-  private static final String MATRIX_DB = "target/matrix-new-db";
+  private static final File MATRIX_DB = new File("target/matrix-new-db");
+
   private GraphDatabaseService graphDb;
   private long matrixNodeId;
 
@@ -40,7 +40,7 @@ public class NewMatrix {
   }
 
   public void setUp() {
-    deleteFileOrDirectory( new File( MATRIX_DB ) );
+    deleteFileOrDirectory( MATRIX_DB );
     graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( MATRIX_DB );
     registerShutdownHook();
     createNodespace();
@@ -51,57 +51,54 @@ public class NewMatrix {
   }
 
   public void createNodespace() {
-    Transaction tx = graphDb.beginTx();
-    try {
+    try (Transaction tx = graphDb.beginTx()) {
       // Create matrix node
       Node matrix = graphDb.createNode();
       matrixNodeId = matrix.getId();
 
       // Create Neo
       Node thomas = graphDb.createNode();
-      thomas.setProperty( "name", "Thomas Anderson" );
-      thomas.setProperty( "age", 29 );
+      thomas.setProperty("name", "Thomas Anderson");
+      thomas.setProperty("age", 29);
 
       // connect Neo/Thomas to the reference node
-      matrix.createRelationshipTo( thomas, RelTypes.NEO_NODE );
+      matrix.createRelationshipTo(thomas, RelTypes.NEO_NODE);
 
       Node trinity = graphDb.createNode();
-      trinity.setProperty( "name", "Trinity" );
-      Relationship rel = thomas.createRelationshipTo( trinity, RelTypes.KNOWS );
-      rel.setProperty( "age", "3 days" );
+      trinity.setProperty("name", "Trinity");
+      Relationship rel = thomas.createRelationshipTo(trinity, RelTypes.KNOWS);
+      rel.setProperty("age", "3 days");
 
       Node morpheus = graphDb.createNode();
-      morpheus.setProperty( "name", "Morpheus" );
-      morpheus.setProperty( "rank", "Captain" );
-      morpheus.setProperty( "occupation", "Total badass" );
+      morpheus.setProperty("name", "Morpheus");
+      morpheus.setProperty("rank", "Captain");
+      morpheus.setProperty("occupation", "Total badass");
 
-      thomas.createRelationshipTo( morpheus, RelTypes.KNOWS );
-      rel = morpheus.createRelationshipTo( trinity, RelTypes.KNOWS );
-      rel.setProperty( "age", "12 years" );
-      trinity.createRelationshipTo( morpheus, RelTypes.KNOWS );
+      thomas.createRelationshipTo(morpheus, RelTypes.KNOWS);
+      rel = morpheus.createRelationshipTo(trinity, RelTypes.KNOWS);
+      rel.setProperty("age", "12 years");
+      trinity.createRelationshipTo(morpheus, RelTypes.KNOWS);
 
       Node cypher = graphDb.createNode();
-      cypher.setProperty( "name", "Cypher" );
-      cypher.setProperty( "last name", "Reagan" );
-      trinity.createRelationshipTo( cypher, RelTypes.KNOWS );
-      rel = morpheus.createRelationshipTo( cypher, RelTypes.KNOWS );
-      rel.setProperty( "disclosure", "public" );
+      cypher.setProperty("name", "Cypher");
+      cypher.setProperty("last name", "Reagan");
+      trinity.createRelationshipTo(cypher, RelTypes.KNOWS);
+      rel = morpheus.createRelationshipTo(cypher, RelTypes.KNOWS);
+      rel.setProperty("disclosure", "public");
 
       Node smith = graphDb.createNode();
-      smith.setProperty( "name", "Agent Smith" );
-      smith.setProperty( "version", "1.0b" );
-      smith.setProperty( "language", "C++" );
-      rel = cypher.createRelationshipTo( smith, RelTypes.KNOWS );
-      rel.setProperty( "disclosure", "secret" );
-      rel.setProperty( "age", "6 months" );
+      smith.setProperty("name", "Agent Smith");
+      smith.setProperty("version", "1.0b");
+      smith.setProperty("language", "C++");
+      rel = cypher.createRelationshipTo(smith, RelTypes.KNOWS);
+      rel.setProperty("disclosure", "secret");
+      rel.setProperty("age", "6 months");
 
       Node architect = graphDb.createNode();
-      architect.setProperty( "name", "The Architect" );
-      smith.createRelationshipTo( architect, RelTypes.CODED_BY );
+      architect.setProperty("name", "The Architect");
+      smith.createRelationshipTo(architect, RelTypes.CODED_BY);
 
       tx.success();
-    } finally {
-      tx.finish();
     }
   }
 
@@ -137,10 +134,10 @@ public class NewMatrix {
 
   // START SNIPPET: get-friends
   private static Traverser getFriends( final Node person ) {
-    TraversalDescription td = Traversal.description()
+    TraversalDescription td = person.getGraphDatabase().traversalDescription()
       .breadthFirst()
       .relationships( RelTypes.KNOWS, Direction.OUTGOING )
-      .uniqueness( Uniqueness.RELATIONSHIP_GLOBAL )
+      .uniqueness(Uniqueness.RELATIONSHIP_GLOBAL )
       .evaluator( Evaluators.all() );
     return td.traverse( person );
   }
@@ -166,7 +163,7 @@ public class NewMatrix {
 
   // START SNIPPET: find-hackers
   private static Traverser findHackers( final Node startNode ) {
-    TraversalDescription td = Traversal.description()
+    TraversalDescription td = startNode.getGraphDatabase().traversalDescription()
       .breadthFirst()
       .relationships( RelTypes.CODED_BY, Direction.OUTGOING )
       .relationships( RelTypes.KNOWS, Direction.OUTGOING )

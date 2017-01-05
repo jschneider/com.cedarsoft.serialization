@@ -1,11 +1,11 @@
 package com.cedarsoft.serialization.test.performance;
 
-import org.assertj.core.api.MapAssert;
 import org.junit.*;
 import org.junit.rules.*;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+import org.mapdb.Serializer;
 
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
@@ -21,7 +21,15 @@ public class MapDbTest {
 
   @Test
   public void testIt() throws Exception {
-    BTreeMap<String, Integer> treeMap = DBMaker.newTempTreeMap();
+    DB db = DBMaker.memoryDB().make();
+
+
+    BTreeMap<String, Integer> treeMap = db
+      .treeMap("daTreeMap")
+      .keySerializer(Serializer.STRING)
+      .valueSerializer(Serializer.INTEGER)
+      .create();
+
     treeMap.put( "daKey", 7 );
 
     assertThat( treeMap ).hasSize( 1 );
@@ -30,15 +38,20 @@ public class MapDbTest {
 
   @Test
   public void testMoreComplex() throws Exception {
-    File file = tmp.newFile();
+    File file = new File(tmp.getRoot(), "db.file");
+    assertThat(file).doesNotExist();
 
-    DB db = DBMaker.newFileDB( file )
+    DB db = DBMaker.fileDB(file)
       .closeOnJvmShutdown()
-      .encryptionEnable( "password" )
+      .transactionEnable()
       .make();
 
     //a new collection
-    ConcurrentNavigableMap<Integer, String> map = db.getTreeMap( "collectionName" );
+    ConcurrentNavigableMap<Integer, String> map = db
+      .treeMap("collectionName")
+      .keySerializer(Serializer.INTEGER)
+      .valueSerializer(Serializer.STRING)
+      .create();
 
     map.put( 1, "one" );
     map.put( 2, "two" );

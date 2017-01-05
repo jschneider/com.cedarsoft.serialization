@@ -1,10 +1,10 @@
 package com.cedarsoft.serialization.neo4j.test.utils;
 
 import org.junit.*;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.helpers.collection.IteratorUtil;
+import org.neo4j.helpers.collection.Iterators;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,9 +16,6 @@ public class CypherTest extends AbstractNeo4JTest {
 
   @Test
   public void testCyper1() throws Exception {
-    ExecutionEngine engine = new ExecutionEngine( graphDb );
-
-
     try ( Transaction tx = graphDb.beginTx() ) {
       Node node1 = graphDb.createNode();
       node1.setProperty( "name", "MM" );
@@ -36,17 +33,18 @@ public class CypherTest extends AbstractNeo4JTest {
     }
 
     String query = "start n=node(*) where n.name = 'MM' return n, n.name";
-    assertThat( engine.execute( query ).dumpToString().trim() ).isEqualTo( "+-----------------------------+\n" +
+    assertThat( graphDb.execute( query ).resultAsString().trim() ).isEqualTo( "+-----------------------------+\n" +
                                                             "| n                  | n.name |\n" +
                                                             "+-----------------------------+\n" +
                                                             "| Node[0]{name:\"MM\"} | \"MM\"   |\n" +
                                                             "+-----------------------------+\n" +
                                                             "1 row" );
 
-    assertThat( engine.execute( query ).columns() ).containsExactly( "n", "n.name" );
+    assertThat( graphDb.execute( query ).columns() ).containsExactly( "n", "n.name" );
 
     boolean called = false;
-    for ( Node node : IteratorUtil.asIterable( engine.execute( query ).<Node>columnAs( "n" ) ) ) {
+    ResourceIterator<Node> nodeResourceIterator = graphDb.execute(query).<Node>columnAs("n");
+    for ( Node node : Iterators.asIterable(nodeResourceIterator) ) {
       assertThat( node.getProperty( "name" ) ).isEqualTo( "MM" );
       called = true;
     }

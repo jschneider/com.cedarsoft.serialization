@@ -13,18 +13,19 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
+import org.neo4j.graphdb.traversal.Paths;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
-import org.neo4j.kernel.Traversal;
-import org.neo4j.kernel.Uniqueness;
+import org.neo4j.graphdb.traversal.Uniqueness;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 public class OrderedPath {
   private static final RelationshipType REL1 = withName( "REL1" ), REL2 = withName( "REL2" ), REL3 = withName( "REL3" );
-  static final String DB_PATH = "target/neo4j-orderedpath-db";
+  static final File DB_PATH = new File("target/neo4j-orderedpath-db");
   GraphDatabaseService db;
 
   public OrderedPath( GraphDatabaseService db ) {
@@ -58,7 +59,7 @@ public class OrderedPath {
     C.setProperty( "name", "C" );
     D.setProperty( "name", "D" );
     tx.success();
-    tx.finish();
+    tx.close();
     return A;
   }
 
@@ -76,7 +77,8 @@ public class OrderedPath {
     orderedPathContext.add( REL1 );
     orderedPathContext.add( withName( "REL2" ) );
     orderedPathContext.add( withName( "REL3" ) );
-    TraversalDescription td = Traversal.description()
+
+    TraversalDescription td = db.traversalDescription()
       .evaluator( new Evaluator() {
         @Override
         public Evaluation evaluate( final Path path ) {
@@ -91,7 +93,7 @@ public class OrderedPath {
           return Evaluation.of( included, continued );
         }
       } )
-      .uniqueness( Uniqueness.NONE );
+      .uniqueness(Uniqueness.NONE);
     // END SNIPPET: walkOrderedPath
     return td;
   }
@@ -103,7 +105,7 @@ public class OrderedPath {
       Traverser traverser = td.traverse( A );
       PathPrinter pathPrinter = new PathPrinter( "name" );
       for ( Path path : traverser ) {
-        output += Traversal.pathToString( path, pathPrinter );
+        output += Paths.pathToString(path, pathPrinter);
       }
       // END SNIPPET: printPath
       output += "\n";
@@ -112,7 +114,7 @@ public class OrderedPath {
   }
 
   // START SNIPPET: pathPrinter
-  static class PathPrinter implements Traversal.PathDescriptor<Path> {
+  static class PathPrinter implements Paths.PathDescriptor<Path> {
     private final String nodePropertyKey;
 
     public PathPrinter( String nodePropertyKey ) {

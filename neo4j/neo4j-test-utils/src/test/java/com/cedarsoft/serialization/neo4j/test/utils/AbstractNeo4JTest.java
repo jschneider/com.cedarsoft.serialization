@@ -16,6 +16,6 @@ public class AbstractNeo4JTest {
 
   @Before
   public void prepareTestDatabase() throws IOException {
-    graphDb = neo4jRule.getGraphDb();
+    graphDb = neo4jRule.createDb();
   }
 }
