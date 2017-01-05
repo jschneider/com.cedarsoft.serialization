@@ -75,7 +75,7 @@ public class JsonTest {
     w.close();
     strWriter.close();
 
-    assertEquals( "{\"fileType\":{\"@dependent\":\"false\",\"id\":\"Canon Raw\",\"extension\":{\"@default\":\"true\",\"@delimiter\":\".\",\"$\":\"cr2\"}}}", strWriter.toString() );
+    assertEquals( "{\"fileType\":{\"@dependent\":false,\"id\":\"Canon Raw\",\"extension\":{\"@default\":true,\"@delimiter\":\".\",\"$\":\"cr2\"}}}", strWriter.toString() );
   }
 
   @Test
