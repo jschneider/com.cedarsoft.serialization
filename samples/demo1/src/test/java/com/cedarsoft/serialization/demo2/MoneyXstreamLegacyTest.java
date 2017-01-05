@@ -73,13 +73,14 @@ public class MoneyXstreamLegacyTest {
     } catch ( ConversionException e ) {
       assertEquals( "No such field com.cedarsoft.serialization.demo2.Money.amount\n" +
                       "---- Debugging information ----\n" +
+                      "message             : No such field com.cedarsoft.serialization.demo2.Money.amount\n" +
                       "field               : amount\n" +
                       "class               : com.cedarsoft.serialization.demo2.Money\n" +
                       "required-type       : com.cedarsoft.serialization.demo2.Money\n" +
                       "converter-type      : com.thoughtworks.xstream.converters.reflection.ReflectionConverter\n" +
                       "path                : /money/amount\n" +
                       "line number         : 3\n" +
-                      "version             : 1.4.7\n" +
+                      "version             : 1.4.9\n" +
                       "-------------------------------", e.getMessage() );
     }
   }
