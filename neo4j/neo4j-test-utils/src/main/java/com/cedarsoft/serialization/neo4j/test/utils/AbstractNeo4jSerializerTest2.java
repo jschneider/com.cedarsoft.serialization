@@ -44,11 +44,8 @@ import org.junit.runner.*;
 import org.neo4j.cypher.export.DatabaseSubGraph;
 import org.neo4j.cypher.export.SubGraph;
 import org.neo4j.cypher.export.SubGraphExporter;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.Result;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -142,7 +139,7 @@ public abstract class AbstractNeo4jSerializerTest2<T> {
 
     //Fill the db initially
     try ( Transaction tx = db.beginTx() ) {
-      ExecutionResult result = new ExecutionEngine( db ).execute( serialized );
+      Result  result = db.execute( serialized );
       tx.success();
     }
 

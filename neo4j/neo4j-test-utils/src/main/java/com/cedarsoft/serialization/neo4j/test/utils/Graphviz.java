@@ -6,7 +6,6 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.tooling.GlobalGraphOperations;
 import org.neo4j.visualization.graphviz.GraphvizWriter;
 import org.neo4j.walk.Visitor;
 import org.neo4j.walk.Walker;
@@ -33,7 +32,7 @@ public class Graphviz {
     Walker walker = new Walker() {
       @Override
       public <R, E extends Throwable> R accept( Visitor<R, E> visitor ) throws E {
-        for ( Node node : GlobalGraphOperations.at( graphDb ).getAllNodes() ) {
+        for (Node node : graphDb.getAllNodes()) {
           visitor.visitNode( node );
           for ( Relationship edge : node.getRelationships( Direction.OUTGOING ) ) {
             visitor.visitRelationship( edge );

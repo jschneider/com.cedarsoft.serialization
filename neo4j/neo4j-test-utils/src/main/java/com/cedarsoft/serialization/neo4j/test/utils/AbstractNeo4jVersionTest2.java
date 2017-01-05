@@ -9,10 +9,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.*;
 import org.junit.experimental.theories.*;
 import org.junit.runner.*;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.Result;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
@@ -51,7 +49,7 @@ public abstract class AbstractNeo4jVersionTest2<T> {
 
     //Fill the db initially
     try ( Transaction tx = db.beginTx() ) {
-      ExecutionResult result = new ExecutionEngine( db ).execute( serialized );
+      Result result = db.execute(serialized );
       tx.success();
     }
 

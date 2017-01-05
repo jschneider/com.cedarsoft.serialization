@@ -48,7 +48,7 @@ public class SchemaTest extends AbstractNeo4JTest {
     String nameToFind = "user" + idToFind + "@neo4j.org";
 
     try (Transaction tx = graphDb.beginTx()) {
-      ResourceIterator<Node> users = graphDb.findNodesByLabelAndProperty(NodeLabel.USER, "username", nameToFind).iterator();
+      ResourceIterator<Node> users = graphDb.findNodes(NodeLabel.USER, "username", nameToFind);
       List<Node> userNodes = new ArrayList<>();
       while (users.hasNext()) {
         userNodes.add(users.next());

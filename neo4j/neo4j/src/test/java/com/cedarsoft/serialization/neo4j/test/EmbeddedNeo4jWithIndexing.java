@@ -6,8 +6,10 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.index.Index;
 
+import java.io.File;
+
 public class EmbeddedNeo4jWithIndexing {
-  private static final String DB_PATH = "neo4j-store";
+  private static final File DB_PATH = new File("neo4j-store");
   private static final String USERNAME_KEY = "username";
   private static GraphDatabaseService graphDb;
   private static Index<Node> nodeIndex;
@@ -47,7 +49,7 @@ public class EmbeddedNeo4jWithIndexing {
       }
       tx.success();
     } finally {
-      tx.finish();
+      tx.close();
     }
     System.out.println( "Shutting down database ..." );
     shutdown();

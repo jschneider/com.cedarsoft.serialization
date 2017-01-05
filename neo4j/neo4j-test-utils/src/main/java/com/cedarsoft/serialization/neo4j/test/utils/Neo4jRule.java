@@ -3,9 +3,8 @@ package com.cedarsoft.serialization.neo4j.test.utils;
 import org.junit.rules.*;
 import org.junit.runner.*;
 import org.junit.runners.model.*;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
@@ -54,8 +53,8 @@ public class Neo4jRule implements TestRule {
   @Nonnull
   public static String dumpToText( @Nonnull GraphDatabaseService db ) {
     try ( Transaction tx = db.beginTx() ) {
-      ExecutionResult result = new ExecutionEngine( db ).execute( "MATCH (n)\n" + "RETURN n;" );
-      return result.dumpToString();
+      Result result = db.execute("MATCH (n)\n" + "RETURN n;");
+      return result.resultAsString();
     }
   }
 
@@ -64,7 +63,7 @@ public class Neo4jRule implements TestRule {
 
   @Nonnull
   public GraphDatabaseService createDb() throws IOException {
-    GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase( tmp.newFolder().getAbsolutePath() );
+    GraphDatabaseService db = new TestGraphDatabaseFactory().newImpermanentDatabase(tmp.newFolder());
     dbs.add( db );
     return db;
   }
