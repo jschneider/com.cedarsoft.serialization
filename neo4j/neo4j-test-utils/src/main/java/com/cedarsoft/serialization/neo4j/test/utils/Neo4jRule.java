@@ -73,10 +73,4 @@ public class Neo4jRule implements TestRule {
       db.shutdown();
     }
   }
-
-  @Nonnull
-  @Deprecated
-  public GraphDatabaseService getGraphDb() throws IOException {
-    return createDb();
-  }
 }
