@@ -39,7 +39,6 @@ import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import de.undercouch.bson4jackson.BsonFactory;
 import de.undercouch.bson4jackson.BsonGenerator;
-import javolution.osgi.internal.XMLInputFactoryProvider;
 import javolution.xml.internal.stream.XMLInputFactoryImpl;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.time.StopWatch;
@@ -190,11 +189,11 @@ public class XmlParserPerformance {
     //    new XmlParserPerformance().benchJibx();
 
     //System.out.println();
-    //System.out.println( "Neo4J (1 t" +
-    //                      "ransaction)" );
-    //new XmlParserPerformance().benchNeo4j1Transaction();
-    //System.out.println( "Neo4J (Multiple transactions)" );
-    //new XmlParserPerformance().benchNeo4jMultiTransaction();
+    System.out.println("Neo4J (1 transaction)");
+    new XmlParserPerformance().benchNeo4j1Transaction();
+    System.out.println("Neo4J (Multiple transactions)");
+    new XmlParserPerformance().benchNeo4jMultiTransaction();
+
     System.out.println( "Jackson (Mapper)" );
     new XmlParserPerformance().benchJacksonMapper();
     System.out.println( "Jackson (Stream)" );
@@ -475,7 +474,7 @@ public class XmlParserPerformance {
 
                           Node extension = graphDb.createNode();
                           extension.setProperty( "isDefault", true );
-                          extension.setProperty( "delimiter", true );
+                          extension.setProperty( "delimiter", "." );
                           extension.setProperty( "extension", "cr2" );
 
                           node.createRelationshipTo( extension, Type.EXTENSION );
@@ -508,7 +507,7 @@ public class XmlParserPerformance {
 
                           Node extension = graphDb.createNode();
                           extension.setProperty( "isDefault", true );
-                          extension.setProperty( "delimiter", true );
+                          extension.setProperty( "delimiter", "." );
                           extension.setProperty( "extension", "cr2" );
 
                           node.createRelationshipTo( extension, Type.EXTENSION );
@@ -663,20 +662,9 @@ public class XmlParserPerformance {
 
   private void benchParse1Transaction( @Nonnull Node node ) {
     for ( int i = 0; i < BIG; i++ ) {
-
       GraphDatabaseService graphDatabase = node.getGraphDatabase();
       try ( Transaction transaction = graphDatabase.beginTx() ) {
-        node.getProperty( "dependent" );
-        node.getProperty( "id" );
-
-        @Nullable Relationship singleRelationship = node.getSingleRelationship( Type.EXTENSION, Direction.OUTGOING );
-        assert singleRelationship != null;
-
-        Node endNode = singleRelationship.getEndNode();
-
-        endNode.getProperty( "isDefault" );
-        endNode.getProperty( "delimiter" );
-        endNode.getProperty( "extension" );
+        parseNode(node);
       }
     }
   }
@@ -685,19 +673,27 @@ public class XmlParserPerformance {
     GraphDatabaseService graphDatabase = node.getGraphDatabase();
     try ( Transaction transaction = graphDatabase.beginTx() ) {
       for ( int i = 0; i < BIG; i++ ) {
-        node.getProperty( "dependent" );
-        node.getProperty( "id" );
-
-        @Nullable Relationship singleRelationship = node.getSingleRelationship( Type.EXTENSION, Direction.OUTGOING );
-        assert singleRelationship != null;
-
-        Node endNode = singleRelationship.getEndNode();
-
-        endNode.getProperty( "isDefault" );
-        endNode.getProperty( "delimiter" );
-        endNode.getProperty( "extension" );
+        parseNode(node);
       }
     }
+  }
+
+  private void parseNode(@Nonnull Node node) {
+    Boolean dependent = (Boolean) node.getProperty("dependent");
+    String id = (String) node.getProperty("id");
+
+    @Nullable Relationship singleRelationship = node.getSingleRelationship(Type.EXTENSION, Direction.OUTGOING);
+    assert singleRelationship != null;
+
+    Node endNode = singleRelationship.getEndNode();
+
+    Boolean isDefault = (Boolean) endNode.getProperty("isDefault");
+    assertTrue(isDefault);
+
+    String delimiter = (String) endNode.getProperty("delimiter");
+    String extension = (String) endNode.getProperty("extension");
+
+    FileType type = new FileType(id, new Extension(delimiter, extension, isDefault), dependent);
   }
 
 
