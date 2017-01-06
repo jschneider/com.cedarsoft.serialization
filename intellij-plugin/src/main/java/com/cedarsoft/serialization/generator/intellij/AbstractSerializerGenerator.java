@@ -1,7 +1,5 @@
 package com.cedarsoft.serialization.generator.intellij;
 
-import com.cedarsoft.serialization.generator.intellij.SerializerGenerator;
-import com.cedarsoft.serialization.generator.intellij.action.GenerateSerializerDialog;
 import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer;
 import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
@@ -9,7 +7,6 @@ import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -203,7 +200,15 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
     methodBuilder.append( "verifyVersionWritable( formatVersion );" );
 
     for ( FieldToSerialize field : fields ) {
-      methodBuilder.append( "serialize(object." ).append( field.getAccessor() ).append( "," ).append( field.getFieldTypeBoxed() ).append( ".class, " ).append( field.getPropertyConstantName() ).append( " , serializeTo, formatVersion);" );
+      String serializeMethodName;
+      if (field.isCollection()) {
+        serializeMethodName = "serializeArray";
+      }
+      else {
+        serializeMethodName = "serialize";
+      }
+
+      methodBuilder.append(serializeMethodName).append("(object.").append(field.getAccessor()).append(",").append(field.getFieldTypeBoxed()).append(".class, ").append(field.getPropertyConstantName()).append(" , serializeTo, formatVersion);");
     }
 
     methodBuilder.append( "}" );
