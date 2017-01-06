@@ -48,71 +48,86 @@ public class JacksonSerializerResolver implements SerializerResolver {
    */
   @Override
   @Nonnull
-  public PsiType findSerializerFor( @Nonnull final PsiType typeToSerialize ) {
+  public PsiType findSerializerFor( @Nonnull PsiType typeToSerialize ) {
     //Fix scope: GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(  )
     PsiClass serializerClass = javaPsiFacade.findClass( SERIALIZER_IFACE_NAME, GlobalSearchScope.allScope( project ) );
-    if ( serializerClass != null ) {
-      final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText( SERIALIZER_IFACE_NAME + "<" + typeToSerialize.getCanonicalText() + ">", null );
+    if (serializerClass == null) {
+      //Fallback if there is no jackson serializer interface
+      return elementFactory.createTypeByFQClassName(guessSerializerName(typeToSerialize));
+    }
 
-      final PsiType[] foundSerializerType = new PsiType[1];
-      ClassInheritorsSearch.search( serializerClass ).forEach( new Processor<PsiClass>() {
-        @Override
-        public boolean process( PsiClass psiClass ) {
-          //Skip interfaces and abstract classes
-          if ( psiClass.isInterface() || psiClass.hasModifierProperty( PsiModifier.ABSTRACT ) ) {
-            return true;
-          }
-
-          //Is it a serializer?
-          PsiClassType currentSerializerType = elementFactory.createType( psiClass );
-          if ( !jacksonSerializerWithTypeParam.isAssignableFrom( currentSerializerType ) ) {
-            return true;
-          }
-
-          //Verify the exact type param
-          PsiClassType jacksonSerializerImplType = findJacksonSerializerImplFor( currentSerializerType );
-          if ( jacksonSerializerImplType == null ) {
-            return true;
-          }
-
-          PsiType[] parameters = jacksonSerializerImplType.getParameters();
-          if ( parameters.length != 1 ) {
-            return true;
-          }
-
-          PsiType parameter = parameters[0];
-          if ( !parameter.equals( typeToSerialize ) ) {
-            return true;
-          }
-
-          foundSerializerType[0] = currentSerializerType;
-          return false;
-        }
-
-        @Nullable
-        private PsiClassType findJacksonSerializerImplFor( @Nonnull PsiClassType serializerType ) {
-          for ( PsiType superType : serializerType.getSuperTypes() ) {
-            PsiClass psiClass = ( ( PsiClassType ) superType ).resolve();
-            assert psiClass != null;
-            String qualifiedName = psiClass.getQualifiedName();
-
-            if ( SERIALIZER_IFACE_NAME.equals( qualifiedName ) ) {
-              return ( PsiClassType ) superType;
-            }
-
-            @Nullable PsiClassType oneDown = findJacksonSerializerImplFor( ( PsiClassType ) superType );
-            if ( oneDown != null ) {
-              return oneDown;
-            }
-          }
-
-          return null;
-        }
-      } );
-
-      if ( foundSerializerType[0] != null ) {
-        return foundSerializerType[0];
+    final PsiType unBoxedTypeToSerialize;
+    if (typeToSerialize instanceof PsiPrimitiveType) {
+      unBoxedTypeToSerialize = ((PsiPrimitiveType) typeToSerialize).getBoxedType(serializerClass);
+      if (unBoxedTypeToSerialize == null) {
+        throw new IllegalStateException("No boxed type found for <" + serializerClass + ">");
       }
+    }else{
+      unBoxedTypeToSerialize = typeToSerialize;
+    }
+
+    String genericsType = unBoxedTypeToSerialize.getCanonicalText();
+
+    final PsiType jacksonSerializerWithTypeParam = elementFactory.createTypeFromText(SERIALIZER_IFACE_NAME + "<" + genericsType + ">", null);
+
+    final PsiType[] foundSerializerType = new PsiType[1];
+    ClassInheritorsSearch.search(serializerClass).forEach(new Processor<PsiClass>() {
+      @Override
+      public boolean process(PsiClass psiClass) {
+        //Skip interfaces and abstract classes
+        if (psiClass.isInterface() || psiClass.hasModifierProperty(PsiModifier.ABSTRACT)) {
+          return true;
+        }
+
+        //Is it a serializer?
+        PsiClassType currentSerializerType = elementFactory.createType(psiClass);
+        if (!jacksonSerializerWithTypeParam.isAssignableFrom(currentSerializerType)) {
+          return true;
+        }
+
+        //Verify the exact type param
+        PsiClassType jacksonSerializerImplType = findJacksonSerializerImplFor(currentSerializerType);
+        if (jacksonSerializerImplType == null) {
+          return true;
+        }
+
+        PsiType[] parameters = jacksonSerializerImplType.getParameters();
+        if (parameters.length != 1) {
+          return true;
+        }
+
+        PsiType parameter = parameters[0];
+        if (!parameter.equals(unBoxedTypeToSerialize)) {
+          return true;
+        }
+
+        foundSerializerType[0] = currentSerializerType;
+        return false;
+      }
+
+      @Nullable
+      private PsiClassType findJacksonSerializerImplFor(@Nonnull PsiClassType serializerType) {
+        for (PsiType superType : serializerType.getSuperTypes()) {
+          PsiClass psiClass = ((PsiClassType) superType).resolve();
+          assert psiClass != null;
+          String qualifiedName = psiClass.getQualifiedName();
+
+          if (SERIALIZER_IFACE_NAME.equals(qualifiedName)) {
+            return (PsiClassType) superType;
+          }
+
+          @Nullable PsiClassType oneDown = findJacksonSerializerImplFor((PsiClassType) superType);
+          if (oneDown != null) {
+            return oneDown;
+          }
+        }
+
+        return null;
+      }
+    });
+
+    if (foundSerializerType[0] != null) {
+      return foundSerializerType[0];
     }
 
     //Fallback: Create a new pseudo serializer class
