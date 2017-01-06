@@ -3,7 +3,8 @@ import org.jetbrains.annotations.NotNull;
 public class PrimitivesSerializerVersionTest extends com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2<Primitives> {
     @NotNull
     @org.junit.experimental.theories.DataPoint
-    public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(com.cedarsoft.version.Version.valueOf(1, 0, 0), PrimitivesSerializerVersionTest.class.getResource("Primitives_1.0.0_1.json"));
+    public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(
+            com.cedarsoft.version.Version.valueOf(1, 0, 0), PrimitivesSerializerVersionTest.class.getResource("Primitives_1.0.0_1.json"));
 
     @NotNull
     @Override

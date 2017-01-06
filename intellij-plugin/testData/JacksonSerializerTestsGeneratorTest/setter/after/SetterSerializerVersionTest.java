@@ -3,7 +3,8 @@ import org.jetbrains.annotations.NotNull;
 public class SetterSerializerVersionTest extends com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2<Setter> {
     @NotNull
     @org.junit.experimental.theories.DataPoint
-    public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(com.cedarsoft.version.Version.valueOf(1, 0, 0), SetterSerializerVersionTest.class.getResource("Setter_1.0.0_1.json"));
+    public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY1 = com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2.create(
+            com.cedarsoft.version.Version.valueOf(1, 0, 0), SetterSerializerVersionTest.class.getResource("Setter_1.0.0_1.json"));
 
     @NotNull
     @Override
