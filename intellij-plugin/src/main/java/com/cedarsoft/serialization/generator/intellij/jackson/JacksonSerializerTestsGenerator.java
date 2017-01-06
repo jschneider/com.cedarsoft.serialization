@@ -168,7 +168,12 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
         methodBuilder.append("99");
       }
       else {
-        methodBuilder.append(" new ").append(entry.getFieldType().getCanonicalText()).append("()");
+        if (entry.getFieldType().getCanonicalText().equals("java.lang.String")) {
+          methodBuilder.append("\"foo\"");
+        }
+        else {
+          methodBuilder.append(" new ").append(entry.getFieldType().getCanonicalText()).append("()");
+        }
       }
 
       if (iterator.hasNext()) {
