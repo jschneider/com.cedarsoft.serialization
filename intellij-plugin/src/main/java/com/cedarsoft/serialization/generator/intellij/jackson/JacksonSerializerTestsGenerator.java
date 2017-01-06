@@ -23,6 +23,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
 import com.intellij.psi.search.PsiShortNamesCache;
+import org.junit.*;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -119,7 +120,7 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
     methodBuilder.append( "){" );
 
     for ( FieldToSerialize entry : serializerModel.getFieldToSerializeEntries() ) {
-      methodBuilder.append( "org.assertj.core.api.Assertions.assertThat(deserialized." ).append( entry.getAccessor() ).append( ").isNotNull();" );
+      methodBuilder.append( "org.junit.Assert.assertNotNull(deserialized." ).append( entry.getAccessor() ).append( ");" );
     }
 
     methodBuilder.append( "}" );
