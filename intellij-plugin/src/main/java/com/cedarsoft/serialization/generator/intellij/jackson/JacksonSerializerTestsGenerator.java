@@ -5,6 +5,8 @@ import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.google.common.collect.ImmutableList;
 import com.intellij.codeInsight.NullableNotNullManager;
+import com.intellij.json.psi.JsonElementGenerator;
+import com.intellij.json.psi.JsonFile;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
@@ -77,7 +79,9 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
 
 
         //Now create the resource file
-        testResourcesTargetDir.createFile( generateTestResourceName( serializerModel.getClassToSerialize().getName(), 1 ) );
+        PsiElement resourceFile = testResourcesTargetDir.createFile(generateTestResourceName(serializerModel.getClassToSerialize().getName(), 1));
+        JsonElementGenerator jsonElementGenerator = new JsonElementGenerator(project);
+        resourceFile.add(jsonElementGenerator.createObject("")); //add an empty object
 
         //Now beautify the code
         codeStyleManager.reformat( testClasses[0] );
