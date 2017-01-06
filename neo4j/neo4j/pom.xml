@@ -8,7 +8,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>neo4j</artifactId>
-  <name>Neo4J Tests</name>
+  <name>Neo4J Serializer</name>
 
   <dependencies>
     <dependency>
@@ -76,6 +76,14 @@
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j-shell</artifactId>
       <version>${neo4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.neo4j</groupId>
+      <artifactId>neo4j-io</artifactId>
+      <version>${neo4j.version}</version>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
 
