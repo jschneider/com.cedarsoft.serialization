@@ -2,17 +2,19 @@ package com.cedarsoft.serialization.generator.intellij.action;
 
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.ide.util.DirectoryChooser;
-import com.intellij.openapi.roots.JavaProjectRootsUtil;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtilCore;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.refactoring.MoveDestination;
-import com.intellij.refactoring.PackageWrapper;
 import com.intellij.refactoring.move.moveClassesOrPackages.DestinationFolderComboBox;
 import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo;
 import com.intellij.ui.CollectionListModel;
@@ -21,15 +23,16 @@ import com.intellij.ui.ReferenceEditorComboWithBrowseButton;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.IncorrectOperationException;
-
 import net.miginfocom.swing.MigLayout;
+import org.jetbrains.jps.model.java.JavaResourceRootType;
+import org.jetbrains.jps.model.java.JavaSourceRootType;
+import org.jetbrains.jps.model.module.JpsModuleSourceRootType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -75,14 +78,38 @@ public class GenerateSerializerDialog extends DialogWrapper {
     this.psiClass = psiClass;
     setTitle("Generate Serializer");
 
-    fieldCollectionListModel = new CollectionListModel<PsiField>(psiClass.getAllFields());
-    referenceEditor = new PackageNameReferenceEditorCombo(guessPackage(), psiClass.getProject(), "generate.serializer.recent.packages", "Select Serializer target package");
+    fieldCollectionListModel = new CollectionListModel<>(psiClass.getAllFields());
+    Project project = psiClass.getProject();
+    referenceEditor = new PackageNameReferenceEditorCombo(guessPackage(), project, "generate.serializer.recent.packages", "Select Serializer target package");
 
-    serializerDestinationBox.setData(psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent());
-    testsDestinationBox.setData(psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent()); //TODO test
-    testResourcesDestinationBox.setData(psiClass.getProject(), psiClass.getContainingFile().getContainingDirectory(), referenceEditor.getChildComponent()); //TODO resources
+    Module module = ModuleUtilCore.findModuleForPsiElement(psiClass);
+    if (module == null) {
+      throw new IllegalStateException("No module found for <" + psiClass + ">");
+    }
+    ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+
+    PsiDirectory defaultDirectory = psiClass.getContainingFile().getContainingDirectory();
+    PsiDirectory testResourceRoot = getSourceRootDir(project, moduleRootManager, defaultDirectory, JavaResourceRootType.TEST_RESOURCE);
+    PsiDirectory testsRoot = getSourceRootDir(project, moduleRootManager, defaultDirectory, JavaSourceRootType.TEST_SOURCE);
+
+    serializerDestinationBox.setData(project, defaultDirectory, referenceEditor.getChildComponent());
+    testsDestinationBox.setData(project, testsRoot, referenceEditor.getChildComponent());
+    testResourcesDestinationBox.setData(project, testResourceRoot, referenceEditor.getChildComponent());
 
     init();
+  }
+
+  @Nonnull
+  private static PsiDirectory getSourceRootDir(@Nonnull Project project, ModuleRootManager moduleRootManager, @Nonnull PsiDirectory defaultDirectory, @Nonnull JpsModuleSourceRootType<?> sourceRootType) {
+    List<VirtualFile> testResourceRoots = moduleRootManager.getSourceRoots(sourceRootType);
+    if (testResourceRoots.isEmpty()) {
+      return defaultDirectory;
+    }
+    @Nullable PsiDirectory directory = PsiManager.getInstance(project).findDirectory(testResourceRoots.get(0));
+    if (directory == null) {
+      return defaultDirectory;
+    }
+    return directory;
   }
 
   @Nullable
