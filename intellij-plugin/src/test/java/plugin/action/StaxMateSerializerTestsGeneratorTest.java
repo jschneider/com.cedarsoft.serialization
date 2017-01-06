@@ -7,6 +7,7 @@ import com.cedarsoft.serialization.generator.intellij.stax.mate.StaxMateSerializ
 import com.google.common.collect.ImmutableList;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiField;
@@ -53,7 +54,7 @@ public class StaxMateSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
 
         PsiDirectory dir = simple.getContainingFile().getContainingDirectory();
@@ -75,7 +76,7 @@ public class StaxMateSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
 
         PsiDirectory dir = simple.getContainingFile().getContainingDirectory();
@@ -97,7 +98,7 @@ public class StaxMateSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( foo ).isNotNull();
         assertThat( foo.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new StaxMateSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( foo, ImmutableList.<PsiField>copyOf( foo.getAllFields() ) );
 
         PsiDirectory dir = foo.getContainingFile().getContainingDirectory();

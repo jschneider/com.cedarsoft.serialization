@@ -102,7 +102,8 @@ public class GenerateSerializerAction extends AnAction {
 
         SerializerResolver serializerResolver = createSerializerResolver(dialect, project);
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(serializerResolver, JavaCodeStyleManager.getInstance(project));
+
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(serializerResolver, JavaCodeStyleManager.getInstance(project), JavaPsiFacade.getInstance(project));
         SerializerModel model = serializerModelFactory.create(psiClass, selectedFields);
 
         SerializerGenerator serializerGenerator = createSerializerGenerator(dialect, psiClass);

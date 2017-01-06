@@ -33,16 +33,34 @@ public class FieldToSerialize {
   @Nonnull
   private final String defaultValue;
 
-  public FieldToSerialize( @Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
+  /**
+   * If set to true a list is serialized/deserialized
+   */
+  private final boolean isCollection;
+
+  @Deprecated
+  public FieldToSerialize(@Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter ) {
+    this(fieldType, field, fieldSetter, false);
+  }
+
+  public FieldToSerialize(@Nonnull PsiType fieldType, @Nonnull PsiField field, @Nonnull FieldSetter fieldSetter, boolean isCollection) {
     this.fieldType = fieldType;
     this.field = field;
+
+    assert field.getName() != null;
     this.fieldName = field.getName();
+
     this.fieldSetter = fieldSetter;
 
-    this.accessor = findGetterName( field );
-    this.propertyConstant = "PROPERTY_" + JavaCodeStyleManager.getInstance( getProject() ).suggestVariableName( VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
+    this.accessor = findGetterName(field );
+    this.isCollection = isCollection;
+    this.propertyConstant = "PROPERTY_" + JavaCodeStyleManager.getInstance(getProject() ).suggestVariableName(VariableKind.STATIC_FINAL_FIELD, field.getName(), null, fieldType ).names[0];
 
-    defaultValue = getDefaultValue( fieldType );
+    defaultValue = getDefaultValue(fieldType );
+  }
+
+  public boolean isCollection() {
+    return isCollection;
   }
 
   @Nonnull

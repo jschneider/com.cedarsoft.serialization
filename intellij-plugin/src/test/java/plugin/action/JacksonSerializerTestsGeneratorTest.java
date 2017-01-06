@@ -7,6 +7,7 @@ import com.cedarsoft.serialization.generator.intellij.model.SerializerModelFacto
 import com.google.common.collect.ImmutableList;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiField;
@@ -53,7 +54,7 @@ public class JacksonSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
 
 
@@ -76,7 +77,7 @@ public class JacksonSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( simple ).isNotNull();
         assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
 
         PsiDirectory dir = simple.getContainingFile().getContainingDirectory();
@@ -98,7 +99,7 @@ public class JacksonSerializerTestsGeneratorTest extends MultiFileTestCase {
         assertThat( foo ).isNotNull();
         assertThat( foo.getQualifiedName() ).isEqualTo( getTestName( false ) );
 
-        SerializerModelFactory serializerModelFactory = new SerializerModelFactory( new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ) );
+        SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( foo, ImmutableList.<PsiField>copyOf( foo.getAllFields() ) );
 
 
