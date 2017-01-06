@@ -28,6 +28,10 @@
       <groupId>com.cedarsoft.serialization</groupId>
       <artifactId>neo4j</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.cedarsoft.serialization</groupId>
+      <artifactId>jackson</artifactId>
+    </dependency>
 
     <!--Stax parser-->
     <dependency>
