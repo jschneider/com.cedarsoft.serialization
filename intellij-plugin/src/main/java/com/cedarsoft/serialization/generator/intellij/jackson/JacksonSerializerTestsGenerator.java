@@ -4,9 +4,9 @@ import com.cedarsoft.serialization.generator.intellij.SerializerTestsGenerator;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.UnmodifiableIterator;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.json.psi.JsonElementGenerator;
-import com.intellij.json.psi.JsonFile;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
@@ -147,13 +147,39 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
       .append( serializerModel.getClassToSerialize().getQualifiedName() )
       .append( "> ENTRY" ).append( entryIndex )
       .append( "=" )
-      .append( "com.cedarsoft.serialization.test.utils.AbstractSerializerTest2" ).append( ".create(" )
+      .append("com.cedarsoft.serialization.test.utils.AbstractSerializerTest2").append(".create(\n")
     ;
 
 
-    //TODO add object generation
-    methodBuilder.append( "new " ).append( serializerModel.getClassToSerialize().getQualifiedName() ).append( "()" );
-    methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getName(), entryIndex ) ).append( "\"));" );
+    methodBuilder.append("new ").append(serializerModel.getClassToSerialize().getQualifiedName()).append("(\n");
+
+    //Create the objects that are necessary
+    for (UnmodifiableIterator<? extends FieldToSerialize> iterator = serializerModel.getFieldToSerializeEntries().iterator(); iterator.hasNext(); ) {
+      FieldToSerialize entry = iterator.next();
+
+      if (entry.isCollection()) {
+        methodBuilder
+          .append("new java.util.ArrayList(")
+          .append(" new ").append(entry.getFieldType().getCanonicalText()).append("()")
+          .append(")")
+        ;
+      }
+      else if (entry.isPrimitive()) {
+        methodBuilder.append("99");
+      }
+      else {
+        methodBuilder.append(" new ").append(entry.getFieldType().getCanonicalText()).append("()");
+      }
+
+      if (iterator.hasNext()) {
+        methodBuilder.append(",");
+      }
+      methodBuilder.append("\n");
+    }
+
+
+    methodBuilder.append(")");
+    methodBuilder.append(",\n").append(testClass.getQualifiedName()).append(".class.getResource(\"").append(generateTestResourceName(serializerModel.getClassToSerialize().getName(), entryIndex)).append("\"));");
 
     return elementFactory.createFieldFromText( methodBuilder.toString(), testClass );
   }
