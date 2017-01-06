@@ -287,7 +287,17 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
    */
   @Nonnull
   protected String createType( @Nonnull String className ) {
-    return javaCodeStyleManager.suggestVariableName( VariableKind.STATIC_FINAL_FIELD, className, null, null ).names[0].toLowerCase( Locale.getDefault() );
+    String[] suggestedNames = javaCodeStyleManager.suggestVariableName(VariableKind.STATIC_FINAL_FIELD, className, null, null).names;
+    //Find the longest name without any dots
+    for (String suggestedName : suggestedNames) {
+      if (suggestedName.contains(".")) {
+        continue;
+      }
+      return suggestedName.toLowerCase().replace("_", "-");
+    }
+
+    //fallback
+    return suggestedNames[0].toLowerCase(Locale.getDefault());
   }
 
   @Nonnull

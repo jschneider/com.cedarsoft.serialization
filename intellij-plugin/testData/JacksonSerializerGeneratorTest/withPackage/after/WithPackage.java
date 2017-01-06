@@ -1,9 +1,9 @@
 package com.cedarsoft.test;
 
-public class Simple{
+public class WithPackage{
   private final String foo;
 
-  public Simple( String foo ) {
+  public WithPackage( String foo ) {
     this.foo = foo;
   }
 

@@ -91,11 +91,9 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
     doTest( new PerformAction() {
       @Override
       public void performAction( VirtualFile rootDir, VirtualFile rootAfter ) throws Exception {
-        String testName = getTestName(false);
-        assertThat(testName).isEqualTo("WithPackage");
-        PsiClass simple = myJavaFacade.findClass(testName, GlobalSearchScope.allScope( getProject() ) );
+        PsiClass simple = myJavaFacade.findClass("com.cedarsoft.test.WithPackage", GlobalSearchScope.allScope( getProject() ) );
         assertThat( simple ).isNotNull();
-        assertThat( simple.getQualifiedName() ).isEqualTo( getTestName( false ) );
+        assertThat( simple.getQualifiedName() ).isEqualTo( "com.cedarsoft.test.WithPackage" );
 
         SerializerModelFactory serializerModelFactory = new SerializerModelFactory(new JacksonSerializerResolver( getProject() ), JavaCodeStyleManager.getInstance( getProject() ), JavaPsiFacade.getInstance(getProject()));
         SerializerModel model = serializerModelFactory.create( simple, ImmutableList.of( simple.findFieldByName( "foo", false ) ) );
@@ -104,7 +102,7 @@ public class JacksonSerializerGeneratorTest extends MultiFileTestCase {
 
         JacksonSerializerGenerator generator = new JacksonSerializerGenerator( getProject() );
         PsiClass serializer = generator.generate( model, dir );
-        assertThat( serializer.getName() ).isEqualTo( "SimpleSerializer" );
+        assertThat( serializer.getName() ).isEqualTo( "WithPackageSerializer" );
       }
     } );
   }
