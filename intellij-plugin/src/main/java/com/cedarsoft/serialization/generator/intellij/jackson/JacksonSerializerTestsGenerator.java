@@ -195,7 +195,7 @@ public class JacksonSerializerTestsGenerator implements SerializerTestsGenerator
 
     methodBuilder.append( notNull() ).append( "@org.junit.experimental.theories.DataPoint public static final com.cedarsoft.serialization.test.utils.VersionEntry ENTRY" ).append( entryIndex )
       .append( "=" )
-      .append( "com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2" ).append( ".create(com.cedarsoft.version.Version.valueOf( 1, 0, 0 )" )
+      .append( "com.cedarsoft.serialization.test.utils.AbstractJsonVersionTest2" ).append( ".create(\ncom.cedarsoft.version.Version.valueOf( 1, 0, 0 )" )
     ;
 
     methodBuilder.append( ", " ).append( testClass.getQualifiedName() ).append( ".class.getResource(\"" ).append( generateTestResourceName( serializerModel.getClassToSerialize().getName(), entryIndex ) ).append( "\"));" );
