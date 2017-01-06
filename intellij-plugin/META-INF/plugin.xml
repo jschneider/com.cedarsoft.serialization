@@ -43,9 +43,9 @@
               text="_Generate Serializer">
       </action>
 
-      <action id="serializerGenerator.GoToSerializer" class="plugin.action.GoToSerializerAction"
-              text="Go to _Serializer">
-      </action>
+      <!--<action id="serializerGenerator.GoToSerializer" class="plugin.action.GoToSerializerAction"-->
+              <!--text="Go to _Serializer">-->
+      <!--</action>-->
 
     </group>
 
