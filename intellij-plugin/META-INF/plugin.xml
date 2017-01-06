@@ -53,12 +53,12 @@
 
   </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <localInspection implementationClass="plugin.inspection.MyInspection"
-                     displayName="My Inspection"
-                     groupName="cedarsoft Serializers"
-                     enabledByDefault="true"/>
-  </extensions>
+  <!--<extensions defaultExtensionNs="com.intellij">-->
+    <!--<localInspection implementationClass="plugin.inspection.MyInspection"-->
+                     <!--displayName="My Inspection"-->
+                     <!--groupName="cedarsoft Serializers"-->
+                     <!--enabledByDefault="true"/>-->
+  <!--</extensions>-->
 
 
   <!--<depends>com.intellij.modules.lang</depends>-->
