@@ -27,7 +27,14 @@ public class JacksonSerializerGenerator extends AbstractSerializerGenerator {
   protected void appendDeserializeFieldStatements( @Nonnull SerializerModel serializerModel, @Nonnull StringBuilder methodBody ) {
     //Declare the fields
     for ( FieldToSerialize field : serializerModel.getFieldToSerializeEntries() ) {
-      methodBody.append( field.getFieldType().getCanonicalText() ).append( " " ).append( field.getFieldName() ).append( "=" ).append( field.getDefaultValue() ).append( ";" );
+      if (field.isCollection()) {
+        methodBody.append("java.util.List<? extends ").append(field.getFieldType().getCanonicalText()).append(">");
+      }
+      else {
+        methodBody.append(field.getFieldType().getCanonicalText());
+      }
+
+      methodBody.append(" ").append(field.getFieldName()).append("=").append(field.getDefaultValue()).append(";");
     }
 
     methodBody.append( "\n\n" );
@@ -40,10 +47,18 @@ public class JacksonSerializerGenerator extends AbstractSerializerGenerator {
 
       //add the ifs for the field names
       for ( FieldToSerialize field : serializerModel.getFieldToSerializeEntries() ) {
-        methodBody.append( "if ( currentName.equals( " ).append( field.getPropertyConstantName() ).append( " ) ) {" )
+        String deserializeMethodName;
+        if (field.isCollection()) {
+          deserializeMethodName = "deserializeArray";
+        }
+        else {
+          deserializeMethodName = "deserialize";
+        }
+
+        methodBody.append("if ( currentName.equals( ").append(field.getPropertyConstantName()).append(" ) ) {")
           .append( "parser.nextToken();" )
 
-          .append( field.getFieldName() ).append( "=deserialize(" )
+          .append(field.getFieldName()).append("=" + deserializeMethodName + "(")
           .append( field.getFieldTypeBoxed() ).append( ".class" )
           .append( ", formatVersion, deserializeFrom" )
           .append( ");" )
