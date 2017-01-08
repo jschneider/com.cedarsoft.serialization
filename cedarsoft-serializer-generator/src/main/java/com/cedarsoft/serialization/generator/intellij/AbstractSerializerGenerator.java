@@ -4,6 +4,7 @@ import com.cedarsoft.serialization.generator.intellij.model.DelegatingSerializer
 import com.cedarsoft.serialization.generator.intellij.model.FieldSetter;
 import com.cedarsoft.serialization.generator.intellij.model.FieldToSerialize;
 import com.cedarsoft.serialization.generator.intellij.model.SerializerModel;
+import com.google.common.collect.ImmutableList;
 import com.intellij.codeInsight.NullableNotNullManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
@@ -32,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * @author Johannes Schneider (<a href="mailto:js@cedarsoft.com">js@cedarsoft.com</a>)
@@ -302,7 +305,7 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
 
   @Nonnull
   public static List<FieldToSerialize> findConstructorArgs( @Nonnull Collection<? extends FieldToSerialize> fields ) {
-    Map<Integer, FieldToSerialize> fieldsWithConstructor = new HashMap<Integer, FieldToSerialize>();
+    SortedMap<Integer, FieldToSerialize> fieldsWithConstructor = new TreeMap<>();
 
     for ( FieldToSerialize entry : fields ) {
       FieldSetter fieldSetter = entry.getFieldSetter();
@@ -317,18 +320,6 @@ public abstract class AbstractSerializerGenerator implements SerializerGenerator
       }
     }
 
-    List<FieldToSerialize> argsSorted = new ArrayList<FieldToSerialize>();
-
-    int index = 0;
-    while ( !fieldsWithConstructor.isEmpty() ) {
-      @Nullable FieldToSerialize entry = fieldsWithConstructor.remove( index );
-      if ( entry == null ) {
-        throw new IllegalStateException( "No entry found for index <" + index + ">" );
-      }
-      argsSorted.add( entry );
-      index++;
-    }
-
-    return argsSorted;
+    return ImmutableList.copyOf(fieldsWithConstructor.values());
   }
 }
