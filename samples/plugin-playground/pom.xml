@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.cedarsoft.serialization</groupId>
     <artifactId>samples</artifactId>
-    <version>6.1.1-SNAPSHOT</version>
+    <version>7.2.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -12,6 +12,10 @@
   <name>Demo: Plugin Playground</name>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.cedarsoft</groupId>
       <artifactId>serialization</artifactId>
@@ -43,53 +47,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.cedarsoft.serialization.generator</groupId>
-          <artifactId>serializer-generator-maven-plugin</artifactId>
-          <version>${project.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>com.cedarsoft.serialization.generator</groupId>
-        <artifactId>serializer-generator-maven-plugin</artifactId>
-
-        <configuration>
-
-        </configuration>
-      </plugin>
-
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-plugin-versions</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-        <!--<executions>-->
-        <!--<execution>-->
-        <!--<id>enforce-plugin-versions</id>-->
-        <!--<goals>-->
-        <!--<goal>enforce</goal>-->
-        <!--</goals>-->
-        <!--<configuration>-->
-        <!--<rules>-->
-        <!--<requireJavaVersion>-->
-        <!--<version>1.5.0</version>-->
-        <!--</requireJavaVersion>-->
-        <!--</rules>-->
-        <!--</configuration>-->
-        <!--</execution>-->
-        <!--</executions>-->
-      </plugin>
-
-    </plugins>
-  </build>
 </project>

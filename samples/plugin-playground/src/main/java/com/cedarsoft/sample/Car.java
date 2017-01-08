@@ -29,6 +29,7 @@ package com.cedarsoft.sample; /**
  * have any questions.
  */
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class Car {
   private final Money basePrice;
   private final List<Extra> extras = new ArrayList<Extra>();
 
-  public Car( Model model, Money basePrice ) {
+  public Car( @Nonnull Model model, Money basePrice ) {
     this( model, basePrice, null );
   }
 

@@ -1,0 +1,67 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin version="2">
+  <id>com.cedarsoft.serialization.generator.intellij-plugin</id>
+  <name>cedarsoft Serializer Generator</name>
+  <version>0.1</version>
+  <vendor email="info@cedarsoft.de" url="http://www.cedarsoft.com">cedarsoft GmbH</vendor>
+
+  <description><![CDATA[
+      This plugin creates Serializers and Tests based upon <a href="https://github.com/jschneider/com.cedarsoft.serialization">cedarsoft Serialization</a>.
+      ]]></description>
+
+  <change-notes><![CDATA[
+      <ul>
+        <li>0.1 - first release
+      </ul>
+      ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="171.2014.21" />
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <group id="serializerGenerator.Code" text="_Serializer Generator" description="Generators for serializers based upon cedarsoft Serialization">
+      <add-to-group group-id="CodeMenu" anchor="last" />
+      <add-to-group group-id="GoToCodeGroup" anchor="last" />
+      <add-to-group group-id="EditorPopupMenu.GoTo" anchor="last"/>
+      <!--<keyboard-shortcut keymap="$default" first-keystroke="shift alt B"/>-->
+      <action id="serializerGenerator.GenerateSerializer" class="com.cedarsoft.serialization.generator.intellij.action.GenerateSerializerAction"
+              text="_Generate Serializer">
+      </action>
+
+      <!--<action id="serializerGenerator.GoToSerializer" class="plugin.action.GoToSerializerAction"-->
+              <!--text="Go to _Serializer">-->
+      <!--</action>-->
+
+    </group>
+
+
+
+  </actions>
+
+  <!--<extensions defaultExtensionNs="com.intellij">-->
+    <!--<localInspection implementationClass="plugin.inspection.MyInspection"-->
+                     <!--displayName="My Inspection"-->
+                     <!--groupName="cedarsoft Serializers"-->
+                     <!--enabledByDefault="true"/>-->
+  <!--</extensions>-->
+
+
+  <!--<depends>com.intellij.modules.lang</depends>-->
+  <depends>com.intellij.modules.java</depends>
+
+</idea-plugin>
